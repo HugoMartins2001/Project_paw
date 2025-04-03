@@ -19,10 +19,12 @@ body {
     max-height: 90vh; 
     overflow-y: auto; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-form::-webkit-scrollbar {
-    display: none; /* Oculta a barra de rolagem no Chrome, Safari e Edge */
+.register-container::-webkit-scrollbar {
+    display: none; 
 }
 
 .form-control {
