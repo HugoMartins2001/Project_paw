@@ -23,10 +23,6 @@ body {
     -ms-overflow-style: none;
 }
 
-
-form::-webkit-scrollbar {
-    display: none;
-
 .register-container::-webkit-scrollbar {
     display: none; 
 }
