@@ -1,13 +1,20 @@
-const express = require('express');
-const router = express.Router();
+var express = require('express');
+var router = express.Router();
 const authController = require('../controllers/auth');
 
-router.get('/', authController.verifyLoginUser, (req, res) => {
-    if (!req.user) {
-        return res.redirect('/auth/login');
-    }
-    res.render('home/home', { user: req.user });
+
+router.get('/', function(req, res) {
+    res.render('home/home'); 
 });
 
+router.get('/auth/login', authController.login);
+
+
+router.get('/auth/register', authController.createLogin);
+
+
+router.get('/profile', authController.verifyLoginUser, function(req, res) {
+    res.render('profile', { user: req.user }); // Só acessível para usuários autenticados
+});
 
 module.exports = router;
