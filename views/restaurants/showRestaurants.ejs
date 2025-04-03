@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Restaurants</title>
+    <title>Lista de Restaurantes</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,38 +28,47 @@
             font-weight: bold;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 20px auto;
             padding: 20px;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .container h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
         }
         .restaurant {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
-        .restaurant:last-child {
-            border-bottom: none;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .restaurant label {
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
+            color: #333;
         }
         .restaurant p {
-            background: #f9f9f9;
+            background: white;
             padding: 10px;
             border-radius: 4px;
             color: #555;
             margin-bottom: 10px;
+            border: 1px solid #ddd;
         }
         .restaurant a {
+            display: inline-block;
             color: #4CAF50;
             text-decoration: none;
             font-weight: bold;
             margin-right: 10px;
-            padding: 5px 10px;
+            padding: 8px 15px;
             border: 1px solid #4CAF50;
             border-radius: 4px;
             transition: background-color 0.3s, color 0.3s;
@@ -74,30 +82,51 @@
             font-size: 18px;
             color: #888;
         }
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #388E3C;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <span>Restaurant List</span>
+        <span>Lista de Restaurantes</span>
         <a href="/auth/logout">Logout</a>
     </div>
 
     <div class="container">
         <% if (restaurants.length == 0) { %>
             <div class="no-data">
-                <h1>No Restaurants Found</h1>
+                <h1>Não foram encontrados restaurantes</h1>
             </div>
         <% } else { %>
-            <h1>Restaurant Collection</h1>
+            <h1>Restaurantes Disponíveis</h1>
             <% restaurants.forEach(function(restaurant) { %>
                 <div class="restaurant">
-                    <label>Name:</label>
+                    <label>Nome:</label>
                     <p><%= restaurant.name %></p>
-                    <a href="/restaurants/showRestaurant/<%= restaurant.name %>">View Details</a>
-                    <a href="/restaurants/deleteRestaurant/<%= restaurant.name %>">Delete</a>
+                    <label>Descrição:</label>
+                    <p><%= restaurant.description %></p>
+                    <label>Localização:</label>
+                    <p><%= restaurant.address %></p>
+                    <label>Contacto:</label>
+                    <p><%= restaurant.contact %></p>
+                    <a href="/restaurants/showRestaurant/<%= restaurant.name %>">Ver Detalhes</a>
+                    <a href="/restaurants/deleteRestaurant/<%= restaurant.name %>">Eliminar</a>
                 </div>
             <% }) %>
         <% } %>
+        <a href="/" class="btn-back">Voltar à Página Principal</a>
     </div>
 </body>
 </html>

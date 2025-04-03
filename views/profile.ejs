@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+      }
+      .header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .header span {
+        font-size: 18px;
+      }
+      .header a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .profile-container {
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 600px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .profile-container h2 {
+        margin-bottom: 20px;
+        color: #4CAF50;
+        font-size: 24px;
+      }
+      .profile-container p {
+        margin: 10px 0;
+        font-size: 16px;
+        color: #333;
+      }
+      .profile-container .section-title {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #4CAF50;
+        text-align: left;
+      }
+      .btn-container {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+        transition: background 0.3s ease;
+      }
+      .btn-primary {
+        background: #4CAF50;
+      }
+      .btn-primary:hover {
+        background: #388E3C;
+      }
+      .btn-secondary {
+        background: #f44336;
+      }
+      .btn-secondary:hover {
+        background: #d32f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <span>Bem-vindo, <%= user.name %></span>
+      <a href="/auth/logout" class="btn btn-secondary">Logout</a>
+    </div>
+
+    <div class="profile-container">
+      <h2>Perfil do <%= user.name %></h2>
+      <p><strong>Email:</strong> <%= user.email %></p>
+      <p><strong>Função:</strong> <%= user.role === 'cliente' ? 'Cliente' : 'Manager' %></p>
+
+      <% if (user.role === 'cliente') { %>
+        <div class="section-title">Informações de Cliente</div>
+        <p><strong>Telemóvel:</strong> <%= user.telemovel || 'Não fornecido' %></p>
+        <p><strong>NIF:</strong> <%= user.nif || 'Não fornecido' %></p>
+      <% } else if (user.role === 'manager') { %>
+        <div class="section-title">Informações de Manager</div>
+        <p><strong>Departamento:</strong> <%= user.department || 'Não fornecido' %></p>
+        <p><strong>Código de Manager:</strong> <%= user.managerCode || 'Não fornecido' %></p>
+        <p><strong>Endereço:</strong> <%= user.address || 'Não fornecido' %></p>
+        <p><strong>Código Postal:</strong> <%= user.postalCode || 'Não fornecido' %></p>
+        <p><strong>Cidade:</strong> <%= user.city || 'Não fornecido' %></p>
+      <% } %>
+
+      <div class="btn-container">
+        <a href="/" class="btn btn-primary">Página Principal</a>
+      </div>
+    </div>
+  </body>
+</html>

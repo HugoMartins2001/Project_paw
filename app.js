@@ -9,6 +9,7 @@ var flash = require('connect-flash');
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const restaurantsRouter = require('./routes/restaurant');
+const profileRoutes = require('./routes/profile');
 
 
 var mongoDB = 'mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
@@ -37,6 +38,7 @@ app.use(flash());
 app.use('/', indexRouter);
 app.use('/restaurants', restaurantsRouter);
 app.use('/auth', authRouter);
+app.use('/', profileRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -49,13 +49,26 @@
       .menu a:hover {
         text-decoration: underline;
       }
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+        transition: background 0.3s ease;
+      }
+      .btn-secondary {
+        background: #f44336;
+      }
     </style>
   </head>
   <body>
 
     <div class="header">
       <span>Bem-vindo, <%= user.name %></span>
-      <a href="/auth/logout">Logout</a>
+      <a href="/auth/logout" class="btn btn-secondary">Logout</a>
     </div>
 
     <div class="menu">
@@ -63,9 +76,13 @@
       <ul>
         <% if (user.role === 'manager') { %>
           <li><a href="/restaurants/submitRestaurant">Create Restaurant</a></li>
+          <li><a href="/restaurants/showRestaurants">Show Restaurants</a></li>
+
         <% } else if (user.role === 'cliente') { %>
           <li><a href="/restaurants/showRestaurants">Show Restaurants</a></li>
         <% } %>
+        <!-- Opção para ver o perfil -->
+        <li><a href="/profile">Ver Perfil</a></li>
       </ul>
     </div>
   </body>

@@ -15,8 +15,8 @@ authController.submittedLogin = function(req, res, next) {
             bcrypt.compare(passwordInput, user.password)
                 .then(function(result){
                     if (result ===true){
-                        const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: 86400 });
-                        res.cookie('auth-token', authToken, {maxAge: 82000})
+                        const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: 86400000 });
+                        res.cookie('auth-token', authToken, {maxAge: 86400000})
                         res.redirect('/')
                     } else {
                         res.redirect('/auth/login')
