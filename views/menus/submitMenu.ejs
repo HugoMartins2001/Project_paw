@@ -9,36 +9,36 @@
 </head>
 <body>
     <div class="header">
-        <span>Criar Menu</span>
+        <h3>Criar Menu</h3>
         <a href="/auth/logout" class="btn btn-danger">Logout</a>
     </div>
 
     <div class="container mt-5">
-        <h1 class="mb-4">Criar Menu</h1>
-        <form method="post" action="/menus/submittedMenu">
-            <div class="mb-3">
-                <label for="name" class="form-label">Nome do Menu</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="restaurantId" class="form-label">Restaurante</label>
-                <select id="restaurantId" name="restaurantId" class="form-select" required>
-                    <% restaurants.forEach(function(restaurant) { %>
-                        <option value="<%= restaurant._id %>"><%= restaurant.name %></option>
-                    <% }) %>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="dishes" class="form-label">Pratos</label>
-                <select id="dishes" name="dishes" class="form-select" multiple>
-                    <% dishes.forEach(function(dish) { %>
-                        <option value="<%= dish._id %>"><%= dish.name %></option>
-                    <% }) %>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Criar Menu</button>
-        </form>
-        <div class="text-center">
+        <div class="container-form">
+            <h2 class="text-center mb-4">Novo Menu</h2>
+            <form method="post" action="/menus/submittedMenu">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nome do Menu</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="restaurantId" class="form-label">Restaurante</label>
+                    <select id="restaurantId" name="restaurantId" class="form-select" required>
+                        <% restaurants.forEach(function(restaurant) { %>
+                            <option value="<%= restaurant._id %>"><%= restaurant.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="dishes" class="form-label">Pratos</label>
+                    <select id="dishes" name="dishes" class="form-select" multiple>
+                        <% dishes.forEach(function(dish) { %>
+                            <option value="<%= dish._id %>"><%= dish.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Criar Menu</button>
+            </form>
             <a href="/" class="btn btn-secondary btn-back">Voltar</a>
         </div>
     </div>

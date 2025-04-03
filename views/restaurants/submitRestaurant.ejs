@@ -1,54 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/stylesheets/submitRestaurant.css" />
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/submitRestaurant.css">
     <title>Inserir Restaurante</title>
-  </head>
-  <body>
-    <h1>Inserir Restaurante</h1>
-    <form method="post" action="/restaurants/submittedRestaurant">
-      <label for="name">Nome do Restaurante:</label>
-      <input type="text" name="name" id="f_name" required />
-
-      <label for="address">Rua:</label>
-      <input type="text" name="address" id="f_address" required />
-
-      <label for="latitude">Latitude:</label>
-      <input type="text" name="latitude" id="f_latitude" required />
-
-      <label for="longitude">Longitude:</label>
-      <input type="text" name="longitude" id="f_longitude" required />
-
-      <label for="phone">Telefone:</label>
-      <input type="text" name="phone" id="f_phone" required />
-
-      <label for="email">Email:</label>
-      <input type="email" name="email" id="f_email" required />
-
-      <label for="openingHours">Horário de Funcionamento:</label>
-      <input type="text" name="openingHours" id="f_openingHours" required />
-
-      <label for="paymentMethods">Métodos de Pagamento:</label>
-      <input type="text" name="paymentMethods" id="f_paymentMethods" required />
-
-      <div class="mb-3">
-        <label for="menus" class="form-label">Menus:</label>
-        <select id="menus" name="menus" class="form-select" multiple>
-          <% menus.forEach(function(menu) { %>
-            <option value="<%= menu._id %>"><%= menu.name %></option>
-        <% }) %>
-        </select>
-      </div>
-
-      <input type="submit" value="Criar Restaurante" />
-    
-    </form>
-
-    <div class="dashboard-btn-container">
-      <a href="/" class="btn-dashboard">Ir para o Dashboard</a>
+</head>
+<body>
+    <div class="header">
+        <h3>Inserir Restaurante</h3>
+        <a href="/auth/logout" class="btn btn-danger">Logout</a>
     </div>
-  </body>
+
+    <div class="container mt-5">
+        <div class="container-form">
+            <h2 class="text-center mb-4">Novo Restaurante</h2>
+            <form method="post" action="/restaurants/submittedRestaurant">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nome do Restaurante</label>
+                    <input type="text" id="f_name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Rua</label>
+                    <input type="text" id="f_address" name="address" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="latitude" class="form-label">Latitude</label>
+                    <input type="text" id="f_latitude" name="latitude" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="longitude" class="form-label">Longitude</label>
+                    <input type="text" id="f_longitude" name="longitude" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Telefone</label>
+                    <input type="text" id="f_phone" name="phone" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="f_email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="openingHours" class="form-label">Horário de Funcionamento</label>
+                    <input type="text" id="f_openingHours" name="openingHours" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="paymentMethods" class="form-label">Métodos de Pagamento</label>
+                    <input type="text" id="f_paymentMethods" name="paymentMethods" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="menus" class="form-label">Menus</label>
+                    <select id="menus" name="menus" class="form-select" multiple>
+                        <% menus.forEach(function(menu) { %>
+                            <option value="<%= menu._id %>"><%= menu.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Criar Restaurante</button>
+            </form>
+            <a href="/" class="btn btn-secondary btn-back">Ir para o Dashboard</a>
+        </div>
+    </div>
+</body>
 </html>
