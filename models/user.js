@@ -22,7 +22,7 @@ const User = new mongoose.Schema({
   },
   address: { 
     type: String, 
-    required: function() { return this.role === 'manager'; } 
+    required: function() { return this.role === 'cliente'; } 
   },
   role: { type: String, enum: ["cliente", "manager"], required: true },
 });

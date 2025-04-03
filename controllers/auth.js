@@ -49,7 +49,7 @@ authController.createLoginSubmitted = function(req, res, next) {
 
     mongoUser.create(req.body)
         .then(function(){
-            res.redirect('/')
+            res.redirect('/auth/login')
         })
         .catch(function(err){
             next(err)

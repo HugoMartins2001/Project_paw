@@ -1,0 +1,22 @@
+const express = require('express');
+const router = express.Router();
+const menusController = require('../controllers/menus');
+const authController = require('../controllers/auth');
+
+router.get('/showMenus',authController.verifyLoginUser, function(req, res,next) { 
+    menusController.showAll(req, res,next)
+});
+
+router.get('/submitMenu', authController.verifyLoginUser, function(req, res, next) {
+    menusController.renderCreateMenu(req, res, next);
+});
+
+router.post('/submittedMenu', authController.verifyLoginUser, function(req, res,next){
+      menusController.createMenu(req, res,next)
+});
+
+router.get('/deleteMenu/:menuId/:restaurantId',authController.verifyLoginUser, function(req, res,next){
+     menusController.deleteMenu(req, res)
+});
+
+module.exports = router;

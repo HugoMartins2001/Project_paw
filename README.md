@@ -63,7 +63,7 @@ horário de funcionamento,
 metodos de pagamento,
 avaliaçoes (fazer mais tarde);
 
-Criar menu ideia de form:
+Criar menu ideia de form: FEITO
 
 escolher o prato para adicionar ao menu,
 ter um botão adicionar para quando quisermos adicionar outro prato,
@@ -72,7 +72,7 @@ lista de pratos incluidos no menu,
 meter tags a dizer se é comida italiana, chinesa, portuguesa, etc...,
 
 
-Criar prato ideia de form:
+Criar prato ideia de form: FEITO
 
 nome do prato,
 descrição,
@@ -90,4 +90,4 @@ e um prato deve ser inserido no respetivo menu criado anteriorment;
 fazer notificações para success e mau
 
 
-ter um id escondido para cada manager ter o seu restaurante associado a esse id e nao conseguir ver os restaurantes dos outros só o dele 
+ter um id escondido para cada manager ter o seu restaurante associado a esse id e nao conseguir ver os restaurantes dos outros só o dele FEITO

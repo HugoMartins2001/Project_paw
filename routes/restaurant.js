@@ -20,8 +20,8 @@ router.get('/showRestaurants', authController.verifyLoginUser, function(req, res
     restaurantsController.showAll(req,res,next)
 })
 
-router.get('/deleteCar/:carName', authController.verifyLoginUser, function(req, res){
-    restaurantsController.deleteCar(req, res)
+router.get('/deleteRestaurant/:name', authController.verifyLoginUser, function(req, res){
+    restaurantsController.deleteRestaurant(req, res)
 })
 
 
