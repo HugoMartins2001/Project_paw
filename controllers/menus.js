@@ -1,33 +1,25 @@
 const mongoMenu = require('../models/menu');
-const mongoRestaurant = require('../models/restaurant');
 const mongoDish = require('../models/dish');
 
 let menusController = {};
 
+// Renderizar a página de criação de menu
 menusController.renderCreateMenu = async function (req, res, next) {
     try {
-        const restaurants = await mongoRestaurant.find({ managerId: req.user._id }); // Restaurantes do manager
-        const dishes = await mongoDish.find(); // Todos os pratos
-        res.render('menus/submitMenu', { restaurants, dishes });
+        const dishes = await mongoDish.find(); // Todos os pratos disponíveis
+        res.render('menus/submitMenu', { dishes });
     } catch (error) {
         console.error(error);
         next(error);
     }
 };
 
-// Mostrar todos os menus de um restaurante
+// Mostrar todos os menus disponíveis
 menusController.showAll = function (req, res, next) {
-    const managerId = req.user._id;
-    mongoRestaurant.find({ managerId })
-        .then(function (restaurants) {
-            const restaurantIds = restaurants.map(r => r._id); // IDs dos restaurantes do manager
-            return mongoMenu.find({ restaurantId: { $in: restaurantIds } }).populate('restaurantId');
-        })
+    mongoMenu.find()
+        .populate('dishes') // Popula os dados dos pratos associados
         .then(function (menuList) {
-            const inputs = {
-                menus: menuList
-            };
-            res.render('menus/showMenus', inputs);
+            res.render('menus/showMenus', { menus: menuList });
         })
         .catch(function (err) {
             next(err);
@@ -36,12 +28,11 @@ menusController.showAll = function (req, res, next) {
 
 // Criar um menu
 menusController.createMenu = function (req, res, next) {
-    const { name, restaurantId, dishes } = req.body;
+    const { name, dishes } = req.body;
 
     const menuData = {
         name,
-        restaurantId,
-        dishes: Array.isArray(dishes) ? dishes : [dishes]
+        dishes: Array.isArray(dishes) ? dishes : [dishes] // Garante que `dishes` seja um array
     };
 
     mongoMenu.create(menuData)
@@ -53,12 +44,12 @@ menusController.createMenu = function (req, res, next) {
         });
 };
 
+// Mostrar detalhes de um menu específico
 menusController.showMenu = function (req, res, next) {
     const menuId = req.params.menuId;
 
     mongoMenu.findById(menuId)
-        .populate('restaurantId') // Popula os dados do restaurante associado
-        .populate('dishes') // Popula os dados dos pratos associados
+        .populate('dishes') // Apenas os pratos são relevantes
         .then(function (menu) {
             if (!menu) {
                 return res.status(404).send('Menu não encontrado.');
@@ -72,16 +63,7 @@ menusController.showMenu = function (req, res, next) {
 
 // Deletar um menu
 menusController.deleteMenu = function (req, res, next) {
-    const managerId = req.user._id;
-
-    // Verifica se o menu pertence a um restaurante do manager
-    mongoRestaurant.findOne({ _id: req.params.restaurantId, managerId })
-        .then(function (restaurant) {
-            if (!restaurant) {
-                return res.status(404).send('Menu não encontrado ou você não tem permissão para apagá-lo.');
-            }
-            return mongoMenu.findOneAndDelete({ _id: req.params.menuId });
-        })
+    mongoMenu.findOneAndDelete({ _id: req.params.menuId })
         .then(function (deletedMenu) {
             if (!deletedMenu) {
                 return res.status(404).send('Menu não encontrado.');

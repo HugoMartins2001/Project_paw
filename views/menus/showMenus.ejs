@@ -26,9 +26,8 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <h5 class="card-title"><%= menu.name %></h5>
-                                <p class="card-text"><strong>Restaurante:</strong> <%= menu.restaurantId.name %></p>
                                 <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info">Ver Detalhes</a>
-                                <a href="/menus/deleteMenu/<%= menu._id %>/<%= menu.restaurantId._id %>" class="btn btn-danger">Eliminar</a>
+                                <a href="/menus/deleteMenu/<%= menu._id %>" class="btn btn-danger">Eliminar</a>
                             </div>
                         </div>
                     </div>

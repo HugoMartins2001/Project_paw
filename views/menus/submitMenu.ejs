@@ -22,14 +22,6 @@
                     <input type="text" id="name" name="name" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="restaurantId" class="form-label">Restaurante</label>
-                    <select id="restaurantId" name="restaurantId" class="form-select" required>
-                        <% restaurants.forEach(function(restaurant) { %>
-                            <option value="<%= restaurant._id %>"><%= restaurant.name %></option>
-                        <% }) %>
-                    </select>
-                </div>
-                <div class="mb-3">
                     <label for="dishes" class="form-label">Pratos</label>
                     <select id="dishes" name="dishes" class="form-select" multiple>
                         <% dishes.forEach(function(dish) { %>
