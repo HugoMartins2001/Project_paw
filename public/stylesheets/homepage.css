@@ -1,19 +1,78 @@
 body {
-    background: url('https://source.unsplash.com/1600x900/?food,restaurant') no-repeat center center/cover;
-    height: 100vh;
-}
-.hero-section {
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
     height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
+    background-color: #f8f9fa;
 }
-.btn-custom {
+.container {
+    display: flex;
+    width: 90%;
+    height: 80%;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.left-section {
+    flex: 1;
+    padding: 20px;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+.left-section img {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100px;
+}
+.left-section h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+.left-section p {
     font-size: 1.2rem;
-    padding: 10px 30px;
-    margin: 10px;
+    color: #555;
+}
+.right-section {
+    flex: 1;
+    padding: 20px;
+    background-color: #007bff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+.right-section a {
+    display: block;
+    width: 200px;
+    text-align: center;
+    margin: 10px 0;
+    padding: 15px;
+    font-size: 1.2rem;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.right-section a.btn-login {
+    background-color: #28a745;
+}
+.right-section a.btn-login:hover {
+    background-color: #218838;
+}
+.right-section a.btn-register {
+    background-color: #ffc107;
+}
+.right-section a.btn-register:hover {
+    background-color: #e0a800;
 }
