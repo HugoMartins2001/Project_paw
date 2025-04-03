@@ -13,4 +13,12 @@ router.get('/register', authController.createLogin );
 
 router.post('/registerSubmitted', authController.createLoginSubmitted);
 
+router.get('/loginform', (req, res) => {
+    res.render('login/index'); 
+});
+
+router.get('/registerform', (req, res) => {
+    res.render('login/createUser'); 
+});
+
 module.exports = router;

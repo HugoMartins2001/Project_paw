@@ -12,11 +12,12 @@ const restaurantsRouter = require('./routes/restaurant');
 const profileRoutes = require('./routes/profile');
 const menuRoutes = require('./routes/menus');
 const dishRoutes = require('./routes/dishes');
+const homeRoutes = require('./routes/home');
 
 
 var mongoDB = 'mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoDB);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Erro de conexão hà base de dados'));
@@ -37,10 +38,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
-app.use('/', indexRouter);
+app.use('/', homeRoutes);
+app.use('/index', indexRouter);
 app.use('/restaurants', restaurantsRouter);
 app.use('/auth', authRouter);
-app.use('/', profileRoutes);
+app.use('/profile', profileRoutes);
 app.use('/menus', menuRoutes);
 app.use('/dishes', dishRoutes);
 

@@ -58,23 +58,32 @@ authController.createLoginSubmitted = function(req, res, next) {
 
 authController.verifyLoginUser = function(req, res, next) {
     const authToken = req.cookies['auth-token'];
-    if (authToken) {
-        jwt.verify(authToken, config.secret, function(err, decoded) {
-            if (err) {
+
+    if (!authToken) {
+        console.log("Nenhum token encontrado");
+        return res.redirect('/auth/login');
+    }
+
+    jwt.verify(authToken, config.secret, async (err, decoded) => {
+        if (err) {
+            console.log("Erro ao verificar token:", err);
+            return res.redirect('/auth/login');
+        }
+
+        try {
+            const user = await mongoUser.findOne({ email: decoded.email });
+            if (!user) {
+                console.log("Usuário não encontrado");
                 return res.redirect('/auth/login');
             }
-            mongoUser.findOne({ email: decoded.email })
-                .then(function(user) {
-                    req.user = user; // Adiciona o usuário ao req
-                    next();
-                })
-                .catch(function(err) {
-                    next(err);
-                });
-        });
-    } else {
-        res.redirect('/auth/login');
-    }
+
+            req.user = user;
+            next();
+        } catch (error) {
+            console.error("Erro ao buscar usuário:", error);
+            return res.redirect('/auth/login');
+        }
+    });
 };
 
 module.exports = authController;
