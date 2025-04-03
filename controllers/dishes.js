@@ -49,6 +49,21 @@ dishesController.createDish = async function (req, res, next) {
     }
 };
 
+dishesController.showDish = function (req, res, next) {
+    const dishId = req.params.dishId;
+
+    mongoDish.findById(dishId)
+        .then(function (dish) {
+            if (!dish) {
+                return res.status(404).send('Prato não encontrado.');
+            }
+            res.render('dishes/showDish', { dish });
+        })
+        .catch(function (err) {
+            next(err);
+        });
+};
+
 
 dishesController.deleteDish = function (req, res, next) {
     mongoDish.findOneAndDelete({ _id: req.params.dishId })

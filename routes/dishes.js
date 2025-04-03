@@ -11,6 +11,10 @@ router.get('/submitDishes', authController.verifyLoginUser, function (req, res, 
     dishesController.renderCreateDishes(req, res, next);
 });
 
+router.get('/showDish/:dishId', authController.verifyLoginUser, function (req, res, next) {
+      dishesController.showDish(req, res, next)
+});
+
 
 router.post('/submittedDish',authController.verifyLoginUser, function(req, res,next) { 
      dishesController.createDish(req, res,next)

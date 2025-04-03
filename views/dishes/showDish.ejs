@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/showDish.css">
+    <title>Detalhes do Prato</title>
+</head>
+<body>
+    <div class="header">
+        <span>Detalhes do Prato</span>
+        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+    </div>
+
+    <div class="container">
+        <% if (!dish) { %>
+            <div class="alert alert-danger text-center">
+                <h1>Prato não encontrado</h1>
+            </div>
+        <% } else { %>
+            <div class="dish-details">
+                <h2><%= dish.name %></h2>
+                <p><strong>Descrição:</strong> <%= dish.description || 'Sem descrição disponível' %></p>
+                <p><strong>Preço:</strong> €<%= dish.price.toFixed(2) %></p>
+                <p><strong>Categoria:</strong> <%= dish.category %></p>
+                <p><strong>Ingredientes:</strong> <%= dish.ingredients.join(', ') %></p>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="actions text-center">
+        <a href="/dishes/showDishes" class="btn btn-secondary btn-back">Voltar à Lista de Pratos</a>
+    </div>
+</body>
+</html>

@@ -53,6 +53,23 @@ menusController.createMenu = function (req, res, next) {
         });
 };
 
+menusController.showMenu = function (req, res, next) {
+    const menuId = req.params.menuId;
+
+    mongoMenu.findById(menuId)
+        .populate('restaurantId') // Popula os dados do restaurante associado
+        .populate('dishes') // Popula os dados dos pratos associados
+        .then(function (menu) {
+            if (!menu) {
+                return res.status(404).send('Menu não encontrado.');
+            }
+            res.render('menus/showMenu', { menu });
+        })
+        .catch(function (err) {
+            next(err);
+        });
+};
+
 // Deletar um menu
 menusController.deleteMenu = function (req, res, next) {
     const managerId = req.user._id;

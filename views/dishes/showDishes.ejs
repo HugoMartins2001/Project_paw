@@ -28,6 +28,7 @@
                                 <p class="card-text"><strong>Descrição:</strong> <%= dish.description %></p>
                                 <p class="card-text"><strong>Preço:</strong> €<%= dish.price.toFixed(2) %></p>
                                 <p class="card-text"><strong>Categoria:</strong> <%= dish.category %></p>
+                                <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info">Ver Detalhes</a>
                                 <a href="/dishes/deleteDish/<%= dish._id %>" class="btn btn-danger">Eliminar</a>
                             </div>
                         </div>

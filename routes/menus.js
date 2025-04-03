@@ -11,6 +11,10 @@ router.get('/submitMenu', authController.verifyLoginUser, function(req, res, nex
     menusController.renderCreateMenu(req, res, next);
 });
 
+router.get('/showMenu/:menuId',authController.verifyLoginUser, function(req, res, next) {
+     menusController.showMenu(req, res, next)
+});
+
 router.post('/submittedMenu', authController.verifyLoginUser, function(req, res,next){
       menusController.createMenu(req, res,next)
 });
