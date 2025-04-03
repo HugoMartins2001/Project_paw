@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const User = new mongoose.Schema({
   name: { type: String, required: true },
@@ -14,6 +14,19 @@ const User = new mongoose.Schema({
     match: /^[0-9]{9}$/, 
     required: function() { return this.role === 'cliente'; } 
   },
+  address: { 
+    type: String, 
+    required: function() { return this.role === 'manager'; } 
+  },
+  postalCode: { 
+    type: String, 
+    match: /^[0-9]{4}-[0-9]{3}$/, 
+    required: function() { return this.role === 'manager'; } 
+  },
+  city: { 
+    type: String, 
+    required: function() { return this.role === 'manager'; } 
+  },
   department: { 
     type: String, 
     required: function() { return this.role === 'manager'; } 
@@ -22,20 +35,7 @@ const User = new mongoose.Schema({
     type: String, 
     required: function() { return this.role === 'manager'; } 
   },
-  address: { 
-    type: String, 
-    required: function() { return this.role === 'cliente'; } 
-  },
-  postalCode: { 
-    type: String, 
-    match: /^[0-9]{4}-[0-9]{3}$/, 
-    required: function() { return this.role === 'cliente'; } 
-  },
-  city: { 
-    type: String, 
-    required: function() { return this.role === 'cliente'; } 
-  },
   role: { type: String, enum: ["cliente", "manager"], required: true },
-})
+});
 
-module.exports = mongoose.model('users', User)
+module.exports = mongoose.model('users', User);
