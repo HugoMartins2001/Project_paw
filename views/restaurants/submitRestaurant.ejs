@@ -34,6 +34,15 @@
       <label for="paymentMethods">Métodos de Pagamento:</label>
       <input type="text" name="paymentMethods" id="f_paymentMethods" required />
 
+      <div class="mb-3">
+        <label for="menus" class="form-label">Menus:</label>
+        <select id="menus" name="menus" class="form-select" multiple>
+          <% menus.forEach(function(menu) { %>
+            <option value="<%= menu._id %>"><%= menu.name %></option>
+        <% }) %>
+        </select>
+      </div>
+
       <input type="submit" value="Criar Restaurante" />
     
     </form>

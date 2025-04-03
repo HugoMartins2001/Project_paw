@@ -8,9 +8,9 @@ router.get('/showRestaurant/:name', authController.verifyLoginUser, function(req
     restaurantsController.showDetails(req, res,next)
 });
 
-router.get('/submitRestaurant', authController.verifyLoginUser, function(req, res,next){
-    res.render('restaurants/submitRestaurant')
-})
+router.get('/submitRestaurant', authController.verifyLoginUser, function(req, res, next) {
+    restaurantsController.renderCreateRestaurant(req, res, next);
+});
 
 router.post('/submittedRestaurant', authController.verifyLoginUser, function(req, res, next) {
     restaurantsController.createRestaurant(req, res, next);

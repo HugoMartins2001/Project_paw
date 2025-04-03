@@ -20,7 +20,8 @@ const RestaurantSchema = new mongoose.Schema({
     },
     openingHours: { type: String, required: true },
     paymentMethods: { type: String, required: true },
-    managerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } 
+    managerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } ,
+    menus: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Menu' }] // Novo 
 });
 
 module.exports = mongoose.model('Restaurant', RestaurantSchema);

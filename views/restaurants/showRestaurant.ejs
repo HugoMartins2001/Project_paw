@@ -25,6 +25,17 @@
         <p><strong>Email:</strong> <%= restaurant.email %></p>
         <p><strong>Horário de Funcionamento:</strong> <%= restaurant.openingHours %></p>
         <p><strong>Métodos de Pagamento:</strong> <%= restaurant.paymentMethods %></p>
+        <p><strong>Menus:</strong></p>
+        <ul>
+            <% if (restaurant.menus && restaurant.menus.length > 0) { %>
+                <% restaurant.menus.forEach(function(menu) { %>
+                    <li><%= menu.name %></li>
+                <% }) %>
+            <% } else { %>
+                <p>Este restaurante ainda não tem menus associados.</p>
+            <% } %>
+        </ul>
+
     </div>
 
     <div class="actions">
