@@ -1,0 +1,19 @@
+body {
+    background: url('https://source.unsplash.com/1600x900/?food,restaurant') no-repeat center center/cover;
+    height: 100vh;
+}
+.hero-section {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.btn-custom {
+    font-size: 1.2rem;
+    padding: 10px 30px;
+    margin: 10px;
+}
