@@ -4,34 +4,28 @@ const User = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  telemovel: { 
+  confirmPassword: { type: String, required: true },
+  clienteTelemovel: { 
     type: String, 
     match: /^[0-9]{9}$/, 
     required: function() { return this.role === 'cliente'; } 
   },
-  nif: { 
+  managerTelemovel: {
+    type: String, 
+    match: /^[0-9]{9}$/, 
+    required: function() { return this.role === 'manager'; } 
+  },
+  clienteNif: { 
     type: String, 
     match: /^[0-9]{9}$/, 
     required: function() { return this.role === 'cliente'; } 
+  },
+  managerNif: { 
+    type: String, 
+    match: /^[0-9]{9}$/, 
+    required: function() { return this.role === 'manager'; } 
   },
   address: { 
-    type: String, 
-    required: function() { return this.role === 'manager'; } 
-  },
-  postalCode: { 
-    type: String, 
-    match: /^[0-9]{4}-[0-9]{3}$/, 
-    required: function() { return this.role === 'manager'; } 
-  },
-  city: { 
-    type: String, 
-    required: function() { return this.role === 'manager'; } 
-  },
-  department: { 
-    type: String, 
-    required: function() { return this.role === 'manager'; } 
-  },
-  managerCode: { 
     type: String, 
     required: function() { return this.role === 'manager'; } 
   },

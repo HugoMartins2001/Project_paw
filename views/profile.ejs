@@ -19,15 +19,13 @@
 
       <% if (user.role === 'cliente') { %>
         <div class="section-title">Informações de Cliente</div>
-        <p><strong>Telemóvel:</strong> <%= user.telemovel || 'Não fornecido' %></p>
-        <p><strong>NIF:</strong> <%= user.nif || 'Não fornecido' %></p>
+        <p><strong>Telemóvel:</strong> <%= user.clienteTelemovel || 'Não fornecido' %></p>
+        <p><strong>NIF:</strong> <%= user.clienteNif || 'Não fornecido' %></p>
+        <p><strong>Endereço:</strong> <%= user.address || 'Não fornecido' %></p>
       <% } else if (user.role === 'manager') { %>
         <div class="section-title">Informações de Manager</div>
-        <p><strong>Departamento:</strong> <%= user.department || 'Não fornecido' %></p>
-        <p><strong>Código de Manager:</strong> <%= user.managerCode || 'Não fornecido' %></p>
-        <p><strong>Endereço:</strong> <%= user.address || 'Não fornecido' %></p>
-        <p><strong>Código Postal:</strong> <%= user.postalCode || 'Não fornecido' %></p>
-        <p><strong>Cidade:</strong> <%= user.city || 'Não fornecido' %></p>
+        <p><strong>telemóvel:</strong> <%= user.managerTelemovel || 'Não fornecido' %></p>
+        <p><strong>NIF:</strong> <%= user.managerNif || 'Não fornecido' %></p>
       <% } %>
 
       <div class="btn-container">

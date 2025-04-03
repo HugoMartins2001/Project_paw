@@ -31,41 +31,37 @@
             <label for="password" class="form-label">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Digite a sua password" required>
         </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirmar Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirme a sua password" required>
+        </div>
         
 
         <!-- Campos específicos para Cliente -->
         <div id="cliente-fields" class="hidden">
             <div class="mb-3">
-                <label for="telemovel" class="form-label">Telemóvel</label>
-                <input type="text" id="telemovel" name="telemovel" class="form-control" placeholder="Número de telemóvel" pattern="[0-9]{9}" title="O número deve ter 9 dígitos">
+                <label for="clienteTelemovel" class="form-label">Telemóvel</label>
+                <input type="text" id="clienteTelemovel" name="clienteTelemovel" class="form-control" placeholder="Número de telemóvel" pattern="[0-9]{9}" title="O número deve ter 9 dígitos">
             </div>
             <div class="mb-3">
-                <label for="nif" class="form-label">NIF</label>
-                <input type="text" id="nif" name="nif" class="form-control" placeholder="Número de Contribuinte" pattern="[0-9]{9}" title="O NIF deve ter 9 dígitos">
+                <label for="clienteNif" class="form-label">NIF</label>
+                <input type="text" id="clienteNif" name="clienteNif" class="form-control" placeholder="Número de Contribuinte" pattern="[0-9]{9}" title="O NIF deve ter 9 dígitos">
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Endereço</label>
+                <input type="text" id="address" name="address" class="form-control" placeholder="Digite o endereço">
             </div>
         </div>
 
         <!-- Campos específicos para Manager -->
         <div id="manager-fields" class="hidden">
             <div class="mb-3">
-                <label for="department" class="form-label">Departamento</label>
-                <input type="text" id="department" name="department" class="form-control" placeholder="Digite o departamento">
+                <label for="managerTelemovel" class="form-label">Telemóvel</label>
+                <input type="text" id="managerTelemovel" name="managerTelemovel" class="form-control" placeholder="Número de telemóvel" pattern="[0-9]{9}" title="O número deve ter 9 dígitos">
             </div>
             <div class="mb-3">
-                <label for="manager-code" class="form-label">Código de Manager</label>
-                <input type="text" id="manager-code" name="managerCode" class="form-control" placeholder="Digite o código de manager">
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Localização</label>
-                <input type="text" id="address" name="address" class="form-control" placeholder="Digite a localização">
-            </div>
-            <div class="mb-3">
-                <label for="postalCode" class="form-label">Código postal</label>
-                <input type="text" id="postalCode" name="postalCode" class="form-control" placeholder="Digite o código postal" pattern="[0-9]{4}-[0-9]{3}" title="O código postal deve ter o formato 1234-567">
-            </div>
-            <div class="mb-3">
-                <label for="city" class="form-label">Cidade</label>
-                <input type="text" id="city" name="city" class="form-control" placeholder="Digite a cidade">
+                <label for="managerNif" class="form-label">NIF</label>
+                <input type="text" id="managerNif" name="managerNif" class="form-control" placeholder="Número de Contribuinte" pattern="[0-9]{9}" title="O NIF deve ter 9 dígitos">
             </div>
         </div>
 

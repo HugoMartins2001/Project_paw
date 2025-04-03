@@ -15,10 +15,16 @@ body {
     border-radius: 10px;
     text-align: center;
     color: #fff;
-    width: 100%;
-    max-width: 500px;
+    max-width: 600px; 
+    max-height: 90vh; 
+    overflow-y: auto; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
+
+form::-webkit-scrollbar {
+    display: none; /* Oculta a barra de rolagem no Chrome, Safari e Edge */
+}
+
 .form-control {
     background: transparent;
     border: 1px solid #fff;
