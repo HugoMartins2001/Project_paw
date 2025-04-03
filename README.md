@@ -88,3 +88,6 @@ um menu deve ser inserido no respetivo restaurante
 e um prato deve ser inserido no respetivo menu criado anteriorment;
 
 fazer notificações para success e mau
+
+
+ter um id escondido para cada manager ter o seu restaurante associado a esse id e nao conseguir ver os restaurantes dos outros só o dele 
