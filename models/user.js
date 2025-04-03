@@ -20,11 +20,6 @@ const User = new mongoose.Schema({
     match: /^[0-9]{9}$/, 
     required: function() { return this.role === 'cliente'; } 
   },
-  managerNif: { 
-    type: String, 
-    match: /^[0-9]{9}$/, 
-    required: function() { return this.role === 'manager'; } 
-  },
   address: { 
     type: String, 
     required: function() { return this.role === 'manager'; } 

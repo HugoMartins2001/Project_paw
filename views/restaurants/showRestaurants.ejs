@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,18 +23,14 @@
                 <div class="restaurant">
                     <label>Nome:</label>
                     <p><%= restaurant.name %></p>
-                    <label>Descrição:</label>
-                    <p><%= restaurant.description %></p>
-                    <label>Localização:</label>
+                    <label>Rua:</label>
                     <p><%= restaurant.address %></p>
-                    <label>Contacto:</label>
-                    <p><%= restaurant.contact %></p>
                     <a href="/restaurants/showRestaurant/<%= restaurant.name %>">Ver Detalhes</a>
                     <a href="/restaurants/deleteRestaurant/<%= restaurant.name %>">Eliminar</a>
                 </div>
             <% }) %>
         <% } %>
-        <a href="/" class="btn-back">Voltar à Página Principal</a>
     </div>
+    <a href="/" class="btn-back">Voltar à Página Principal</a>
 </body>
 </html>

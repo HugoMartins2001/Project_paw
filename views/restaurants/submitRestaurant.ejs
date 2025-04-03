@@ -1,57 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/submitRestaurant.css">
-    <title>Inserir restaurante</title>
-</head>
-<body>
-    <h1>Inserir restaurante</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/submitRestaurant.css" />
+    <title>Inserir Restaurante</title>
+  </head>
+  <body>
+    <h1>Inserir Restaurante</h1>
     <form method="post" action="/restaurants/submittedRestaurant">
-        <div class="mb-3">
-            <label for="restaurantName" class="form-label">Nome do Restaurante</label>
-            <input type="text" id="restaurantName" name="restaurantName" class="form-control" placeholder="Digite o nome do restaurante" required>
-        </div>
-        <div class="mb-3">
-            <label for="restaurantAddress" class="form-label">Endereço</label>
-            <input type="text" id="restaurantAddress" name="restaurantAddress" class="form-control" placeholder="Digite o endereço do restaurante" required>
-        </div>
-        <div class="mb-3">
-            <label for="latitude" class="form-label">Latitude</label>
-            <input type="text" id="latitude" name="latitude" class="form-control" placeholder="Digite a latitude" required>
-        </div>
-        <div class="mb-3">
-            <label for="longitude" class="form-label">Longitude</label>
-            <input type="text" id="longitude" name="longitude" class="form-control" placeholder="Digite a longitude" required>
-        </div>
-        <div class="mb-3">
-            <label for="restaurantPhone" class="form-label">Telefone</label>
-            <input type="text" id="restaurantPhone" name="restaurantPhone" class="form-control" placeholder="Digite o telefone do restaurante" required>
-        </div>
-        <div class="mb-3">
-            <label for="restaurantEmail" class="form-label">Email</label>
-            <input type="email" id="restaurantEmail" name="restaurantEmail" class="form-control" placeholder="Digite o email do restaurante" required>
-        </div>
-        <div class="mb-3">
-            <label for="restaurantLogo" class="form-label">Imagem/Logo</label>
-            <input type="text" id="restaurantLogo" name="restaurantLogo" class="form-control" placeholder="URL da imagem ou logo" required>
-        </div>
-        <div class="mb-3">
-            <label for="openingHours" class="form-label">Horário de Funcionamento</label>
-            <input type="text" id="openingHours" name="openingHours" class="form-control" placeholder="Digite o horário de funcionamento" required>
-        </div>
-        <div class="mb-3">
-            <label for="paymentMethods" class="form-label">Métodos de Pagamento</label>
-            <input type="text" id="paymentMethods" name="paymentMethods" class="form-control" placeholder="Digite os métodos de pagamento" required>
-        </div>
+      <label for="name">Nome do Restaurante:</label>
+      <input type="text" name="name" id="f_name" required />
 
-        <input type="submit" value="Criar Restaurante">
+      <label for="address">Endereço:</label>
+      <input type="text" name="address" id="f_address" required />
+
+      <label for="latitude">Latitude:</label>
+      <input type="text" name="latitude" id="f_latitude" required />
+
+      <label for="longitude">Longitude:</label>
+      <input type="text" name="longitude" id="f_longitude" required />
+
+      <label for="phone">Telefone:</label>
+      <input type="text" name="phone" id="f_phone" required />
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="f_email" required />
+
+      <label for="openingHours">Horário de Funcionamento:</label>
+      <input type="text" name="openingHours" id="f_openingHours" required />
+
+      <label for="paymentMethods">Métodos de Pagamento:</label>
+      <input type="text" name="paymentMethods" id="f_paymentMethods" required />
+
+      <input type="submit" value="Criar Restaurante" />
+    
     </form>
 
     <div class="dashboard-btn-container">
-        <a href="/" class="btn-dashboard">Ir para o Dashboard</a>
+      <a href="/" class="btn-dashboard">Ir para o Dashboard</a>
     </div>
-</body>
+  </body>
 </html>

@@ -1,35 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/showRestaurant.css">
-    <title>Restaurant Details</title>
+    <title>Detalhes do Restaurante</title>
+</head>
 <body>
     <div class="header">
-        <span>Restaurant Details</span>
+        <span>Detalhes do Restaurante</span>
         <a href="/auth/logout">Logout</a>
     </div>
 
     <div class="container">
-        <h1>Restaurant: <%= restaurant.name %></h1>
-        <div class="restaurant-info">
-            <label>Descrição:</label>
-            <p><%= restaurant.description %></p>
-        </div>
-        <div class="restaurant-info">
-            <label>Localização:</label>
-            <p><%= restaurant.address %></p>
-        </div>
-        <div class="restaurant-info">
-            <label>Contacto:</label>
-            <p><%= restaurant.contact %></p>
-        </div>
+        <% if (!restaurant) { %>
+            <h1>Restaurante não encontrado</h1>
+        <% } %>
+        <h1>Detalhe do restaurante</h1>
+        <h2><%= restaurant.name %></h2>
+        <p><strong>Rua:</strong> <%= restaurant.address %></p>
+        <p><strong>Latitude:</strong> <%= restaurant.latitude %></p>
+        <p><strong>Longitude:</strong> <%= restaurant.longitude %></p>
+        <p><strong>Telefone:</strong> <%= restaurant.phone %></p>
+        <p><strong>Email:</strong> <%= restaurant.email %></p>
+        <p><strong>Horário de Funcionamento:</strong> <%= restaurant.openingHours %></p>
+        <p><strong>Métodos de Pagamento:</strong> <%= restaurant.paymentMethods %></p>
+    </div>
 
-        <div class="actions">
-            <a href="/restaurants/showRestaurants">Back to Restaurant List</a>
-        </div>
+    <div class="actions">
+        <a href="/restaurants/showRestaurants" class="btn-back">Voltar à Lista de Restaurantes</a>
     </div>
 </body>
 </html>
