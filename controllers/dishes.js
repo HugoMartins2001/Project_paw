@@ -8,7 +8,8 @@ dishesController.showAll = function (req, res, next) {
     mongoDish.find()
         .then(function (dishList) {
             const inputs = {
-                dishes: dishList
+                dishes: dishList,
+                user: req.user,
             };
             res.render('dishes/showDishes', inputs);
         })

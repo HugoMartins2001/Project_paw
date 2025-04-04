@@ -4,6 +4,7 @@ body {
     padding: 0;
     background-color: #f4f4f9;
 }
+
 .header {
     background-color: #4CAF50;
     color: white;
@@ -12,14 +13,23 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
 .header span {
     font-size: 18px;
 }
+
 .header a {
     color: white;
+    background-color: red;
     text-decoration: none;
     font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
 }
+
+
+
 .container {
     max-width: 600px;
     margin: 20px auto;
@@ -28,14 +38,17 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .restaurant-info {
     margin-bottom: 20px;
 }
+
 .restaurant-info label {
     font-weight: bold;
     display: block;
     margin-bottom: 5px;
 }
+
 .restaurant-info p {
     background: #f9f9f9;
     padding: 10px;
@@ -43,12 +56,14 @@ body {
     color: #555;
     margin-bottom: 15px;
 }
+
 .actions {
     text-align: center;
     margin-top: 20px;
 }
+
 .actions a {
-    color: #4CAF50;
+    color: #ffffff;
     text-decoration: none;
     font-weight: bold;
     margin: 0 10px;
@@ -57,7 +72,35 @@ body {
     border-radius: 4px;
     transition: background-color 0.3s, color 0.3s;
 }
-.actions a:hover {
+
+
+/* Para os detalhes do prato */
+.dish-details {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dish-details h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.dish-details p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.btn-back {
+    margin-top: 20px;
+    padding: 10px 20px;
     background-color: #4CAF50;
     color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.3s;
 }
+

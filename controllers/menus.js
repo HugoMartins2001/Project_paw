@@ -17,14 +17,18 @@ menusController.renderCreateMenu = async function (req, res, next) {
 // Mostrar todos os menus disponíveis
 menusController.showAll = function (req, res, next) {
     mongoMenu.find()
-        .populate('dishes') // Popula os dados dos pratos associados
+        .populate('dishes')
         .then(function (menuList) {
-            res.render('menus/showMenus', { menus: menuList });
+            res.render('menus/showMenus', {
+                menus: menuList,
+                user: req.user 
+            });
         })
         .catch(function (err) {
             next(err);
         });
 };
+
 
 // Criar um menu
 menusController.createMenu = function (req, res, next) {

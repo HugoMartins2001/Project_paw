@@ -15,34 +15,53 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
 };
 
 
-restaurantsController.showAll = function(req,res,next){  
-    const managerId = req.user._id;
-    mongoRestaurant.find({managerId})
-        .then(function(restaurantList){
-            const inputs = {
-                restaurants:restaurantList
-            }
-            res.render('restaurants/showRestaurants', inputs)
-        })
-        .catch(function(err){
-            next(err)
-        })
-}
+restaurantsController.showAll = function(req, res, next) {
+    if (!req.user) {
+        return res.redirect('/auth/login');
+    }
 
-restaurantsController.showDetails = function(req,res,next){
-    const managerId = req.user._id;
-    mongoRestaurant.findOne({name:req.params.name, managerId})
-    .populate('menus') // Popula os menus associados
-        .then(function(restaurantDB){
+    const query = req.user.role === 'manager'
+        ? { managerId: req.user._id }
+        : {};
+
+    mongoRestaurant.find(query)
+        .then(function(restaurantList) {
             const inputs = {
-                restaurant:restaurantDB
+                restaurants: restaurantList,
+                user: req.user
+            };
+            res.render('restaurants/showRestaurants', inputs);
+        })
+        .catch(function(err) {
+            next(err);
+        });
+};
+
+
+restaurantsController.showDetails = function(req, res, next) {
+
+    const query = req.user.role === 'manager' 
+    ? { name: req.params.name, managerId: req.user._id } 
+    : { name: req.params.name };
+
+        mongoRestaurant.findOne(query)
+        .populate('menus') 
+        .then(function(restaurantDB) {
+            if (!restaurantDB) {
+                return res.render('restaurants/showRestaurant', { restaurant: null });
             }
-            res.render('restaurants/showRestaurant', inputs)
+
+            const inputs = {
+                restaurant: restaurantDB
+            };
+
+            res.render('restaurants/showRestaurant', inputs);
         })
-        .catch(function(err){
-            next(err)
-        })
-}
+        .catch(function(err) {
+            next(err);
+        });
+};
+
 
 restaurantsController.createRestaurant = function(req,res,next){
     const managerId = req.user._id; 

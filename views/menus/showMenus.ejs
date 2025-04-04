@@ -27,11 +27,13 @@
                             <div class="card-body">
                                 <h5 class="card-title"><%= menu.name %></h5>
                                 <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info">Ver Detalhes</a>
+                                <% if (user.role === 'manager') { %>
                                 <form action="/menus/deleteMenu/<%= menu._id %>" method="POST" class="d-inline">
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este menu?')">
                                         Eliminar
                                     </button>
                                 </form>
+                                <% } %>
                                 
                             </div>
                         </div>
@@ -40,7 +42,9 @@
             </div>
         <% } %>
         <div class="text-center">
+            <% if (user.role === 'manager') { %>
             <a href="/menus/submitMenu" class="btn btn-primary mt-4">Criar Novo Menu</a>
+            <% } %>
             <a href="/index" class="btn btn-secondary mt-4">Voltar à Página Principal</a>
         </div>
     </div>
