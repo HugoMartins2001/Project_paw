@@ -1,78 +1,103 @@
+/* Reset de estilos e configurações globais */
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #f8f9fa, #e3eaf3);
 }
+
+/* Estilização do container principal */
 .container {
     display: flex;
-    width: 90%;
-    height: 80%;
+    width: 85%;
+    height: 75%;
     background: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
     overflow: hidden;
+    transition: transform 0.3s ease;
 }
+
+.container:hover {
+    transform: scale(1.02);
+}
+
+/* Estilização da seção esquerda */
 .left-section {
     flex: 1;
-    padding: 20px;
-    background-color: #f5f5f5;
+    padding: 40px;
+    background: #f5f5f5;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     position: relative;
 }
+
 .left-section img {
     position: absolute;
     top: 20px;
     left: 20px;
-    width: 100px;
+    width: 120px;
 }
+
 .left-section h1 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
+
 .left-section p {
     font-size: 1.2rem;
-    color: #555;
+    color: #666;
 }
+
+/* Estilização da seção direita */
 .right-section {
     flex: 1;
-    padding: 20px;
-    background-color: #007bff;
+    padding: 40px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #fff;
 }
+
 .right-section a {
     display: block;
-    width: 200px;
+    width: 220px;
     text-align: center;
-    margin: 10px 0;
+    margin: 12px 0;
     padding: 15px;
     font-size: 1.2rem;
+    font-weight: bold;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
+
 .right-section a.btn-login {
-    background-color: #28a745;
+    background: #28a745;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
 }
+
 .right-section a.btn-login:hover {
-    background-color: #218838;
+    background: #218838;
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.5);
 }
+
 .right-section a.btn-register {
-    background-color: #ffc107;
+    background: #ffc107;
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
 }
+
 .right-section a.btn-register:hover {
-    background-color: #e0a800;
+    background: #e0a800;
+    box-shadow: 0 8px 20px rgba(255, 193, 7, 0.5);
 }

@@ -19,8 +19,9 @@ router.post('/submittedMenu', authController.verifyLoginUser, function(req, res,
       menusController.createMenu(req, res,next)
 });
 
-router.get('/deleteMenu/:menuId/:restaurantId',authController.verifyLoginUser, function(req, res,next){
-     menusController.deleteMenu(req, res)
+router.post('/deleteMenu/:menuId', authController.verifyLoginUser, function (req, res, next) {
+    menusController.deleteMenu(req, res, next);
 });
+
 
 module.exports = router;

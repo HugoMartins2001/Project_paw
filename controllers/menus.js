@@ -30,6 +30,12 @@ menusController.showAll = function (req, res, next) {
 menusController.createMenu = function (req, res, next) {
     const { name, dishes } = req.body;
 
+    console.log(dishes);
+
+    if( dishes.length === 0 ){
+        return res.status(400).send('Selecione pelo menos um prato para o menu.');
+    }
+
     const menuData = {
         name,
         dishes: Array.isArray(dishes) ? dishes : [dishes] // Garante que `dishes` seja um array
@@ -49,7 +55,7 @@ menusController.showMenu = function (req, res, next) {
     const menuId = req.params.menuId;
 
     mongoMenu.findById(menuId)
-        .populate('dishes') // Apenas os pratos são relevantes
+        .populate('dishes')
         .then(function (menu) {
             if (!menu) {
                 return res.status(404).send('Menu não encontrado.');
@@ -61,9 +67,9 @@ menusController.showMenu = function (req, res, next) {
         });
 };
 
-// Deletar um menu
+
 menusController.deleteMenu = function (req, res, next) {
-    mongoMenu.findOneAndDelete({ _id: req.params.menuId })
+    mongoMenu.findByIdAndDelete(req.params.menuId)
         .then(function (deletedMenu) {
             if (!deletedMenu) {
                 return res.status(404).send('Menu não encontrado.');
@@ -71,8 +77,10 @@ menusController.deleteMenu = function (req, res, next) {
             res.redirect('/menus/showMenus');
         })
         .catch(function (err) {
+            console.error('Erro ao excluir menu:', err);
             next(err);
         });
 };
+
 
 module.exports = menusController;

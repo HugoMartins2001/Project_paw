@@ -14,7 +14,7 @@ router.get('/auth/register', authController.createLogin);
 
 
 router.get('/profile', authController.verifyLoginUser, function(req, res) {
-    res.render('profile', { user: req.user }); // Só acessível para usuários autenticados
+    res.render('profile', { user: req.user }); 
 });
 
 module.exports = router;
