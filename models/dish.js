@@ -5,7 +5,8 @@ const DishSchema = new mongoose.Schema({
     description: { type: String, required: true },
     price: { type: Number, required: true },
     category: { type: String, enum: ['carne', 'peixe', 'sobremesa', 'vegetariano'], required: true },
-    ingredients: { type: [String], required: true }
+    ingredients: { type: [String], required: true },
+    managerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
 module.exports = mongoose.model('Dish', DishSchema);

@@ -20,7 +20,7 @@
 
     <div class="container mt-4">
       <h1 class="mb-4 text-center">Pratos Disponíveis</h1>
-
+    
       <% if (dishes.length === 0) { %>
         <div class="alert alert-warning text-center">
           <h3>Nenhum prato encontrado.</h3>
@@ -37,7 +37,7 @@
                   <p class="card-text"><strong>Categoria:</strong> <%= dish.category %></p>
                   <div class="d-flex justify-content-between">
                     <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info">Ver Detalhes</a>
-                    <% if (user.role === 'manager') { %>
+                    <% if (user.role === 'manager' && dish.managerId.toString() === user._id.toString()) { %>
                       <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-warning">Editar</a>
                       <form action="/dishes/deleteDish/<%= dish._id %>" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este prato?')">
@@ -52,7 +52,7 @@
           <% }) %>
         </div>
       <% } %>
-
+    
       <div class="text-center">
         <% if (user.role === 'manager') { %>
           <a href="/dishes/submitDishes" class="btn btn-primary mt-4">Criar Novo Prato</a>

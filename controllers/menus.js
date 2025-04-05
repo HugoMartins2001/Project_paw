@@ -4,10 +4,10 @@ const mongoRestaurant = require('../models/restaurant');
 
 let menusController = {};
 
-// Renderizar a página de criação de menu
+
 menusController.renderCreateMenu = async function (req, res, next) {
     try {
-        const dishes = await mongoDish.find(); // Todos os pratos disponíveis
+        const dishes = await mongoDish.find();
         res.render('menus/submitMenu', { dishes });
     } catch (error) {
         console.error(error);
@@ -15,14 +15,35 @@ menusController.renderCreateMenu = async function (req, res, next) {
     }
 };
 
-// Mostrar todos os menus disponíveis
 menusController.showAll = function (req, res, next) {
+    const user = req.user;
+
     mongoMenu.find()
         .populate('dishes')
         .then(function (menuList) {
+
+            const filteredMenus = menuList.filter(menu => {
+                if (!menu.managerId) { 
+
+                    return false; 
+                }
+
+
+                if (user.role === 'admin') {
+                    return true;
+                }
+
+  
+                if (user.role === 'manager' && menu.managerId.toString() === user._id.toString()) {
+                    return true;
+                }
+
+                return false;
+            });
+
             res.render('menus/showMenus', {
-                menus: menuList,
-                user: req.user 
+                menus: filteredMenus,
+                user: user
             });
         })
         .catch(function (err) {
@@ -31,31 +52,31 @@ menusController.showAll = function (req, res, next) {
 };
 
 
-// Criar um menu
-menusController.createMenu = function (req, res, next) {
-    const { name, dishes } = req.body;
 
-    console.log(dishes);
 
-    if( dishes.length === 0 ){
-        return res.status(400).send('Selecione pelo menos um prato para o menu.');
+menusController.renderCreateMenu = async function (req, res, next) {
+    try {
+        let dishes;
+
+
+        if (req.user.role === 'manager') {
+            dishes = await mongoDish.find({ managerId: req.user._id });
+        } else {
+
+            dishes = await mongoDish.find();
+        }
+
+        res.render('menus/submitMenu', { dishes });
+    } catch (error) {
+        console.error(error);
+        next(error);
     }
-
-    const menuData = {
-        name,
-        dishes: Array.isArray(dishes) ? dishes : [dishes] // Garante que `dishes` seja um array
-    };
-
-    mongoMenu.create(menuData)
-        .then(function () {
-            res.redirect('/menus/showMenus');
-        })
-        .catch(function (err) {
-            next(err);
-        });
 };
 
-// Mostrar detalhes de um menu específico
+
+
+
+
 menusController.showMenu = function (req, res, next) {
     const menuId = req.params.menuId;
 
@@ -74,11 +95,22 @@ menusController.showMenu = function (req, res, next) {
 
 
 menusController.deleteMenu = function (req, res, next) {
-    mongoMenu.findByIdAndDelete(req.params.menuId)
-        .then(function (deletedMenu) {
-            if (!deletedMenu) {
+    const user = req.user;
+
+    mongoMenu.findById(req.params.menuId)
+        .then(function (menu) {
+            if (!menu) {
                 return res.status(404).send('Menu não encontrado.');
             }
+
+
+            if (menu.managerId.toString() !== user._id.toString()) {
+                return res.status(403).send('Você não tem permissão para excluir este menu.');
+            }
+
+            return mongoMenu.findByIdAndDelete(req.params.menuId);
+        })
+        .then(function () {
             res.redirect('/menus/showMenus');
         })
         .catch(function (err) {
@@ -86,10 +118,20 @@ menusController.deleteMenu = function (req, res, next) {
         });
 };
 
+
 menusController.renderEditMenu = async function(req, res, next) {
     try {
         const menu = await mongoMenu.findById(req.params.menuId).populate('dishes').populate('restaurant');
-        const allDishes = await mongoDish.find();
+        let allDishes;
+
+
+        if (req.user.role === 'manager') {
+            allDishes = await mongoDish.find({ managerId: req.user._id });
+        } else {
+
+            allDishes = await mongoDish.find();
+        }
+
         const restaurants = await mongoRestaurant.find();  
 
         if (!menu) {
@@ -101,6 +143,7 @@ menusController.renderEditMenu = async function(req, res, next) {
         next(err);
     }
 };
+
 
 menusController.updateMenu = function(req, res, next) {
     const menuId = req.params.menuId;

@@ -97,11 +97,10 @@
           <li><a href="/dishes/showDishes">Mostrar Pratos</a></li>
         <% } else if (user.role === 'cliente') { %>
           <li><a href="/restaurants/showRestaurants">Mostrar Restaurantes</a></li>
-          <li><a href="/menus/showMenus">Mostrar Menus</a></li>
-          <li><a href="/dishes/showDishes">Mostrar Pratos</a></li>
         <% } else if (user.role === 'admin') { %>
           <li><a href="/restaurants/submitRestaurant">Criar Restaurante</a></li>
           <li><a href="/restaurants/showRestaurants">Mostrar Restaurantes</a></li>
+          <li><a href="/restaurants/pendingApproval">Aprovar Restaurantes</a></li>
           <li><a href="/menus/submitMenu">Criar Menu</a></li>
           <li><a href="/menus/showMenus">Mostrar Menus</a></li>
           <li><a href="/dishes/submitDishes">Criar Prato</a></li>

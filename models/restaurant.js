@@ -22,7 +22,7 @@ const RestaurantSchema = new mongoose.Schema({
     paymentMethods: { type: String, required: true },
     managerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } ,
     menus: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Menu' }],
-    //isApproved: { type: Boolean, default: false }
+    isApproved: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Restaurant', RestaurantSchema);

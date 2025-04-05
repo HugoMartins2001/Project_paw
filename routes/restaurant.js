@@ -32,6 +32,11 @@ router.post('/editRestaurant/:name', authController.verifyLoginUser, function(re
     restaurantsController.updateRestaurant(req, res, next);
 });
 
+router.get('/pendingApproval', authController.verifyLoginUser, restaurantsController.showPendingRestaurants);
+
+router.post('/approveRestaurant/:id', authController.verifyLoginUser, restaurantsController.approveRestaurant);
+
+
 
 
 module.exports = router;

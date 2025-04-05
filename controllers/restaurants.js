@@ -16,26 +16,26 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
 
 
 restaurantsController.showAll = function(req, res, next) {
-    if (!req.user) {
-        return res.redirect('/auth/login');
+    if (!req.user) return res.redirect('/auth/login');
+
+    let query = {};
+
+    if (req.user.role === 'manager') {
+        query = { managerId: req.user._id };
+    } else if (req.user.role === 'client') {
+        query = { isApproved: true };
     }
 
-    const query = req.user.role === 'manager'
-        ? { managerId: req.user._id }
-        : {};
-
     mongoRestaurant.find(query)
-        .then(function(restaurantList) {
-            const inputs = {
+        .then(restaurantList => {
+            res.render('restaurants/showRestaurants', {
                 restaurants: restaurantList,
                 user: req.user
-            };
-            res.render('restaurants/showRestaurants', inputs);
+            });
         })
-        .catch(function(err) {
-            next(err);
-        });
+        .catch(err => next(err));
 };
+
 
 
 restaurantsController.showDetails = function(req, res, next) {
@@ -63,54 +63,74 @@ restaurantsController.showDetails = function(req, res, next) {
 };
 
 
-restaurantsController.createRestaurant = function(req,res,next){
-    const managerId = req.user._id; 
-    const restaurantData = { ...req.body, managerId }; 
+restaurantsController.renderCreateRestaurant = async function (req, res, next) {
+    try {
+        let menus;
 
-    mongoRestaurant.create(restaurantData)
-        .then(function(){
-            res.redirect('/restaurants/showRestaurants')
-        })
-        .catch(function(err){
-            next(err)
-        })
-}
+        // Se o usuário for um manager, busque apenas os menus criados por ele
+        if (req.user.role === 'manager') {
+            menus = await mongoMenu.find({ managerId: req.user._id });
+        } else {
+            // Se for admin ou cliente, busque todos os menus
+            menus = await mongoMenu.find();
+        }
 
-restaurantsController.deleteRestaurant = function(req,res,next){
-    const managerId = req.user._id; 
-    mongoRestaurant.findOneAndDelete({name: req.params.name, managerId})
-        .then(function(deletedRestaurant){
+        res.render('restaurants/submitRestaurant', { menus });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
+
+restaurantsController.deleteRestaurant = function(req, res, next) {
+    const query = { name: req.params.name };
+
+    // Verifica se o usuário é um manager e, se for, restringe à exclusão de seus próprios restaurantes
+    if (req.user.role === 'manager') {
+        query.managerId = req.user._id; // Garante que só o gerente que criou pode excluir
+    }
+
+    mongoRestaurant.findOneAndDelete(query)
+        .then(function(deletedRestaurant) {
             if (!deletedRestaurant) {
-                return res.status(404).send('Restaurante não encontrado ou você não tem permissão para o apagar.');
+                // Mensagem de erro mais clara para caso de falha (restaurante não encontrado ou permissão negada)
+                return res.status(404).send('Restaurante não encontrado ou você não tem permissão para apagá-lo.');
             }
-            res.redirect('/restaurants/showRestaurants')
-        })
-        .catch(function(err){
-            next(err)
-        })
-}
-
-restaurantsController.renderEditRestaurant = function(req, res, next) {
-    const query = req.user.role === 'manager'
-        ? { name: req.params.name, managerId: req.user._id }
-        : { name: req.params.name };
-
-    // Recuperar todos os menus
-    mongoMenu.find()
-        .then(function(menus) {
-            return mongoRestaurant.findOne(query)
-                .then(function(restaurant) {
-                    if (!restaurant) {
-                        return res.status(404).send('Restaurante não encontrado ou sem permissão.');
-                    }
-                    // Renderizar a página com o restaurante e os menus
-                    res.render('restaurants/editRestaurant', { restaurant, menus });
-                });
+            res.redirect('/restaurants/showRestaurants'); // Redireciona para a lista de restaurantes após a exclusão
         })
         .catch(function(err) {
-            next(err);
+            next(err); // Passa o erro para o próximo middleware, se houver algum
         });
 };
+
+
+
+restaurantsController.renderEditRestaurant = async function(req, res, next) {
+    try {
+        
+        const menus = req.user.role === 'manager' 
+            ? await mongoMenu.find({ managerId: req.user._id })
+            : await mongoMenu.find();  
+
+        
+        const restaurant = await mongoRestaurant.findOne({
+            name: req.params.name,
+            managerId: req.user.role === 'manager' ? req.user._id : undefined 
+        });
+
+        if (!restaurant) {
+            return res.status(404).send('Restaurante não encontrado ou sem permissão.');
+        }
+
+        
+        res.render('restaurants/editRestaurant', { restaurant, menus });
+    } catch (err) {
+        next(err);
+    }
+};
+
 
 
 restaurantsController.updateRestaurant = function(req, res, next) {
@@ -139,6 +159,26 @@ restaurantsController.updateRestaurant = function(req, res, next) {
         .catch(function(err) {
             next(err);
         });
+};
+
+restaurantsController.showPendingRestaurants = function(req, res, next) {
+    if (req.user.role !== 'admin') return res.status(403).send('Acesso negado.');
+
+    mongoRestaurant.find({ isApproved: false })
+        .then(restaurants => {
+            res.render('restaurants/pendingApproval', { restaurants });
+        })
+        .catch(err => next(err));
+};
+
+restaurantsController.approveRestaurant = function(req, res, next) {
+    if (req.user.role !== 'admin') return res.status(403).send('Acesso negado.');
+
+    mongoRestaurant.findByIdAndUpdate(req.params.id, { isApproved: true }, { new: true })
+        .then(() => {
+            res.redirect('/restaurants/pendingApproval');
+        })
+        .catch(err => next(err));
 };
 
 
