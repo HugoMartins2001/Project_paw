@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose')
 var flash = require('connect-flash');
+var session = require('express-session');
+var passport = require('./config/passport-config');
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
@@ -20,9 +23,9 @@ var mongoDB = 'mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/
 mongoose.connect(mongoDB);
 
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Erro de conexão hà base de dados'));
+db.on('error', console.error.bind(console, 'Erro de conexão á base de dados'));
 db.once('open', function() {
-  console.log('Conectado hà base de dados');
+  console.log('Conectado á base de dados!');
 });
 
 var app = express();
@@ -37,6 +40,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
+
+// Configuração de sessões
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
+
+// Inicialização do Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', homeRoutes);
 app.use('/index', indexRouter);

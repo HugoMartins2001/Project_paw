@@ -3,6 +3,7 @@ const mongoUser = require('../models/user')
 const jwt = require('jsonwebtoken')
 const config = require('../jwt_secret/config')
 const bcrypt = require('bcryptjs')
+const passport = require('passport')
 
 let authController = {}
 
@@ -74,6 +75,35 @@ authController.verifyLoginUser = function(req, res, next) {
         });
     } else {
         next();  
+    }
+};
+
+// Login com Google
+authController.googleLogin = passport.authenticate('google', { scope: ['profile', 'email'] });
+
+// Callback do Google
+authController.googleCallback = passport.authenticate('google', { failureRedirect: '/auth/login' }, (req, res) => {
+    res.redirect('/'); // Redireciona para a página inicial após login
+});
+
+// Login com Facebook
+authController.facebookLogin = passport.authenticate('facebook');
+
+// Callback do Facebook
+authController.facebookCallback = passport.authenticate('facebook', { failureRedirect: '/auth/login' }, (req, res) => {
+    res.redirect('/'); // Redireciona para a página inicial após login
+});
+
+authController.updateUserEmail = async (facebookId, email) => {
+    try {
+        return await User.findOneAndUpdate(
+            { facebookId }, // Procura pelo Facebook ID
+            { email }, // Atualiza o campo email
+            { new: true } // Retorna o documento atualizado
+        );
+    } catch (err) {
+        console.log('Erro ao atualizar o email no banco de dados:', err);
+        return null;
     }
 };
 
