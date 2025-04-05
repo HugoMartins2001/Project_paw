@@ -17,7 +17,7 @@ coisas a implementar:
 utilizar o mesmo email para o manager e o cliente para que nao existe erro;
 
 
-Dashboard:
+Dashboard: FEITO
 
 aparecer para criar menu e depois associar pratos ao menu criado tambem em array list
 aparecer criar pratos guardar na base de dados num array list para mais tarde no menu podermos associar 
@@ -85,7 +85,7 @@ inserir imagem do prato,
 ideia paa inserir menus e pratos:
 
 um menu deve ser inserido no respetivo restaurante
-e um prato deve ser inserido no respetivo menu criado anteriorment;
+e um prato deve ser inserido no respetivo menu criado anteriormente;
 
 fazer notificações para success e mau
 

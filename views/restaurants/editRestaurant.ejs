@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/stylesheets/editRestaurant.css" />
+    <title>Editar Restaurante</title>
+  </head>
+  <body>
+    <div class="header bg-primary text-white py-3">
+      <div class="container d-flex justify-content-between">
+        <h3>Editar Restaurante</h3>
+        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+      </div>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Editar Restaurante</h1>
+        <form action="/restaurants/editRestaurant/<%= restaurant.name %>" method="POST">
+            <!-- Campos de formulário para os dados do restaurante -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome:</label>
+                <input type="text" id="name" name="name" value="<%= restaurant.name %>" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Morada:</label>
+                <input type="text" id="address" name="address" value="<%= restaurant.address %>" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="latitude" class="form-label">Latitude:</label>
+                <input type="text" id="latitude" name="latitude" value="<%= restaurant.latitude %>" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="longitude" class="form-label">Longitude:</label>
+                <input type="text" id="longitude" name="longitude" value="<%= restaurant.longitude %>" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Telefone:</label>
+                <input type="text" id="phone" name="phone" value="<%= restaurant.phone %>" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" id="email" name="email" value="<%= restaurant.email %>" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="openingHours" class="form-label">Horário de Funcionamento:</label>
+                <input type="text" id="openingHours" name="openingHours" value="<%= restaurant.openingHours %>" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="paymentMethods" class="form-label">Métodos de Pagamento:</label>
+                <input type="text" id="paymentMethods" name="paymentMethods" value="<%= restaurant.paymentMethods %>" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="menus" class="form-label">Menus Associados:</label>
+                <select name="menus" id="menus" class="form-select" multiple required>
+                    <% menus.forEach(function(menu) { %>
+                        <option value="<%= menu._id %>" <% if (restaurant.menus.includes(menu._id.toString())) { %> selected <% } %> >
+                            <%= menu.name %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-primary">Guardar Alterações</button>
+            </div>
+        </form>
+
+        <!-- Botão para voltar à lista de restaurantes -->
+        <div class="text-center mt-4">
+            <a href="/restaurants/showRestaurants" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+
+    <!-- Adicionando o script do Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

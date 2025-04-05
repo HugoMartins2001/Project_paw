@@ -1,5 +1,6 @@
 const mongoMenu = require('../models/menu');
 const mongoDish = require('../models/dish');
+const mongoRestaurant = require('../models/restaurant'); 
 
 let menusController = {};
 
@@ -81,10 +82,46 @@ menusController.deleteMenu = function (req, res, next) {
             res.redirect('/menus/showMenus');
         })
         .catch(function (err) {
-            console.error('Erro ao excluir menu:', err);
             next(err);
         });
 };
+
+menusController.renderEditMenu = async function(req, res, next) {
+    try {
+        const menu = await mongoMenu.findById(req.params.menuId).populate('dishes').populate('restaurant');
+        const allDishes = await mongoDish.find();
+        const restaurants = await mongoRestaurant.find();  
+
+        if (!menu) {
+            return res.status(404).send('Menu não encontrado.');
+        }
+
+        res.render('menus/editMenu', { menu, dishes: allDishes, restaurants });
+    } catch (err) {
+        next(err);
+    }
+};
+
+menusController.updateMenu = function(req, res, next) {
+    const menuId = req.params.menuId;
+    const updatedData = {
+        name: req.body.name,
+        dishes: Array.isArray(req.body.dishes) ? req.body.dishes : [req.body.dishes],
+        restaurant: req.body.restaurant  
+    };
+
+    mongoMenu.findByIdAndUpdate(menuId, updatedData, { new: true, runValidators: true })
+        .then(function(updated) {
+            if (!updated) {
+                return res.status(404).send('Menu não encontrado.');
+            }
+            res.redirect('/menus/showMenus');
+        })
+        .catch(function(err) {
+            next(err);
+        });
+};
+
 
 
 module.exports = menusController;

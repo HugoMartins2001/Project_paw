@@ -20,8 +20,17 @@ router.post('/submittedDish',authController.verifyLoginUser, function(req, res,n
      dishesController.createDish(req, res,next)
 });
 
-router.get('/deleteDish/:dishId',authController.verifyLoginUser, function(req, res,next) { 
+router.post('/deleteDish/:dishId',authController.verifyLoginUser, function(req, res,next) { 
      dishesController.deleteDish(req, res,next)
 });
+
+router.get('/editDish/:dishId', authController.verifyLoginUser, function (req, res, next) {
+     dishesController.renderEditDish(req, res, next);
+ });
+ 
+ router.post('/editDish/:dishId', authController.verifyLoginUser, function (req, res, next) {
+     dishesController.updateDish(req, res, next);
+ });
+ 
 
 module.exports = router;

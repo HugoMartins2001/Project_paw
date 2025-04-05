@@ -23,7 +23,7 @@ const User = new mongoose.Schema({
     type: String, 
     required: function() { return this.role === 'cliente'; } 
   },
-  role: { type: String, enum: ["cliente", "manager"], required: true },
+  role: { type: String, enum: ["cliente", "manager", "admin"], required: true },
 });
 
 module.exports = mongoose.model('users', User);

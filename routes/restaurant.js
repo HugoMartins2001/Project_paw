@@ -20,9 +20,17 @@ router.get('/showRestaurants', authController.verifyLoginUser, function(req, res
     restaurantsController.showAll(req,res,next)
 })
 
-router.get('/deleteRestaurant/:name', authController.verifyLoginUser, function(req, res){
-    restaurantsController.deleteRestaurant(req, res)
+router.post('/deleteRestaurant/:name', authController.verifyLoginUser, function(req, res, next) {
+    restaurantsController.deleteRestaurant(req, res, next)
 })
+
+router.get('/editRestaurant/:name', authController.verifyLoginUser, function(req, res, next) {
+    restaurantsController.renderEditRestaurant(req, res, next);
+});
+
+router.post('/editRestaurant/:name', authController.verifyLoginUser, function(req, res, next) {
+    restaurantsController.updateRestaurant(req, res, next);
+});
 
 
 

@@ -8,14 +8,17 @@
     <title>Inserir Restaurante</title>
 </head>
 <body>
-    <div class="header">
-        <h3>Inserir Restaurante</h3>
-        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+    <div class="header bg-primary text-white py-3">
+        <div class="container d-flex justify-content-between">
+            <h3>Inserir Restaurante</h3>
+            <a href="/auth/logout" class="btn btn-danger">Logout</a>
+        </div>
     </div>
 
     <div class="container mt-5">
-        <div class="container-form">
+        <div class="card p-4 shadow-sm">
             <h2 class="text-center mb-4">Novo Restaurante</h2>
+            
             <form method="post" action="/restaurants/submittedRestaurant">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nome do Restaurante</label>
@@ -51,16 +54,21 @@
                 </div>
                 <div class="mb-3">
                     <label for="menus" class="form-label">Menus</label>
-                    <select id="menus" name="menus" class="form-select" multiple>
+                    <select id="menus" name="menus" class="form-select" multiple required>
                         <% menus.forEach(function(menu) { %>
                             <option value="<%= menu._id %>"><%= menu.name %></option>
                         <% }) %>
                     </select>
+                    <small class="form-text text-muted">Escolha os menus associados ao restaurante.</small>
                 </div>
-                <button type="submit" class="btn btn-primary">Criar Restaurante</button>
+                <button type="submit" class="btn btn-primary w-100">Criar Restaurante</button>
             </form>
-            <a href="/index" class="btn btn-secondary btn-back">Ir para o Dashboard</a>
+
+            <a href="/index" class="btn btn-secondary w-100 mt-3">Ir para o Dashboard</a>
         </div>
     </div>
+
+    <!-- Bootstrap JS (necessário para o funcionamento do alerta e outros componentes) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

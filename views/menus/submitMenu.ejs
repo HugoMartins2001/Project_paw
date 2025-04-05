@@ -8,13 +8,15 @@
     <title>Criar Menu</title>
 </head>
 <body>
-    <div class="header">
-        <h3>Criar Menu</h3>
-        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+    <div class="header bg-primary text-white py-3">
+        <div class="container d-flex justify-content-between">
+            <h3>Criar Menu</h3>
+            <a href="/auth/logout" class="btn btn-danger">Logout</a>
+        </div>
     </div>
 
     <div class="container mt-5">
-        <div class="container-form">
+        <div class="card p-4 shadow-sm">
             <h2 class="text-center mb-4">Novo Menu</h2>
 
             <!-- Alerta de erro (inicialmente oculto) -->
@@ -26,20 +28,21 @@
             <form id="menuForm" method="post" action="/menus/submittedMenu">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nome do Menu</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Digite o nome do menu" required>
                 </div>
                 <div class="mb-3">
                     <label for="dishes" class="form-label">Pratos</label>
-                    <select id="dishes" name="dishes" class="form-select" multiple>
+                    <select id="dishes" name="dishes" class="form-select" multiple required>
                         <% dishes.forEach(function(dish) { %>
                             <option value="<%= dish._id %>"><%= dish.name %></option>
                         <% }) %>
                     </select>
+                    <small class="form-text text-muted">Escolha até 10 pratos para este menu.</small>
                 </div>
-                <button type="submit" class="btn btn-primary">Criar Menu</button>
+                <button type="submit" class="btn btn-primary w-100">Criar Menu</button>
             </form>
 
-            <a href="/index" class="btn btn-secondary btn-back mt-3">Voltar</a>
+            <a href="/index" class="btn btn-secondary w-100 mt-3">Voltar</a>
         </div>
     </div>
 

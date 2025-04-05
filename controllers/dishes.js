@@ -67,11 +67,48 @@ dishesController.showDish = function (req, res, next) {
 
 
 dishesController.deleteDish = function (req, res, next) {
-    mongoDish.findOneAndDelete({ _id: req.params.dishId })
+    mongoDish.findByIdAndDelete({ _id: req.params.dishId })
         .then(function (deletedDish) {
             if (!deletedDish) {
                 return res.status(404).send('Prato não encontrado.');
             }
+            res.redirect('/dishes/showDishes');
+        })
+        .catch(function (err) {
+            next(err);
+        });
+};
+
+dishesController.renderEditDish = function (req, res, next) {
+    const dishId = req.params.dishId;
+
+    mongoDish.findById(dishId)
+        .then(function (dish) {
+            if (!dish) {
+                return res.status(404).send('Prato não encontrado.');
+            }
+            res.render('dishes/editDish', { dish });
+        })
+        .catch(function (err) {
+            next(err);
+        });
+};
+
+dishesController.updateDish = function (req, res, next) {
+    const dishId = req.params.dishId;
+    const { name, description, price, category, ingredients, image } = req.body;
+
+    const updatedDishData = {
+        name,
+        description,
+        price,
+        category,
+        ingredients: Array.isArray(ingredients) ? ingredients : [ingredients],
+        image
+    };
+
+    mongoDish.findByIdAndUpdate(dishId, updatedDishData, { new: true })
+        .then(function (updatedDish) {
             res.redirect('/dishes/showDishes');
         })
         .catch(function (err) {
