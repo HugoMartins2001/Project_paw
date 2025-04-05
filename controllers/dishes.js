@@ -5,18 +5,40 @@ let dishesController = {};
 
 
 dishesController.showAll = function (req, res, next) {
+    const user = req.user; // Acesso ao usuário logado (o gerente ou admin)
+
     mongoDish.find()
         .then(function (dishList) {
-            const inputs = {
-                dishes: dishList,
-                user: req.user,
-            };
-            res.render('dishes/showDishes', inputs);
+            // Filtra os pratos com base no gerente logado
+            const filteredDishes = dishList.filter(dish => {
+                if (!dish.managerId) {
+                    // Se não houver managerId, ignore o prato
+                    return false;
+                }
+
+                // Se for admin, ele pode ver todos os pratos
+                if (user.role === 'admin') {
+                    return true;
+                }
+
+                // Se for manager, ele só vê os pratos que ele criou
+                if (user.role === 'manager' && dish.managerId.toString() === user._id.toString()) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            res.render('dishes/showDishes', {
+                dishes: filteredDishes,
+                user: user
+            });
         })
         .catch(function (err) {
             next(err);
         });
 };
+
 
 
 dishesController.renderCreateDishes = function (req, res, next) {
@@ -32,6 +54,7 @@ dishesController.renderCreateDishes = function (req, res, next) {
 dishesController.createDish = async function (req, res, next) {
     try {
         const { name, description, price, category, ingredients, image } = req.body;
+        const user = req.user; // Acesso ao usuário logado (o gerente)
 
         const dishData = {
             name,
@@ -39,7 +62,8 @@ dishesController.createDish = async function (req, res, next) {
             price,
             category,
             ingredients: Array.isArray(ingredients) ? ingredients : [ingredients], 
-            image
+            image,
+            managerId: user._id // Associando o prato ao gerente logado
         };
 
         await mongoDish.create(dishData);
@@ -49,6 +73,7 @@ dishesController.createDish = async function (req, res, next) {
         next(error);
     }
 };
+
 
 dishesController.showDish = function (req, res, next) {
     const dishId = req.params.dishId;
@@ -67,17 +92,29 @@ dishesController.showDish = function (req, res, next) {
 
 
 dishesController.deleteDish = function (req, res, next) {
-    mongoDish.findByIdAndDelete({ _id: req.params.dishId })
-        .then(function (deletedDish) {
-            if (!deletedDish) {
+    const user = req.user; // Acesso ao usuário logado (o gerente)
+
+    mongoDish.findById(req.params.dishId)
+        .then(function (dish) {
+            if (!dish) {
                 return res.status(404).send('Prato não encontrado.');
             }
+
+            // Verifica se o prato foi criado pelo gerente logado
+            if (dish.managerId.toString() !== user._id.toString()) {
+                return res.status(403).send('Você não tem permissão para excluir este prato.');
+            }
+
+            return mongoDish.findByIdAndDelete(req.params.dishId);
+        })
+        .then(function () {
             res.redirect('/dishes/showDishes');
         })
         .catch(function (err) {
             next(err);
         });
 };
+
 
 dishesController.renderEditDish = function (req, res, next) {
     const dishId = req.params.dishId;
