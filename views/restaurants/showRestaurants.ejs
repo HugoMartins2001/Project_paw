@@ -45,6 +45,7 @@
                     <% } else if (user.role === 'admin') { %>
                       <a class="btn btn-warning" href="/restaurants/editRestaurant/<%= restaurant.name %>">Editar</a>
                       <a class="btn btn-danger" href="/restaurants/deleteRestaurant/<%= restaurant.name %>">Eliminar</a>
+                      <!--<a class="btn btn-secondary" href="/restaurants/pendingApproval">Aprovar Restaurantes</a>-->
                     <% } %>
                   </div>
                 </div>

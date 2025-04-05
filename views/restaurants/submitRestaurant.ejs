@@ -54,7 +54,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="menus" class="form-label">Menus</label>
-                    <select id="menus" name="menus" class="form-select" multiple required>
+                    <select id="menus" name="menus" class="form-select" multiple >
                         <% menus.forEach(function(menu) { %>
                             <option value="<%= menu._id %>"><%= menu.name %></option>
                         <% }) %>

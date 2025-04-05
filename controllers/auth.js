@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const mongoUser = require('../models/user')
 const jwt = require('jsonwebtoken')
 const config = require('../jwt_secret/config')

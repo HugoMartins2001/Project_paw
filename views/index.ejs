@@ -99,7 +99,15 @@
           <li><a href="/restaurants/showRestaurants">Mostrar Restaurantes</a></li>
           <li><a href="/menus/showMenus">Mostrar Menus</a></li>
           <li><a href="/dishes/showDishes">Mostrar Pratos</a></li>
-        <% } %>
+        <% } else if (user.role === 'admin') { %>
+          <li><a href="/restaurants/submitRestaurant">Criar Restaurante</a></li>
+          <li><a href="/restaurants/showRestaurants">Mostrar Restaurantes</a></li>
+          <li><a href="/menus/submitMenu">Criar Menu</a></li>
+          <li><a href="/menus/showMenus">Mostrar Menus</a></li>
+          <li><a href="/dishes/submitDishes">Criar Prato</a></li>
+          <li><a href="/dishes/showDishes">Mostrar Pratos</a></li>
+          <li><a href="/users/showUsers">Mostrar utilizadores</a></li>
+          <% } %>
         <li><a href="/profile">Ver Perfil</a></li>
       </ul>
     </div>

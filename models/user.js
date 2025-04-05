@@ -29,11 +29,12 @@ const User = new mongoose.Schema({
   role: { 
     type: String, 
     enum: ["cliente", "manager", "admin"], 
-    required: function() { return !this.googleId && !this.facebookId; } // Opcional para login social
+    default: 'cliente',
+    required: function() { return !this.googleId && !this.facebookId; } 
   },
-  googleId: { type: String, unique: true, sparse: true }, // ID único do Google
-  facebookId: { type: String, unique: true, sparse: true }, // ID único do Facebook
-  dataRegisto: { type: Date, default: Date.now } // Data de criação do usuário
+  googleId: { type: String, unique: true, sparse: true }, 
+  facebookId: { type: String, unique: true, sparse: true }, 
+  dataRegisto: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('users', User);

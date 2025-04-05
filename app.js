@@ -16,6 +16,7 @@ const profileRoutes = require('./routes/profile');
 const menuRoutes = require('./routes/menus');
 const dishRoutes = require('./routes/dishes');
 const homeRoutes = require('./routes/home');
+const usersRouter = require('./routes/users');
 
 
 var mongoDB = 'mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
@@ -59,6 +60,7 @@ app.use('/auth', authRouter);
 app.use('/profile', profileRoutes);
 app.use('/menus', menuRoutes);
 app.use('/dishes', dishRoutes);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
