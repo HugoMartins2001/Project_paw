@@ -2,7 +2,7 @@ RESTAURANT WEBSITE PROJECT
 
 atualizações a serem feitas
 
-Campos a encriptar:
+Campos a encriptar: NÃO FEITO
 
 email,
 telemovel,
@@ -12,7 +12,7 @@ postalCode,
 city,
 managerCode;
 
-coisas a implementar:
+coisas a implementar: FEITO
 
 utilizar o mesmo email para o manager e o cliente para que nao existe erro;
 
@@ -82,12 +82,12 @@ lista dos ingredientes,
 inserir imagem do prato,
 
 
-ideia paa inserir menus e pratos:
+ideia paa inserir menus e pratos: FEITO
 
 um menu deve ser inserido no respetivo restaurante
 e um prato deve ser inserido no respetivo menu criado anteriormente;
 
-fazer notificações para success e mau
+fazer notificações para success e mau: NÃO FEITO
 
 
 ter um id escondido para cada manager ter o seu restaurante associado a esse id e nao conseguir ver os restaurantes dos outros só o dele FEITO
