@@ -74,6 +74,31 @@ menusController.renderCreateMenu = async function (req, res, next) {
 };
 
 
+menusController.createMenu = async function (req, res, next) {
+    try {
+        const { name, dishes, restaurant } = req.body;
+
+
+        const dishesArray = Array.isArray(dishes) ? dishes : [dishes];
+
+
+        const newMenu = new mongoMenu({
+            name,
+            dishes: dishesArray,
+            restaurant,
+            managerId: req.user._id  
+        });
+
+
+        await newMenu.save();
+
+
+        res.redirect('/menus/showMenus');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 
 
@@ -104,7 +129,7 @@ menusController.deleteMenu = function (req, res, next) {
             }
 
 
-            if (menu.managerId.toString() !== user._id.toString()) {
+            if (user.role !== 'admin' && menu.managerId.toString() !== user._id.toString()) {
                 return res.status(403).send('Você não tem permissão para excluir este menu.');
             }
 

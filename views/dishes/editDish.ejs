@@ -27,19 +27,30 @@
                 <label for="name" class="form-label">Nome do Prato:</label>
                 <input type="text" id="name" name="name" value="<%= dish.name %>" class="form-control" required>
             </div>
-        
+
             <!-- Campo Descrição -->
             <div class="mb-3">
                 <label for="description" class="form-label">Descrição:</label>
                 <textarea id="description" name="description" class="form-control" required><%= dish.description %></textarea>
             </div>
-        
-            <!-- Campo Preço -->
+
+            <!-- Campo Preços -->
             <div class="mb-3">
-                <label for="price" class="form-label">Preço:</label>
-                <input type="number" step="0.01" id="price" name="price" value="<%= dish.price %>" class="form-control" required>
+                <label class="form-label">Preços por Dose:</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Pequena</span>
+                    <input type="number" step="0.01" name="prices[pequena]" value="<%= dish.prices.pequena %>" class="form-control" required>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Média</span>
+                    <input type="number" step="0.01" name="prices[media]" value="<%= dish.prices.media %>" class="form-control" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Grande</span>
+                    <input type="number" step="0.01" name="prices[grande]" value="<%= dish.prices.grande %>" class="form-control" required>
+                </div>
             </div>
-        
+
             <!-- Campo Categoria -->
             <div class="mb-3">
                 <label for="category" class="form-label">Categoria:</label>
@@ -50,13 +61,19 @@
                     <option value="vegetariano" <%= dish.category === 'vegetariano' ? 'selected' : '' %>>Vegetariano</option>
                 </select>
             </div>
-        
+
             <!-- Campo Ingredientes -->
             <div class="mb-3">
-                <label for="ingredients" class="form-label">Ingredientes:</label>
+                <label for="ingredients" class="form-label">Ingredientes (separados por vírgula):</label>
                 <input type="text" id="ingredients" name="ingredients" value="<%= dish.ingredients.join(', ') %>" class="form-control" required>
             </div>
-        
+
+            <!-- Campo Alergénios -->
+            <div class="mb-3">
+                <label for="allergens" class="form-label">Alergénios (separados por vírgula):</label>
+                <input type="text" id="allergens" name="allergens" value="<%= dish.allergens.join(', ') %>" class="form-control" />
+            </div>
+
             <!-- Botão para Enviar -->
             <div class="mb-3 text-center">
                 <button type="submit" class="btn btn-primary">Guardar Alterações</button>

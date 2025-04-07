@@ -27,9 +27,15 @@
         <div class="dish-details card p-4 shadow-sm">
           <h2 class="text-center mb-4"><%= dish.name %></h2>
           <p><strong>Descrição:</strong> <%= dish.description || 'Sem descrição disponível' %></p>
-          <p><strong>Preço:</strong> €<%= dish.price.toFixed(2) %></p>
           <p><strong>Categoria:</strong> <%= dish.category %></p>
           <p><strong>Ingredientes:</strong> <%= dish.ingredients.join(', ') %></p>
+          <p><strong>Preços:</strong> Pequena: €<%= dish.prices.pequena %>, Média: €<%= dish.prices.media %>, Grande: €<%= dish.prices.grande %></p>
+          <p><strong>Calorias:</strong> <%= dish.nutrition.calories %> kcal</p>
+          <p><strong>Gordura:</strong> <%= dish.nutrition.fat %> g</p>
+          <p><strong>Proteína:</strong> <%= dish.nutrition.protein %> g</p>
+          <p><strong>Carboidratos:</strong> <%= dish.nutrition.carbs %> g</p>
+          <p><strong>NutriScore:</strong> <%= dish.nutriScore %></p>
+          <p><strong>Alergénios:</strong> <%= Array.isArray(dish.allergens) && dish.allergens.length > 0 ? dish.allergens.join(', ') : 'Nenhum' %></p>
         </div>
       <% } %>
     </div>

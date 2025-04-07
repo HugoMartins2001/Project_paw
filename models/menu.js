@@ -4,7 +4,7 @@ const MenuSchema = new mongoose.Schema({
     name: { type: String, required: true },
     dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }],
     managerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
+    restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: false },
 });
 
 module.exports = mongoose.model('Menu', MenuSchema);

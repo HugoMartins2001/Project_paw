@@ -33,11 +33,17 @@
                 <div class="card-body">
                   <h5 class="card-title"><%= dish.name %></h5>
                   <p class="card-text"><strong>Descrição:</strong> <%= dish.description %></p>
-                  <p class="card-text"><strong>Preço:</strong> €<%= dish.price.toFixed(2) %></p>
+                  <!-- Exibindo preços por dose -->
+                  <p class="card-text">
+                    <strong>Preço:</strong><br>
+                    <strong>Pequena:</strong> €<%= dish.prices.pequena.toFixed(2) %><br>
+                    <strong>Média:</strong> €<%= dish.prices.media.toFixed(2) %><br>
+                    <strong>Grande:</strong> €<%= dish.prices.grande.toFixed(2) %>
+                  </p>
                   <p class="card-text"><strong>Categoria:</strong> <%= dish.category %></p>
                   <div class="d-flex justify-content-between">
                     <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info">Ver Detalhes</a>
-                    <% if (user.role === 'manager' && dish.managerId.toString() === user._id.toString()) { %>
+                    <% if ((user.role === 'manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'admin') { %>
                       <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-warning">Editar</a>
                       <form action="/dishes/deleteDish/<%= dish._id %>" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este prato?')">
@@ -54,7 +60,7 @@
       <% } %>
     
       <div class="text-center">
-        <% if (user.role === 'manager') { %>
+        <% if (user.role === 'manager' || user.role === 'admin') { %>
           <a href="/dishes/submitDishes" class="btn btn-primary mt-4">Criar Novo Prato</a>
         <% } %>
         <a href="/index" class="btn btn-secondary mt-4">Voltar à Página Principal</a>

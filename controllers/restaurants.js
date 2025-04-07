@@ -4,17 +4,6 @@ const mongoMenu = require('../models/menu')
 
 let restaurantsController = {}
 
-restaurantsController.renderCreateRestaurant = async function (req, res, next) {
-    try {
-        const menus = await mongoMenu.find(); // Todos os pratos
-        res.render('restaurants/submitRestaurant', { menus });
-    } catch (error) {
-        console.error(error);
-        next(error);
-    }
-};
-
-
 restaurantsController.showAll = function(req, res, next) {
     if (!req.user) return res.redirect('/auth/login');
 
@@ -67,11 +56,10 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
     try {
         let menus;
 
-        // Se o usuário for um manager, busque apenas os menus criados por ele
         if (req.user.role === 'manager') {
             menus = await mongoMenu.find({ managerId: req.user._id });
         } else {
-            // Se for admin ou cliente, busque todos os menus
+
             menus = await mongoMenu.find();
         }
 
@@ -82,29 +70,55 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
     }
 };
 
+restaurantsController.createRestaurant = function(req, res, next) {
+    const managerId = req.user._id;
+    
+    const newRestaurant = new mongoRestaurant({
+        name: req.body.name,
+        address: req.body.address,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+        phone: req.body.phone,
+        email: req.body.email,
+        openingHours: req.body.openingHours,
+        paymentMethods: req.body.paymentMethods,
+        menus: req.body.menus || [], 
+        managerId: managerId, 
+        isApproved: false  
+    });
+
+    newRestaurant.save()
+        .then(function(restaurant) {
+            res.redirect('/restaurants/showRestaurants');
+        })
+        .catch(function(err) {
+            next(err);  
+        });
+};
+
+
 
 
 restaurantsController.deleteRestaurant = function(req, res, next) {
     const query = { name: req.params.name };
 
-    // Verifica se o usuário é um manager e, se for, restringe à exclusão de seus próprios restaurantes
+
     if (req.user.role === 'manager') {
-        query.managerId = req.user._id; // Garante que só o gerente que criou pode excluir
+        query.managerId = req.user._id; 
     }
 
     mongoRestaurant.findOneAndDelete(query)
         .then(function(deletedRestaurant) {
             if (!deletedRestaurant) {
-                // Mensagem de erro mais clara para caso de falha (restaurante não encontrado ou permissão negada)
+
                 return res.status(404).send('Restaurante não encontrado ou você não tem permissão para apagá-lo.');
             }
-            res.redirect('/restaurants/showRestaurants'); // Redireciona para a lista de restaurantes após a exclusão
+            res.redirect('/restaurants/showRestaurants'); 
         })
         .catch(function(err) {
-            next(err); // Passa o erro para o próximo middleware, se houver algum
+            next(err); 
         });
 };
-
 
 
 restaurantsController.renderEditRestaurant = async function(req, res, next) {
@@ -112,22 +126,25 @@ restaurantsController.renderEditRestaurant = async function(req, res, next) {
         
         const menus = req.user.role === 'manager' 
             ? await mongoMenu.find({ managerId: req.user._id })
-            : await mongoMenu.find();  
+            : await mongoMenu.find();
 
-        
-        const restaurant = await mongoRestaurant.findOne({
-            name: req.params.name,
-            managerId: req.user.role === 'manager' ? req.user._id : undefined 
-        });
+        const restaurant = req.user.role === 'admin'
+            ? await mongoRestaurant.findOne({ name: req.params.name })  
+            : await mongoRestaurant.findOne({
+                name: req.params.name.trim(), 
+                managerId: req.user._id 
+            });
+
 
         if (!restaurant) {
             return res.status(404).send('Restaurante não encontrado ou sem permissão.');
         }
 
-        
+
         res.render('restaurants/editRestaurant', { restaurant, menus });
     } catch (err) {
-        next(err);
+        console.error("Erro ao tentar editar o restaurante:", err);
+        next(err); 
     }
 };
 
@@ -146,8 +163,10 @@ restaurantsController.updateRestaurant = function(req, res, next) {
         email: req.body.email,
         openingHours: req.body.openingHours,
         paymentMethods: req.body.paymentMethods,
-        menus: req.body.menus || []  // Adiciona os menus selecionados no formulário
+        menus: req.body.menus || []  
     };
+
+    console.log("Atualizando restaurante com os seguintes dados:", updatedData);
 
     mongoRestaurant.findOneAndUpdate(query, updatedData, { new: true, runValidators: true })
         .then(function(updated) {
@@ -157,9 +176,11 @@ restaurantsController.updateRestaurant = function(req, res, next) {
             res.redirect('/restaurants/showRestaurants');
         })
         .catch(function(err) {
+            console.error(err);
             next(err);
         });
 };
+
 
 restaurantsController.showPendingRestaurants = function(req, res, next) {
     if (req.user.role !== 'admin') return res.status(403).send('Acesso negado.');

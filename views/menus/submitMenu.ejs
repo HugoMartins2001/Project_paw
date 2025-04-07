@@ -53,10 +53,8 @@
         document.getElementById("menuForm").addEventListener("submit", function (event) {
             // Obtém os pratos selecionados
             const selectedDishes = document.getElementById("dishes").selectedOptions;
-
-            // Verifica se o número de pratos selecionados é maior que 10
+            
             if (selectedDishes.length > 10) {
-                // Previne o envio do formulário
                 event.preventDefault();
 
                 // Exibe o alerta de erro

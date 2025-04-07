@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <!-- Conteúdo principal -->
+
     <div class="container mt-5">
       <% if (!restaurant) { %>
         <div class="alert alert-warning text-center">
@@ -41,6 +41,7 @@
             <ul>
               <% restaurant.menus.forEach(function(menu) { %>
                 <li><%= menu.name %></li>
+                <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info">Ver Detalhes</a>
               <% }) %>
             </ul>
           <% } else { %>
@@ -50,7 +51,6 @@
       <% } %>
     </div>
 
-    <!-- Botão de voltar -->
     <div class="text-center mt-4">
       <a href="/restaurants/showRestaurants" class="btn btn-secondary">Voltar à Lista de Restaurantes</a>
     </div>

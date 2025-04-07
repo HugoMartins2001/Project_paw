@@ -32,8 +32,17 @@
             <ul class="list-group">
               <% menu.dishes.forEach(function(dish) { %>
                 <li class="list-group-item">
-                  <strong><%= dish.name %></strong> - €<%= dish.price.toFixed(2) %>
-                  <p><em><%= dish.description || 'Sem descrição disponível' %></em></p>
+                  <strong>Nome: <%= dish.name %></strong> - <br>
+                  <strong>Doses: </strong>
+                  <% if (dish.prices) { %>
+                      Pequena: €<%= dish.prices.pequena.toFixed(2) %> | 
+                      Média: €<%= dish.prices.media.toFixed(2) %> | 
+                      Grande: €<%= dish.prices.grande.toFixed(2) %>
+                  <% } else { %>
+                      <span>Preço não disponível</span>
+                  <% } %>
+                  <p><em>Descrição: <%= dish.description || 'Sem descrição disponível' %></em></p>
+                  <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info">Ver Detalhes</a>
                 </li>
               <% }) %>
             </ul>

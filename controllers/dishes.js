@@ -1,31 +1,18 @@
-const mongoose = require('mongoose');
 const mongoDish = require('../models/dish');
+const axios = require('axios');
 
 let dishesController = {};
 
 
 dishesController.showAll = function (req, res, next) {
-    const user = req.user; // Acesso ao usuário logado (o gerente ou admin)
+    const user = req.user;
 
     mongoDish.find()
         .then(function (dishList) {
-            // Filtra os pratos com base no gerente logado
             const filteredDishes = dishList.filter(dish => {
-                if (!dish.managerId) {
-                    // Se não houver managerId, ignore o prato
-                    return false;
-                }
-
-                // Se for admin, ele pode ver todos os pratos
-                if (user.role === 'admin') {
-                    return true;
-                }
-
-                // Se for manager, ele só vê os pratos que ele criou
-                if (user.role === 'manager' && dish.managerId.toString() === user._id.toString()) {
-                    return true;
-                }
-
+                if (!dish.managerId) return false;
+                if (user.role === 'admin') return true;
+                if (user.role === 'manager' && dish.managerId.toString() === user._id.toString()) return true;
                 return false;
             });
 
@@ -34,16 +21,13 @@ dishesController.showAll = function (req, res, next) {
                 user: user
             });
         })
-        .catch(function (err) {
-            next(err);
-        });
+        .catch(next);
 };
-
 
 
 dishesController.renderCreateDishes = function (req, res, next) {
     try {
-        res.render('dishes/submitDishes'); 
+        res.render('dishes/submitDishes');
     } catch (error) {
         console.error(error);
         next(error);
@@ -53,17 +37,52 @@ dishesController.renderCreateDishes = function (req, res, next) {
 
 dishesController.createDish = async function (req, res, next) {
     try {
-        const { name, description, price, category, ingredients, image } = req.body;
-        const user = req.user; // Acesso ao usuário logado (o gerente)
+        const { name, description, category, ingredients, allergens } = req.body;
+
+
+        const prices = {
+            pequena: req.body['prices[pequena]'] || 0,  
+            media: req.body['prices[media]'] || 0,
+            grande: req.body['prices[grande]'] || 0
+        };
+
+        const user = req.user;
+
+
+        const nutritionRes = await axios.get('https://api.spoonacular.com/recipes/guessNutrition', {
+            params: {
+                title: name,
+                apiKey: process.env.SPOONACULAR_API_KEY
+            }
+        });
+
+        console.log(nutritionRes.data);  
+
+        const nutritionData = nutritionRes.data;
+
+        const calories = nutritionData?.calories?.value || 0;
+        const fat = nutritionData?.fat?.value || 0;
+        const protein = nutritionData?.protein?.value || 0;
+        const carbs = nutritionData?.carbs?.value || 0;
+
+
+        const allergensList = allergens ? allergens.split(',').map(el => el.trim()) : [];
 
         const dishData = {
             name,
             description,
-            price,
             category,
-            ingredients: Array.isArray(ingredients) ? ingredients : [ingredients], 
-            image,
-            managerId: user._id // Associando o prato ao gerente logado
+            ingredients: ingredients.split(',').map(el => el.trim()),
+            prices: prices,
+            nutrition: {
+                calories,
+                fat,
+                protein,
+                carbs
+            },
+            nutriScore: nutritionData?.nutritionGrade || 'N/A', 
+            allergens: allergensList,  
+            managerId: user._id
         };
 
         await mongoDish.create(dishData);
@@ -75,82 +94,88 @@ dishesController.createDish = async function (req, res, next) {
 };
 
 
-dishesController.showDish = function (req, res, next) {
-    const dishId = req.params.dishId;
 
-    mongoDish.findById(dishId)
-        .then(function (dish) {
-            if (!dish) {
-                return res.status(404).send('Prato não encontrado.');
-            }
+
+
+
+dishesController.showDish = function (req, res, next) {
+    mongoDish.findById(req.params.dishId)
+        .then(dish => {
+            if (!dish) return res.status(404).send('Prato não encontrado.');
             res.render('dishes/showDish', { dish });
         })
-        .catch(function (err) {
-            next(err);
-        });
+        .catch(next);
 };
 
 
 dishesController.deleteDish = function (req, res, next) {
-    const user = req.user; // Acesso ao usuário logado (o gerente)
+    const user = req.user;
 
     mongoDish.findById(req.params.dishId)
-        .then(function (dish) {
-            if (!dish) {
-                return res.status(404).send('Prato não encontrado.');
-            }
+        .then(dish => {
+            if (!dish) return res.status(404).send('Prato não encontrado.');
 
-            // Verifica se o prato foi criado pelo gerente logado
-            if (dish.managerId.toString() !== user._id.toString()) {
+            if (user.role !== 'admin' && dish.managerId.toString() !== user._id.toString()) {
                 return res.status(403).send('Você não tem permissão para excluir este prato.');
             }
 
             return mongoDish.findByIdAndDelete(req.params.dishId);
         })
-        .then(function () {
-            res.redirect('/dishes/showDishes');
-        })
-        .catch(function (err) {
-            next(err);
-        });
+        .then(() => res.redirect('/dishes/showDishes'))
+        .catch(next);
 };
+
 
 
 dishesController.renderEditDish = function (req, res, next) {
-    const dishId = req.params.dishId;
-
-    mongoDish.findById(dishId)
-        .then(function (dish) {
-            if (!dish) {
-                return res.status(404).send('Prato não encontrado.');
-            }
+    mongoDish.findById(req.params.dishId)
+        .then(dish => {
+            if (!dish) return res.status(404).send('Prato não encontrado.');
             res.render('dishes/editDish', { dish });
         })
-        .catch(function (err) {
-            next(err);
-        });
+        .catch(next);
 };
+
 
 dishesController.updateDish = function (req, res, next) {
     const dishId = req.params.dishId;
-    const { name, description, price, category, ingredients, image } = req.body;
+    const { name, description, category, ingredients, calories, fat, protein, carbs, nutriScore, allergens } = req.body;
 
-    const updatedDishData = {
-        name,
-        description,
-        price,
-        category,
-        ingredients: Array.isArray(ingredients) ? ingredients : [ingredients],
-        image
+
+    const prices = {
+        pequena: req.body['prices[pequena]'] || 0, 
+        media: req.body['prices[media]'] || 0,
+        grande: req.body['prices[grande]'] || 0
     };
 
-    mongoDish.findByIdAndUpdate(dishId, updatedDishData, { new: true })
-        .then(function (updatedDish) {
-            res.redirect('/dishes/showDishes');
+
+    mongoDish.findById(dishId)
+        .then(dish => {
+
+            const updatedDishData = {
+                name,
+                description,
+                category,
+                ingredients: Array.isArray(ingredients) ? ingredients : ingredients.split(',').map(el => el.trim()),
+                prices: prices,
+                nutrition: {
+                    calories: calories || dish.nutrition.calories,
+                    fat: fat || dish.nutrition.fat,
+                    protein: protein || dish.nutrition.protein,
+                    carbs: carbs || dish.nutrition.carbs
+                },
+                nutriScore: nutriScore || dish.nutriScore || 'N/A', 
+                allergens: allergens ? allergens.split(',').map(el => el.trim()) : dish.allergens || [], 
+            };
+
+            mongoDish.findByIdAndUpdate(dishId, updatedDishData, { new: true })
+                .then(() => res.redirect('/dishes/showDishes'))
+                .catch(next);
         })
-        .catch(function (err) {
-            next(err);
-        });
+        .catch(next);
 };
+
+
+
 
 module.exports = dishesController;
