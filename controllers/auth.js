@@ -29,7 +29,7 @@ authController.submittedLogin = function(req, res, next) {
 };
 
 authController.login = function(req, res, next) {
-    res.render('login/dashboard')
+    res.render('login/index')
 };
 
 authController.logout = function(req, res, next) {
