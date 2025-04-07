@@ -17,7 +17,7 @@ authController.submittedLogin = function(req, res, next) {
                     if (result ===true){
                         const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: 86400000 });
                         res.cookie('auth-token', authToken, {maxAge: 86400000})
-                        res.redirect('/index')
+                        res.redirect('/dashboard')
                     } else {
                         res.redirect('/auth/login')
                     }
@@ -29,7 +29,7 @@ authController.submittedLogin = function(req, res, next) {
 };
 
 authController.login = function(req, res, next) {
-    res.render('login/index')
+    res.render('login/dashboard')
 };
 
 authController.logout = function(req, res, next) {

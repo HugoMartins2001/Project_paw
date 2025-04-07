@@ -15,7 +15,7 @@ router.get('/register', authController.createLogin );
 router.post('/registerSubmitted', authController.createLoginSubmitted);
 
 router.get('/loginform', (req, res) => {
-    res.render('login/index'); 
+    res.render('login/dashboard'); 
 });
 
 router.get('/registerform', (req, res) => {
@@ -27,7 +27,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }),
     (req, res) => {
-        res.redirect('/index'); // Redireciona para a página após login bem-sucedido
+        res.redirect('/dashboard'); // Redireciona para a página após login bem-sucedido
     }
 );
 
@@ -41,7 +41,7 @@ router.get('/facebook/callback', passport.authenticate('facebook', { failureRedi
             // Redireciona para a rota para capturar o email manualmente
             return res.redirect('/auth/facebook/email');
         }
-        res.redirect('/index'); // Redireciona para a página inicial após login bem-sucedido
+        res.redirect('/dashboard'); // Redireciona para a página inicial após login bem-sucedido
     }
 );
 
@@ -81,7 +81,7 @@ router.post('/facebook/email', async (req, res) => {
                 return res.redirect('/');
             }
             console.log('Usuário autenticado com sucesso:', user);
-            res.redirect('/index'); // Redireciona para a página inicial
+            res.redirect('/dashboard'); // Redireciona para a página inicial
         });
     } catch (err) {
         console.log('Erro no processo:', err);

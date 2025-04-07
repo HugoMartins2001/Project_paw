@@ -9,7 +9,7 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('./config/passport-config');
 
-const indexRouter = require('./routes/index');
+const indexRouter = require('./routes/dashboard');
 const authRouter = require('./routes/auth');
 const restaurantsRouter = require('./routes/restaurant');
 const profileRoutes = require('./routes/profile');
@@ -54,7 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', homeRoutes);
-app.use('/index', indexRouter);
+app.use('/dashboard', indexRouter);
 app.use('/restaurants', restaurantsRouter);
 app.use('/auth', authRouter);
 app.use('/profile', profileRoutes);

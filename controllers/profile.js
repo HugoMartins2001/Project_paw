@@ -5,7 +5,7 @@ const profile = {};
 // Exibir página de edição do perfil
 profile.editProfile = function (req, res, next) {
   if (!req.user) return res.redirect('/auth/login');
-  res.render('profile/editProfile', { user: req.user });
+  res.render('dashboard/editProfile', { user: req.user });
 };
 
 // Atualizar perfil do usuário
