@@ -45,48 +45,17 @@ router.get('/facebook/callback', passport.authenticate('facebook', { failureRedi
     }
 );
 
-// Rota para capturar o email manualmente
+
 router.get('/facebook/email', (req, res) => {
     res.render('login/facebookRegistoEmail', { user: req.user });
 });
 
-router.post('/facebook/email', async (req, res) => {
-    try {
-        const { facebookId, name, email } = req.body;
 
-        console.log('Dados recebidos do formulário:', { facebookId, name, email });
+router.post('/facebook/email', authController.facebookEmailSubmitted);
 
-        // Verifica se o email já existe no banco de dados
-        let user = await authController.findUserByEmail(email);
 
-        if (user) {
-            console.log('Email já registrado:', email);
-            return res.redirect('/auth/login'); // Redireciona para login se o email já estiver registrado
-        }
+router.get('/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/login' }), authController.facebookCallback);
 
-        // Atualiza o usuário no banco de dados com o email fornecido
-        user = await authController.updateUserEmail(facebookId, email);
 
-        if (!user) {
-            console.log('Erro ao atualizar o usuário no banco de dados.');
-            return res.redirect('/');
-        }
-
-        console.log('Usuário atualizado com sucesso:', user);
-
-        // Finaliza o processo de autenticação
-        req.login(user, (err) => {
-            if (err) {
-                console.log('Erro no req.login:', err);
-                return res.redirect('/');
-            }
-            console.log('Usuário autenticado com sucesso:', user);
-            res.redirect('/dashboard'); // Redireciona para a página inicial
-        });
-    } catch (err) {
-        console.log('Erro no processo:', err);
-        res.redirect('/');
-    }
-});
 
 module.exports = router;
