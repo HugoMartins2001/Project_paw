@@ -12,9 +12,4 @@ router.get('/auth/login', authController.login);
 
 router.get('/auth/register', authController.createLogin);
 
-
-router.get('/profile', authController.verifyLoginUser, function(req, res) {
-    res.render('profile', { user: req.user }); 
-});
-
 module.exports = router;

@@ -9,14 +9,14 @@
   </head>
 
   <body>
-    <!-- Top Navigation Bar -->
+    
     <header>
       <div class="navbar-container">
         <nav class="navbar-left">
           <a href="/index">Dashboard</a>
-          <a href="/restaurants/showRestaurants">Restaurants</a>
-          <a href="/profile">Profile</a>
-          <a href="/orders">Orders</a>
+          <a href="/restaurants/showRestaurants">Restaurantes</a>
+          <a href="/profile">Perfil</a>
+          <a href="/orders">Encomendas</a>
         </nav>
     
         <div class="navbar-right">
@@ -32,17 +32,19 @@
 
     <!-- User Profile Section -->
     <div class="container">
-      <h1>User Profile</h1>
+      <h1><%= user.role %> profile</h1>
       
       <div class="profile-card">
-        <span class="edit-icon"><i class="fas fa-pen"></i></span>
+        <a href="/profile/editProfile" class="edit-icon" title="Editar Perfil">
+          <i class="fas fa-pen"></i>
+        </a>        
         <img src="https://www.shutterstock.com/image-vector/user-profile-icon-vector-avatar-600nw-2247726673.jpg" alt="User Image" />
         <div class="profile-name"><%= user.name %>
         </div>
         <div class="profile-email"><%= user.email %></div>
 
         <div class="info-box">
-          <h3>Demographic</h3>
+          <h3>Informações</h3>
           <div class="info-item">
             <i class="fas fa-user-tag"></i>
             <%= user.role === 'cliente' ? 'Cliente' : user.role === 'admin' ? 'Administrador' : 'Manager' %>
