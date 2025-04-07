@@ -8,12 +8,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/stylesheets/showDish.css" />
-    <title>Detalhes do Prato</title>
+    <title>Dish Details</title>
   </head>
   <body>
     <div class="header bg-primary text-white py-3">
       <div class="container d-flex justify-content-between">
-        <h3>Detalhes do Prato</h3>
+        <h3>Dish Details</h3>
         <a href="/auth/logout" class="btn btn-danger">Logout</a>
       </div>
     </div>
@@ -21,27 +21,27 @@
     <div class="container mt-5">
       <% if (!dish) { %>
         <div class="alert alert-danger text-center">
-          <h3>Prato não encontrado</h3>
+          <h3>Dish not found</h3>
         </div>
       <% } else { %>
         <div class="dish-details card p-4 shadow-sm">
           <h2 class="text-center mb-4"><%= dish.name %></h2>
-          <p><strong>Descrição:</strong> <%= dish.description || 'Sem descrição disponível' %></p>
-          <p><strong>Categoria:</strong> <%= dish.category %></p>
-          <p><strong>Ingredientes:</strong> <%= dish.ingredients.join(', ') %></p>
-          <p><strong>Preços:</strong> Pequena: €<%= dish.prices.pequena %>, Média: €<%= dish.prices.media %>, Grande: €<%= dish.prices.grande %></p>
-          <p><strong>Calorias:</strong> <%= dish.nutrition.calories %> kcal</p>
-          <p><strong>Gordura:</strong> <%= dish.nutrition.fat %> g</p>
-          <p><strong>Proteína:</strong> <%= dish.nutrition.protein %> g</p>
-          <p><strong>Carboidratos:</strong> <%= dish.nutrition.carbs %> g</p>
+          <p><strong>Description:</strong> <%= dish.description || 'No description available' %></p>
+          <p><strong>Category:</strong> <%= dish.category %></p>
+          <p><strong>Ingredients:</strong> <%= dish.ingredients.join(', ') %></p>
+          <p><strong>Prices:</strong> Small: €<%= dish.prices.pequena %>, Medium: €<%= dish.prices.media %>, Large: €<%= dish.prices.grande %></p>
+          <p><strong>Calories:</strong> <%= dish.nutrition.calories %> kcal</p>
+          <p><strong>Fat:</strong> <%= dish.nutrition.fat %> g</p>
+          <p><strong>Protein:</strong> <%= dish.nutrition.protein %> g</p>
+          <p><strong>Carbohydrates:</strong> <%= dish.nutrition.carbs %> g</p>
           <p><strong>NutriScore:</strong> <%= dish.nutriScore %></p>
-          <p><strong>Alergénios:</strong> <%= Array.isArray(dish.allergens) && dish.allergens.length > 0 ? dish.allergens.join(', ') : 'Nenhum' %></p>
+          <p><strong>Allergens:</strong> <%= Array.isArray(dish.allergens) && dish.allergens.length > 0 ? dish.allergens.join(', ') : 'None' %></p>
         </div>
       <% } %>
     </div>
 
     <div class="text-center mt-4">
-      <a href="/dishes/showDishes" class="btn btn-secondary">Voltar à Lista de Pratos</a>
+      <a href="/dishes/showDishes" class="btn btn-secondary">Back to Dishes List</a>
     </div>
   </body>
 </html>

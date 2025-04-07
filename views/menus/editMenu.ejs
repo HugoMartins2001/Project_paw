@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/editMenu.css">
-    <title>Editar Menu</title>
+    <title>Edit Menu</title>
 </head>
 <body>
-    <!-- Cabeçalho -->
+    <!-- Header -->
     <div class="header bg-primary text-white py-3">
         <div class="container d-flex justify-content-between align-items-center">
-            <h3>Editar Menu</h3>
-            <!-- Botão de Logout com o estilo correto -->
+            <h3>Edit Menu</h3>
+            <!-- Properly styled Logout button -->
             <a href="/auth/logout" class="btn btn-danger">Logout</a>
         </div>
     </div>
 
-    <!-- Conteúdo principal -->
+    <!-- Main Content -->
     <div class="container mt-5">
-        <h1 class="mb-4 text-center">Editar Menu</h1>
+        <h1 class="mb-4 text-center">Edit Menu</h1>
 
         <form action="/menus/editMenu/<%= menu._id %>" method="POST">
-            <!-- Campo de Nome do Menu -->
+            <!-- Menu Name Field -->
             <div class="mb-3">
-                <label for="name" class="form-label">Nome do Menu:</label>
+                <label for="name" class="form-label">Menu Name:</label>
                 <input type="text" name="name" id="name" class="form-control" value="<%= menu.name %>" required>
             </div>
 
-            <!-- Campo de Seleção de Pratos com Dropdown -->
+            <!-- Dish Selection Field with Dropdown -->
             <div class="mb-3">
-                <label for="dishes" class="form-label">Selecione os Pratos:</label>
+                <label for="dishes" class="form-label">Select Dishes:</label>
                 <select name="dishes" id="dishes" class="form-select" multiple required>
                     <% dishes.forEach(function(dish) { %>
                         <option value="<%= dish._id %>"
@@ -39,22 +39,22 @@
                         </option>
                     <% }) %>
                 </select>
-                <small class="form-text text-muted">Selecione múltiplos pratos ao segurar na tecla "Ctrl" (Windows) ou "Cmd" (Mac).</small>
+                <small class="form-text text-muted">Hold "Ctrl" (Windows) or "Cmd" (Mac) to select multiple dishes.</small>
             </div>
 
-            <!-- Botão para Enviar -->
+            <!-- Submit Button -->
             <div class="mb-3 text-center">
-                <button type="submit" class="btn btn-primary">Guardar Alterações</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
             </div>
         </form>
 
-        <!-- Botão para voltar à lista de menus -->
+        <!-- Back to Menu List Button -->
         <div class="text-center mt-4">
-            <a href="/menus/showMenus" class="btn btn-secondary">Voltar à Lista de Menus</a>
+            <a href="/menus/showMenus" class="btn btn-secondary">Back to Menu List</a>
         </div>
     </div>
 
-    <!-- Adicionando o script do Bootstrap -->
+    <!-- Bootstrap Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -5,26 +5,26 @@ const User = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { 
     type: String, 
-    required: function() { return !this.googleId && !this.facebookId; } // Opcional para login social
+    required: function() { return !this.googleId && !this.facebookId; }
   },
   clienteTelemovel: { 
     type: String, 
     match: /^[0-9]{9}$/, 
-    required: function() { return this.role === 'cliente'; } 
+    required: function() { return this.role === 'cliente' && !this.googleId && !this.facebookId; } 
   },
   managerTelemovel: {
     type: String, 
     match: /^[0-9]{9}$/, 
-    required: function() { return this.role === 'manager'; } 
+    required: function() { return this.role === 'manager' && !this.googleId && !this.facebookId; } 
   },
   clienteNif: { 
     type: String, 
     match: /^[0-9]{9}$/, 
-    required: function() { return this.role === 'cliente'; } 
+    required: function() { return this.role === 'cliente' && !this.googleId && !this.facebookId; } 
   },
   address: { 
     type: String, 
-    required: function() { return this.role === 'cliente'; } 
+    required: function() { return this.role === 'cliente' && !this.googleId && !this.facebookId; } 
   },
   role: { 
     type: String, 

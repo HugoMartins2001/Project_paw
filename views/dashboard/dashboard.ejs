@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Manager</title>
+    <title><%= user.role %> Dashboard</title>
     <link rel="stylesheet" href="/stylesheets/managerDashboard.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -42,25 +42,25 @@
 
         <!-- Manager Menu -->
         <div class="manager-menu">
-            <h2>Menu do <%= user.role %></h2>
+            <h2><%= user.role %> Menu</h2>
             <% if (user.role === 'manager') { %>
-                <a href="/restaurants/submitRestaurant" class="menu-btn"><i class="fas fa-plus-circle"></i> Criar Restaurante</a>
-                <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Mostrar Restaurantes</a>
-                <a href="/menus/submitMenu" class="menu-btn"><i class="fas fa-book"></i> Criar Menu</a>
-                <a href="/menus/showMenus" class="menu-btn"><i class="fas fa-book-open"></i> Mostrar Menus</a>
-                <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Criar Prato</a>
-                <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Mostrar Pratos</a>
+                <a href="/restaurants/submitRestaurant" class="menu-btn"><i class="fas fa-plus-circle"></i> Create restaurant</a>
+                <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
+                <a href="/menus/submitMenu" class="menu-btn"><i class="fas fa-book"></i> Create menu</a>
+                <a href="/menus/showMenus" class="menu-btn"><i class="fas fa-book-open"></i> Show menus</a>
+                <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create plate</a>
+                <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show plates</a>
             <% } else if (user.role === 'admin') { %>
-                <a href="/restaurants/submitRestaurant" class="menu-btn"><i class="fas fa-plus-circle"></i> Criar Restaurante</a>
-                <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Mostrar Restaurantes</a>
-                <a href="/restaurants/pendingApproval" class="menu-btn"><i class="fas fa-check-circle"></i> Aprovar Restaurantes</a>
-                <a href="/menus/submitMenu" class="menu-btn"><i class="fas fa-book"></i> Criar Menu</a>
-                <a href="/menus/showMenus" class="menu-btn"><i class="fas fa-book-open"></i> Mostrar Menus</a>
-                <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Criar Prato</a>
-                <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Mostrar Pratos</a>
-                <a href="/users/showUsers" class="menu-btn"><i class="fas fa-users"></i> Mostrar Utilizadores</a>
+                <a href="/restaurants/submitRestaurant" class="menu-btn"><i class="fas fa-plus-circle"></i> Create restaurant</a>
+                <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
+                <a href="/restaurants/pendingApproval" class="menu-btn"><i class="fas fa-check-circle"></i> Approve restaurants</a>
+                <a href="/menus/submitMenu" class="menu-btn"><i class="fas fa-book"></i> Create menu</a>
+                <a href="/menus/showMenus" class="menu-btn"><i class="fas fa-book-open"></i> Show menus</a>
+                <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create plate</a>
+                <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show plates</a>
+                <a href="/users/showUsers" class="menu-btn"><i class="fas fa-users"></i> Show users</a>
             <% } else if (user.role === 'cliente') { %>
-                <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Mostrar Restaurantes</a>
+                <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
             <% } %>
         </div>
     </div>

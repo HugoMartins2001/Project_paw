@@ -5,84 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/editDish.css">
-    <title>Editar Prato</title>
+    <title>Edit Dish</title>
 </head>
 <body>
-    <!-- Cabeçalho -->
+
     <div class="header bg-primary text-white py-3">
         <div class="container d-flex justify-content-between align-items-center">
-            <h3>Editar Prato</h3>
-            <!-- Botão de Logout com o estilo correto -->
+            <h3>Edit Dish</h3>
+
             <a href="/auth/logout" class="btn btn-danger">Logout</a>
         </div>
     </div>
 
     <!-- Conteúdo principal -->
     <div class="container mt-5">
-        <h1 class="mb-4 text-center">Editar Prato</h1>
+        <h1 class="mb-4 text-center">Edit Dish</h1>
 
         <form action="/dishes/editDish/<%= dish._id %>" method="POST">
             <!-- Campo Nome do Prato -->
             <div class="mb-3">
-                <label for="name" class="form-label">Nome do Prato:</label>
+                <label for="name" class="form-label">Name of the dish:</label>
                 <input type="text" id="name" name="name" value="<%= dish.name %>" class="form-control" required>
             </div>
 
             <!-- Campo Descrição -->
             <div class="mb-3">
-                <label for="description" class="form-label">Descrição:</label>
+                <label for="description" class="form-label">Description:</label>
                 <textarea id="description" name="description" class="form-control" required><%= dish.description %></textarea>
             </div>
 
             <!-- Campo Preços -->
             <div class="mb-3">
-                <label class="form-label">Preços por Dose:</label>
+                <label class="form-label">Prices per serving:</label>
                 <div class="input-group mb-2">
-                    <span class="input-group-text">Pequena</span>
+                    <span class="input-group-text">Small</span>
                     <input type="number" step="0.01" name="prices[pequena]" value="<%= dish.prices.pequena %>" class="form-control" required>
                 </div>
                 <div class="input-group mb-2">
-                    <span class="input-group-text">Média</span>
+                    <span class="input-group-text">Medium</span>
                     <input type="number" step="0.01" name="prices[media]" value="<%= dish.prices.media %>" class="form-control" required>
                 </div>
                 <div class="input-group">
-                    <span class="input-group-text">Grande</span>
+                    <span class="input-group-text">Large</span>
                     <input type="number" step="0.01" name="prices[grande]" value="<%= dish.prices.grande %>" class="form-control" required>
                 </div>
             </div>
 
             <!-- Campo Categoria -->
             <div class="mb-3">
-                <label for="category" class="form-label">Categoria:</label>
+                <label for="category" class="form-label">Category:</label>
                 <select id="category" name="category" class="form-select" required>
-                    <option value="carne" <%= dish.category === 'carne' ? 'selected' : '' %>>Carne</option>
-                    <option value="peixe" <%= dish.category === 'peixe' ? 'selected' : '' %>>Peixe</option>
-                    <option value="sobremesa" <%= dish.category === 'sobremesa' ? 'selected' : '' %>>Sobremesa</option>
-                    <option value="vegetariano" <%= dish.category === 'vegetariano' ? 'selected' : '' %>>Vegetariano</option>
+                    <option value="carne" <%= dish.category === 'carne' ? 'selected' : '' %>>Meat</option>
+                    <option value="peixe" <%= dish.category === 'peixe' ? 'selected' : '' %>>Fish</option>
+                    <option value="sobremesa" <%= dish.category === 'sobremesa' ? 'selected' : '' %>>Dessert</option>
+                    <option value="vegetariano" <%= dish.category === 'vegetariano' ? 'selected' : '' %>>Vegetarian</option>
                 </select>
             </div>
 
             <!-- Campo Ingredientes -->
             <div class="mb-3">
-                <label for="ingredients" class="form-label">Ingredientes (separados por vírgula):</label>
+                <label for="ingredients" class="form-label">Ingredients (separated by commas):</label>
                 <input type="text" id="ingredients" name="ingredients" value="<%= dish.ingredients.join(', ') %>" class="form-control" required>
             </div>
 
             <!-- Campo Alergénios -->
             <div class="mb-3">
-                <label for="allergens" class="form-label">Alergénios (separados por vírgula):</label>
+                <label for="allergens" class="form-label">Allergens (separated by commas):</label>
                 <input type="text" id="allergens" name="allergens" value="<%= dish.allergens.join(', ') %>" class="form-control" />
             </div>
 
             <!-- Botão para Enviar -->
             <div class="mb-3 text-center">
-                <button type="submit" class="btn btn-primary">Guardar Alterações</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
         </form>
 
         <!-- Botão para voltar à lista de pratos -->
         <div class="text-center mt-4">
-            <a href="/dishes/showDishes" class="btn btn-secondary">Voltar à Lista de Pratos</a>
+            <a href="/dishes/showDishes" class="btn btn-secondary">Back to Dish List</a>
         </div>
     </div>
 

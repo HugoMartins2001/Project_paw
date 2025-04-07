@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,51 +8,50 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/stylesheets/showRestaurante.css" />
-    <title>Detalhes do Restaurante</title>
+    <title>Restaurant Details</title>
   </head>
   <body>
     <div class="header bg-primary text-white py-3">
       <div class="container d-flex justify-content-between">
-        <h3>Detalhes do Restaurante</h3>
+        <h3>Restaurant Details</h3>
         <a href="/auth/logout" class="btn btn-danger">Logout</a>
       </div>
     </div>
 
-
     <div class="container mt-5">
       <% if (!restaurant) { %>
         <div class="alert alert-warning text-center">
-          <h3>Restaurante não encontrado</h3>
+          <h3>Restaurant not found</h3>
         </div>
       <% } else { %>
         <h1 class="text-center mb-4"><%= restaurant.name %></h1>
         <div class="details-card card p-4 shadow-sm">
-          <h4>Detalhes do Restaurante</h4>
-          <p><strong>Rua:</strong> <%= restaurant.address %></p>
+          <h4>Restaurant Details</h4>
+          <p><strong>Street:</strong> <%= restaurant.address %></p>
           <p><strong>Latitude:</strong> <%= restaurant.latitude %></p>
           <p><strong>Longitude:</strong> <%= restaurant.longitude %></p>
-          <p><strong>Telefone:</strong> <%= restaurant.phone %></p>
+          <p><strong>Phone:</strong> <%= restaurant.phone %></p>
           <p><strong>Email:</strong> <%= restaurant.email %></p>
-          <p><strong>Horário de Funcionamento:</strong> <%= restaurant.openingHours %></p>
-          <p><strong>Métodos de Pagamento:</strong> <%= restaurant.paymentMethods %></p>
+          <p><strong>Opening Hours:</strong> <%= restaurant.openingHours %></p>
+          <p><strong>Payment Methods:</strong> <%= restaurant.paymentMethods %></p>
 
-          <h5 class="mt-4">Menus Disponíveis:</h5>
+          <h5 class="mt-4">Available Menus:</h5>
           <% if (restaurant.menus && restaurant.menus.length > 0) { %>
             <ul>
               <% restaurant.menus.forEach(function(menu) { %>
                 <li><%= menu.name %></li>
-                <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info">Ver Detalhes</a>
+                <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info">View Details</a>
               <% }) %>
             </ul>
           <% } else { %>
-            <p>Este restaurante ainda não tem menus associados.</p>
+            <p>This restaurant has no menus associated yet.</p>
           <% } %>
         </div>
       <% } %>
     </div>
 
     <div class="text-center mt-4">
-      <a href="/restaurants/showRestaurants" class="btn btn-secondary">Voltar à Lista de Restaurantes</a>
+      <a href="/restaurants/showRestaurants" class="btn btn-secondary">Back to Restaurant List</a>
     </div>
   </body>
 </html>

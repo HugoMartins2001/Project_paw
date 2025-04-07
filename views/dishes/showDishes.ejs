@@ -8,22 +8,22 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/stylesheets/showDishes.css" />
-    <title>Pratos Disponíveis</title>
+    <title>Available Dishes</title>
   </head>
   <body>
     <div class="header bg-primary text-white py-3">
       <div class="container d-flex justify-content-between">
-        <h3>Pratos Disponíveis</h3>
+        <h3>Available Dishes</h3>
         <a href="/auth/logout" class="btn btn-danger">Logout</a>
       </div>
     </div>
 
     <div class="container mt-4">
-      <h1 class="mb-4 text-center">Pratos Disponíveis</h1>
+      <h1 class="mb-4 text-center">Available Dishes</h1>
     
       <% if (dishes.length === 0) { %>
         <div class="alert alert-warning text-center">
-          <h3>Nenhum prato encontrado.</h3>
+          <h3>No dishes found.</h3>
         </div>
       <% } else { %>
         <div class="row">
@@ -32,22 +32,22 @@
               <div class="card mb-4 shadow-sm">
                 <div class="card-body">
                   <h5 class="card-title"><%= dish.name %></h5>
-                  <p class="card-text"><strong>Descrição:</strong> <%= dish.description %></p>
+                  <p class="card-text"><strong>Description:</strong> <%= dish.description %></p>
                   <!-- Exibindo preços por dose -->
                   <p class="card-text">
-                    <strong>Preço:</strong><br>
-                    <strong>Pequena:</strong> €<%= dish.prices.pequena.toFixed(2) %><br>
-                    <strong>Média:</strong> €<%= dish.prices.media.toFixed(2) %><br>
-                    <strong>Grande:</strong> €<%= dish.prices.grande.toFixed(2) %>
+                    <strong>Price:</strong><br>
+                    <strong>Small:</strong> €<%= dish.prices.pequena.toFixed(2) %><br>
+                    <strong>Medium:</strong> €<%= dish.prices.media.toFixed(2) %><br>
+                    <strong>Large:</strong> €<%= dish.prices.grande.toFixed(2) %>
                   </p>
-                  <p class="card-text"><strong>Categoria:</strong> <%= dish.category %></p>
+                  <p class="card-text"><strong>Category:</strong> <%= dish.category %></p>
                   <div class="d-flex justify-content-between">
-                    <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info">Ver Detalhes</a>
+                    <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info">View Details</a>
                     <% if ((user.role === 'manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'admin') { %>
-                      <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-warning">Editar</a>
+                      <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-warning">Edit</a>
                       <form action="/dishes/deleteDish/<%= dish._id %>" method="POST" class="d-inline">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este prato?')">
-                          Eliminar
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this dish?')">
+                          Delete
                         </button>
                       </form>
                     <% } %>
@@ -61,9 +61,9 @@
     
       <div class="text-center">
         <% if (user.role === 'manager' || user.role === 'admin') { %>
-          <a href="/dishes/submitDishes" class="btn btn-primary mt-4">Criar Novo Prato</a>
+          <a href="/dishes/submitDishes" class="btn btn-primary mt-4">Create New Dish</a>
         <% } %>
-        <a href="/dashboard" class="btn btn-secondary mt-4">Voltar à Página Principal</a>
+        <a href="/dashboard" class="btn btn-secondary mt-4">Back to Dashboard</a>
       </div>
     </div>
 
