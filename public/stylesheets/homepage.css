@@ -3,22 +3,26 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #f8f9fa, #e3eaf3);
+    background: linear-gradient(135deg, #e3dfd9, #e2940d);
+    overflow-y: scroll; /* Permite o scroll vertical */
+}
+
+body::-webkit-scrollbar {
+    width: 0px; /* Define a largura da barra de rolagem como 0 */
+    height: 0px; /* Define a altura da barra de rolagem como 0 */
 }
 
 /* Estilização do container principal */
 .container {
     display: flex;
+    flex-direction: row; /* Alinha os elementos internos lado a lado */
     width: 85%;
-    height: 75%;
-    background: #fff;
+    height: 680px;
+    background: #ffffff;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     overflow: hidden;
+    margin: 20px auto; /* Centraliza o container e adiciona espaço acima */
     transition: transform 0.3s ease;
 }
 
@@ -29,9 +33,9 @@ body {
 
 /* Estilização da seção esquerda */
 .left-section {
-    flex: 1;
-    padding: 40px;
-    background: #f5f5f5;
+    flex: 1; /* Faz a seção ocupar todo o espaço disponível */
+    padding: 40px;;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,50 +63,69 @@ body {
 
 /* Estilização da seção direita */
 .right-section {
+    flex: 1;
     position: relative;
     z-index: 1;
-    width: 100%;
-    height: 100%;
-    flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Alinha os elementos na vertical */ 
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-.right-section a {
-    display: block;
-    width: 220px;
-    text-align: center;
-    margin: 12px 0;
-    padding: 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+.cssbuttons-io-button {
+    background: #e1bf15;
+    color: white;
+    font-family: inherit;
+    padding: 0.5em; /* Aumenta o espaçamento interno */
+    padding-left: 1.5em; /* Aumenta o espaçamento à esquerda */
+    font-size: 20px; /* Aumenta o tamanho da fonte */
+    font-weight: 500;
+    border-radius: 1em; /* Ajusta o arredondamento */
+    border: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 0 1.6em -0.6em #d25406;
+    overflow: hidden;
+    position: relative;
+    height: 3.5em; /* Aumenta a altura do botão */
+    padding-right: 4em; /* Aumenta o espaçamento à direita */
+    cursor: pointer;
+    margin-bottom: 20px; /* Adiciona espaço entre os botões */
 }
 
-.right-section a.btn-login {
-    background: #28a745;
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+.cssbuttons-io-button .icon {
+    background: white;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2em;
+    width: 2.2em;
+    border-radius: 0.7em;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em #b58407;
+    right: 0.3em;
+    transition: all 0.3s;
 }
 
-.right-section a.btn-login:hover {
-    background: #218838;
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.5);
+.cssbuttons-io-button:hover .icon {
+    width: calc(100% - 0.6em);
 }
 
-.right-section a.btn-register {
-    background: #ffc107;
-    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+.cssbuttons-io-button .icon svg {
+    width: 1.1em;
+    transition: transform 0.3s;
+    color: #7b52b9;
 }
 
-.right-section a.btn-register:hover {
-    background: #e0a800;
-    box-shadow: 0 8px 20px rgba(255, 193, 7, 0.5);
+.cssbuttons-io-button:hover .icon svg {
+    transform: translateX(0.1em);
+}
+
+.cssbuttons-io-button:active .icon {
+    transform: scale(0.95);
 }
 
 
@@ -110,12 +133,14 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
     z-index: -1; 
-    pointer-events: none;
-    opacity: 0.8; 
+    pointer-events: none; 
+    border: 15px solid #ffffff; 
+    box-sizing: border-box; 
+    border-radius: 20px;
 }
 
 /* Estilização da barra separadora */
@@ -187,4 +212,39 @@ body {
     background: #145dbf;
 }
 
+/* Garante que a grelha de quadrados fique abaixo do container */
+.quadrados-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas de largura igual */
+    gap: 20px; /* Espaçamento entre os quadrados */
+    padding: 0;
+    margin: 40px auto; /* Centraliza a grelha horizontalmente */
+    width: 85%; /* Define a largura da grelha igual à largura do container de cima */
+    background-color: transparent; /* Remove o fundo do container */
+    justify-content: start; /* Alinha a grelha à direita */
+}
+
+/* Estilização de cada quadrado */
+.quadrado {
+    height: 150px;
+    width: 200px;;
+    background-color: #e9ecef;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efeito hover nos quadrados */
+.quadrado:hover {
+    transform: scale(1.05); /* Aumenta ligeiramente o tamanho */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra mais forte */
+    cursor: pointer;
+}
 
