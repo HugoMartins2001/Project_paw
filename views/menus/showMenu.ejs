@@ -20,36 +20,41 @@
 
     <div class="container mt-5">
       <% if (!menu) { %>
-        <div class="alert alert-danger text-center">
-          <h3>Menu Not Found</h3>
-        </div>
+      <div class="alert alert-danger text-center">
+        <h3>Menu Not Found</h3>
+      </div>
       <% } else { %>
-        <div class="menu-details card p-4 shadow-sm">
-          <h2 class="text-center mb-4"><%= menu.name %></h2>
-          <p><strong>Menu Name:</strong> <%= menu.name %></p>
-          <h4>Dishes:</h4>
-          <% if (menu.dishes && menu.dishes.length > 0) { %>
-            <ul class="list-group">
-              <% menu.dishes.forEach(function(dish) { %>
-                <li class="list-group-item">
-                  <strong>Name: <%= dish.name %></strong> - <br>
-                  <strong>Portions: </strong>
-                  <% if (dish.prices) { %>
-                      Small: €<%= dish.prices.pequena.toFixed(2) %> | 
-                      Medium: €<%= dish.prices.media.toFixed(2) %> | 
-                      Large: €<%= dish.prices.grande.toFixed(2) %>
-                  <% } else { %>
-                      <span>Price not available</span>
-                  <% } %>
-                  <p><em>Description: <%= dish.description || 'No description available' %></em></p>
-                  <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info">View Details</a>
-                </li>
-              <% }) %>
-            </ul>
-          <% } else { %>
-            <p>This menu has no dishes associated yet.</p>
-          <% } %>
-        </div>
+      <div class="menu-details card p-4 shadow-sm">
+        <h2 class="text-center mb-4"><%= menu.name %></h2>
+        <p><strong>Menu Name:</strong> <%= menu.name %></p>
+        <h4>Dishes:</h4>
+        <% if (menu.dishes && menu.dishes.length > 0) { %>
+        <ul class="list-group">
+          <% menu.dishes.forEach(function(dish) { %>
+          <li class="list-group-item">
+            <strong>Name: <%= dish.name %></strong> - <br />
+            <strong>Portions: </strong>
+            <% if (dish.prices) { %> Small: €<%= dish.prices.pequena.toFixed(2)
+            %> | Medium: €<%= dish.prices.media.toFixed(2) %> | Large: €<%=
+            dish.prices.grande.toFixed(2) %> <% } else { %>
+            <span>Price not available</span>
+            <% } %>
+            <p>
+              <em
+                >Description: <%= dish.description || 'No description available'
+                %></em
+              >
+            </p>
+            <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info"
+              >View Details</a
+            >
+          </li>
+          <% }) %>
+        </ul>
+        <% } else { %>
+        <p>This menu has no dishes associated yet.</p>
+        <% } %>
+      </div>
       <% } %>
     </div>
 

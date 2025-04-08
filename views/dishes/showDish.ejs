@@ -20,28 +20,39 @@
 
     <div class="container mt-5">
       <% if (!dish) { %>
-        <div class="alert alert-danger text-center">
-          <h3>Dish not found</h3>
-        </div>
+      <div class="alert alert-danger text-center">
+        <h3>Dish not found</h3>
+      </div>
       <% } else { %>
-        <div class="dish-details card p-4 shadow-sm">
-          <h2 class="text-center mb-4"><%= dish.name %></h2>
-          <p><strong>Description:</strong> <%= dish.description || 'No description available' %></p>
-          <p><strong>Category:</strong> <%= dish.category %></p>
-          <p><strong>Ingredients:</strong> <%= dish.ingredients.join(', ') %></p>
-          <p><strong>Prices:</strong> Small: €<%= dish.prices.pequena %>, Medium: €<%= dish.prices.media %>, Large: €<%= dish.prices.grande %></p>
-          <p><strong>Calories:</strong> <%= dish.nutrition.calories %> kcal</p>
-          <p><strong>Fat:</strong> <%= dish.nutrition.fat %> g</p>
-          <p><strong>Protein:</strong> <%= dish.nutrition.protein %> g</p>
-          <p><strong>Carbohydrates:</strong> <%= dish.nutrition.carbs %> g</p>
-          <p><strong>NutriScore:</strong> <%= dish.nutriScore %></p>
-          <p><strong>Allergens:</strong> <%= Array.isArray(dish.allergens) && dish.allergens.length > 0 ? dish.allergens.join(', ') : 'None' %></p>
-        </div>
+      <div class="dish-details card p-4 shadow-sm">
+        <h2 class="text-center mb-4"><%= dish.name %></h2>
+        <p>
+          <strong>Description:</strong> <%= dish.description || 'No description
+          available' %>
+        </p>
+        <p><strong>Category:</strong> <%= dish.category %></p>
+        <p><strong>Ingredients:</strong> <%= dish.ingredients.join(', ') %></p>
+        <p>
+          <strong>Prices:</strong> Small: €<%= dish.prices.pequena %>, Medium:
+          €<%= dish.prices.media %>, Large: €<%= dish.prices.grande %>
+        </p>
+        <p><strong>Calories:</strong> <%= dish.nutrition.calories %> kcal</p>
+        <p><strong>Fat:</strong> <%= dish.nutrition.fat %> g</p>
+        <p><strong>Protein:</strong> <%= dish.nutrition.protein %> g</p>
+        <p><strong>Carbohydrates:</strong> <%= dish.nutrition.carbs %> g</p>
+        <p><strong>NutriScore:</strong> <%= dish.nutriScore %></p>
+        <p>
+          <strong>Allergens:</strong> <%= Array.isArray(dish.allergens) &&
+          dish.allergens.length > 0 ? dish.allergens.join(', ') : 'None' %>
+        </p>
+      </div>
       <% } %>
     </div>
 
     <div class="text-center mt-4">
-      <a href="/dishes/showDishes" class="btn btn-secondary">Back to Dishes List</a>
+      <a href="/dishes/showDishes" class="btn btn-secondary"
+        >Back to Dishes List</a
+      >
     </div>
   </body>
 </html>

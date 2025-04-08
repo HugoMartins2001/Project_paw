@@ -1,201 +1,201 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #e3dfd9, #e2940d);
-    overflow-y: scroll;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #e3dfd9, #e2940d);
+  overflow-y: scroll;
 }
 body::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
+  width: 0px;
+  height: 0px;
 }
 .container {
-    display: flex;
-    flex-direction: row;
-    width: 85%;
-    height: 680px;
-    background: #ffffff;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    overflow: hidden;
-    margin: 20px auto;
-    transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: row;
+  width: 85%;
+  height: 680px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 20px auto;
+  transition: transform 0.3s ease;
 }
 .container:hover {
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
 .left-section {
-    flex: 1;
-    padding: 40px;;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
+  flex: 1;
+  padding: 40px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
 }
 .left-section img {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 120px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 120px;
 }
 .left-section h1 {
-    font-size: 2.8rem;
-    color: #333;
-    margin-bottom: 15px;
+  font-size: 2.8rem;
+  color: #333;
+  margin-bottom: 15px;
 }
 .left-section p {
-    font-size: 1.2rem;
-    color: #666;
+  font-size: 1.2rem;
+  color: #666;
 }
 .right-section {
-    flex: 1;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 .cssbuttons-io-button {
-    background: #e1bf15;
-    color: white;
-    font-family: inherit;
-    padding: 0.5em;
-    padding-left: 1.5em;
-    font-size: 20px;
-    font-weight: 500;
-    border-radius: 1em;
-    border: none;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    box-shadow: inset 0 0 1.6em -0.6em #d25406;
-    overflow: hidden;
-    position: relative;
-    height: 3.5em;
-    padding-right: 4em;
-    cursor: pointer;
-    margin-bottom: 20px;
+  background: #e1bf15;
+  color: white;
+  font-family: inherit;
+  padding: 0.5em;
+  padding-left: 1.5em;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 1em;
+  border: none;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 0 1.6em -0.6em #d25406;
+  overflow: hidden;
+  position: relative;
+  height: 3.5em;
+  padding-right: 4em;
+  cursor: pointer;
+  margin-bottom: 20px;
 }
 .cssbuttons-io-button .icon {
-    background: white;
-    margin-left: 1em;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.2em;
-    width: 2.2em;
-    border-radius: 0.7em;
-    box-shadow: 0.1em 0.1em 0.6em 0.2em #b58407;
-    right: 0.3em;
-    transition: all 0.3s;
+  background: white;
+  margin-left: 1em;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2em;
+  width: 2.2em;
+  border-radius: 0.7em;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em #b58407;
+  right: 0.3em;
+  transition: all 0.3s;
 }
 .cssbuttons-io-button:hover .icon {
-    width: calc(100% - 0.6em);
+  width: calc(100% - 0.6em);
 }
 .cssbuttons-io-button .icon svg {
-    width: 1.1em;
-    transition: transform 0.3s;
-    color: #7b52b9;
+  width: 1.1em;
+  transition: transform 0.3s;
+  color: #7b52b9;
 }
 .cssbuttons-io-button:hover .icon svg {
-    transform: translateX(0.1em);
+  transform: translateX(0.1em);
 }
 .cssbuttons-io-button:active .icon {
-    transform: scale(0.95);
+  transform: scale(0.95);
 }
 .background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover;
-    z-index: -1; 
-    pointer-events: none; 
-    border: 15px solid #ffffff; 
-    box-sizing: border-box; 
-    border-radius: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+  border: 15px solid #ffffff;
+  box-sizing: border-box;
+  border-radius: 20px;
 }
 .separator {
-    width: 100%;
-    height: 2px;
-    background: #ddd;
-    margin: 20px 0;
-    position: relative;
+  width: 100%;
+  height: 2px;
+  background: #ddd;
+  margin: 20px 0;
+  position: relative;
 }
 .separator::after {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff;
-    padding: 0 10px;
-    font-size: 0.9rem;
-    color: #666;
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 0 10px;
+  font-size: 0.9rem;
+  color: #666;
 }
 .social-buttons {
-    display: flex;
-    gap: 20px;
-    margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
 }
 .social-buttons a {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    background: #f5f5f5;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: #f5f5f5;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 .social-buttons a:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 .social-buttons a img {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 .social-buttons a.google {
-    background: #fff;
-    border: 1px solid #ddd;
+  background: #fff;
+  border: 1px solid #ddd;
 }
 .social-buttons a.google:hover {
-    border-color: #4285f4;
+  border-color: #4285f4;
 }
 .quadrados-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 0;
-    margin: 40px auto;
-    width: 85%;
-    background-color: transparent;
-    justify-content: start;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 0;
+  margin: 40px auto;
+  width: 85%;
+  background-color: transparent;
+  justify-content: start;
 }
 .quadrado {
-    height: 150px;
-    width: 200px;;
-    background-color: #e9ecef;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 150px;
+  width: 200px;
+  background-color: #e9ecef;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .quadrado:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }

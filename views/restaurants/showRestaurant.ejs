@@ -20,38 +20,44 @@
 
     <div class="container mt-5">
       <% if (!restaurant) { %>
-        <div class="alert alert-warning text-center">
-          <h3>Restaurant not found</h3>
-        </div>
+      <div class="alert alert-warning text-center">
+        <h3>Restaurant not found</h3>
+      </div>
       <% } else { %>
-        <h1 class="text-center mb-4"><%= restaurant.name %></h1>
-        <div class="details-card card p-4 shadow-sm">
-          <h4>Restaurant Details</h4>
-          <p><strong>Street:</strong> <%= restaurant.address %></p>
-          <p><strong>Latitude:</strong> <%= restaurant.latitude %></p>
-          <p><strong>Longitude:</strong> <%= restaurant.longitude %></p>
-          <p><strong>Phone:</strong> <%= restaurant.phone %></p>
-          <p><strong>Email:</strong> <%= restaurant.email %></p>
-          <p><strong>Opening Hours:</strong> <%= restaurant.openingHours %></p>
-          <p><strong>Payment Methods:</strong> <%= restaurant.paymentMethods %></p>
+      <h1 class="text-center mb-4"><%= restaurant.name %></h1>
+      <div class="details-card card p-4 shadow-sm">
+        <h4>Restaurant Details</h4>
+        <p><strong>Street:</strong> <%= restaurant.address %></p>
+        <p><strong>Latitude:</strong> <%= restaurant.latitude %></p>
+        <p><strong>Longitude:</strong> <%= restaurant.longitude %></p>
+        <p><strong>Phone:</strong> <%= restaurant.phone %></p>
+        <p><strong>Email:</strong> <%= restaurant.email %></p>
+        <p><strong>Opening Hours:</strong> <%= restaurant.openingHours %></p>
+        <p>
+          <strong>Payment Methods:</strong> <%= restaurant.paymentMethods %>
+        </p>
 
-          <h5 class="mt-4">Available Menus:</h5>
-          <% if (restaurant.menus && restaurant.menus.length > 0) { %>
-            <ul>
-              <% restaurant.menus.forEach(function(menu) { %>
-                <li><%= menu.name %></li>
-                <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info">View Details</a>
-              <% }) %>
-            </ul>
-          <% } else { %>
-            <p>This restaurant has no menus associated yet.</p>
-          <% } %>
-        </div>
+        <h5 class="mt-4">Available Menus:</h5>
+        <% if (restaurant.menus && restaurant.menus.length > 0) { %>
+        <ul>
+          <% restaurant.menus.forEach(function(menu) { %>
+          <li><%= menu.name %></li>
+          <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info"
+            >View Details</a
+          >
+          <% }) %>
+        </ul>
+        <% } else { %>
+        <p>This restaurant has no menus associated yet.</p>
+        <% } %>
+      </div>
       <% } %>
     </div>
 
     <div class="text-center mt-4">
-      <a href="/restaurants/showRestaurants" class="btn btn-secondary">Back to Restaurant List</a>
+      <a href="/restaurants/showRestaurants" class="btn btn-secondary"
+        >Back to Restaurant List</a
+      >
     </div>
   </body>
 </html>
