@@ -1,84 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/stylesheets/showMenus.css" />
-    <title>Available Menus</title>
-  </head>
-  <body>
-    <div class="header bg-primary text-white py-3">
-      <div class="container d-flex justify-content-between">
-        <h3>Available Menus</h3>
-        <a href="/auth/logout" class="btn btn-danger">Logout</a>
-      </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/stylesheets/showMenus.css" />
+  <title>Available Menus</title>
+</head>
+
+<body>
+  <div class="header bg-primary text-white py-3">
+    <div class="container d-flex justify-content-between">
+      <h3>Available Menus</h3>
+      <a href="/auth/logout" class="btn btn-danger">Logout</a>
     </div>
+  </div>
 
-    <div class="container mt-4">
-      <h1 class="mb-4 text-center">Available Menus</h1>
+  <div class="container mt-4">
+    <h1 class="mb-4 text-center">Available Menus</h1>
 
-      <% if (menus.length === 0) { %>
+    <% if (menus.length===0) { %>
       <div class="alert alert-warning text-center">
         <h3>No menus found.</h3>
       </div>
       <% } else { %>
-      <div class="row">
-        <% menus.forEach(function(menu) { // Checks if the menu was created by
-        the logged-in manager const isManagerMenu = menu.managerId && user.role
-        === 'manager' && menu.managerId.toString() === user._id.toString(); %>
-        <% if (user.role === 'admin' || isManagerMenu) { %>
-        <div class="col-md-6 col-lg-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title"><%= menu.name %></h5>
-              <div class="d-flex justify-content-between">
-                <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info"
-                  >View Details</a
-                >
-                <% if (user.role === 'admin' || (user.role === 'manager' &&
-                menu.managerId.toString() === user._id.toString())) { %>
-                <a
-                  class="btn btn-warning"
-                  href="/menus/editMenu/<%= menu._id %>"
-                  >Edit</a
-                >
-                <form
-                  action="/menus/deleteMenu/<%= menu._id %>"
-                  method="POST"
-                  class="d-inline"
-                >
-                  <button
-                    type="submit"
-                    class="btn btn-danger"
-                    onclick="return confirm('Are you sure you want to delete this menu?')"
-                  >
-                    Delete
-                  </button>
-                </form>
-                <% } %>
+        <div class="row">
+          <% menus.forEach(function(menu) { const isManagerMenu=menu.managerId && user.role==='manager' &&
+            menu.managerId.toString()===user._id.toString(); %>
+            <% if (user.role==='admin' || isManagerMenu) { %>
+              <div class="col-md-6 col-lg-4">
+                <div class="card mb-4 shadow-sm">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <%= menu.name %>
+                    </h5>
+                    <div class="d-flex justify-content-between">
+                      <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info">View Details</a>
+                      <% if (user.role==='admin' || (user.role==='manager' &&
+                        menu.managerId.toString()===user._id.toString())) { %>
+                        <a class="btn btn-warning" href="/menus/editMenu/<%= menu._id %>">Edit</a>
+                        <form action="/menus/deleteMenu/<%= menu._id %>" method="POST" class="d-inline">
+                          <button type="submit" class="btn btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this menu?')"> Delete</button>
+                        </form>
+                        <% } %>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+              <% } %>
+                <% }) %>
         </div>
-        <% } %> <% }) %>
-      </div>
-      <% } %>
-      <div class="text-center">
-        <% if (user.role === 'manager') { %>
-        <a href="/menus/submitMenu" class="btn btn-primary mt-4"
-          >Create New Menu</a
-        >
         <% } %>
-        <a href="/dashboard" class="btn btn-secondary mt-4"
-          >Back to Dashboard</a
-        >
-      </div>
-    </div>
+          <div class="text-center">
+            <% if (user.role==='manager' ) { %>
+              <a href="/menus/submitMenu" class="btn btn-primary mt-4">Create New Menu</a>
+              <% } %>
+                <a href="/dashboard" class="btn btn-secondary mt-4">Back to Dashboard</a>
+          </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

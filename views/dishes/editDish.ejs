@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="/stylesheets/editDish.css">
     <title>Edit Dish</title>
 </head>
+
 <body>
 
     <div class="header bg-primary text-white py-3">
@@ -28,43 +30,50 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Description:</label>
-                <textarea id="description" name="description" class="form-control" required><%= dish.description %></textarea>
+                <textarea id="description" name="description" class="form-control"
+                    required><%= dish.description %></textarea>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Prices per serving:</label>
                 <div class="input-group mb-2">
                     <span class="input-group-text">Small</span>
-                    <input type="number" step="0.01" name="prices[pequena]" value="<%= dish.prices.pequena %>" class="form-control" required>
+                    <input type="number" step="0.01" name="prices[pequena]" value="<%= dish.prices.pequena %>"
+                        class="form-control" required>
                 </div>
                 <div class="input-group mb-2">
                     <span class="input-group-text">Medium</span>
-                    <input type="number" step="0.01" name="prices[media]" value="<%= dish.prices.media %>" class="form-control" required>
+                    <input type="number" step="0.01" name="prices[media]" value="<%= dish.prices.media %>"
+                        class="form-control" required>
                 </div>
                 <div class="input-group">
                     <span class="input-group-text">Large</span>
-                    <input type="number" step="0.01" name="prices[grande]" value="<%= dish.prices.grande %>" class="form-control" required>
+                    <input type="number" step="0.01" name="prices[grande]" value="<%= dish.prices.grande %>"
+                        class="form-control" required>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="category" class="form-label">Category:</label>
                 <select id="category" name="category" class="form-select" required>
-                    <option value="carne" <%= dish.category === 'carne' ? 'selected' : '' %>>Meat</option>
-                    <option value="peixe" <%= dish.category === 'peixe' ? 'selected' : '' %>>Fish</option>
-                    <option value="sobremesa" <%= dish.category === 'sobremesa' ? 'selected' : '' %>>Dessert</option>
-                    <option value="vegetariano" <%= dish.category === 'vegetariano' ? 'selected' : '' %>>Vegetarian</option>
+                    <option value="carne" <%=dish.category==='carne' ? 'selected' : '' %>>Meat</option>
+                    <option value="peixe" <%=dish.category==='peixe' ? 'selected' : '' %>>Fish</option>
+                    <option value="sobremesa" <%=dish.category==='sobremesa' ? 'selected' : '' %>>Dessert</option>
+                    <option value="vegetariano" <%=dish.category==='vegetariano' ? 'selected' : '' %>>Vegetarian
+                    </option>
                 </select>
             </div>
 
             <div class="mb-3">
                 <label for="ingredients" class="form-label">Ingredients (separated by commas):</label>
-                <input type="text" id="ingredients" name="ingredients" value="<%= dish.ingredients.join(', ') %>" class="form-control" required>
+                <input type="text" id="ingredients" name="ingredients" value="<%= dish.ingredients.join(', ') %>"
+                    class="form-control" required>
             </div>
 
             <div class="mb-3">
                 <label for="allergens" class="form-label">Allergens (separated by commas):</label>
-                <input type="text" id="allergens" name="allergens" value="<%= dish.allergens.join(', ') %>" class="form-control" />
+                <input type="text" id="allergens" name="allergens" value="<%= dish.allergens.join(', ') %>"
+                    class="form-control" />
             </div>
 
             <div class="mb-3 text-center">
@@ -79,4 +88,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

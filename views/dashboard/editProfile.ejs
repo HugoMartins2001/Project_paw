@@ -1,125 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Profile</title>
-    <link rel="stylesheet" href="/stylesheets/profile1.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
 
-  <body>
-    <header>
-      <div class="navbar-container">
-        <nav class="navbar-left">
-          <a href="/dashboard">Dashboard</a>
-          <a href="/restaurants/showRestaurants">Restaurants</a>
-          <a href="/profile">Profile</a>
-          <a href="/orders">Orders</a>
-        </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="/stylesheets/profile1.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
 
-        <div class="navbar-right">
-          <form action="/auth/logout">
-            <button type="submit" class="logout-btn">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-          </form>
-        </div>
+<body>
+  <header>
+    <div class="navbar-container">
+      <nav class="navbar-left">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/restaurants/showRestaurants">Restaurants</a>
+        <a href="/profile">Profile</a>
+        <a href="/orders">Orders</a>
+      </nav>
+
+      <div class="navbar-right">
+        <form action="/auth/logout">
+          <button type="submit" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </form>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <div class="container">
-      <h1>Edit Profile</h1>
+  <div class="container">
+    <h1>Edit Profile</h1>
 
-      <div class="profile-card">
-        <form action="/profile/editProfile" method="POST">
-          <div class="profile-email">
-            <p>Email: <%= user.email %></p>
+    <div class="profile-card">
+      <form action="/profile/editProfile" method="POST">
+        <div class="profile-email">
+          <p>Email: <%= user.email %>
+          </p>
+        </div>
+
+        <div class="info-box">
+          <h3>Personal informations</h3>
+          <div class="info-item">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="<%= user.name %>" required />
           </div>
-
-          <div class="info-box">
-            <h3>Personal informations</h3>
-            <div class="info-item">
-              <label for="name">Name:</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value="<%= user.name %>"
-                required
-              />
-            </div>
-            <% if (user.role === 'cliente') { %>
+          <% if (user.role==='cliente' ) { %>
             <div class="info-item">
               <label for="clienteTelemovel">Telemóvel:</label>
-              <input
-                type="text"
-                id="clienteTelemovel"
-                name="clienteTelemovel"
-                value="<%= user.clienteTelemovel || '' %>"
-              />
+              <input type="text" id="clienteTelemovel" name="clienteTelemovel"
+                value="<%= user.clienteTelemovel || '' %>" />
             </div>
 
             <div class="info-item">
               <label for="clienteNif">NIF:</label>
-              <input
-                type="text"
-                id="clienteNif"
-                name="clienteNif"
-                value="<%= user.clienteNif || '' %>"
-              />
+              <input type="text" id="clienteNif" name="clienteNif" value="<%= user.clienteNif || '' %>" />
             </div>
 
             <div class="info-item">
               <label for="address">Endereço:</label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                value="<%= user.address || '' %>"
-              />
+              <input type="text" id="address" name="address" value="<%= user.address || '' %>" />
             </div>
 
-            <% } else if (user.role === 'manager') { %>
-            <div class="info-item">
-              <label for="managerTelemovel">Telemóvel:</label>
-              <input
-                type="text"
-                id="managerTelemovel"
-                name="managerTelemovel"
-                value="<%= user.managerTelemovel || '' %>"
-              />
-            </div>
+            <% } else if (user.role==='manager' ) { %>
+              <div class="info-item">
+                <label for="managerTelemovel">Telemóvel:</label>
+                <input type="text" id="managerTelemovel" name="managerTelemovel"
+                  value="<%= user.managerTelemovel || '' %>" />
+              </div>
 
-            <% } else if (user.role === 'admin') { %>
-            <div class="info-item">
-              <label for="managerTelemovel">Telemóvel:</label>
-              <input
-                type="text"
-                id="managerTelemovel"
-                name="managerTelemovel"
-                value="<%= user.managerTelemovel || '' %>"
-              />
-            </div>
+              <% } else if (user.role==='admin' ) { %>
+                <div class="info-item">
+                  <label for="managerTelemovel">Telemóvel:</label>
+                  <input type="text" id="managerTelemovel" name="managerTelemovel"
+                    value="<%= user.managerTelemovel || '' %>" />
+                </div>
 
-            <div class="info-item">
-              <label for="address">Endereço:</label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                value="<%= user.address || '' %>"
-              />
-            </div>
-            <% } %>
-          </div>
+                <div class="info-item">
+                  <label for="address">Endereço:</label>
+                  <input type="text" id="address" name="address" value="<%= user.address || '' %>" />
+                </div>
+                <% } %>
+        </div>
 
-          <button type="submit">Save changes</button>
-        </form>
-      </div>
+        <button type="submit">Save changes</button>
+      </form>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

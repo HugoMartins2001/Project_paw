@@ -142,18 +142,7 @@ dishesController.renderEditDish = function (req, res, next) {
 
 dishesController.updateDish = function (req, res, next) {
   const dishId = req.params.dishId;
-  const {
-    name,
-    description,
-    category,
-    ingredients,
-    calories,
-    fat,
-    protein,
-    carbs,
-    nutriScore,
-    allergens,
-  } = req.body;
+  const { name, description, category, ingredients, calories, fat, protein, carbs, nutriScore, allergens, } = req.body;
 
   const prices = {
     pequena: req.body["prices[pequena]"] || 0,

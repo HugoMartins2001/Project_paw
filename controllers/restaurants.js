@@ -130,9 +130,9 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
       req.user.role === "admin"
         ? await mongoRestaurant.findOne({ name: req.params.name })
         : await mongoRestaurant.findOne({
-            name: req.params.name.trim(),
-            managerId: req.user._id,
-          });
+          name: req.params.name.trim(),
+          managerId: req.user._id,
+        });
     if (!restaurant) {
       return res
         .status(404)

@@ -1,164 +1,141 @@
 <!DOCTYPE html>
 <html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= user.role %> Dashboard</title>
-    <link rel="stylesheet" href="/stylesheets/managerDashboard.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
-    <header>
-      <div class="navbar-container">
-        <nav class="navbar-left">
-          <a href="/dashboard">Dashboard</a>
-          <a href="/restaurants/showRestaurants">Restaurants</a>
-          <a href="/profile">Profile</a>
-          <a href="/orders">Orders</a>
-        </nav>
-        <div class="navbar-right">
-          <form action="/auth/logout">
-            <button type="submit" class="logout-btn">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-          </form>
-        </div>
-      </div>
-    </header>
 
-    <div class="dashboard-container">
-      <div style="flex: 2">
-        <div class="chart-container">
-          <canvas id="ordersChart"></canvas>
-        </div>
-        <div class="chart-container">
-          <canvas id="clientsChart"></canvas>
-        </div>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%= user.role %> Dashboard
+  </title>
+  <link rel="stylesheet" href="/stylesheets/managerDashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-      <div class="manager-menu">
-        <h2><%= user.role %> Menu</h2>
-        <% if (user.role === 'manager') { %>
-        <a href="/restaurants/submitRestaurant" class="menu-btn"
-          ><i class="fas fa-plus-circle"></i> Create restaurant</a
-        >
-        <a href="/restaurants/showRestaurants" class="menu-btn"
-          ><i class="fas fa-list"></i> Show restaurants</a
-        >
-        <a href="/menus/submitMenu" class="menu-btn"
-          ><i class="fas fa-book"></i> Create menu</a
-        >
-        <a href="/menus/showMenus" class="menu-btn"
-          ><i class="fas fa-book-open"></i> Show menus</a
-        >
-        <a href="/dishes/submitDishes" class="menu-btn"
-          ><i class="fas fa-utensil-spoon"></i> Create plate</a
-        >
-        <a href="/dishes/showDishes" class="menu-btn"
-          ><i class="fas fa-list-ol"></i> Show plates</a
-        >
-        <% } else if (user.role === 'admin') { %>
-        <a href="/restaurants/submitRestaurant" class="menu-btn"
-          ><i class="fas fa-plus-circle"></i> Create restaurant</a
-        >
-        <a href="/restaurants/showRestaurants" class="menu-btn"
-          ><i class="fas fa-list"></i> Show restaurants</a
-        >
-        <a href="/restaurants/pendingApproval" class="menu-btn"
-          ><i class="fas fa-check-circle"></i> Approve restaurants</a
-        >
-        <a href="/menus/submitMenu" class="menu-btn"
-          ><i class="fas fa-book"></i> Create menu</a
-        >
-        <a href="/menus/showMenus" class="menu-btn"
-          ><i class="fas fa-book-open"></i> Show menus</a
-        >
-        <a href="/dishes/submitDishes" class="menu-btn"
-          ><i class="fas fa-utensil-spoon"></i> Create plate</a
-        >
-        <a href="/dishes/showDishes" class="menu-btn"
-          ><i class="fas fa-list-ol"></i> Show plates</a
-        >
-        <a href="/users/showUsers" class="menu-btn"
-          ><i class="fas fa-users"></i> Show users</a
-        >
-        <% } else if (user.role === 'cliente') { %>
-        <a href="/restaurants/showRestaurants" class="menu-btn"
-          ><i class="fas fa-list"></i> Show restaurants</a
-        >
-        <% } %>
+<body>
+  <header>
+    <div class="navbar-container">
+      <nav class="navbar-left">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/restaurants/showRestaurants">Restaurants</a>
+        <a href="/profile">Profile</a>
+        <a href="/orders">Orders</a>
+      </nav>
+      <div class="navbar-right">
+        <form action="/auth/logout">
+          <button type="submit" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <div style="flex: 2">
+      <div class="chart-container">
+        <canvas id="ordersChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="clientsChart"></canvas>
       </div>
     </div>
 
-    <script>
-      const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
+    <div class="manager-menu">
+      <h2>
+        <%= user.role %> Menu
+      </h2>
+      <% if (user.role==='manager' ) { %>
+        <a href="/restaurants/submitRestaurant" class="menu-btn"><i class="fas fa-plus-circle"></i> Create
+          restaurant</a>
+        <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
+        <a href="/menus/submitMenu" class="menu-btn"><i class="fas fa-book"></i> Create menu</a>
+        <a href="/menus/showMenus" class="menu-btn"><i class="fas fa-book-open"></i> Show menus</a>
+        <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create plate</a>
+        <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show plates</a>
+        <% } else if (user.role==='admin' ) { %>
+          <a href="/restaurants/submitRestaurant" class="menu-btn"><i class="fas fa-plus-circle"></i> Create
+            restaurant</a>
+          <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
+          <a href="/restaurants/pendingApproval" class="menu-btn"><i class="fas fa-check-circle"></i> Approve
+            restaurants</a>
+          <a href="/menus/submitMenu" class="menu-btn"><i class="fas fa-book"></i> Create menu</a>
+          <a href="/menus/showMenus" class="menu-btn"><i class="fas fa-book-open"></i> Show menus</a>
+          <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create plate</a>
+          <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show plates</a>
+          <a href="/users/showUsers" class="menu-btn"><i class="fas fa-users"></i> Show users</a>
+          <% } else if (user.role==='cliente' ) { %>
+            <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
+            <% } %>
+    </div>
+  </div>
+
+  <script>
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#6c63ff",
+          padding: 12,
+          usePointStyle: true,
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+        },
+      },
+    };
+
+    const ordersChart = new Chart(document.getElementById("ordersChart"), {
+      type: "bar",
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+        datasets: [
+          {
+            label: "Encomendas",
+            data: [12, 19, 3, 5, 7],
             backgroundColor: "#6c63ff",
-            padding: 12,
-            usePointStyle: true,
+            borderRadius: 6,
+            borderSkipped: false,
           },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: "rgba(0, 0, 0, 0.05)",
-            },
-          },
-          x: {
-            grid: {
-              display: false,
-            },
-          },
-        },
-      };
+        ],
+      },
+      options: chartOptions,
+    });
 
-      const ordersChart = new Chart(document.getElementById("ordersChart"), {
-        type: "bar",
-        data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-          datasets: [
-            {
-              label: "Encomendas",
-              data: [12, 19, 3, 5, 7],
-              backgroundColor: "#6c63ff",
-              borderRadius: 6,
-              borderSkipped: false,
-            },
-          ],
-        },
-        options: chartOptions,
-      });
+    const clientsChart = new Chart(document.getElementById("clientsChart"), {
+      type: "line",
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+        datasets: [
+          {
+            label: "Clientes",
+            data: [5, 9, 7, 10, 12],
+            borderColor: "#6c63ff",
+            backgroundColor: "rgba(108, 99, 255, 0.1)",
+            tension: 0.4,
+            fill: true,
+            borderWidth: 2,
+            pointBackgroundColor: "#fff",
+            pointBorderColor: "#6c63ff",
+            pointBorderWidth: 2,
+          },
+        ],
+      },
+      options: chartOptions,
+    });
+  </script>
+</body>
 
-      const clientsChart = new Chart(document.getElementById("clientsChart"), {
-        type: "line",
-        data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-          datasets: [
-            {
-              label: "Clientes",
-              data: [5, 9, 7, 10, 12],
-              borderColor: "#6c63ff",
-              backgroundColor: "rgba(108, 99, 255, 0.1)",
-              tension: 0.4,
-              fill: true,
-              borderWidth: 2,
-              pointBackgroundColor: "#fff",
-              pointBorderColor: "#6c63ff",
-              pointBorderWidth: 2,
-            },
-          ],
-        },
-        options: chartOptions,
-      });
-    </script>
-  </body>
 </html>
