@@ -4,19 +4,15 @@ body {
     margin: 0;
     padding: 0;
 }
-
-/*Top navbar */
 header {
     background-color: #ffffff;
     padding: 16px 40px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-
 .navbar-left {
     display: flex;
     gap: 30px;
 }
-
 .navbar-left a {
     text-decoration: none;
     color: #333;
@@ -24,23 +20,19 @@ header {
     font-size: 16px;
     transition: color 0.2s ease;
 }
-
 .navbar-left a:hover {
     color: #6c63ff;
 }
-
 nav a {
     margin: 0 15px;
     text-decoration: none;
     color: #444;
     font-weight: 500;
 }
-
 .navbar-right {
     display: flex;
     align-items: center;
 }
-
 .logout-btn {
     background: none;
     border: none;
@@ -50,18 +42,14 @@ nav a {
     cursor: pointer;
     transition: color 0.2s ease;
 }
-
 .logout-btn:hover {
     color: #6c63ff;
 }
-
 .navbar-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
-/* Dashboard layout */
 .dashboard-container {
     display: flex;
     max-width: 1200px;
@@ -69,8 +57,6 @@ nav a {
     gap: 40px;
     padding: 0 20px;
 }
-
-/* Graphs area */
 .chart-container {
     position: relative;
     height: 280px;
@@ -80,8 +66,6 @@ nav a {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
 }
-
-/* Management menu */
 .manager-menu {
     flex: 1;
     background: #fff;
@@ -92,7 +76,6 @@ nav a {
     flex-direction: column;
     gap: 12px;
 }
-
 .manager-menu h2 {
     font-size: 18px;
     color: #111;
@@ -100,7 +83,6 @@ nav a {
     padding-bottom: 12px;
     border-bottom: 1px solid #eee;
 }
-
 .menu-btn {
     background-color: #f5f5ff;
     color: #6c63ff;
@@ -115,25 +97,20 @@ nav a {
     gap: 10px;
     border-left: 4px solid transparent;
 }
-
 .menu-btn:hover {
     background-color: #6c63ff;
     color: white;
     border-left: 4px solid #574fdb;
     transform: translateX(4px);
 }
-
 .menu-btn i {
     width: 20px;
     text-align: center;
 }
-
-/* Responsive */
 @media (max-width: 768px) {
     .dashboard-container {
         flex-direction: column;
     }
-
     .chart-container {
         height: 240px;
     }

@@ -25,8 +25,6 @@ restaurantsController.showAll = function(req, res, next) {
         .catch(err => next(err));
 };
 
-
-
 restaurantsController.showDetails = function(req, res, next) {
 
     const query = req.user.role === 'manager' 
@@ -50,7 +48,6 @@ restaurantsController.showDetails = function(req, res, next) {
             next(err);
         });
 };
-
 
 restaurantsController.renderCreateRestaurant = async function (req, res, next) {
     try {
@@ -96,9 +93,6 @@ restaurantsController.createRestaurant = function(req, res, next) {
         });
 };
 
-
-
-
 restaurantsController.deleteRestaurant = function(req, res, next) {
     const query = { name: req.params.name };
 
@@ -111,7 +105,7 @@ restaurantsController.deleteRestaurant = function(req, res, next) {
         .then(function(deletedRestaurant) {
             if (!deletedRestaurant) {
 
-                return res.status(404).send('Restaurante não encontrado ou você não tem permissão para apagá-lo.');
+                return res.status(404).send('You don´t have permission to delete the restaurant or the restaurant was not found.');
             }
             res.redirect('/restaurants/showRestaurants'); 
         })
@@ -119,7 +113,6 @@ restaurantsController.deleteRestaurant = function(req, res, next) {
             next(err); 
         });
 };
-
 
 restaurantsController.renderEditRestaurant = async function(req, res, next) {
     try {
@@ -134,21 +127,15 @@ restaurantsController.renderEditRestaurant = async function(req, res, next) {
                 name: req.params.name.trim(), 
                 managerId: req.user._id 
             });
-
-
         if (!restaurant) {
-            return res.status(404).send('Restaurante não encontrado ou sem permissão.');
+            return res.status(404).send('Restaurant not found or without permission.');
         }
-
-
         res.render('restaurants/editRestaurant', { restaurant, menus });
     } catch (err) {
-        console.error("Erro ao tentar editar o restaurante:", err);
+        console.error("Error trying to edit restaurant:", err);
         next(err); 
     }
 };
-
-
 
 restaurantsController.updateRestaurant = function(req, res, next) {
     const managerId = req.user._id;
@@ -166,12 +153,12 @@ restaurantsController.updateRestaurant = function(req, res, next) {
         menus: req.body.menus || []  
     };
 
-    console.log("Atualizando restaurante com os seguintes dados:", updatedData);
+    console.log("Updating restaurant with the following data:", updatedData);
 
     mongoRestaurant.findOneAndUpdate(query, updatedData, { new: true, runValidators: true })
         .then(function(updated) {
             if (!updated) {
-                return res.status(404).send('Restaurante não encontrado ou sem permissão.');
+                return res.status(404).send('Restaurant not found or without permission.');
             }
             res.redirect('/restaurants/showRestaurants');
         })
@@ -181,9 +168,8 @@ restaurantsController.updateRestaurant = function(req, res, next) {
         });
 };
 
-
 restaurantsController.showPendingRestaurants = function(req, res, next) {
-    if (req.user.role !== 'admin') return res.status(403).send('Acesso negado.');
+    if (req.user.role !== 'admin') return res.status(403).send('Access denied.');
 
     mongoRestaurant.find({ isApproved: false })
         .then(restaurants => {
@@ -193,7 +179,7 @@ restaurantsController.showPendingRestaurants = function(req, res, next) {
 };
 
 restaurantsController.approveRestaurant = function(req, res, next) {
-    if (req.user.role !== 'admin') return res.status(403).send('Acesso negado.');
+    if (req.user.role !== 'admin') return res.status(403).send('Access denied.');
 
     mongoRestaurant.findByIdAndUpdate(req.params.id, { isApproved: true }, { new: true })
         .then(() => {
@@ -201,7 +187,5 @@ restaurantsController.approveRestaurant = function(req, res, next) {
         })
         .catch(err => next(err));
 };
-
-
 
 module.exports = restaurantsController;

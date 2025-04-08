@@ -2,12 +2,10 @@ const mongoUser = require('../models/user');
 
 const profile = {};
 
-
 profile.editProfile = function (req, res, next) {
   if (!req.user) return res.redirect('/auth/login');
   res.render('dashboard/editProfile', { user: req.user });
 };
-
 
 profile.updateProfile = function (req, res, next) {
   const userId = req.user._id;

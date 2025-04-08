@@ -31,6 +31,4 @@ router.post('/editMenu/:menuId', authController.verifyLoginUser, function (req, 
      menusController.updateMenu(req, res, next);
 });
 
-
-
 module.exports = router;

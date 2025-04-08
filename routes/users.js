@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/usersController');
-const verifyJWT = require('../middlewares/verifyJWT'); // garantir que só logados veem
+const verifyJWT = require('../middlewares/verifyJWT');
 
-// Adiciona depois de verifyJWT
 function onlyAdmins(req, res, next) {
     if (req.user.role === 'admin') {
         next();
@@ -12,8 +11,6 @@ function onlyAdmins(req, res, next) {
     }
 }
 
-// E na rota:
 router.get('/showUsers', verifyJWT, onlyAdmins, usersController.showUsers);
-
 
 module.exports = router;

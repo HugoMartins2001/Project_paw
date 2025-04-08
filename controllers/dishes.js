@@ -3,7 +3,6 @@ const axios = require('axios');
 
 let dishesController = {};
 
-
 dishesController.showAll = function (req, res, next) {
     const user = req.user;
 
@@ -24,7 +23,6 @@ dishesController.showAll = function (req, res, next) {
         .catch(next);
 };
 
-
 dishesController.renderCreateDishes = function (req, res, next) {
     try {
         res.render('dishes/submitDishes');
@@ -33,7 +31,6 @@ dishesController.renderCreateDishes = function (req, res, next) {
         next(error);
     }
 };
-
 
 dishesController.createDish = async function (req, res, next) {
     try {
@@ -93,11 +90,6 @@ dishesController.createDish = async function (req, res, next) {
     }
 };
 
-
-
-
-
-
 dishesController.showDish = function (req, res, next) {
     mongoDish.findById(req.params.dishId)
         .then(dish => {
@@ -106,7 +98,6 @@ dishesController.showDish = function (req, res, next) {
         })
         .catch(next);
 };
-
 
 dishesController.deleteDish = function (req, res, next) {
     const user = req.user;
@@ -125,8 +116,6 @@ dishesController.deleteDish = function (req, res, next) {
         .catch(next);
 };
 
-
-
 dishesController.renderEditDish = function (req, res, next) {
     mongoDish.findById(req.params.dishId)
         .then(dish => {
@@ -135,7 +124,6 @@ dishesController.renderEditDish = function (req, res, next) {
         })
         .catch(next);
 };
-
 
 dishesController.updateDish = function (req, res, next) {
     const dishId = req.params.dishId;
@@ -174,8 +162,5 @@ dishesController.updateDish = function (req, res, next) {
         })
         .catch(next);
 };
-
-
-
 
 module.exports = dishesController;

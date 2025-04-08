@@ -5,15 +5,12 @@ const profile = require('../controllers/profile');
 
 router.use(authController.verifyLoginUser);
 
-// Ver perfil
 router.get('/', (req, res) => {
-    res.render('dashboard/profile', { user: req.user });  // <== view certa
+    res.render('dashboard/profile', { user: req.user });
 });
 
-// Editar perfil (GET)
 router.get('/editProfile', profile.editProfile);
 
-// Editar perfil (POST)
 router.post('/editProfile', profile.updateProfile);
 
 module.exports = router;

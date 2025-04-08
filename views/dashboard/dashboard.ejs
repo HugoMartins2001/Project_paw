@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Top Navigation Bar -->
     <header>
         <div class="navbar-container">
             <nav class="navbar-left">
@@ -28,9 +27,7 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <div class="dashboard-container">
-        <!-- Graphs -->
         <div style="flex: 2;">
             <div class="chart-container">
                 <canvas id="ordersChart"></canvas>
@@ -40,7 +37,6 @@
             </div>
         </div>
 
-        <!-- Manager Menu -->
         <div class="manager-menu">
             <h2><%= user.role %> Menu</h2>
             <% if (user.role === 'manager') { %>
@@ -66,7 +62,6 @@
     </div>
 
     <script>
-        // Chart configuration
         const chartOptions = {
             responsive: true,
             maintainAspectRatio: false,

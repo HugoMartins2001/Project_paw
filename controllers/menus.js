@@ -4,7 +4,6 @@ const mongoRestaurant = require('../models/restaurant');
 
 let menusController = {};
 
-
 menusController.renderCreateMenu = async function (req, res, next) {
     try {
         const dishes = await mongoDish.find();
@@ -51,9 +50,6 @@ menusController.showAll = function (req, res, next) {
         });
 };
 
-
-
-
 menusController.renderCreateMenu = async function (req, res, next) {
     try {
         let dishes;
@@ -72,7 +68,6 @@ menusController.renderCreateMenu = async function (req, res, next) {
         next(error);
     }
 };
-
 
 menusController.createMenu = async function (req, res, next) {
     try {
@@ -100,8 +95,6 @@ menusController.createMenu = async function (req, res, next) {
     }
 };
 
-
-
 menusController.showMenu = function (req, res, next) {
     const menuId = req.params.menuId;
 
@@ -117,7 +110,6 @@ menusController.showMenu = function (req, res, next) {
             next(err);
         });
 };
-
 
 menusController.deleteMenu = function (req, res, next) {
     const user = req.user;
@@ -142,7 +134,6 @@ menusController.deleteMenu = function (req, res, next) {
             next(err);
         });
 };
-
 
 menusController.renderEditMenu = async function(req, res, next) {
     try {
@@ -169,7 +160,6 @@ menusController.renderEditMenu = async function(req, res, next) {
     }
 };
 
-
 menusController.updateMenu = function(req, res, next) {
     const menuId = req.params.menuId;
     const updatedData = {
@@ -189,7 +179,5 @@ menusController.updateMenu = function(req, res, next) {
             next(err);
         });
 };
-
-
 
 module.exports = menusController;

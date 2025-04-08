@@ -22,11 +22,9 @@ body {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
-
 .register-container::-webkit-scrollbar {
     display: none; 
 }
-
 .form-control {
     background: transparent;
     border: 1px solid #fff;
@@ -62,7 +60,6 @@ label {
         padding: 10px;
     }
 }
-
 .hidden {
     display: none;
   }

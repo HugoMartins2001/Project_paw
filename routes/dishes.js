@@ -15,7 +15,6 @@ router.get('/showDish/:dishId', authController.verifyLoginUser, function (req, r
       dishesController.showDish(req, res, next)
 });
 
-
 router.post('/submittedDish',authController.verifyLoginUser, function(req, res,next) { 
      dishesController.createDish(req, res,next)
 });
@@ -32,5 +31,4 @@ router.get('/editDish/:dishId', authController.verifyLoginUser, function (req, r
      dishesController.updateDish(req, res, next);
  });
  
-
 module.exports = router;

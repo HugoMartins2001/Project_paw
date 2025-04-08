@@ -1,39 +1,31 @@
-/* Reset de estilos e configurações globais */
 body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #e3dfd9, #e2940d);
-    overflow-y: scroll; /* Permite o scroll vertical */
+    overflow-y: scroll;
 }
-
 body::-webkit-scrollbar {
-    width: 0px; /* Define a largura da barra de rolagem como 0 */
-    height: 0px; /* Define a altura da barra de rolagem como 0 */
+    width: 0px;
+    height: 0px;
 }
-
-/* Estilização do container principal */
 .container {
     display: flex;
-    flex-direction: row; /* Alinha os elementos internos lado a lado */
+    flex-direction: row;
     width: 85%;
     height: 680px;
     background: #ffffff;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     overflow: hidden;
-    margin: 20px auto; /* Centraliza o container e adiciona espaço acima */
+    margin: 20px auto;
     transition: transform 0.3s ease;
 }
-
 .container:hover {
     transform: scale(1.02);
 }
-
-
-/* Estilização da seção esquerda */
 .left-section {
-    flex: 1; /* Faz a seção ocupar todo o espaço disponível */
+    flex: 1;
     padding: 40px;;
     background: #ffffff;
     display: flex;
@@ -42,46 +34,40 @@ body::-webkit-scrollbar {
     align-items: flex-start;
     position: relative;
 }
-
 .left-section img {
     position: absolute;
     top: 20px;
     left: 20px;
     width: 120px;
 }
-
 .left-section h1 {
     font-size: 2.8rem;
     color: #333;
     margin-bottom: 15px;
 }
-
 .left-section p {
     font-size: 1.2rem;
     color: #666;
 }
-
-/* Estilização da seção direita */
 .right-section {
     flex: 1;
     position: relative;
     z-index: 1;
     display: flex;
-    flex-direction: column; /* Alinha os elementos na vertical */ 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
-
 .cssbuttons-io-button {
     background: #e1bf15;
     color: white;
     font-family: inherit;
-    padding: 0.5em; /* Aumenta o espaçamento interno */
-    padding-left: 1.5em; /* Aumenta o espaçamento à esquerda */
-    font-size: 20px; /* Aumenta o tamanho da fonte */
+    padding: 0.5em;
+    padding-left: 1.5em;
+    font-size: 20px;
     font-weight: 500;
-    border-radius: 1em; /* Ajusta o arredondamento */
+    border-radius: 1em;
     border: none;
     letter-spacing: 0.05em;
     display: flex;
@@ -89,12 +75,11 @@ body::-webkit-scrollbar {
     box-shadow: inset 0 0 1.6em -0.6em #d25406;
     overflow: hidden;
     position: relative;
-    height: 3.5em; /* Aumenta a altura do botão */
-    padding-right: 4em; /* Aumenta o espaçamento à direita */
+    height: 3.5em;
+    padding-right: 4em;
     cursor: pointer;
-    margin-bottom: 20px; /* Adiciona espaço entre os botões */
+    margin-bottom: 20px;
 }
-
 .cssbuttons-io-button .icon {
     background: white;
     margin-left: 1em;
@@ -109,26 +94,20 @@ body::-webkit-scrollbar {
     right: 0.3em;
     transition: all 0.3s;
 }
-
 .cssbuttons-io-button:hover .icon {
     width: calc(100% - 0.6em);
 }
-
 .cssbuttons-io-button .icon svg {
     width: 1.1em;
     transition: transform 0.3s;
     color: #7b52b9;
 }
-
 .cssbuttons-io-button:hover .icon svg {
     transform: translateX(0.1em);
 }
-
 .cssbuttons-io-button:active .icon {
     transform: scale(0.95);
 }
-
-
 .background-video {
     position: absolute;
     top: 0;
@@ -142,8 +121,6 @@ body::-webkit-scrollbar {
     box-sizing: border-box; 
     border-radius: 20px;
 }
-
-/* Estilização da barra separadora */
 .separator {
     width: 100%;
     height: 2px;
@@ -151,7 +128,6 @@ body::-webkit-scrollbar {
     margin: 20px 0;
     position: relative;
 }
-
 .separator::after {
     position: absolute;
     top: -10px;
@@ -162,14 +138,11 @@ body::-webkit-scrollbar {
     font-size: 0.9rem;
     color: #666;
 }
-
-/* Estilização dos botões de login com Google e Facebook */
 .social-buttons {
     display: flex;
     gap: 20px;
     margin-top: 20px;
 }
-
 .social-buttons a {
     width: 50px;
     height: 50px;
@@ -181,50 +154,31 @@ body::-webkit-scrollbar {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
-
 .social-buttons a:hover {
     transform: scale(1.1);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
-
 .social-buttons a img {
     width: 24px;
     height: 24px;
 }
-
-/* Botão do Google */
 .social-buttons a.google {
     background: #fff;
     border: 1px solid #ddd;
 }
-
 .social-buttons a.google:hover {
     border-color: #4285f4;
 }
-
-/* Botão do Facebook */
-.social-buttons a.facebook {
-    background: #3b5998;
-    color: #fff;
-}
-
-.social-buttons a.facebook:hover {
-    background: #145dbf;
-}
-
-/* Garante que a grelha de quadrados fique abaixo do container */
 .quadrados-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas de largura igual */
-    gap: 20px; /* Espaçamento entre os quadrados */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     padding: 0;
-    margin: 40px auto; /* Centraliza a grelha horizontalmente */
-    width: 85%; /* Define a largura da grelha igual à largura do container de cima */
-    background-color: transparent; /* Remove o fundo do container */
-    justify-content: start; /* Alinha a grelha à direita */
+    margin: 40px auto;
+    width: 85%;
+    background-color: transparent;
+    justify-content: start;
 }
-
-/* Estilização de cada quadrado */
 .quadrado {
     height: 150px;
     width: 200px;;
@@ -240,11 +194,8 @@ body::-webkit-scrollbar {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-/* Efeito hover nos quadrados */
 .quadrado:hover {
-    transform: scale(1.05); /* Aumenta ligeiramente o tamanho */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra mais forte */
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
-

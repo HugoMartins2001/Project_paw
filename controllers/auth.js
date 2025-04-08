@@ -61,133 +61,36 @@ authController.verifyLoginUser = function(req, res, next) {
     if (authToken) {
         jwt.verify(authToken, config.secret, function(err, decoded) {
             if (err) {
-                return res.redirect('/auth/login'); // Se o token for inválido, redireciona para o login
+                return res.redirect('/auth/login');
             }
 
-            // Busca o usuário no banco de dados usando o e-mail decodificado do JWT
+            
             mongoUser.findOne({ email: decoded.email })
                 .then(function(user) {
-                    // Se o usuário foi encontrado e tem um facebookId, redireciona diretamente para o dashboard
+                    
                     if (user && user.facebookId && user.email) {
                         return res.redirect('/dashboard');
                     }
-                    req.user = user; // Caso o usuário não tenha facebookId ou e-mail, continua o processo
+                    req.user = user;
                     next();
                 })
                 .catch(function(err) {
-                    next(err); // Se ocorrer um erro na busca do usuário, prossegue com o erro
+                    next(err);
                 });
         });
     } else {
-        next(); // Se o token não estiver presente, continua o processo (provavelmente o usuário não está logado)
+        next();
     }
 };
 
-
-// Login com Google
 authController.googleLogin = passport.authenticate('google', { scope: ['profile', 'email'] });
 
-// Callback do Google
 authController.googleCallback = passport.authenticate('google', { failureRedirect: '/auth/login' }, (req, res) => {
-    res.redirect('/'); // Redireciona para a página inicial após login
+    res.redirect('/');
 });
-
-// Login com Facebook
-authController.facebookLogin = passport.authenticate('facebook');
-
-authController.facebookCallback = passport.authenticate('facebook', { failureRedirect: '/auth/login' }, async (req, res) => {
-    try {
-        const user = req.user;
-
-        // Verifica se o usuário já tem um email registrado
-        if (user.email) {
-            // Se o e-mail já estiver registrado, redireciona diretamente para o dashboard
-            return res.redirect('/dashboard');
-        } else {
-            // Se o e-mail não estiver registrado, atribui um email fictício ou padrão
-            user.email = 'default_email@example.com';
-            await user.save();
-            return res.redirect('/dashboard');
-        }
-    } catch (err) {
-        console.log('Erro no callback do Facebook:', err);
-        return res.redirect('/auth/login');
-    }
-});
-
-// Função para atualizar o email do usuário com base no Facebook ID
-authController.updateUserEmail = async (facebookId, email, name) => {
-    try {
-        console.log('Tentando atualizar o usuário com Facebook ID:', facebookId);
-        console.log('Novo e-mail:', email);
-
-        // Verifica se o usuário com esse Facebook ID existe
-        let user = await mongoUser.findOne({ facebookId });
-        if (!user) {
-            console.log('Usuário não encontrado com o Facebook ID. Criando novo usuário...');
-            // Caso o usuário não exista, cria um novo usuário
-            user = await mongoUser.create({ facebookId, email, name });  // Inclua o name aqui
-        } else {
-            // Caso o usuário exista, atualize o email
-            user.email = email;
-            await user.save();
-            console.log('Usuário atualizado com sucesso:', user);
-        }
-
-        return user;
-    } catch (err) {
-        console.log('Erro ao atualizar ou criar o usuário no banco de dados:', err);
-        return null;
-    }
-};
-
-
-
 
 authController.findUserByEmail = function(email) {
     return mongoUser.findOne({ email: email });
 };
-
-authController.facebookEmailSubmitted = async (req, res) => {
-    const { facebookId, name, email } = req.body;
-
-    console.log('Dados recebidos do formulário:', { facebookId, name, email });
-
-    try {
-        // Tenta encontrar o usuário com o facebookId
-        let user = await mongoUser.findOne({ facebookId });
-
-        if (!user) {
-            console.log('Usuário não encontrado com o Facebook ID. Criando novo usuário...');
-            // Se o usuário não existir, cria um novo usuário
-            user = await mongoUser.create({ facebookId, name, email });
-        } else {
-            // Se o usuário já existir, atualiza o e-mail, caso seja diferente
-            if (user.email !== email) {
-                user.email = email;
-                await user.save();
-            }
-            console.log('Usuário encontrado ou atualizado:', user);
-        }
-
-        // Finaliza o processo de autenticação
-        req.login(user, (err) => {
-            if (err) {
-                console.log('Erro no req.login:', err);
-                return res.redirect('/');
-            }
-            console.log('Usuário autenticado com sucesso:', user);
-
-            // Redireciona diretamente para o dashboard, pois o e-mail já foi registrado
-            return res.redirect('/dashboard');
-        });
-
-    } catch (err) {
-        console.log('Erro ao processar o login do Facebook:', err);
-        return res.redirect('/');
-    }
-};
-          
-
 
 module.exports = authController;

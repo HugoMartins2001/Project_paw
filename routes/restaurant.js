@@ -36,7 +36,4 @@ router.get('/pendingApproval', authController.verifyLoginUser, restaurantsContro
 
 router.post('/approveRestaurant/:id', authController.verifyLoginUser, restaurantsController.approveRestaurant);
 
-
-
-
 module.exports = router;
