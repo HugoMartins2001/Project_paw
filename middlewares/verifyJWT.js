@@ -17,7 +17,7 @@ module.exports = async function verifyJWT(req, res, next) {
     req.user = user;
     next();
   } catch (err) {
-    console.error("Erro ao verificar JWT:", err);
+    console.error("Error veryfing JWT:", err);
     return res.redirect("/auth/login");
   }
 };

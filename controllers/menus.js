@@ -97,7 +97,7 @@ menusController.showMenu = function (req, res, next) {
     .populate("dishes")
     .then(function (menu) {
       if (!menu) {
-        return res.status(404).send("Menu não encontrado.");
+        return res.status(404).send("Menu not found.");
       }
       res.render("menus/showMenu", { menu });
     })
@@ -113,7 +113,7 @@ menusController.deleteMenu = function (req, res, next) {
     .findById(req.params.menuId)
     .then(function (menu) {
       if (!menu) {
-        return res.status(404).send("Menu não encontrado.");
+        return res.status(404).send("Menu not found.");
       }
 
       if (
@@ -122,7 +122,7 @@ menusController.deleteMenu = function (req, res, next) {
       ) {
         return res
           .status(403)
-          .send("Você não tem permissão para excluir este menu.");
+          .send("You dont have permission to delete this menu.");
       }
 
       return mongoMenu.findByIdAndDelete(req.params.menuId);
@@ -152,7 +152,7 @@ menusController.renderEditMenu = async function (req, res, next) {
     const restaurants = await mongoRestaurant.find();
 
     if (!menu) {
-      return res.status(404).send("Menu não encontrado.");
+      return res.status(404).send("Menu not found.");
     }
 
     res.render("menus/editMenu", { menu, dishes: allDishes, restaurants });
@@ -175,7 +175,7 @@ menusController.updateMenu = function (req, res, next) {
     .findByIdAndUpdate(menuId, updatedData, { new: true, runValidators: true })
     .then(function (updated) {
       if (!updated) {
-        return res.status(404).send("Menu não encontrado.");
+        return res.status(404).send("Menu not found.");
       }
       res.redirect("/menus/showMenus");
     })

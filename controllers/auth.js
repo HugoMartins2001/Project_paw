@@ -70,7 +70,7 @@ authController.verifyLoginUser = function (req, res, next) {
       mongoUser
         .findOne({ email: decoded.email })
         .then(function (user) {
-          if (user && user.facebookId && user.email) {
+          if (user && user.email) {
             return res.redirect("/dashboard");
           }
           req.user = user;

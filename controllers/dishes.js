@@ -101,7 +101,7 @@ dishesController.showDish = function (req, res, next) {
   mongoDish
     .findById(req.params.dishId)
     .then((dish) => {
-      if (!dish) return res.status(404).send("Prato não encontrado.");
+      if (!dish) return res.status(404).send("Plate not found.");
       res.render("dishes/showDish", { dish });
     })
     .catch(next);
@@ -113,7 +113,7 @@ dishesController.deleteDish = function (req, res, next) {
   mongoDish
     .findById(req.params.dishId)
     .then((dish) => {
-      if (!dish) return res.status(404).send("Prato não encontrado.");
+      if (!dish) return res.status(404).send("Plate not found.");
 
       if (
         user.role !== "admin" &&
@@ -121,7 +121,7 @@ dishesController.deleteDish = function (req, res, next) {
       ) {
         return res
           .status(403)
-          .send("Você não tem permissão para excluir este prato.");
+          .send("You don´t have permission do delete this plate.");
       }
 
       return mongoDish.findByIdAndDelete(req.params.dishId);
@@ -134,7 +134,7 @@ dishesController.renderEditDish = function (req, res, next) {
   mongoDish
     .findById(req.params.dishId)
     .then((dish) => {
-      if (!dish) return res.status(404).send("Prato não encontrado.");
+      if (!dish) return res.status(404).send("Plate not found.");
       res.render("dishes/editDish", { dish });
     })
     .catch(next);
