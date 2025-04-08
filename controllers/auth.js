@@ -92,28 +92,6 @@ authController.googleCallback = passport.authenticate('google', { failureRedirec
     res.redirect('/'); // Redireciona para a página inicial após login
 });
 
-// Login com Facebook
-authController.facebookLogin = passport.authenticate('facebook');
-
-authController.facebookCallback = passport.authenticate('facebook', { failureRedirect: '/auth/login' }, async (req, res) => {
-    try {
-        const user = req.user;
-
-        // Verifica se o usuário já tem um email registrado
-        if (user.email) {
-            // Se o e-mail já estiver registrado, redireciona diretamente para o dashboard
-            return res.redirect('/dashboard');
-        } else {
-            // Se o e-mail não estiver registrado, atribui um email fictício ou padrão
-            user.email = 'default_email@example.com';
-            await user.save();
-            return res.redirect('/dashboard');
-        }
-    } catch (err) {
-        console.log('Erro no callback do Facebook:', err);
-        return res.redirect('/auth/login');
-    }
-});
 
 // Função para atualizar o email do usuário com base no Facebook ID
 authController.updateUserEmail = async (facebookId, email, name) => {
@@ -147,47 +125,5 @@ authController.updateUserEmail = async (facebookId, email, name) => {
 authController.findUserByEmail = function(email) {
     return mongoUser.findOne({ email: email });
 };
-
-authController.facebookEmailSubmitted = async (req, res) => {
-    const { facebookId, name, email } = req.body;
-
-    console.log('Dados recebidos do formulário:', { facebookId, name, email });
-
-    try {
-        // Tenta encontrar o usuário com o facebookId
-        let user = await mongoUser.findOne({ facebookId });
-
-        if (!user) {
-            console.log('Usuário não encontrado com o Facebook ID. Criando novo usuário...');
-            // Se o usuário não existir, cria um novo usuário
-            user = await mongoUser.create({ facebookId, name, email });
-        } else {
-            // Se o usuário já existir, atualiza o e-mail, caso seja diferente
-            if (user.email !== email) {
-                user.email = email;
-                await user.save();
-            }
-            console.log('Usuário encontrado ou atualizado:', user);
-        }
-
-        // Finaliza o processo de autenticação
-        req.login(user, (err) => {
-            if (err) {
-                console.log('Erro no req.login:', err);
-                return res.redirect('/');
-            }
-            console.log('Usuário autenticado com sucesso:', user);
-
-            // Redireciona diretamente para o dashboard, pois o e-mail já foi registrado
-            return res.redirect('/dashboard');
-        });
-
-    } catch (err) {
-        console.log('Erro ao processar o login do Facebook:', err);
-        return res.redirect('/');
-    }
-};
           
-
-
 module.exports = authController;

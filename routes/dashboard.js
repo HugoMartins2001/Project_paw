@@ -4,7 +4,6 @@ const authController = require('../controllers/auth')
 
 
 router.get('/', authController.verifyLoginUser, function(req, res) {~
-  console.log('Entrou na rota dashboard');
   res.render('dashboard/dashboard', { user: req.user });
 });
 

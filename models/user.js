@@ -33,7 +33,6 @@ const User = new mongoose.Schema({
     required: function() { return !this.googleId && !this.facebookId; } 
   },
   googleId: { type: String, unique: true, sparse: true }, 
-  facebookId: { type: String, unique: true, sparse: true }, 
   dataRegisto: { type: Date, default: Date.now }
 });
 
