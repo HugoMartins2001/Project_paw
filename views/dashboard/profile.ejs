@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= user.role %> Profile</title>
     <link rel="stylesheet" href="/stylesheets/profile1.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
 
   <body>
-    
     <header>
       <div class="navbar-container">
         <nav class="navbar-left">
@@ -18,67 +20,68 @@
           <a href="/profile">Profile</a>
           <a href="/orders">Orders</a>
         </nav>
-    
+
         <div class="navbar-right">
           <form action="/auth/logout">
             <button type="submit" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Logout
+              <i class="fas fa-sign-out-alt"></i> Logout
             </button>
-        </form>
+          </form>
         </div>
       </div>
     </header>
-    
-
 
     <div class="container">
       <h1><%= user.role %> Profile</h1>
-      
+
       <div class="profile-card">
         <a href="/profile/editProfile" class="edit-icon" title="Editar Perfil">
           <i class="fas fa-pen"></i>
-        </a>        
-        <img src="https://www.shutterstock.com/image-vector/user-profile-icon-vector-avatar-600nw-2247726673.jpg" alt="User Image" />
-        <div class="profile-name"><%= user.name %>
-        </div>
+        </a>
+        <img
+          src="https://www.shutterstock.com/image-vector/user-profile-icon-vector-avatar-600nw-2247726673.jpg"
+          alt="User Image"
+        />
+        <div class="profile-name"><%= user.name %></div>
         <div class="profile-email"><%= user.email %></div>
 
         <div class="info-box">
           <h3>Personal informations</h3>
           <div class="info-item">
             <i class="fas fa-user-tag"></i>
-            <%= user.role === 'cliente' ? 'Cliente' : user.role === 'admin' ? 'Administrador' : 'Manager' %>
+            <%= user.role === 'cliente' ? 'Cliente' : user.role === 'admin' ?
+            'Administrador' : 'Manager' %>
           </div>
 
           <% if (user.role === 'cliente') { %>
-            <div class="info-item">
-              <i class="fas fa-phone"></i>
-              <%= user.clienteTelemovel || 'Mobile phone not provided' %>
-            </div>
-            <div class="info-item">
-              <i class="fas fa-id-card"></i>
-              NIF: <%= user.clienteNif || 'not provided' %>
-            </div>
-            <div class="info-item">
-              <i class="fas fa-home"></i>
-              Endereço: <%= user.address || 'not provided' %>
-            </div>
+          <div class="info-item">
+            <i class="fas fa-phone"></i>
+            <%= user.clienteTelemovel || 'Mobile phone not provided' %>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-id-card"></i>
+            NIF: <%= user.clienteNif || 'not provided' %>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-home"></i>
+            Endereço: <%= user.address || 'not provided' %>
+          </div>
 
           <% } else if (user.role === 'manager') { %>
-            <div class="info-item">
-              <i class="fas fa-phone"></i>
-              <%= user.managerTelemovel || 'Mobile phone not provided' %>
-            </div>
+          <div class="info-item">
+            <i class="fas fa-phone"></i>
+            <%= user.managerTelemovel || 'Mobile phone not provided' %>
+          </div>
 
           <% } else if (user.role === 'admin') { %>
-            <div class="info-item">
-              <i class="fas fa-phone"></i>
-              <%= user.managerTelemovel || 'Mobile phone not provided' %>
-            </div>
-            <div class="info-item">
-              <i class="fas fa-home"></i>
-              Address: <%= user.address || 'not provided' %>
-            </div>
+          <div class="info-item">
+            <i class="fas fa-phone"></i>
+            <%= user.managerTelemovel || 'Mobile phone not provided' %>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-home"></i>
+            Address: <%= user.address || 'not provided' %>
+          </div>
           <% } %>
         </div>
       </div>

@@ -1,68 +1,65 @@
 body {
-    background-image: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjlmOWZhczcwMW41ZTl1cDRoczIxYjFncnhhOHU1cDQ0b2t5NzRmOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uFmH8za4E6M5STIiTu/giphy.gif');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+  background-image: url("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjlmOWZhczcwMW41ZTl1cDRoczIxYjFncnhhOHU1cDQ0b2t5NzRmOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uFmH8za4E6M5STIiTu/giphy.gif");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 .register-container {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    color: #fff;
-    max-width: 600px; 
-    max-height: 90vh; 
-    overflow-y: auto; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  color: #fff;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-
 .register-container::-webkit-scrollbar {
-    display: none; 
+  display: none;
 }
-
 .form-control {
-    background: transparent;
-    border: 1px solid #fff;
-    color: #fff;
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
 }
 .form-control::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 .btn-register {
-    background-color: #ff8800;
-    border: none;
-    transition: 0.3s;
+  background-color: #ff8800;
+  border: none;
+  transition: 0.3s;
 }
 .btn-register:hover {
-    background-color: #cc7000;
+  background-color: #cc7000;
 }
 a {
-    color: #ffbb33;
+  color: #ffbb33;
 }
 label {
-    display: block;
-    margin-bottom: 5px;
-    text-align: left;
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
 }
 .hidden {
-    display: none;
+  display: none;
 }
 @media (max-width: 768px) {
-    .register-container {
-        padding: 20px;
-    }
-    body {
-        padding: 10px;
-    }
-}
-
-.hidden {
-    display: none;
+  .register-container {
+    padding: 20px;
   }
+  body {
+    padding: 10px;
+  }
+}
+.hidden {
+  display: none;
+}
