@@ -20,128 +20,57 @@
 
     <div class="container mt-5">
       <h1 class="text-center mb-4">Edit Restaurant</h1>
-      <form
-        action="/restaurants/editRestaurant/<%= restaurant.name %>"
-        method="POST"
-      >
+      <form action="/restaurants/editRestaurant/<%= restaurant.name %>"method="POST">
         <div class="mb-3">
           <label for="name" class="form-label">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value="<%= restaurant.name %>"
-            class="form-control"
-            required
-          />
+          <input type="text" id="name" name="name" value="<%= restaurant.name %>" class="form-control" required/>
         </div>
 
         <div class="mb-3">
           <label for="address" class="form-label">Address:</label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value="<%= restaurant.address %>"
-            class="form-control"
-            required
-          />
+          <input type="text" id="address" name="address" value="<%= restaurant.address %>" class="form-control" required/>
         </div>
 
         <div class="mb-3">
           <label for="latitude" class="form-label">Latitude:</label>
-          <input
-            type="text"
-            id="latitude"
-            name="latitude"
-            value="<%= restaurant.latitude %>"
-            class="form-control"
-            required
-          />
+          <input  type="text"  id="latitude"  name="latitude"  value="<%= restaurant.latitude %>"  class="form-control" required/>
         </div>
 
         <div class="mb-3">
           <label for="longitude" class="form-label">Longitude:</label>
-          <input
-            type="text"
-            id="longitude"
-            name="longitude"
-            value="<%= restaurant.longitude %>"
-            class="form-control"
-            required
-          />
+          <input type="text" id="longitude"  name="longitude" value="<%= restaurant.longitude %>" class="form-control" required/>
         </div>
 
         <div class="mb-3">
           <label for="phone" class="form-label">Phone:</label>
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            value="<%= restaurant.phone %>"
-            class="form-control"
-            required
-          />
+          <input type="text" id="phone" name="phone" value="<%= restaurant.phone %>" class="form-control" required/>
         </div>
 
         <div class="mb-3">
           <label for="email" class="form-label">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value="<%= restaurant.email %>"
-            class="form-control"
-            required
-          />
+          <input type="email" id="email" name="email" value="<%= restaurant.email %>" class="form-control" required/>
         </div>
 
         <div class="mb-3">
           <label for="openingHours" class="form-label">Opening Hours:</label>
-          <input
-            type="text"
-            id="openingHours"
-            name="openingHours"
-            value="<%= restaurant.openingHours %>"
-            class="form-control"
-            required
-          />
+          <input type="text" id="openingHours" name="openingHours"  value="<%= restaurant.openingHours %>"  class="form-control" required/>
         </div>
 
         <div class="mb-3">
-          <label for="paymentMethods" class="form-label"
-            >Payment Methods:</label
-          >
-          <input
-            type="text"
-            id="paymentMethods"
-            name="paymentMethods"
-            value="<%= restaurant.paymentMethods %>"
-            class="form-control"
-            required
-          />
+          <label for="paymentMethods" class="form-label">Payment Methods:</label>
+          <input  type="text" id="paymentMethods" name="paymentMethods"value="<%= restaurant.paymentMethods %>" class="form-control" required/>
         </div>
 
         <div class="mb-3">
           <label for="menus" class="form-label">Associated Menus:</label>
           <select name="menus" id="menus" class="form-select" multiple required>
             <% menus.forEach(function(menu) { %>
-            <option
-              value="<%= menu._id %>"
-              <%
-              if
-              (restaurant.menus.includes(menu._id.toString()))
-              {
-              %
-            >
-              selected <% } %> > <%= menu.name %>
+            <option value="<%= menu._id %>"
+              <% if (restaurant.menus.includes(menu._id.toString())){ %> selected <% } %> > <%= menu.name %>
             </option>
             <% }); %>
           </select>
-          <small class="form-text text-muted"
-            >Select multiple menus by holding the "Ctrl" key (Windows) or "Cmd"
-            key (Mac).</small
-          >
+          <small class="form-text text-muted">Select multiple menus by holding the "Ctrl" key (Windows) or "Cmd"key (Mac).</small>
         </div>
 
         <div class="mb-3 text-center">
@@ -150,9 +79,7 @@
       </form>
 
       <div class="text-center mt-4">
-        <a href="/restaurants/showRestaurants" class="btn btn-secondary"
-          >Back</a
-        >
+        <a href="/restaurants/showRestaurants" class="btn btn-secondary">Back</a>
       </div>
     </div>
 
