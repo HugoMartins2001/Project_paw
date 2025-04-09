@@ -1,88 +1,87 @@
 body {
-  font-family: Arial, sans-serif;
+  background-color: #f4f7fc;
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f9;
 }
+
 .header {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
+  background-color: #ffffff;
+  padding: 16px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.header span {
-  font-size: 18px;
+
+.header h3 {
+  margin: 0;
+  font-weight: 600;
+  color: #333;
+  font-size: 22px;
 }
-.header a {
-  color: white;
-  background-color: red;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 4px;
-  transition: background-color 0.3s, color 0.3s;
-}
-.container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.restaurant-info {
-  margin-bottom: 20px;
-}
-.restaurant-info label {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
-}
-.restaurant-info p {
-  background: #f9f9f9;
-  padding: 10px;
-  border-radius: 4px;
-  color: #555;
-  margin-bottom: 15px;
-}
-.actions {
-  text-align: center;
-  margin-top: 20px;
-}
-.actions a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: bold;
-  margin: 0 10px;
-  padding: 10px 20px;
-  border: 1px solid #4caf50;
-  border-radius: 4px;
-  transition: background-color 0.3s, color 0.3s;
-}
-.dish-details {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.dish-details h2 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-.dish-details p {
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #333;
   font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.logout-btn:hover {
+  color: #6c63ff;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.details p {
   margin-bottom: 10px;
 }
-.btn-back {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #4caf50;
+
+.list-group-item {
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  background-color: #e0e0e0;
+  border: none;
+}
+
+.btn-outline-primary {
+  color: #6c63ff;
+  border-color: #6c63ff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #6c63ff;
   color: white;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 4px;
-  transition: background-color 0.3s;
 }
