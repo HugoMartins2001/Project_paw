@@ -63,11 +63,11 @@
           </div>
           <div class="info-item">
             <i class="fas fa-id-card"></i>
-            NIF: <%= user.clienteNif || 'not provided' %>
+            <%= user.clienteNif || 'not provided' %>
           </div>
           <div class="info-item">
             <i class="fas fa-home"></i>
-            Endereço: <%= user.address || 'not provided' %>
+            <%= user.address || 'not provided' %>
           </div>
 
           <% } else if (user.role==='manager' ) { %>
@@ -83,7 +83,7 @@
               </div>
               <div class="info-item">
                 <i class="fas fa-home"></i>
-                Address: <%= user.address || 'not provided' %>
+                <%= user.address || 'not provided' %>
               </div>
               <% } %>
       </div>
