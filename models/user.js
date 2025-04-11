@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const User = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { 
+  password: {
     type: String, 
-    required: function() { return !this.googleId && !this.facebookId; } // Opcional para login social
+    required: function() { return !this.googleId; } 
   },
   clienteTelemovel: { 
     type: String, 
@@ -18,7 +18,7 @@ const User = new mongoose.Schema({
     required: function() { return this.role === 'manager'; } 
   },
   clienteNif: { 
-    type: String, 
+    type: String,
     match: /^[0-9]{9}$/, 
     required: function() { return this.role === 'cliente'; } 
   },
@@ -30,7 +30,7 @@ const User = new mongoose.Schema({
     type: String, 
     enum: ["cliente", "manager", "admin"], 
     default: 'cliente',
-    required: function() { return !this.googleId && !this.facebookId; } 
+    required: function() { return !this.googleId; } 
   },
   googleId: { type: String, unique: true, sparse: true }, 
   dataRegisto: { type: Date, default: Date.now }
