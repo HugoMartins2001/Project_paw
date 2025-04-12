@@ -29,7 +29,7 @@ profile.updateProfile = function (req, res, next) {
 
   mongoUser
     .findByIdAndUpdate(userId, updatedUserData, { new: true })
-    .then(() => res.redirect("/profile/editProfile?success=true"))
+    .then(() => res.redirect("/profile/editProfile"))
     .catch((err) => next(err));
 };
 

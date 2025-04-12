@@ -1,88 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/stylesheets/editRestaurant.css" />
-    <title>Edit Restaurant</title>
-  </head>
-  <body>
-    <div class="header bg-primary text-white py-3">
-      <div class="container d-flex justify-content-between">
-        <h3>Edit Restaurant</h3>
-        <a href="/auth/logout" class="btn btn-danger">Logout</a>
-      </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Restaurant</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/stylesheets/editRestaurant.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <div class="header bg-primary text-white py-3">
+    <div class="container d-flex justify-content-between">
+      <h3>Edit Restaurant</h3>
+      <a href="/auth/logout" class="btn btn-danger">Logout</a>
     </div>
+  </div>
 
-    <div class="container mt-5">
-      <h1 class="text-center mb-4">Edit Restaurant</h1>
-      <form action="/restaurants/editRestaurant/<%= restaurant.name %>"method="POST">
-        <div class="mb-3">
-          <label for="name" class="form-label">Name:</label>
-          <input type="text" id="name" name="name" value="<%= restaurant.name %>" class="form-control" required/>
-        </div>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Edit Restaurant</h1>
+    <form id="editRestaurantForm" action="/restaurants/editRestaurant/<%= restaurant._id %>" method="POST">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" id="name" name="name" value="<%= restaurant.name %>" class="form-control" required />
+      </div>
 
-        <div class="mb-3">
-          <label for="address" class="form-label">Address:</label>
-          <input type="text" id="address" name="address" value="<%= restaurant.address %>" class="form-control" required/>
-        </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Address:</label>
+        <input type="text" id="address" name="address" value="<%= restaurant.address %>" class="form-control" required />
+      </div>
 
-        <div class="mb-3">
-          <label for="latitude" class="form-label">Latitude:</label>
-          <input  type="text"  id="latitude"  name="latitude"  value="<%= restaurant.latitude %>"  class="form-control" required/>
-        </div>
+      <div class="mb-3">
+        <label for="latitude" class="form-label">Latitude:</label>
+        <input type="text" id="latitude" name="latitude" value="<%= restaurant.latitude %>" class="form-control" required />
+      </div>
 
-        <div class="mb-3">
-          <label for="longitude" class="form-label">Longitude:</label>
-          <input type="text" id="longitude"  name="longitude" value="<%= restaurant.longitude %>" class="form-control" required/>
-        </div>
+      <div class="mb-3">
+        <label for="longitude" class="form-label">Longitude:</label>
+        <input type="text" id="longitude" name="longitude" value="<%= restaurant.longitude %>" class="form-control" required />
+      </div>
 
-        <div class="mb-3">
-          <label for="phone" class="form-label">Phone:</label>
-          <input type="text" id="phone" name="phone" value="<%= restaurant.phone %>" class="form-control" required/>
-        </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone:</label>
+        <input type="text" id="phone" name="phone" value="<%= restaurant.phone %>" class="form-control" required />
+      </div>
 
-        <div class="mb-3">
-          <label for="email" class="form-label">Email:</label>
-          <input type="email" id="email" name="email" value="<%= restaurant.email %>" class="form-control" required/>
-        </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" id="email" name="email" value="<%= restaurant.email %>" class="form-control" required />
+      </div>
 
-        <div class="mb-3">
-          <label for="openingHours" class="form-label">Opening Hours:</label>
-          <input type="text" id="openingHours" name="openingHours"  value="<%= restaurant.openingHours %>"  class="form-control" required/>
-        </div>
+      <div class="mb-3">
+        <label for="openingHours" class="form-label">Opening Hours:</label>
+        <input type="text" id="openingHours" name="openingHours" value="<%= restaurant.openingHours %>" class="form-control" required />
+      </div>
 
-        <div class="mb-3">
-          <label for="paymentMethods" class="form-label">Payment Methods:</label>
-          <input  type="text" id="paymentMethods" name="paymentMethods"value="<%= restaurant.paymentMethods %>" class="form-control" required/>
-        </div>
+      <div class="mb-3">
+        <label for="paymentMethods" class="form-label">Payment Methods:</label>
+        <input type="text" id="paymentMethods" name="paymentMethods" value="<%= restaurant.paymentMethods %>" class="form-control" required />
+      </div>
 
-        <div class="mb-3">
-          <label for="menus" class="form-label">Associated Menus:</label>
-          <select name="menus" id="menus" class="form-select" multiple required>
-            <% menus.forEach(function(menu) { %>
-            <option value="<%= menu._id %>"
-              <% if (restaurant.menus.includes(menu._id.toString())){ %> selected <% } %> > <%= menu.name %>
+      <div class="mb-3">
+        <label for="menus" class="form-label">Associated Menus:</label>
+        <select name="menus" id="menus" class="form-select" multiple required>
+          <% menus.forEach(function(menu) { %>
+            <option value="<%= menu._id %>" <% if (restaurant.menus.includes(menu._id.toString())) { %> selected <% } %>>
+              <%= menu.name %>
             </option>
-            <% }); %>
-          </select>
-          <small class="form-text text-muted">Select multiple menus by holding the "Ctrl" key (Windows) or "Cmd"key (Mac).</small>
-        </div>
-
-        <div class="mb-3 text-center">
-          <button type="submit" class="btn btn-primary">Save Changes</button>
-        </div>
-      </form>
-
-      <div class="text-center mt-4">
-        <a href="/restaurants/showRestaurants" class="btn btn-secondary">Back</a>
+          <% }); %>
+        </select>
+        <small class="form-text text-muted">Select multiple menus by holding the "Ctrl" key (Windows) or "Cmd" key (Mac).</small>
       </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+      <div class="mb-3 text-center">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+
+    <div class="text-center mt-4">
+      <a href="/restaurants/showRestaurants" class="btn btn-secondary">Back</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const editRestaurantForm = document.getElementById("editRestaurantForm");
+
+    editRestaurantForm.addEventListener("submit", function (event) {
+      event.preventDefault(); 
+
+      Swal.fire({
+        icon: "success",
+        title: "Restaurante atualizado com sucesso!",
+        text: "Você será redirecionado para a lista de restaurantes.",
+        confirmButtonColor: "#4CAF50",
+        timer: 1000, 
+        showConfirmButton: false,
+      }).then(() => {
+        editRestaurantForm.submit();
+      });
+    });
+  </script>
+</body>
+
 </html>

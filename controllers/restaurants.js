@@ -96,10 +96,10 @@ restaurantsController.createRestaurant = function (req, res, next) {
 };
 
 restaurantsController.deleteRestaurant = function (req, res, next) {
-  const query = { name: req.params.name };
+  const query = { _id: req.params.id }; 
 
   if (req.user.role === "manager") {
-    query.managerId = req.user._id;
+    query.managerId = req.user._id; 
   }
 
   mongoRestaurant
@@ -128,16 +128,18 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
 
     const restaurant =
       req.user.role === "admin"
-        ? await mongoRestaurant.findOne({ name: req.params.name })
+        ? await mongoRestaurant.findById(req.params.id) 
         : await mongoRestaurant.findOne({
-          name: req.params.name.trim(),
-          managerId: req.user._id,
-        });
+            _id: req.params.id, 
+            managerId: req.user._id,
+          });
+
     if (!restaurant) {
       return res
         .status(404)
         .send("Restaurant not found or without permission.");
     }
+
     res.render("restaurants/editRestaurant", { restaurant, menus });
   } catch (err) {
     console.error("Error trying to edit restaurant:", err);
@@ -146,8 +148,10 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
 };
 
 restaurantsController.updateRestaurant = function (req, res, next) {
-  const managerId = req.user._id;
-  const query = { name: req.params.name, managerId };
+  const query =
+    req.user.role === "admin"
+      ? { _id: req.params.id } 
+      : { _id: req.params.id, managerId: req.user._id }; 
 
   const updatedData = {
     name: req.body.name,
@@ -160,8 +164,6 @@ restaurantsController.updateRestaurant = function (req, res, next) {
     paymentMethods: req.body.paymentMethods,
     menus: req.body.menus || [],
   };
-
-  console.log("Updating restaurant with the following data:", updatedData);
 
   mongoRestaurant
     .findOneAndUpdate(query, updatedData, { new: true, runValidators: true })

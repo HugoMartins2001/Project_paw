@@ -11,63 +11,35 @@ router.get(
   }
 );
 
-router.get(
-  "/submitRestaurant",
-  authController.verifyLoginUser,
-  function (req, res, next) {
+router.get("/submitRestaurant", authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.renderCreateRestaurant(req, res, next);
-  }
-);
+  });
 
-router.post(
-  "/submittedRestaurant",
-  authController.verifyLoginUser,
-  function (req, res, next) {
+router.post("/submittedRestaurant", authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.createRestaurant(req, res, next);
-  }
-);
+  });
 
-router.get(
-  "/showRestaurants",
-  authController.verifyLoginUser,
-  function (req, res, next) {
+router.get("/showRestaurants", authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.showAll(req, res, next);
-  }
-);
+  });
 
-router.post(
-  "/deleteRestaurant/:name",
-  authController.verifyLoginUser,
-  function (req, res, next) {
+router.post("/deleteRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.deleteRestaurant(req, res, next);
-  }
-);
+  });
 
-router.get(
-  "/editRestaurant/:name",
-  authController.verifyLoginUser,
-  function (req, res, next) {
+router.get("/editRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.renderEditRestaurant(req, res, next);
-  }
-);
+  });
 
-router.post(
-  "/editRestaurant/:name",
-  authController.verifyLoginUser,
-  function (req, res, next) {
+router.post("/editRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.updateRestaurant(req, res, next);
-  }
-);
+  });
 
-router.get(
-  "/pendingApproval",
-  authController.verifyLoginUser,
+router.get("/pendingApproval", authController.verifyLoginUser,
   restaurantsController.showPendingRestaurants
 );
 
-router.post(
-  "/approveRestaurant/:id",
-  authController.verifyLoginUser,
+router.post("/approveRestaurant/:id", authController.verifyLoginUser,
   restaurantsController.approveRestaurant
 );
 

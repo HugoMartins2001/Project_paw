@@ -34,7 +34,7 @@
     <h1>Edit Profile</h1>
 
     <div class="profile-card">
-      <form action="/profile/editProfile" method="POST">
+      <form id="editProfileForm" action="/profile/editProfile" method="POST">
         <div class="profile-email">
           <p>Email: <%= user.email %></p>
         </div>
@@ -78,21 +78,29 @@
           <% } %>
         </div>
 
-        <button type="submit">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
       </form>
     </div>
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('success') === 'true') {
+    const editProfileForm = document.getElementById('editProfileForm');
+
+    editProfileForm.addEventListener('submit', function (event) {
+      event.preventDefault(); 
+
       Swal.fire({
         icon: 'success',
         title: 'Perfil atualizado!',
-        text: 'As alterações foram Alteradas com sucesso.',
+        text: 'Você será redirecionado para o perfil.',
         confirmButtonColor: '#4CAF50',
+        timer: 1000,
+        showConfirmButton: false,
+      }).then(() => {
+
+        editProfileForm.submit();
       });
-    }
+    });
   </script>
 </body>
 
