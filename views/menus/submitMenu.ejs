@@ -1,93 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/stylesheets/submitMenu.css" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <title>Create Menu</title>
-</head>
-
-<body>
-  <div class="header bg-primary text-white py-3">
-    <div class="container d-flex justify-content-between">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Menu</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/stylesheets/submitMenu.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="header">
       <h3>Create Menu</h3>
-      <a href="/auth/logout" class="btn btn-danger">Logout</a>
-    </div>
-  </div>
-
-  <div class="container mt-5">
-    <div class="card p-4 shadow-sm">
-      <h2 class="text-center mb-4">New Menu</h2>
-
-      <div id="error-alert" class="alert alert-danger alert-dismissible fade show d-none text-center" role="alert">
-        ⚠️ You cannot select more than 10 dishes for the menu!
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-
-      <form id="menuForm" method="post" action="/menus/submittedMenu">
-        <div class="mb-3">
-          <label for="name" class="form-label">Menu Name</label>
-          <input type="text" id="name" name="name" class="form-control" placeholder="Enter the menu name" required />
-        </div>
-        <div class="mb-3">
-          <label for="dishes" class="form-label">Dishes</label>
-          <select id="dishes" name="dishes" class="form-select" multiple required>
-            <% dishes.forEach(function(dish) { %>
-              <option value="<%= dish._id %>">
-                <%= dish.name %>
-              </option>
-            <% }) %>
-          </select>
-          <small class="form-text text-muted">Choose up to 10 dishes for this menu.</small>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">
-          Create Menu
+      <form action="/auth/logout" method="POST">
+        <button type="submit" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </form>
-
-      <a href="/dashboard" class="btn btn-secondary w-100 mt-3">Back</a>
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="container mt-5">
+      <div class="card">
+        <h2>New Menu</h2>
 
-  <script>
-    const menuForm = document.getElementById("menuForm");
+        <div id="error-alert" class="alert alert-danger d-none text-center" role="alert">
+          ⚠️ You cannot select more than 10 dishes!
+        </div>
 
-    menuForm.addEventListener("submit", function (event) {
-      const selectedDishes = document.getElementById("dishes").selectedOptions;
+        <form id="menuForm" method="post" action="/menus/submittedMenu">
+          <div class="mb-3">
+            <label for="name" class="form-label">Menu Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Enter the menu name" required />
+          </div>
+          <div class="mb-3">
+            <label for="dishes" class="form-label">Dishes</label>
+            <select id="dishes" name="dishes" class="form-select" multiple required>
+              <% dishes.forEach(function(dish) { %>
+                <option value="<%= dish._id %>"><%= dish.name %></option>
+              <% }) %>
+            </select>
+            <small class="form-text text-muted">Choose up to 10 dishes for this menu.</small>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Create Menu</button>
+        </form>
 
-      if (selectedDishes.length > 10) {
+        <a href="/dashboard" class="btn btn-secondary w-100 mt-3">Go to Dashboard</a>
+      </div>
+    </div>
+
+    <script
+      src="https://kit.fontawesome.com/yourkitid.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const menuForm = document.getElementById("menuForm");
+
+      menuForm.addEventListener("submit", function (event) {
+        const selectedDishes = document.getElementById("dishes").selectedOptions;
+
+        if (selectedDishes.length > 10) {
+          event.preventDefault();
+          const errorAlert = document.getElementById("error-alert");
+          errorAlert.classList.remove("d-none");
+          setTimeout(() => {
+            errorAlert.classList.add("d-none");
+          }, 4000);
+          return;
+        }
+
         event.preventDefault();
-
-        const errorAlert = document.getElementById("error-alert");
-        errorAlert.classList.remove("d-none");
-        errorAlert.classList.add("show");
-
-        setTimeout(() => {
-          errorAlert.classList.remove("show");
-          errorAlert.classList.add("d-none");
-        }, 5000);
-        return;
-      }
-
-
-      event.preventDefault(); 
-      Swal.fire({
-        icon: "success",
-        title: "Menu criado com sucesso!",
-        text: "Você será redirecionado para a lista de menus.",
-        confirmButtonColor: "#4CAF50",
-        timer: 1000,
-        showConfirmButton: false,
-      }).then(() => {
-        menuForm.submit();
+        Swal.fire({
+          icon: "success",
+          title: "Menu criado com sucesso!",
+          text: "Você será redirecionado para a lista de menus.",
+          confirmButtonColor: "#4CAF50",
+          timer: 1000,
+          showConfirmButton: false,
+        }).then(() => {
+          menuForm.submit();
+        });
       });
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

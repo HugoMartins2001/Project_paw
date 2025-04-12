@@ -1,99 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Available Dishes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/stylesheets/showDishes.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/stylesheets/showDishes.css" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <title>Available Dishes</title>
-</head>
-
-<body>
-  <div class="header bg-primary text-white py-3">
-    <div class="container d-flex justify-content-between">
+  <body>
+    <div class="header">
       <h3>Available Dishes</h3>
-      <a href="/auth/logout" class="btn btn-danger">Logout</a>
+      <form action="/auth/logout">
+        <button type="submit" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </form>
     </div>
-  </div>
 
-  <div class="container mt-4">
-    <h1 class="mb-4 text-center">Available Dishes</h1>
+    <div class="container">
+      <div class="card">
+        <h1>Available Dishes</h1>
 
-    <% if (dishes.length === 0) { %>
-      <div class="alert alert-warning text-center">
-        <h3>No dishes found.</h3>
-      </div>
-    <% } else { %>
-      <div class="row">
-        <% dishes.forEach(function(dish) { %>
-          <div class="col-md-6 col-lg-4">
-            <div class="card mb-4 shadow-sm">
-              <div class="card-body">
-                <h5 class="card-title">
-                  <%= dish.name %>
-                </h5>
-                <p class="card-text">
-                  <strong>Description:</strong>
-                  <%= dish.description %>
-                </p>
-                <p class="card-text">
-                  <strong>Price:</strong><br />
-                  <strong>Small:</strong> €<%= dish.prices.pequena.toFixed(2) %><br />
-                  <strong>Medium:</strong> €<%= dish.prices.media.toFixed(2) %><br />
-                  <strong>Large:</strong> €<%= dish.prices.grande.toFixed(2) %>
-                </p>
-                <p class="card-text">
-                  <strong>Category:</strong>
-                  <%= dish.category %>
-                </p>
-                <div class="d-flex justify-content-between">
-                  <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info">View Details</a>
-                  <% if ((user.role === 'manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'admin') { %>
-                    <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-warning">Edit</a>
-                    <button class="btn btn-danger delete-dish-btn" data-dish-id="<%= dish._id %>">
-                      Delete
-                    </button>
-                  <% } %>
+        <% if (dishes.length === 0) { %>
+          <div class="alert alert-warning text-center">
+            <h3>No dishes found.</h3>
+          </div>
+        <% } else { %>
+          <div class="row">
+            <% dishes.forEach(function(dish) { %>
+              <div class="col-md-6 mb-4">
+                <div class="dish-card">
+                  <h5><%= dish.name %></h5>
+                  <p><strong>Description:</strong> <%= dish.description %></p>
+                  <p><strong>Price:</strong><br>
+                    <strong>Small:</strong> €<%= dish.prices.pequena.toFixed(2) %><br>
+                    <strong>Medium:</strong> €<%= dish.prices.media.toFixed(2) %><br>
+                    <strong>Large:</strong> €<%= dish.prices.grande.toFixed(2) %>
+                  </p>
+                  <p><strong>Category:</strong> <%= dish.category %></p>
+
+                  <div class="d-flex flex-wrap gap-2 mt-3">
+                    <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-outline-primary">View Details</a>
+                    <% if ((user.role === 'manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'admin') { %>
+                      <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-outline-secondary">Edit</a>
+                      <button class="btn btn-outline-danger delete-dish-btn" data-dish-id="<%= dish._id %>">Delete</button>
+                    <% } %>
+                  </div>
                 </div>
               </div>
-            </div>
+            <% }); %>
           </div>
-        <% }) %>
+        <% } %>
+
+        <div class="mt-4 d-grid gap-2">
+          <% if (user.role === 'manager' || user.role === 'admin') { %>
+            <a href="/dishes/submitDishes" class="btn btn-primary">Create New Dish</a>
+          <% } %>
+          <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
       </div>
-    <% } %>
-
-    <div class="text-center">
-      <% if (user.role === 'manager' || user.role === 'admin') { %>
-        <a href="/dishes/submitDishes" class="btn btn-primary mt-4">Create New Dish</a>
-      <% } %>
-      <a href="/dashboard" class="btn btn-secondary mt-4">Back to Dashboard</a>
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    document.querySelectorAll('.delete-dish-btn').forEach(button => {
-      button.addEventListener('click', function () {
-        const dishId = this.getAttribute('data-dish-id');
-
-        Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            fetch(`/dishes/deleteDish/${dishId}`, {
-              method: 'POST'
-            })
-              .then(response => {
+    <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.querySelectorAll('.delete-dish-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const dishId = this.getAttribute('data-dish-id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              fetch(`/dishes/deleteDish/${dishId}`, {
+                method: 'POST'
+              }).then(response => {
                 if (response.ok) {
-
                   Swal.fire({
                     icon: 'success',
                     title: 'Deleted!',
@@ -102,7 +92,6 @@
                     timer: 1500,
                     showConfirmButton: false
                   }).then(() => {
-
                     window.location.reload();
                   });
                 } else {
@@ -114,11 +103,10 @@
                   });
                 }
               });
-          }
+            }
+          });
         });
       });
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

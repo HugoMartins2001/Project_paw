@@ -1,59 +1,95 @@
 body {
   background-color: #f4f7fc;
-  font-family: "Arial", sans-serif;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
 }
+
 .header {
-  background-color: #007bff;
-  color: white;
-  padding: 15px 20px;
+  background-color: #ffffff;
+  padding: 16px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .header h3 {
   margin: 0;
-  font-weight: bold;
+  font-weight: 600;
+  color: #333;
+  font-size: 22px;
 }
-.container-form {
+
+.header .logout-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.header .logout-btn:hover {
+  color: #6c63ff;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.card {
   background: white;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  margin: auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
 }
-.btn-primary {
-  width: 100%;
-  background-color: #0056b3;
-  border: none;
-  transition: 0.3s;
-}
-.btn-primary:hover {
-  background-color: #003d82;
-}
-.btn-back {
-  margin-top: 20px;
-  display: block;
+
+h2 {
   text-align: center;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 30px;
 }
+
 .form-label {
-  font-weight: bold;
+  font-weight: 500;
+  color: #444;
 }
-select.form-select,
-input.form-control {
+
+.form-control,
+.form-select {
   border-radius: 8px;
+  border: 1px solid #ddd;
 }
-#success-alert {
-  animation: fadeIn 0.5s ease-in-out;
+
+.btn-primary {
+  background-color: #6c63ff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+
+.btn-primary:hover {
+  background-color: #574fdb;
+}
+
+.btn-secondary {
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: 500;
+}
+
+.text-muted {
+  font-size: 0.875rem;
+}
+
+.alert {
+  font-size: 0.95rem;
+  padding: 12px 20px;
 }

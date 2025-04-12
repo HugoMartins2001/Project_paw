@@ -1,53 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f4f9;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f9;
 }
+
 .header {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
+  background-color: #ffffff;
+  padding: 16px 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.header span {
-  font-size: 18px;
+
+.header h3 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 20px;
+  color: #111827;
 }
-.header a {
-  color: white;
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
   text-decoration: none;
-  font-weight: bold;
 }
+
+.logout-btn:hover {
+  color: #6c63ff;
+  text-decoration: none;
+}
+
 .container {
-  margin-top: 20px;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
+
 .menu-details {
   background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
+
 .menu-details h2 {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 26px;
+  font-weight: 600;
   margin-bottom: 20px;
+  text-align: center;
+  color: #111827;
 }
-.menu-details p {
+
+.menu-details p,
+.menu-details h4 {
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  color: #374151;
 }
-.dish-list {
-  margin-top: 15px;
-}
-.dish-item {
-  background-color: #f8f9fa;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.btn-back {
+
+.list-group {
+  padding-left: 0;
+  list-style: none;
   margin-top: 20px;
+}
+
+.list-group-item {
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn {
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s ease;
+}
+
+.btn-info {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #2563eb;
+}
+
+.btn-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+.text-center {
+  text-align: center;
+  margin-top: 32px;
 }
