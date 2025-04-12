@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const authController = require('../controllers/auth');
 const passport = require('passport');
+const upload = require('../middlewares/upload');
 
 
 router.get('/login', authController.login );
@@ -12,7 +13,8 @@ router.get('/logout', authController.logout );
 
 router.get('/register', authController.createLogin );
 
-router.post('/registerSubmitted', authController.createLoginSubmitted);
+router.post('/registerSubmitted', upload.single('profilePic'), authController.createLoginSubmitted);
+
 
 router.get('/loginform', (req, res) => {
     res.render('login/dashboard'); 

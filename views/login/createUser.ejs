@@ -30,7 +30,7 @@
       An error occurred during registration. Please try again.
     </div>
 
-    <form method="post" action="/auth/registerSubmitted">
+    <form method="post" action="/auth/registerSubmitted" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="role" class="form-label">Role</label>
         <select class="form-select text-white bg-dark" id="role" name="role" required onchange="toggleForm()">
@@ -81,6 +81,11 @@
             placeholder="Phone number" pattern="[0-9]{9}" title="The number must be 9 digits" />
         </div>
       </div>
+
+      <div class="mb-3">
+        <label for="profilePic" class="form-label">Profile Picture</label>
+        <input type="file" id="profilePic" name="profilePic" class="form-control" accept="image/*" />
+      </div>      
 
       <button type="submit" class="btn btn-register w-100">Register</button>
     </form>

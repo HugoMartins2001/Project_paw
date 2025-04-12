@@ -33,7 +33,8 @@ const User = new mongoose.Schema({
     required: function() { return !this.googleId; } 
   },
   googleId: { type: String, unique: true, sparse: true }, 
-  dataRegisto: { type: Date, default: Date.now }
+  dataRegisto: { type: Date, default: Date.now },
+  profilePic: { type: String }
 });
 
 module.exports = mongoose.model('users', User);

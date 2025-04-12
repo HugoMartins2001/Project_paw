@@ -34,7 +34,7 @@
     <h1>Edit Profile</h1>
 
     <div class="profile-card">
-      <form id="editProfileForm" action="/profile/editProfile" method="POST">
+      <form id="editProfileForm" action="/profile/editProfile" method="POST" enctype="multipart/form-data">
         <div class="profile-email">
           <p>Email: <%= user.email %></p>
         </div>
@@ -77,6 +77,11 @@
             </div>
           <% } %>
         </div>
+        
+        <div class="info-item">
+          <label for="profilePic">Foto de Perfil:</label>
+          <input type="file" id="profilePic" name="profilePic" accept="image/*" />
+        </div>        
 
         <button type="submit" class="btn btn-primary">Save changes</button>
       </form>

@@ -27,10 +27,15 @@ profile.updateProfile = function (req, res, next) {
     managerTelemovel,
   };
 
+  if (req.file) {
+    updatedUserData.profilePic = req.file.filename;
+  }  
+
   mongoUser
     .findByIdAndUpdate(userId, updatedUserData, { new: true })
-    .then(() => res.redirect("/profile/editProfile"))
+    .then(() => res.redirect("/profile"))
     .catch((err) => next(err));
 };
+
 
 module.exports = profile;

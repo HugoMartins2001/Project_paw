@@ -44,6 +44,10 @@ authController.createLogin = function (req, res, next) {
 authController.createLoginSubmitted = function (req, res, next) {
     console.log(req.body);
 
+    if (req.file) {
+        req.body.profilePic = `/uploads/${req.file.filename}`;
+    }
+
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
     req.body.password = hashedPassword
 
