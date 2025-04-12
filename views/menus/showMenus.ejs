@@ -36,10 +36,10 @@
                   <div class="card-body d-flex flex-column justify-content-between">
                     <h5 class="card-title"><%= menu.name %></h5>
                     <div class="d-flex justify-content-between mt-3">
-                      <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-info">View</a>
+                      <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-outline-primary">View</a>
                       <% if (user.role === 'admin' || isManagerMenu) { %>
-                        <a href="/menus/editMenu/<%= menu._id %>" class="btn btn-warning">Edit</a>
-                        <button class="btn btn-danger delete-menu-btn" data-menu-id="<%= menu._id %>">Delete</button>
+                        <a href="/menus/editMenu/<%= menu._id %>" class="btn btn-outline-secondary">Edit</a>
+                        <button class="btn btn-outline-danger delete-menu-btn" data-menu-id="<%= menu._id %>">Delete</button>
                       <% } %>
                     </div>
                   </div>
