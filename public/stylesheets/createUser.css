@@ -1,65 +1,154 @@
 body {
-  background-image: url("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjlmOWZhczcwMW41ZTl1cDRoczIxYjFncnhhOHU1cDQ0b2t5NzRmOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uFmH8za4E6M5STIiTu/giphy.gif");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #e3dfd9, #e2940d); /* Gradiente de fundo */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  height: 100vh;
 }
 .register-container {
-  background: rgba(0, 0, 0, 0.8);
-  padding: 30px;
-  border-radius: 10px;
-  text-align: center;
-  color: #fff;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  height: 680px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 20px auto;
+  transition: transform 0.3s ease;
+  padding: 40px;
 }
-.register-container::-webkit-scrollbar {
-  display: none;
+
+.register-container:hover {
+  transform: scale(1.02);
 }
+
+/* Título */
+.register-container h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Formulário */
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 97%;
+  align-content: center;
+  justify-content: center;
+}
+
+/* Estilo para o campo select */
+.form-select {
+  background: #f9f9f9; /* Fundo igual aos outros campos */
+  color: #333; /* Cor do texto */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Borda igual aos outros campos */
+  border-radius: 8px; /* Bordas arredondadas */
+  padding: 12px; /* Espaçamento interno */
+  font-size: 1rem; /* Tamanho da fonte */
+  outline: none;
+  transition: all 0.3s ease; /* Transição suave */
+}
+
+.form-select:focus {
+  background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-select option {
+  color: #333; /* Cor do texto das opções */
+  background: #fff; /* Fundo das opções */
+}
+
+/* Colunas do formulário */
+.form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+/* Campos de entrada */
 .form-control {
-  background: transparent;
-  border: 1px solid #fff;
-  color: #fff;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background: #f9f9f9;
+  color: #333;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
 }
-.form-control::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
-.btn-register {
-  background-color: #ff8800;
-  border: none;
-  transition: 0.3s;
-}
-.btn-register:hover {
-  background-color: #cc7000;
-}
-a {
-  color: #ffbb33;
-}
+
 label {
-  display: block;
+  font-size: 0.9rem;
+  color: #333;
   margin-bottom: 5px;
   text-align: left;
 }
-.hidden {
-  display: none;
+
+/* Botão de registro */
+.btn-register {
+  width: 50%; /* Reduz a largura do botão para centralizá-lo */
+  margin: 0 auto; /* Centraliza o botão horizontalmente */
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  bottom: 20px;
 }
+
+.btn-register:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+    box-shadow: 0 4px 10px rgba(255, 126, 95, 0.5);
+}
+
+.login {
+  margin-top: 10px; /* Espaçamento entre o botão e o texto */
+  font-size: 0.9rem;
+  color: #333;
+  text-align: center;
+}
+
+.login a {
+  color: #e2940d;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login a:hover {
+  color: #ff7e5f;
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none; /* Esconde o elemento */
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
-  .register-container {
-    padding: 20px;
+  .form {
+    grid-template-columns: 1fr; /* Empilha as colunas em telas menores */
   }
-  body {
-    padding: 10px;
+
+  .btn-register {
+    grid-column: span 1; /* O botão ocupa apenas uma coluna em telas menores */
   }
-}
-.hidden {
-  display: none;
 }

@@ -57,8 +57,15 @@
         <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
           placeholder="Confirm your password" required />
       </div>
-
-      <div id="cliente-fields" class="hidden">
+      <div class="mb-3">
+        <label for="role" class="form-label">Role</label>
+        <select class="form-select" id="role" name="role" required onchange="toggleForm()">
+          <option value="cliente">Client</option>
+          <option value="manager">Manager</option>
+        </select>
+      </div>
+      
+      <div id="cliente-fields" class="hidden" style="display: none;">
         <div class="mb-3">
           <label for="clienteTelemovel" class="form-label">Phone Number</label>
           <input type="text" id="clienteTelemovel" name="clienteTelemovel" class="form-control"
@@ -75,7 +82,7 @@
         </div>
       </div>
 
-      <div id="manager-fields" class="hidden">
+      <div id="manager-fields" class="hidden" style="display: none;">
         <div class="mb-3">
           <label for="managerTelemovel" class="form-label">Phone Number</label>
           <input type="text" id="managerTelemovel" name="managerTelemovel" class="form-control"
@@ -90,9 +97,10 @@
 
       <button type="submit" class="btn btn-register w-100">Register</button>
     </form>
-    <p class="mt-3">
-      Already have an account? <a href="/auth/login">Log in</a>
-    </p>
+    <button type="submit" class="btn btn-register w-100">Register</button>
+    <div class="login">
+      <span>Already have an account? <a href="/auth/login">Log in here</a></span>
+    </div>
   </div>
 
   <script>
