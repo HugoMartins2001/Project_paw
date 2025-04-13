@@ -21,6 +21,16 @@ body {
   font-size: 22px;
 }
 
+.dish-image {
+  width: 100%; 
+  max-width: 300px; 
+  height: auto; 
+  object-fit: cover; 
+  border-radius: 8px; 
+  margin: 0 auto; 
+  display: block;
+}
+
 .header .logout-btn {
   background: none;
   border: none;

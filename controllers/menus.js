@@ -26,12 +26,12 @@ menusController.showAll = function (req, res, next) {
           return false;
         }
 
-        if (user.role === "admin") {
+        if (user.role === "Admin") {
           return true;
         }
 
         if (
-          user.role === "manager" &&
+          user.role === "Manager" &&
           menu.managerId.toString() === user._id.toString()
         ) {
           return true;
@@ -54,7 +54,7 @@ menusController.renderCreateMenu = async function (req, res, next) {
   try {
     let dishes;
 
-    if (req.user.role === "manager") {
+    if (req.user.role === "Manager") {
       dishes = await mongoDish.find({ managerId: req.user._id });
     } else {
       dishes = await mongoDish.find();
@@ -117,7 +117,7 @@ menusController.deleteMenu = function (req, res, next) {
       }
 
       if (
-        user.role !== "admin" &&
+        user.role !== "Admin" &&
         menu.managerId.toString() !== user._id.toString()
       ) {
         return res
@@ -143,7 +143,7 @@ menusController.renderEditMenu = async function (req, res, next) {
       .populate("restaurant");
     let allDishes;
 
-    if (req.user.role === "manager") {
+    if (req.user.role === "Manager") {
       allDishes = await mongoDish.find({ managerId: req.user._id });
     } else {
       allDishes = await mongoDish.find();

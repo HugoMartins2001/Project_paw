@@ -9,7 +9,7 @@ restaurantsController.showAll = function (req, res, next) {
 
   let query = {};
 
-  if (req.user.role === "manager") {
+  if (req.user.role === "Manager") {
     query = { managerId: req.user._id };
   } else if (req.user.role === "client") {
     query = { isApproved: true };
@@ -28,7 +28,7 @@ restaurantsController.showAll = function (req, res, next) {
 
 restaurantsController.showDetails = function (req, res, next) {
   const query =
-    req.user.role === "manager"
+    req.user.role === "Manager"
       ? { name: req.params.name, managerId: req.user._id }
       : { name: req.params.name };
 
@@ -55,7 +55,7 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
   try {
     let menus;
 
-    if (req.user.role === "manager") {
+    if (req.user.role === "Manager") {
       menus = await mongoMenu.find({ managerId: req.user._id });
     } else {
       menus = await mongoMenu.find();
@@ -98,7 +98,7 @@ restaurantsController.createRestaurant = function (req, res, next) {
 restaurantsController.deleteRestaurant = function (req, res, next) {
   const query = { _id: req.params.id }; 
 
-  if (req.user.role === "manager") {
+  if (req.user.role === "Manager") {
     query.managerId = req.user._id; 
   }
 
@@ -122,12 +122,12 @@ restaurantsController.deleteRestaurant = function (req, res, next) {
 restaurantsController.renderEditRestaurant = async function (req, res, next) {
   try {
     const menus =
-      req.user.role === "manager"
+      req.user.role === "Manager"
         ? await mongoMenu.find({ managerId: req.user._id })
         : await mongoMenu.find();
 
     const restaurant =
-      req.user.role === "admin"
+      req.user.role === "Admin"
         ? await mongoRestaurant.findById(req.params.id) 
         : await mongoRestaurant.findOne({
             _id: req.params.id, 
@@ -149,7 +149,7 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
 
 restaurantsController.updateRestaurant = function (req, res, next) {
   const query =
-    req.user.role === "admin"
+    req.user.role === "Admin"
       ? { _id: req.params.id } 
       : { _id: req.params.id, managerId: req.user._id }; 
 
@@ -182,7 +182,7 @@ restaurantsController.updateRestaurant = function (req, res, next) {
 };
 
 restaurantsController.showPendingRestaurants = function (req, res, next) {
-  if (req.user.role !== "admin") return res.status(403).send("Access denied.");
+  if (req.user.role !== "Admin") return res.status(403).send("Access denied.");
 
   mongoRestaurant
     .find({ isApproved: false })
@@ -193,7 +193,7 @@ restaurantsController.showPendingRestaurants = function (req, res, next) {
 };
 
 restaurantsController.approveRestaurant = function (req, res, next) {
-  if (req.user.role !== "admin") return res.status(403).send("Access denied.");
+  if (req.user.role !== "Admin") return res.status(403).send("Access denied.");
 
   mongoRestaurant
     .findByIdAndUpdate(req.params.id, { isApproved: true }, { new: true })

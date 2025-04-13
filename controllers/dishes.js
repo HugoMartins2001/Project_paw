@@ -11,9 +11,9 @@ dishesController.showAll = function (req, res, next) {
     .then(function (dishList) {
       const filteredDishes = dishList.filter((dish) => {
         if (!dish.managerId) return false;
-        if (user.role === "admin") return true;
+        if (user.role === "Admin") return true;
         if (
-          user.role === "manager" &&
+          user.role === "Manager" &&
           dish.managerId.toString() === user._id.toString()
         )
           return true;
@@ -116,7 +116,7 @@ dishesController.deleteDish = function (req, res, next) {
       if (!dish) return res.status(404).send("Plate not found.");
 
       if (
-        user.role !== "admin" &&
+        user.role !== "Admin" &&
         dish.managerId.toString() !== user._id.toString()
       ) {
         return res

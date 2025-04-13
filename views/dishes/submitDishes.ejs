@@ -20,7 +20,7 @@
   <div class="container">
     <div class="card">
       <h2>New Dish</h2>
-      <form id="dishForm" method="post" action="/dishes/submittedDish">
+      <form id="dishForm" method="post" action="/dishes/submittedDish" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="name" class="form-label">Dish Name</label>
           <input type="text" id="name" name="name" class="form-control" required />
@@ -43,20 +43,26 @@
           <input type="text" id="ingredients" name="ingredients" class="form-control" required />
         </div>
         <div class="mb-3">
-          <label for="prices_pequena" class="form-label">Small Price</label>
-          <input type="number" step="0.01" id="prices_pequena" name="prices[pequena]" class="form-control" required />
+          <label for="priceSmall" class="form-label">Price (Small):</label>
+          <input type="number" id="priceSmall" name="prices[pequena]" class="form-control" step="0.01" required>
         </div>
+
         <div class="mb-3">
-          <label for="prices_media" class="form-label">Medium Price</label>
-          <input type="number" step="0.01" id="prices_media" name="prices[media]" class="form-control" required />
+          <label for="priceMedium" class="form-label">Price (Medium):</label>
+          <input type="number" id="priceMedium" name="prices[media]" class="form-control" step="0.01" required>
         </div>
+
         <div class="mb-3">
-          <label for="prices_grande" class="form-label">Large Price</label>
-          <input type="number" step="0.01" id="prices_grande" name="prices[grande]" class="form-control" required />
+          <label for="priceLarge" class="form-label">Price (Large):</label>
+          <input type="number" id="priceLarge" name="prices[grande]" class="form-control" step="0.01" required>
         </div>
         <div class="mb-3">
           <label for="allergens" class="form-label">Allergens (comma-separated)</label>
           <input type="text" id="allergens" name="allergens" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label for="dishImage" class="form-label">Dish Image</label>
+          <input type="file" id="dishImage" name="dishImage" class="form-control" accept="image/*" required />
         </div>
 
         <button type="submit" class="btn btn-primary w-100">Create Dish</button>

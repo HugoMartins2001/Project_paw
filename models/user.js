@@ -10,7 +10,7 @@ const User = new mongoose.Schema({
   clienteTelemovel: { 
     type: String, 
     match: /^[0-9]{9}$/, 
-    required: function() { return this.role === 'cliente'; } 
+    required: function() { return this.role === 'Cliente'; } 
   },
   managerTelemovel: {
     type: String, 
@@ -20,16 +20,16 @@ const User = new mongoose.Schema({
   clienteNif: { 
     type: String,
     match: /^[0-9]{9}$/, 
-    required: function() { return this.role === 'cliente'; } 
+    required: function() { return this.role === 'Cliente'; } 
   },
   address: { 
     type: String, 
-    required: function() { return this.role === 'cliente'; } 
+    required: function() { return this.role === 'Cliente'; } 
   },
   role: { 
     type: String, 
-    enum: ["cliente", "manager", "admin"], 
-    default: 'cliente',
+    enum: ["Cliente", "Manager", "Admin"], 
+    default: 'Cliente',
     required: function() { return !this.googleId; } 
   },
   googleId: { type: String, unique: true, sparse: true }, 

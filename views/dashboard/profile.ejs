@@ -12,24 +12,7 @@
   </head>
 
   <body>
-    <header>
-      <div class="navbar-container">
-        <nav class="navbar-left">
-          <a href="/dashboard">Dashboard</a>
-          <a href="/restaurants/showRestaurants">Restaurants</a>
-          <a href="/profile">Profile</a>
-          <a href="/orders">Orders</a>
-        </nav>
-
-        <div class="navbar-right">
-          <form action="/auth/logout">
-            <button type="submit" class="logout-btn">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-          </form>
-        </div>
-      </div>
-    </header>
+    <%- include('../partials/header') %> 
 
     <div class="container">
       <h1><%= user.role %> Profile</h1>
@@ -49,38 +32,38 @@
           <h3>Personal informations</h3>
           <div class="info-item">
             <i class="fas fa-user-tag"></i>
-            <%= user.role==='cliente' ? 'Cliente' : user.role==='admin' ?
-            'Administrador' : 'Manager' %>
+            <%= user.role==='Cliente' ? 'Cliente' : user.role==='Admin' ?
+            'Admin' : 'Manager' %>
           </div>
 
-          <% if (user.role==='cliente' ) { %>
+          <% if (user.role==='Cliente' ) { %>
           <div class="info-item">
             <i class="fas fa-phone"></i>
             <%= user.clienteTelemovel || 'Mobile phone not provided' %>
           </div>
           <div class="info-item">
             <i class="fas fa-id-card"></i>
-            <%= user.clienteNif || 'not provided' %>
+            <%= user.clienteNif || 'Nif not provided' %>
           </div>
           <div class="info-item">
             <i class="fas fa-home"></i>
-            <%= user.address || 'not provided' %>
+            <%= user.address || 'Address not provided' %>
           </div>
 
-          <% } else if (user.role==='manager' ) { %>
+          <% } else if (user.role==='Manager' ) { %>
           <div class="info-item">
             <i class="fas fa-phone"></i>
             <%= user.managerTelemovel || 'Mobile phone not provided' %>
           </div>
 
-          <% } else if (user.role==='admin' ) { %>
+          <% } else if (user.role==='Admin' ) { %>
           <div class="info-item">
             <i class="fas fa-phone"></i>
             <%= user.managerTelemovel || 'Mobile phone not provided' %>
           </div>
           <div class="info-item">
             <i class="fas fa-home"></i>
-            <%= user.address || 'not provided' %>
+            <%= user.address || 'Address not provided' %>
           </div>
           <% } %>
         </div>

@@ -11,24 +11,7 @@
 </head>
 
 <body>
-  <header>
-    <div class="navbar-container">
-      <nav class="navbar-left">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/restaurants/showRestaurants">Restaurants</a>
-        <a href="/profile">Profile</a>
-        <a href="/orders">Orders</a>
-      </nav>
-
-      <div class="navbar-right">
-        <form action="/auth/logout">
-          <button type="submit" class="logout-btn">
-            <i class="fas fa-sign-out-alt"></i> Logout
-          </button>
-        </form>
-      </div>
-    </div>
-  </header>
+  <%- include('../partials/header') %> 
 
   <div class="container">
     <h1>Edit Profile</h1>

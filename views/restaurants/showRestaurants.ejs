@@ -31,9 +31,9 @@
         <% } else { %>
           <div class="row">
             <% restaurants.forEach(function(restaurant) {
-              const isManager = user.role === 'manager' && restaurant.managerId?.toString() === user._id.toString();
-              const isAdmin = user.role === 'admin';
-              const isCliente = user.role === 'cliente';
+              const isManager = user.role === 'Manager' && restaurant.managerId?.toString() === user._id.toString();
+              const isAdmin = user.role === 'Admin';
+              const isCliente = user.role === 'Cliente';
               const canView = restaurant.isApproved || isAdmin || isManager || (isCliente && restaurant.isApproved);
               if (canView) { %>
               <div class="col-md-6">
@@ -64,7 +64,7 @@
         <% } %>
 
         <div class="mt-4 d-grid gap-2">
-          <% if (user.role === 'manager') { %>
+          <% if (user.role === 'Manager') { %>
             <a href="/restaurants/submitRestaurant" class="btn btn-primary">Create New Restaurant</a>
           <% } %>
           <a href="/dashboard" class="btn btn-secondary">Go to Dashboard</a>

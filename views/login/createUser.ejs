@@ -34,8 +34,8 @@
       <div class="mb-3">
         <label for="role" class="form-label">Role</label>
         <select class="form-select text-white bg-dark" id="role" name="role" required onchange="toggleForm()">
-          <option value="cliente">Client</option>
-          <option value="manager">Manager</option>
+          <option value="Cliente">Client</option>
+          <option value="Manager">Manager</option>
         </select>
       </div>
       <div class="mb-3">
@@ -100,10 +100,10 @@
       const clienteFields = document.getElementById("cliente-fields");
       const managerFields = document.getElementById("manager-fields");
 
-      if (role === "cliente") {
+      if (role === "Cliente") {
         clienteFields.classList.remove("hidden");
         managerFields.classList.add("hidden");
-      } else if (role === "manager") {
+      } else if (role === "Manager") {
         managerFields.classList.remove("hidden");
         clienteFields.classList.add("hidden");
       }

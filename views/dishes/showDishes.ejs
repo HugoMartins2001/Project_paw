@@ -44,7 +44,7 @@
 
                   <div class="d-flex flex-wrap gap-2 mt-3">
                     <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-outline-primary">View Details</a>
-                    <% if ((user.role === 'manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'admin') { %>
+                    <% if ((user.role === 'Manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'Admin') { %>
                       <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-outline-secondary">Edit</a>
                       <button class="btn btn-outline-danger delete-dish-btn" data-dish-id="<%= dish._id %>">Delete</button>
                     <% } %>
@@ -56,7 +56,7 @@
         <% } %>
 
         <div class="mt-4 d-grid gap-2">
-          <% if (user.role === 'manager' || user.role === 'admin') { %>
+          <% if (user.role === 'Manager' || user.role === 'Admin') { %>
             <a href="/dishes/submitDishes" class="btn btn-primary">Create New Dish</a>
           <% } %>
           <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
