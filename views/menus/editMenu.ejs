@@ -2,56 +2,66 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/stylesheets/editMenu.css">
-    <link rel="icon" type="image/png" href="/favicon.png">
-    <title>Edit Menu</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Menu</title>
+  <link rel="stylesheet" href="/stylesheets/editMenu.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-
-    <div class="header bg-primary text-white py-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <h3>Edit Menu</h3>
-            <a href="/auth/logout" class="btn btn-danger">Logout</a>
+        <div class="header">
+          <h3>Edit Menu</h3>
+          <form action="/auth/logout">
+            <button type="submit" class="logout-btn">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </form>
         </div>
-    </div>
+    
 
-    <div class="container mt-5">
-        <h1 class="mb-4 text-center">Edit Menu</h1>
-
-        <form action="/menus/editMenu/<%= menu._id %>" method="POST">
-            <div class="mb-3">
-                <label for="name" class="form-label">Menu Name:</label>
-                <input type="text" name="name" id="name" class="form-control" value="<%= menu.name %>" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="dishes" class="form-label">Select Dishes:</label>
-                <select name="dishes" id="dishes" class="form-select" multiple required>
-                    <% dishes.forEach(function(dish) { %>
-                        <option value="<%= dish._id %>" <%=menu && menu.dishes.some(d=> d._id.toString() ===
-                            dish._id.toString()) ? 'selected' : '' %>>
-                            <%= dish.name %> - <%= dish.price %>€
-                        </option>
-                        <% }) %>
-                </select>
-                <small class="form-text text-muted">Hold "Ctrl" (Windows) or "Cmd" (Mac) to select multiple dishes.</small>
-            </div>
-
-            <div class="mb-3 text-center">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-        </form>
-
-        <div class="text-center mt-4">
-            <a href="/menus/showMenus" class="btn btn-secondary">Back to Menu List</a>
+  <main class="container">
+    <div class="form-card">
+      <form id="editMenuForm" action="/menus/editMenu/<%= menu._id %>" method="POST">
+        <div class="form-group">
+          <label for="name">Menu Name</label>
+          <input type="text" name="name" id="name" value="<%= menu.name %>" required />
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="form-group">
+          <label for="dishes">Select Dishes</label>
+          <select name="dishes" id="dishes" multiple required>
+            <% dishes.forEach(function(dish) { %>
+              <option value="<%= dish._id %>" <%= menu && menu.dishes.some(d => d._id.toString() === dish._id.toString()) ? 'selected' : '' %>>
+                <%= dish.name %> - <%= dish.price %>€
+              </option>
+            <% }) %>
+          </select>
+          <small>Hold Ctrl (Windows) or Cmd (Mac) to select multiple dishes.</small>
+        </div>
+
+        <div class="buttons">
+          <button type="submit" class="btn-primary">Save Changes</button>
+          <a href="/menus/showMenus" class="btn-secondary">Back</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById("editMenuForm");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: "Menu details saved.",
+        timer: 1200,
+        showConfirmButton: false
+      }).then(() => form.submit());
+    });
+  </script>
 </body>
 
 </html>

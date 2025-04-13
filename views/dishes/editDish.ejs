@@ -13,70 +13,71 @@
 
 <body>
 
-    <div class="header bg-primary text-white py-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <h3>Edit Dish</h3>
-            <a href="/auth/logout" class="btn btn-danger">Logout</a>
-        </div>
-    </div>
+    <div class="header">
+        <h3>Edit Dish</h3>
+        <form action="/auth/logout">
+          <button type="submit" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </form>
+      </div>
 
     <div class="container mt-5">
-        <h1 class="mb-4 text-center">Edit Dish</h1>
+        <div class="card shadow-lg p-4 rounded-4">
 
-        <form id="editDishForm" action="/dishes/editDish/<%= dish._id %>" method="POST">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name of the dish:</label>
-                <input type="text" id="name" name="name" value="<%= dish.name %>" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="description" class="form-label">Description:</label>
-                <textarea id="description" name="description" class="form-control" required><%= dish.description %></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Prices per serving:</label>
-                <div class="input-group mb-2">
-                    <span class="input-group-text">Small</span>
-                    <input type="number" step="0.01" name="prices[pequena]" value="<%= dish.prices.pequena %>" class="form-control" required>
+            <form id="editDishForm" action="/dishes/editDish/<%= dish._id %>" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name of the dish:</label>
+                    <input type="text" id="name" name="name" value="<%= dish.name %>" class="form-control" required>
                 </div>
-                <div class="input-group mb-2">
-                    <span class="input-group-text">Medium</span>
-                    <input type="number" step="0.01" name="prices[media]" value="<%= dish.prices.media %>" class="form-control" required>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <textarea id="description" name="description" class="form-control" required><%= dish.description %></textarea>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text">Large</span>
-                    <input type="number" step="0.01" name="prices[grande]" value="<%= dish.prices.grande %>" class="form-control" required>
+
+                <div class="mb-3">
+                    <label class="form-label">Prices per serving:</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Small</span>
+                        <input type="number" step="0.01" name="prices[pequena]" value="<%= dish.prices.pequena %>" class="form-control" required>
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Medium</span>
+                        <input type="number" step="0.01" name="prices[media]" value="<%= dish.prices.media %>" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Large</span>
+                        <input type="number" step="0.01" name="prices[grande]" value="<%= dish.prices.grande %>" class="form-control" required>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label for="category" class="form-label">Category:</label>
-                <select id="category" name="category" class="form-select" required>
-                    <option value="carne" <%= dish.category === 'carne' ? 'selected' : '' %>>Meat</option>
-                    <option value="peixe" <%= dish.category === 'peixe' ? 'selected' : '' %>>Fish</option>
-                    <option value="sobremesa" <%= dish.category === 'sobremesa' ? 'selected' : '' %>>Dessert</option>
-                    <option value="vegetariano" <%= dish.category === 'vegetariano' ? 'selected' : '' %>>Vegetarian</option>
-                </select>
-            </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label>
+                    <select id="category" name="category" class="form-select" required>
+                        <option value="carne" <%= dish.category === 'carne' ? 'selected' : '' %>>Meat</option>
+                        <option value="peixe" <%= dish.category === 'peixe' ? 'selected' : '' %>>Fish</option>
+                        <option value="sobremesa" <%= dish.category === 'sobremesa' ? 'selected' : '' %>>Dessert</option>
+                        <option value="vegetariano" <%= dish.category === 'vegetariano' ? 'selected' : '' %>>Vegetarian</option>
+                    </select>
+                </div>
 
-            <div class="mb-3">
-                <label for="ingredients" class="form-label">Ingredients (separated by commas):</label>
-                <input type="text" id="ingredients" name="ingredients" value="<%= dish.ingredients.join(', ') %>" class="form-control" required>
-            </div>
+                <div class="mb-3">
+                    <label for="ingredients" class="form-label">Ingredients (separated by commas):</label>
+                    <input type="text" id="ingredients" name="ingredients" value="<%= dish.ingredients.join(', ') %>" class="form-control" required>
+                </div>
 
-            <div class="mb-3">
-                <label for="allergens" class="form-label">Allergens (separated by commas):</label>
-                <input type="text" id="allergens" name="allergens" value="<%= dish.allergens.join(', ') %>" class="form-control">
-            </div>
+                <div class="mb-3">
+                    <label for="allergens" class="form-label">Allergens (separated by commas):</label>
+                    <input type="text" id="allergens" name="allergens" value="<%= dish.allergens.join(', ') %>" class="form-control">
+                </div>
 
-            <div class="mb-3 text-center">
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </form>
-
-        <div class="text-center mt-4">
-            <a href="/dishes/showDishes" class="btn btn-secondary">Back to Dish List</a>
+                <div class="buttons">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <a href="/restaurants/showRestaurants" class="btn-secondary">Back</a>
+                  </div>
+                </form>
+              </div>
         </div>
     </div>
 
@@ -84,14 +85,14 @@
         const editDishForm = document.getElementById('editDishForm');
 
         editDishForm.addEventListener('submit', function (event) {
-            event.preventDefault(); 
+            event.preventDefault();
 
             Swal.fire({
                 icon: 'success',
                 title: 'Prato atualizado com sucesso!',
                 text: 'Você será redirecionado para a lista de pratos.',
                 confirmButtonColor: '#4CAF50',
-                timer: 1000, 
+                timer: 1000,
                 showConfirmButton: false,
             }).then(() => {
                 editDishForm.submit();
