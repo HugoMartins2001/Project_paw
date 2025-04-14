@@ -22,7 +22,15 @@
       </div>
     <% } else { %>
       <div class="menu-details">
-        <h2><%= menu.name %></h2>
+
+        <% if (menu.menuPic) { %>
+          <div class="menu-image-container">
+            <img src="/uploads/<%= menu.menuPic %>" alt="<%= menu.name %>" class="menu-image" />
+          </div>
+        <% } else { %>
+          <p><em>No image available for this menu.</em></p>
+        <% } %>
+
         <p><strong>Menu Name:</strong> <%= menu.name %></p>
         <h4>Dishes:</h4>
 

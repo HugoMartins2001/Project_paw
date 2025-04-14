@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const menusController = require("../controllers/menus");
 const authController = require("../controllers/auth");
+const upload = require("../middlewares/upload");
 
 router.get("/showMenus", authController.verifyLoginUser, function (req, res, next) {
     menusController.showAll(req, res, next);
@@ -15,7 +16,7 @@ router.get( "/showMenu/:menuId", authController.verifyLoginUser, function (req, 
     menusController.showMenu(req, res, next);
   });
 
-router.post("/submittedMenu", authController.verifyLoginUser,function (req, res, next) {
+router.post("/submittedMenu", authController.verifyLoginUser, upload.single('menuPic'),function (req, res, next) {
     menusController.createMenu(req, res, next);
   });
 

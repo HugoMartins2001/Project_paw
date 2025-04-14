@@ -13,6 +13,10 @@ const MenuSchema = new mongoose.Schema({
     ref: "Restaurant",
     required: false,
   },
+  menuPic: {
+    type: String,
+    required: false,
+  }
 });
 
 module.exports = mongoose.model("Menu", MenuSchema);

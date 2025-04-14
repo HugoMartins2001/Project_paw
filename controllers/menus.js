@@ -70,6 +70,8 @@ menusController.renderCreateMenu = async function (req, res, next) {
 menusController.createMenu = async function (req, res, next) {
   try {
     const { name, dishes, restaurant } = req.body;
+    const menuPic = req.file ? req.file.filename : null; 
+
 
     const dishesArray = Array.isArray(dishes) ? dishes : [dishes];
 
@@ -78,6 +80,7 @@ menusController.createMenu = async function (req, res, next) {
       dishes: dishesArray,
       restaurant,
       managerId: req.user._id,
+      menuPic,
     });
 
     await newMenu.save();
