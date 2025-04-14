@@ -11,15 +11,7 @@
 </head>
 
 <body>
-  <div class="header">
-    <h3>Dishe Details</h3>
-    <form action="/auth/logout">
-      <button type="submit" class="logout-btn">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </button>
-    </form>
-  </div>
-  </div>
+  <%- include('../partials/header') %> 
 
   <div class="container">
     <% if (!dish) { %>

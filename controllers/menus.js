@@ -174,6 +174,10 @@ menusController.updateMenu = function (req, res, next) {
     restaurant: req.body.restaurant,
   };
 
+  if (req.file) {
+    updatedData.menuPic = req.file.filename;
+  }  
+
   mongoMenu
     .findByIdAndUpdate(menuId, updatedData, { new: true, runValidators: true })
     .then(function (updated) {

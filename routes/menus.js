@@ -28,7 +28,7 @@ router.get("/editMenu/:menuId", authController.verifyLoginUser, function (req, r
     menusController.renderEditMenu(req, res, next);
   });
 
-router.post("/editMenu/:menuId", authController.verifyLoginUser, function (req, res, next) {
+router.post("/editMenu/:menuId", authController.verifyLoginUser, upload.single("menuPic"), function (req, res, next) {
     menusController.updateMenu(req, res, next);
   });
 
