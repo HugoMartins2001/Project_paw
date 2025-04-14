@@ -15,46 +15,44 @@
     <%- include('../partials/header') %> 
 
     <div class="container">
-      <div class="card">
-        <h1>Available Dishes</h1>
+      <h1 class="text-center text-primary my-5 text-dark">Available Dishes</h1>
 
-        <% if (dishes.length === 0) { %>
-          <div class="alert alert-warning text-center">
-            <h3>No dishes found.</h3>
-          </div>
-        <% } else { %>
-          <div class="row">
-            <% dishes.forEach(function(dish) { %>
-              <div class="col-md-6 mb-4">
-                <div class="dish-card">
-                  <h5><%= dish.name %></h5>
-                  <p><strong>Description:</strong> <%= dish.description %></p>
-                  <p><strong>Price:</strong><br>
-                    <strong>Small:</strong> €<%= dish.prices.pequena.toFixed(2) %><br>
-                    <strong>Medium:</strong> €<%= dish.prices.media.toFixed(2) %><br>
-                    <strong>Large:</strong> €<%= dish.prices.grande.toFixed(2) %>
-                  </p>
-                  <p><strong>Category:</strong> <%= dish.category %></p>
+      <% if (dishes.length === 0) { %>
+        <div class="alert alert-warning text-center">
+          <h3>No dishes found.</h3>
+        </div>
+      <% } else { %>
+        <div class="row g-4">
+          <% dishes.forEach(function(dish) { %>
+            <div class="col-md-6 col-lg-4">
+              <div class="card h-100 p-3">
+                <h5 class="card-title text-center text-dark"><%= dish.name %></h5>
+                <p><strong>Description:</strong> <%= dish.description %></p>
+                <p><strong>Price:</strong><br>
+                  <strong>Small:</strong> €<%= dish.prices.pequena.toFixed(2) %><br>
+                  <strong>Medium:</strong> €<%= dish.prices.media.toFixed(2) %><br>
+                  <strong>Large:</strong> €<%= dish.prices.grande.toFixed(2) %>
+                </p>
+                <p><strong>Category:</strong> <%= dish.category %></p>
 
-                  <div class="d-flex flex-wrap gap-2 mt-3">
-                    <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-outline-primary">View Details</a>
-                    <% if ((user.role === 'Manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'Admin') { %>
-                      <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-outline-secondary">Edit</a>
-                      <button class="btn btn-outline-danger delete-dish-btn" data-dish-id="<%= dish._id %>">Delete</button>
-                    <% } %>
-                  </div>
+                <div class="d-flex justify-content-between mt-3">
+                  <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-outline-primary">View Details</a>
+                  <% if ((user.role === 'Manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'Admin') { %>
+                    <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-outline-secondary">Edit</a>
+                    <button class="btn btn-outline-danger delete-dish-btn" data-dish-id="<%= dish._id %>">Delete</button>
+                  <% } %>
                 </div>
               </div>
-            <% }); %>
-          </div>
-        <% } %>
-
-        <div class="mt-4 d-grid gap-2">
-          <% if (user.role === 'Manager' || user.role === 'Admin') { %>
-            <a href="/dishes/submitDishes" class="btn btn-primary">Create New Dish</a>
-          <% } %>
-          <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+          <% }); %>
         </div>
+      <% } %>
+
+      <div class="text-center mt-5">
+        <% if (user.role === 'Manager' || user.role === 'Admin') { %>
+          <a href="/dishes/submitDishes" class="btn btn-info me-2">Create New Dish</a>
+        <% } %>
+        <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
       </div>
     </div>
 
@@ -69,8 +67,8 @@
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
@@ -82,18 +80,14 @@
                     icon: 'success',
                     title: 'Deleted!',
                     text: 'The dish has been deleted.',
-                    confirmButtonColor: '#4CAF50',
                     timer: 1500,
                     showConfirmButton: false
-                  }).then(() => {
-                    window.location.reload();
-                  });
+                  }).then(() => window.location.reload());
                 } else {
                   Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Failed to delete the dish.',
-                    confirmButtonColor: '#d33'
+                    text: 'Failed to delete the dish.'
                   });
                 }
               });

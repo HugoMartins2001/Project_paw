@@ -14,41 +14,44 @@ menusController.renderCreateMenu = async function (req, res, next) {
   }
 };
 
-menusController.showAll = function (req, res, next) {
-  const user = req.user;
+menusController.showAll = async function (req, res, next) {
+  try {
+    const user = req.user;
 
-  mongoMenu
-    .find()
-    .populate("dishes")
-    .then(function (menuList) {
-      const filteredMenus = menuList.filter((menu) => {
-        if (!menu.managerId) {
-          return false;
-        }
+    const menuList = await mongoMenu.find().populate("dishes");
 
-        if (user.role === "Admin") {
-          return true;
-        }
-
-        if (
-          user.role === "Manager" &&
-          menu.managerId.toString() === user._id.toString()
-        ) {
-          return true;
-        }
-
-        return false;
-      });
-
-      res.render("menus/showMenus", {
-        menus: filteredMenus,
-        user: user,
-      });
-    })
-    .catch(function (err) {
-      next(err);
+    const filteredMenus = menuList.filter((menu) => {
+      if (!menu.managerId) return false;
+      if (user.role === "Admin") return true;
+      if (user.role === "Manager" && menu.managerId.toString() === user._id.toString()) return true;
+      return false;
     });
+
+    // Buscar todos os restaurantes para verificar quais têm os menus
+    const allRestaurants = await mongoRestaurant.find().select("name menus");
+
+    const menusWithRestaurantNames = filteredMenus.map(menu => {
+      const matchingRestaurants = allRestaurants
+        .filter(r => r.menus.some(menuId => menuId.toString() === menu._id.toString()))
+        .map(r => r.name); // array com nomes de restaurantes
+
+      return {
+        ...menu.toObject(),
+        restaurantNames: matchingRestaurants
+      };
+    });
+
+    res.render("menus/showMenus", {
+      menus: menusWithRestaurantNames,
+      user: user,
+    });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 };
+
+
 
 menusController.renderCreateMenu = async function (req, res, next) {
   try {
@@ -92,22 +95,35 @@ menusController.createMenu = async function (req, res, next) {
   }
 };
 
-menusController.showMenu = function (req, res, next) {
+menusController.showMenu = async function (req, res, next) {
   const menuId = req.params.menuId;
 
-  mongoMenu
-    .findById(menuId)
-    .populate("dishes")
-    .then(function (menu) {
-      if (!menu) {
-        return res.status(404).send("Menu not found.");
-      }
-      res.render("menus/showMenu", { menu });
-    })
-    .catch(function (err) {
-      next(err);
+  try {
+    const menu = await mongoMenu.findById(menuId).populate("dishes");
+
+    if (!menu) {
+      return res.status(404).send("Menu not found.");
+    }
+
+    // Buscar todos os restaurantes que contêm este menu
+    const allRestaurants = await mongoRestaurant.find({ menus: menuId }).select("name");
+
+    // Agora vamos enviar o nome E o id
+    const restaurantList = allRestaurants.map(r => ({
+      id: r._id,
+      name: r.name
+    }));
+
+    res.render("menus/showMenu", {
+      menu: menu.toObject(),
+      restaurantList,
     });
+  } catch (err) {
+    next(err);
+  }
 };
+
+
 
 menusController.deleteMenu = function (req, res, next) {
   const user = req.user;

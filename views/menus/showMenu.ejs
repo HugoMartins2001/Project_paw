@@ -44,6 +44,21 @@
                 <% } else { %>
                   <span>Price not available</span>
                 <% } %>
+                <% if (restaurantList && restaurantList.length > 0) { %>
+                  <p><strong>Available at:</strong></p>
+                  <div class="d-flex flex-column gap-2">
+                    <% restaurantList.forEach((restaurant) => { %>
+                      <div class="d-flex align-items-center">
+                        <span class="me-2"><%= restaurant.name %></span>
+                        <a href="/restaurants/showRestaurant/<%= restaurant.name %>" class="btn btn-outline-primary">
+                          View Details
+                        </a>
+                      </div>
+                    <% }) %>
+                  </div>
+                <% } else { %>
+                  <p><em>This menu is not associated with any restaurant yet.</em></p>
+                <% } %>                               
                 <p><em>Description: <%= dish.description || 'No description available' %></em></p>
                 <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info mt-2">View Details</a>
               </li>

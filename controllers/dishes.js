@@ -8,6 +8,7 @@ dishesController.showAll = function (req, res, next) {
 
   mongoDish
     .find()
+    .populate("menus") // Aqui populamos os menus associados a cada prato
     .then(function (dishList) {
       const filteredDishes = dishList.filter((dish) => {
         if (!dish.managerId) return false;
@@ -27,6 +28,7 @@ dishesController.showAll = function (req, res, next) {
     })
     .catch(next);
 };
+
 
 dishesController.renderCreateDishes = function (req, res, next) {
   try {

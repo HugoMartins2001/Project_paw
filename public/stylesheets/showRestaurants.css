@@ -1,3 +1,5 @@
+
+
 body {
   background-color: #f4f7fc;
   font-family: 'Inter', sans-serif;
@@ -21,7 +23,7 @@ body {
   font-size: 22px;
 }
 
-.header .logout-btn {
+.logout-btn {
   background: none;
   border: none;
   color: #333;
@@ -31,50 +33,79 @@ body {
   transition: color 0.2s ease;
 }
 
-.header .logout-btn:hover {
+.logout-btn:hover {
   color: #6c63ff;
 }
 
+
 .container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 40px auto;
-  padding: 0 20px;
+  padding: 0 1rem;
+}
+
+h1 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2rem;
 }
 
 .card {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
 }
 
-h2 {
-  text-align: center;
-  color: #333;
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-title {
+  font-size: 18px;
   font-weight: 600;
-  margin-bottom: 30px;
-}
-
-.restaurant-card {
-  background-color: #fdfdfd;
-  border-radius: 10px;
-  border: 1px solid #eee;
+  color: #111827;
+  margin-bottom: 1rem;
 }
 
 .btn {
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: 0.75rem;
   font-weight: 500;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
 }
 
-.btn-primary {
-  background-color: #6c63ff;
+.btn-info {
+  background-color: #6366f1;
   border: none;
-  transition: background-color 0.3s ease;
+  color: white;
 }
 
-.btn-primary:hover {
-  background-color: #574fdb;
+.btn-info:hover {
+  background-color: #4f46e5;
+}
+
+.btn-warning {
+  background-color: #f59e0b;
+  border: none;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #d97706;
+}
+
+.btn-danger {
+  background-color: #ef4444;
+  border: none;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
 }
 
 .btn-secondary {
@@ -83,25 +114,14 @@ h2 {
   font-weight: 500;
 }
 
-.btn-outline-primary {
-  color: #6c63ff;
-  border-color: #6c63ff;
+.btn-secondary:hover {
+  background-color: #434343;
 }
 
-.btn-outline-primary:hover {
-  background-color: #6c63ff;
-  color: white;
-}
-
-.btn-outline-secondary {
-  border-color: #999;
-}
-
-.btn-outline-danger {
-  border-color: #dc3545;
-}
-
-.btn-outline-danger:hover {
-  background-color: #dc3545;
-  color: white;
+.alert-warning {
+  border-radius: 1rem;
+  padding: 2rem;
+  background-color: #fef3c7;
+  color: #92400e;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
 }

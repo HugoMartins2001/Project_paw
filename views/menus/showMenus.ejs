@@ -31,6 +31,23 @@
                 <div class="card h-100">
                   <div class="card-body d-flex flex-column justify-content-between">
                     <h5 class="card-title"><%= menu.name %></h5>
+                    <p class="mb-1">Restaurant(s):</p>
+                    <% if (menu.restaurantNames && menu.restaurantNames.length > 0) { %>
+                      <ul class="list-group">
+                        <% menu.restaurantNames.slice(0, 1).forEach(function(restaurantName) { %>
+                          <li class="list-group-item">
+                            - <%= restaurantName %>
+                          </li>
+                        <% }) %>
+                        <% if (menu.restaurantNames.length > 1) { %>
+                          <li class="list-group-item text-muted">
+                            +<%= menu.restaurantNames.length - 1 %> more
+                          </li>
+                        <% } %>
+                      </ul>
+                    <% } else { %>
+                      <p class="text-muted">This restaurant has no menus associated yet.</p>
+                    <% } %>                                                    
                     <div class="d-flex justify-content-between mt-3">
                       <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-outline-primary">View</a>
                       <% if (user.role === 'Admin' || isManagerMenu) { %>
@@ -47,7 +64,7 @@
       <% } %>
 
       <div class="text-center mt-5">
-        <% if (user.role === 'Manager') { %>
+        <% if (user.role === 'Manager' || user.role === 'Admin') { %>
           <a href="/menus/submitMenu" class="btn btn-info me-2">Create New Menu</a>
         <% } %>
         <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
