@@ -34,6 +34,19 @@
                 <div class="restaurant-card mb-4 p-3 border rounded shadow-sm">
                   <h5 class="fw-semibold mb-2">
                     <%= restaurant.name %>
+                    <p></p>
+                    <p class="mb-1">Menu(s):</p>
+                    <% if (restaurant.menus && restaurant.menus.length > 0) { %>
+                      <ul class="list-group">
+                        <% restaurant.menus.forEach(function(menu) { %>
+                          <li class="list-group-item">
+                            - <%= menu.name %> <!-- Nome do menu -->
+                          </li>
+                        <% }) %>
+                      </ul>
+                    <% } else { %>
+                      <p class="text-muted">This restaurant has no menus associated yet.</p>
+                    <% } %>
                     <% if (!restaurant.isApproved) { %>
                       <span class="badge bg-warning text-dark ms-2">Pending</span>
                     <% } %>

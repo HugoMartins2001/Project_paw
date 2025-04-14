@@ -17,6 +17,7 @@ restaurantsController.showAll = function (req, res, next) {
 
   mongoRestaurant
     .find(query)
+    .populate("menus")
     .then((restaurantList) => {
       res.render("restaurants/showRestaurants", {
         restaurants: restaurantList,
