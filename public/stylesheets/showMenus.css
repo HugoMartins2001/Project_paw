@@ -109,13 +109,13 @@ h1 {
 }
 
 .btn-secondary {
-  background-color: #e5e7eb;
-  border: none;
-  color: #111827;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: 500;
 }
 
 .btn-secondary:hover {
-  background-color: #d1d5db;
+  background-color: #434343;
 }
 
 .alert-warning {

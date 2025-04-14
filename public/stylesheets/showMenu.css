@@ -120,6 +120,9 @@ body {
 .btn-secondary {
   background-color: #6b7280;
   color: white;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: 500;
 }
 
 .btn-secondary:hover {

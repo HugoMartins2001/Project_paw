@@ -109,12 +109,16 @@ small {
 }
 
 .btn-secondary {
-  background-color: #e0e0e0;
-  color: #555;
+  background-color: #7a7a7a;
+  color: #ffffff;
   text-decoration: none;
   padding: 0.7rem 1.5rem;
   font-size: 1rem;
   font-weight: 500;
   border-radius: 0.75rem;
   text-align: center;
+}
+
+.btn-secondary:hover {
+  background-color: #4c4c4c;
 }
