@@ -1,0 +1,102 @@
+body {
+  background-color: #f4f7fc;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: #ffffff;
+  padding: 16px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h3 {
+  margin: 0;
+  font-weight: 600;
+  color: #333;
+  font-size: 22px;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.logout-btn:hover {
+  color: #6c63ff;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.restaurant-card {
+  background-color: #fdfdfd;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  padding: 20px;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 500;
+}
+
+.btn-success {
+  background-color: #6c63ff;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #574fdb;
+}
+
+.custom-secondary-btn {
+  display: inline-block;
+  background-color: #e0e0e0;
+  color: #333;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-secondary-btn:hover {
+  background-color: #ccc;
+  color: #6c63ff;
+}
+
+
+
+.alert {
+  border-radius: 8px;
+  padding: 20px;
+}
