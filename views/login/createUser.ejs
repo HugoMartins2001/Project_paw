@@ -31,14 +31,7 @@
       An error occurred during registration. Please try again.
     </div>
 
-    <form method="post" action="/auth/registerSubmitted" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="role" class="form-label">Role</label>
-        <select class="form-select text-white bg-dark" id="role" name="role" required onchange="toggleForm()">
-          <option value="Cliente">Client</option>
-          <option value="Manager">Manager</option>
-        </select>
-      </div>
+    <form class="form" method="post" action="/auth/registerSubmitted" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required />
@@ -58,14 +51,19 @@
           placeholder="Confirm your password" required />
       </div>
       <div class="mb-3">
+        <label for="profilePic" class="form-label">Profile Picture</label>
+        <input type="file" id="profilePic" name="profilePic" class="form-control" accept="image/*" />
+      </div>     
+      <div class="mb-3">
         <label for="role" class="form-label">Role</label>
         <select class="form-select" id="role" name="role" required onchange="toggleForm()">
+          <option value="" selected disabled>Select a role</option>
           <option value="cliente">Client</option>
           <option value="manager">Manager</option>
         </select>
       </div>
       
-      <div id="cliente-fields" class="hidden" style="display: none;">
+      <div id="cliente-fields" class="hidden">
         <div class="mb-3">
           <label for="clienteTelemovel" class="form-label">Phone Number</label>
           <input type="text" id="clienteTelemovel" name="clienteTelemovel" class="form-control"
@@ -82,22 +80,15 @@
         </div>
       </div>
 
-      <div id="manager-fields" class="hidden" style="display: none;">
+      <div id="manager-fields" class="hidden">
         <div class="mb-3">
           <label for="managerTelemovel" class="form-label">Phone Number</label>
           <input type="text" id="managerTelemovel" name="managerTelemovel" class="form-control"
             placeholder="Phone number" pattern="[0-9]{9}" title="The number must be 9 digits" />
         </div>
       </div>
-
-      <div class="mb-3">
-        <label for="profilePic" class="form-label">Profile Picture</label>
-        <input type="file" id="profilePic" name="profilePic" class="form-control" accept="image/*" />
-      </div>      
-
-      <button type="submit" class="btn btn-register w-100">Register</button>
     </form>
-    <button type="submit" class="btn btn-register w-100">Register</button>
+    <button type="submit" class="btn btn-register">Register</button>
     <div class="login">
       <span>Already have an account? <a href="/auth/login">Log in here</a></span>
     </div>
@@ -105,18 +96,34 @@
 
   <script>
     function toggleForm() {
-      const role = document.getElementById("role").value;
-      const clienteFields = document.getElementById("cliente-fields");
-      const managerFields = document.getElementById("manager-fields");
+  const role = document.getElementById("role").value.toLowerCase(); // Converte para minúsculas
+  const clienteFields = document.getElementById("cliente-fields");
+  const managerFields = document.getElementById("manager-fields");
 
-      if (role === "Cliente") {
-        clienteFields.classList.remove("hidden");
-        managerFields.classList.add("hidden");
-      } else if (role === "Manager") {
-        managerFields.classList.remove("hidden");
-        clienteFields.classList.add("hidden");
-      }
-    }
+  if (role === "cliente") {
+    clienteFields.classList.remove("hidden");
+    clienteFields.style.display = "grid";
+    managerFields.classList.add("hidden");
+    managerFields.style.display = "none";
+  } else if (role === "manager") {
+    managerFields.classList.remove("hidden");
+    managerFields.style.display = "grid";
+    clienteFields.classList.add("hidden");
+    clienteFields.style.display = "none";
+  } else {
+    // Oculta ambos os campos se nenhuma role for selecionada
+    clienteFields.classList.add("hidden");
+    clienteFields.style.display = "none";
+    managerFields.classList.add("hidden");
+    managerFields.style.display = "none";
+  }
+}
+
+// Garante que os campos estejam ocultos ao carregar a página
+document.addEventListener("DOMContentLoaded", toggleForm);
+
+// Adiciona o evento de mudança ao campo "role"
+document.getElementById("role").addEventListener("change", toggleForm);
 
     toggleForm();
 

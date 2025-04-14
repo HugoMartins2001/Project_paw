@@ -32,16 +32,18 @@ body {
   font-weight: bold;
   margin-bottom: 20px;
   color: #333;
+  padding-left: 480px;
 }
 
 /* Formulário */
 .form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  width: 97%;
-  align-content: center;
-  justify-content: center;
+  grid-template-columns: 1fr 1fr; /* Define 2 colunas iguais */
+  gap: 0px; /* Espaçamento entre os campos */
+  width: 100%; /* O formulário ocupa toda a largura disponível */
+  align-content: start; /* Alinha os itens ao topo */
+  justify-content: center; /* Centraliza o formulário horizontalmente */
+  margin-bottom: 5px; /* Espaçamento inferior */
 }
 
 /* Estilo para o campo select */
@@ -70,7 +72,9 @@ body {
 .form div {
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 0px; /* Espaçamento entre o label e o campo */
+  width: 80%; /* Reduz a largura dos campos */
+  margin: 0 auto; /* Centraliza os campos horizontalmente */
 }
 
 /* Campos de entrada */
@@ -98,9 +102,42 @@ label {
   text-align: left;
 }
 
+#cliente-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Define 2 colunas iguais */
+  gap: 20px; /* Espaçamento entre os campos */
+  width: 100%; /* O formulário ocupa toda a largura disponível */
+  align-content: start; /* Alinha os itens ao topo */
+  justify-content: center; /* Centraliza o formulário horizontalmente */
+  margin-bottom: 5px; /* Espaçamento inferior */
+  margin-left: 60px;
+}
+#manager-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Define 2 colunas iguais */
+  gap: 0px; /* Espaçamento entre os campos */
+  width: 100%; /* O formulário ocupa toda a largura disponível */
+  align-content: start; /* Alinha os itens ao topo */
+  justify-content: center; /* Centraliza o formulário horizontalmente */
+  margin-bottom: 5px; /* Espaçamento inferior */
+  margin-left: 60px;
+}
+
+#cliente-fields .mb-3,
+#manager-fields .mb-3 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px; /* Espaçamento entre o label e o campo */
+  width: 100%; /* Reduz a largura dos campos */
+  margin: 0 auto; /* Centraliza os campos horizontalmente */
+}
+#cliente-fields #address {
+  width: 250px; /* Garante que o campo ocupe toda a largura disponível */
+  max-width: 600px; /* Define um limite máximo para o tamanho do campo */
+}
 /* Botão de registro */
 .btn-register {
-  width: 50%; /* Reduz a largura do botão para centralizá-lo */
+  width: 30%; /* Reduz a largura do botão para centralizá-lo */
   margin: 0 auto; /* Centraliza o botão horizontalmente */
   padding: 12px;
   border: none;
@@ -112,7 +149,7 @@ label {
   cursor: pointer;
   transition: all 0.3s ease;
   display: block;
-  bottom: 20px;
+  bottom: 10px;
 }
 
 .btn-register:hover {
