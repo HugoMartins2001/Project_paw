@@ -64,8 +64,8 @@ body {
 .btn-back {
   display: inline-block;
   margin-top: 2rem;
-  background-color: #e5e7eb;
-  color: #111827;
+  background-color: #747474;
+  color: #ffffff;
   padding: 10px 20px;
   border-radius: 12px;
   text-decoration: none;
@@ -74,5 +74,5 @@ body {
 }
 
 .btn-back:hover {
-  background-color: #d1d5db;
+  background-color: #474747;
 }

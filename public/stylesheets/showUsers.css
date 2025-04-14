@@ -76,8 +76,8 @@ body {
   
   .custom-secondary-btn {
     display: inline-block;
-    background-color: #e0e0e0;
-    color: #333;
+    background-color: #717171;
+    color: #ffffff;
     text-decoration: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -86,7 +86,7 @@ body {
   }
   
   .custom-secondary-btn:hover {
-    background-color: #ccc;
-    color: #6c63ff;
+    background-color: #454545;
+    color: #fffefe;
   }
   
