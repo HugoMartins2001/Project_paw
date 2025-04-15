@@ -7,25 +7,32 @@ const passport = require('passport')
 let authController = {}
 
 authController.submittedLogin = function (req, res, next) {
-    const emailInput = req.body.email
-    const passwordInput = req.body.password
+    const emailInput = req.body.email;
+    const passwordInput = req.body.password;
 
     mongoUser.findOne({ email: emailInput })
         .then(function (user) {
+            if (!user) {
+                // Caso o email não seja encontrado
+                return res.render('login/index', { errorMessage: 'Email não encontrado!' });
+            }
+
             bcrypt.compare(passwordInput, user.password)
                 .then(function (result) {
                     if (result === true) {
                         const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: 86400000 });
-                        res.cookie('auth-token', authToken, { maxAge: 86400000 })
-                        res.redirect('/dashboard')
+                        res.cookie('auth-token', authToken, { maxAge: 86400000 });
+                        // Renderiza a página com a mensagem de sucesso
+                        res.render('login/index', { successMessage: 'Login realizado com sucesso!' });
                     } else {
-                        res.redirect('/auth/login')
+                        // Caso a senha esteja incorreta
+                        res.render('login/index', { errorMessage: 'Senha incorreta!' });
                     }
-                })
+                });
         })
         .catch(function (err) {
-            next(err)
-        })
+            next(err);
+        });
 };
 
 authController.login = function (req, res, next) {
@@ -42,22 +49,21 @@ authController.createLogin = function (req, res, next) {
 };
 
 authController.createLoginSubmitted = function (req, res, next) {
-    console.log(req.body);
-
     if (req.file) {
         req.body.profilePic = `/uploads/${req.file.filename}`;
     }
 
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
-    req.body.password = hashedPassword
+    req.body.password = hashedPassword;
 
     mongoUser.create(req.body)
         .then(function () {
-            res.redirect('/auth/login')
+            // Renderiza a página com uma mensagem de sucesso
+            res.render('login/createUser', { successMessage: 'Registro realizado com sucesso!' });
         })
         .catch(function (err) {
-            next(err)
-        })
+            next(err);
+        });
 };
 
 authController.verifyLoginUser = function (req, res, next) {
