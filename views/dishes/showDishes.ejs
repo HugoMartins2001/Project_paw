@@ -33,7 +33,7 @@
                     <ul class="list-group">
                       <% if (dish.associatedMenus && dish.associatedMenus.length > 0) { %>
                         <li class="list-group-item">
-                          - <%= dish.associatedMenus[0].menuName %> <!-- Exibe o primeiro menu -->
+                          - <%= dish.associatedMenus[0].menuName %> 
                           <% if (dish.associatedMenus.length > 1) { %>
                             <span class="text-muted">
                               +<%= dish.associatedMenus.length - 1 %> more
@@ -42,7 +42,7 @@
                           <% if (dish.associatedMenus[0].restaurants && dish.associatedMenus[0].restaurants.length > 0) { %>
                             <ul class="mt-2">
                               <li>
-                                - <%= dish.associatedMenus[0].restaurants[0].name %> <!-- Exibe o primeiro restaurante -->
+                                Restaurants:<%= dish.associatedMenus[0].restaurants[0].name %> 
                                 <% if (dish.associatedMenus[0].restaurants.length > 1) { %>
                                   <span class="text-muted">
                                     +<%= dish.associatedMenus[0].restaurants.length - 1 %> more

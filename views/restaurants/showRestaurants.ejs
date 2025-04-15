@@ -56,12 +56,16 @@
                       <% } %>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
-                      <% if ((isAdmin && restaurant.isApproved) || isManager || (isClient && restaurant.isApproved)) { %>
+                      <% if (isAdmin) { %>
                         <a href="/restaurants/showRestaurant/<%= restaurant.name %>" class="btn btn-outline-primary">View</a>
-                        <% if (isManager || isAdmin) { %>
+                        <a href="/restaurants/editRestaurant/<%= restaurant._id %>" class="btn btn-outline-secondary">Edit</a>
+                        <button class="btn btn-outline-danger delete-restaurant-btn" data-restaurant-id="<%= restaurant._id %>">Delete</button>
+                      <% } else if (isManager) { %>
+                        <% if (restaurant.isApproved) { %>
+                          <a href="/restaurants/showRestaurant/<%= restaurant.name %>" class="btn btn-outline-primary">View</a>
                           <a href="/restaurants/editRestaurant/<%= restaurant._id %>" class="btn btn-outline-secondary">Edit</a>
-                          <button class="btn btn-outline-danger delete-restaurant-btn" data-restaurant-id="<%= restaurant._id %>">Delete</button>
                         <% } %>
+                        <button class="btn btn-outline-danger delete-restaurant-btn" data-restaurant-id="<%= restaurant._id %>">Delete</button>
                       <% } %>
                     </div>
                   </div>
