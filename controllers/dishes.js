@@ -1,33 +1,90 @@
 const mongoDish = require("../models/dish");
 const axios = require("axios");
+const mongoMenu = require("../models/menu");
+const mongoRestaurant = require("../models/restaurant"); // Certifique-se de importar também o modelo de restaurante
 
 let dishesController = {};
 
-dishesController.showAll = function (req, res, next) {
-  const user = req.user;
+dishesController.showAll = async function (req, res, next) {
+  try {
+    const user = req.user;
 
-  mongoDish
-    .find()
-    .then(function (dishList) {
-      const filteredDishes = dishList.filter((dish) => {
-        if (!dish.managerId) return false;
-        if (user.role === "Admin") return true;
-        if (
-          user.role === "Manager" &&
-          dish.managerId.toString() === user._id.toString()
-        )
-          return true;
-        return false;
-      });
+    // Buscar todos os pratos
+    const dishList = await mongoDish.find();
 
-      res.render("dishes/showDishes", {
-        dishes: filteredDishes,
-        user: user,
+    // Buscar todos os menus
+    const menuList = await mongoMenu.find().populate("dishes");
+
+    // Buscar todos os restaurantes
+    const allRestaurants = await mongoRestaurant.find();
+
+    // Associar menus e restaurantes aos pratos
+    const dishesWithAssociations = dishList.map((dish) => {
+      // Encontrar menus que incluem o prato
+      const associatedMenus = menuList
+        .filter((menu) => menu.dishes.some((menuDish) => menuDish.equals(dish._id)))
+        .map((menu) => {
+          // Encontrar restaurantes associados ao menu
+          const associatedRestaurants = allRestaurants
+            .filter((restaurant) => restaurant.menus.includes(menu._id))
+            .map((restaurant) => ({
+              name: restaurant.name,
+              managerId: restaurant.managerId,
+            }));
+
+          return {
+            menuName: menu.name,
+            restaurants: associatedRestaurants,
+          };
+        });
+
+      return {
+        ...dish.toObject(),
+        associatedMenus,
+      };
+    });
+
+    // Filtrar pratos com base no papel do usuário
+    const filteredDishes = dishesWithAssociations.filter((dish) => {
+      if (user.role === "Admin") {
+        // Admin pode ver todos os pratos
+        return true;
+      }
+
+      if (user.role === "Manager") {
+        // Manager só pode ver os pratos que ele criou
+        return dish.managerId && dish.managerId.toString() === user._id.toString();
+      }
+
+      // Outros papéis (se houver) não podem ver pratos
+      return false;
+    });
+
+    // Filtrar menus e restaurantes associados para managers
+    if (user.role === "Manager") {
+      filteredDishes.forEach((dish) => {
+        dish.associatedMenus = dish.associatedMenus.filter((menu) => {
+          // Filtrar menus que pertencem ao manager
+          menu.restaurants = menu.restaurants.filter((restaurant) => {
+            return restaurant.managerId.toString() === user._id.toString();
+          });
+
+          // Retornar apenas menus que ainda têm restaurantes associados
+          return menu.restaurants.length > 0;
+        });
       });
-    })
-    .catch(next);
+    }
+
+    // Renderizar a página com os pratos filtrados
+    res.render("dishes/showDishes", {
+      dishes: filteredDishes,
+      user: user,
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 };
-
 
 dishesController.renderCreateDishes = function (req, res, next) {
   try {
@@ -59,8 +116,6 @@ dishesController.createDish = async function (req, res, next) {
         },
       }
     );
-
-    console.log(nutritionRes.data);
 
     const nutritionData = nutritionRes.data;
 
@@ -98,14 +153,60 @@ dishesController.createDish = async function (req, res, next) {
   }
 };
 
-dishesController.showDish = function (req, res, next) {
-  mongoDish
-    .findById(req.params.dishId)
-    .then((dish) => {
-      if (!dish) return res.status(404).send("Plate not found.");
-      res.render("dishes/showDish", { dish });
-    })
-    .catch(next);
+dishesController.showDish = async function (req, res, next) {
+  try {
+    const user = req.user;
+
+    // Buscar o prato pelo ID
+    const dish = await mongoDish.findById(req.params.dishId);
+    if (!dish) return res.status(404).send("Dish not found.");
+
+    // Buscar todos os menus
+    const menuList = await mongoMenu.find().populate("dishes");
+
+    // Buscar todos os restaurantes
+    const allRestaurants = await mongoRestaurant.find();
+
+    // Encontrar menus associados ao prato
+    const associatedMenus = menuList
+      .filter((menu) => menu.dishes.some((menuDish) => menuDish.equals(dish._id)))
+      .map((menu) => {
+        // Encontrar restaurantes associados ao menu
+        const associatedRestaurants = allRestaurants
+          .filter((restaurant) => restaurant.menus.includes(menu._id))
+          .map((restaurant) => ({
+            name: restaurant.name,
+            managerId: restaurant.managerId,
+          }));
+
+        return {
+          _id: menu._id, // Certifique-se de incluir o ID do menu
+          menuName: menu.name,
+          restaurants: associatedRestaurants,
+        };
+      });
+
+    // Filtrar menus e restaurantes associados para managers
+    if (user.role === "Manager") {
+      associatedMenus.forEach((menu) => {
+        menu.restaurants = menu.restaurants.filter((restaurant) => {
+          return restaurant.managerId.toString() === user._id.toString();
+        });
+      });
+    }
+
+    // Renderizar a página com os detalhes do prato
+    res.render("dishes/showDish", {
+      dish: {
+        ...dish.toObject(),
+        associatedMenus,
+      },
+      user: user,
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 };
 
 dishesController.deleteDish = function (req, res, next) {

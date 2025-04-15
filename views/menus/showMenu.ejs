@@ -12,65 +12,66 @@
 </head>
 
 <body>
-  <%- include('../partials/header') %> 
+  <%- include('../partials/header') %>
 
   <div class="container mt-4">
-    <div class="card p-4">
-      <% if (!menu) { %>
-        <div class="alert alert-warning text-center">
-          <h3>Menu Not Found</h3>
+    <% if (!menu) { %>
+      <div class="alert alert-warning text-center"><h3>Menu Not Found</h3></div>
+    <% } else { %>
+      <h1 class="text-center text-primary my-3 text-dark"><%= menu.name %></h1>
+
+      <% if (menu.menuPic) { %>
+        <div class="text-center mb-3">
+          <img src="/uploads/<%= menu.menuPic %>" alt="<%= menu.name %>" class="img-fluid rounded" style="max-height: 200px;" />
         </div>
       <% } else { %>
-        <h2 class="text-center mb-4"><%= menu.name %></h2>
+        <p class="text-center"><em>No image available for this menu.</em></p>
+      <% } %>
 
-        <% if (menu.menuPic) { %>
-          <div class="text-center mb-4">
-            <img src="/uploads/<%= menu.menuPic %>" alt="<%= menu.name %>" class="img-fluid rounded" style="max-height: 300px;" />
-          </div>
-        <% } else { %>
-          <p class="text-center"><em>No image available for this menu.</em></p>
-        <% } %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Dishes:</h5>
+          <% if (menu.dishes && menu.dishes.length > 0) { %>
+            <ul class="list-group">
+              <% menu.dishes.forEach(function(dish) { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>
+                    <strong><%= dish.name %></strong><br />
+                    <% if (dish.prices) { %>
+                      Small: €<%= dish.prices.pequena.toFixed(2) %>, Medium: €<%= dish.prices.media.toFixed(2) %>, Large: €<%= dish.prices.grande.toFixed(2) %>
+                    <% } else { %>
+                      <span>Price not available</span>
+                    <% } %>
+                  </span>
+                  <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-outline-primary btn-sm">View Dish</a>
+                </li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p class="text-muted">This menu has no dishes associated yet.</p>
+          <% } %>
+        </div>
+      </div>
 
-        <h4 class="mt-4">Dishes:</h4>
-        <% if (menu.dishes && menu.dishes.length > 0) { %>
-          <ul class="list-group mb-3">
-            <% menu.dishes.forEach(function(dish) { %>
-              <li class="list-group-item">
-                <strong>Name: <%= dish.name %></strong><br />
-                <strong>Portions:</strong>
-                <% if (dish.prices) { %>
-                  Small: €<%= dish.prices.pequena.toFixed(2) %> |
-                  Medium: €<%= dish.prices.media.toFixed(2) %> |
-                  Large: €<%= dish.prices.grande.toFixed(2) %>
-                <% } else { %>
-                  <span>Price not available</span>
-                <% } %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Available at:</h5>
+          <% if (restaurantList && restaurantList.length > 0) { %>
+            <ul class="list-group">
+              <% restaurantList.forEach((restaurant) => { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span><%= restaurant.name %></span>
+                  <a href="/restaurants/showRestaurant/<%= restaurant._id %>" class="btn btn-outline-primary btn-sm">View Restaurant</a>
+                </li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p class="text-muted">This menu is not associated with any restaurant yet.</p>
+          <% } %>
+        </div>
+      </div>
 
-                <% if (restaurantList && restaurantList.length > 0) { %>
-                  <p class="mt-2 mb-1"><strong>Available at:</strong></p>
-                  <div class="d-flex flex-column gap-2">
-                    <% restaurantList.forEach((restaurant) => { %>
-                      <div class="d-flex justify-content-between align-items-center">
-                        <span><%= restaurant.name %></span>
-                        <a href="/restaurants/showRestaurant/<%= restaurant.name %>" class="btn btn-outline-primary">
-                          View Details
-                        </a>
-                      </div>
-                    <% }) %>
-                  </div>
-                <% } else { %>
-                  <p><em>This menu is not associated with any restaurant yet.</em></p>
-                <% } %>
-
-                <p class="mt-2"><em>Description: <%= dish.description || 'No description available' %></em></p>
-                <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-info btn-sm mt-2">View Details</a>
-              </li>
-            <% }) %>
-          </ul>
-        <% } else { %>
-          <p>This menu has no dishes associated yet.</p>
-        <% } %>
-
+      <div class="text-center mt-3">
         <div class="text-center mt-4">
           <a href="/menus/showMenus" class="btn btn-secondary">Back to Menu List</a>
         </div>
