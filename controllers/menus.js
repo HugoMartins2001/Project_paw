@@ -18,31 +18,57 @@ menusController.showAll = async function (req, res, next) {
   try {
     const user = req.user;
 
+    // Buscar todos os menus
     const menuList = await mongoMenu.find().populate("dishes");
 
-    const filteredMenus = menuList.filter((menu) => {
-      if (!menu.managerId) return false;
-      if (user.role === "Admin") return true;
-      if (user.role === "Manager" && menu.managerId.toString() === user._id.toString()) return true;
-      return false;
-    });
+    // Buscar todos os restaurantes
+    const allRestaurants = await mongoRestaurant.find();
 
-    // Buscar todos os restaurantes para verificar quais têm os menus
-    const allRestaurants = await mongoRestaurant.find().select("name menus");
-
-    const menusWithRestaurantNames = filteredMenus.map(menu => {
-      const matchingRestaurants = allRestaurants
-        .filter(r => r.menus.some(menuId => menuId.toString() === menu._id.toString()))
-        .map(r => r.name); // array com nomes de restaurantes
+    // Associar manualmente os restaurantes aos menus
+    const menusWithRestaurants = menuList.map((menu) => {
+      const associatedRestaurants = allRestaurants
+        .filter((restaurant) => {
+          // Administradores podem ver todos os restaurantes
+          if (user.role === "Admin") {
+            return restaurant.menus.includes(menu._id);
+          }
+          // Gerentes só podem ver restaurantes que eles criaram
+          return (
+            restaurant.menus.includes(menu._id) &&
+            restaurant.managerId.toString() === user._id.toString()
+          );
+        })
+        .map((restaurant) => restaurant.name);
 
       return {
         ...menu.toObject(),
-        restaurantNames: matchingRestaurants
+        restaurantNames: associatedRestaurants,
       };
     });
 
+    // Filtrar menus com base no papel do usuário
+    const filteredMenus = menusWithRestaurants.filter((menu) => {
+      if (!menu.managerId) {
+        return false;
+      }
+
+      if (user.role === "Admin") {
+        return true;
+      }
+
+      if (
+        user.role === "Manager" &&
+        menu.managerId.toString() === user._id.toString()
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    // Renderizar a página com os menus filtrados
     res.render("menus/showMenus", {
-      menus: menusWithRestaurantNames,
+      menus: filteredMenus,
       user: user,
     });
   } catch (err) {
@@ -50,8 +76,6 @@ menusController.showAll = async function (req, res, next) {
     next(err);
   }
 };
-
-
 
 menusController.renderCreateMenu = async function (req, res, next) {
   try {
@@ -99,26 +123,32 @@ menusController.showMenu = async function (req, res, next) {
   const menuId = req.params.menuId;
 
   try {
+    // Buscar o menu pelo ID e popular os pratos associados
     const menu = await mongoMenu.findById(menuId).populate("dishes");
 
     if (!menu) {
       return res.status(404).send("Menu not found.");
     }
 
-    // Buscar todos os restaurantes que contêm este menu
-    const allRestaurants = await mongoRestaurant.find({ menus: menuId }).select("name");
+    // Buscar todos os restaurantes que contêm este menu e foram criados pelo gerente logado
+    const allRestaurants = await mongoRestaurant.find({
+      menus: menuId,
+      managerId: req.user._id, // Filtrar pelo gerente logado
+    }).select("name");
 
-    // Agora vamos enviar o nome E o id
-    const restaurantList = allRestaurants.map(r => ({
-      id: r._id,
-      name: r.name
+    // Criar uma lista de restaurantes com nome e ID
+    const restaurantList = allRestaurants.map((restaurant) => ({
+      id: restaurant._id,
+      name: restaurant.name,
     }));
 
+    // Renderizar a página com os dados do menu e dos restaurantes
     res.render("menus/showMenu", {
       menu: menu.toObject(),
       restaurantList,
     });
   } catch (err) {
+    console.error("Error fetching menu details:", err);
     next(err);
   }
 };

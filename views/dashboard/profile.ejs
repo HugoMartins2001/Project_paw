@@ -33,11 +33,11 @@
           <h3>Personal informations</h3>
           <div class="info-item">
             <i class="fas fa-user-tag"></i>
-            <%= user.role==='Cliente' ? 'Cliente' : user.role==='Admin' ?
+            <%= user.role==='Client' ? 'Client' : user.role==='Admin' ?
             'Admin' : 'Manager' %>
           </div>
 
-          <% if (user.role==='Cliente' ) { %>
+          <% if (user.role==='Client' ) { %>
           <div class="info-item">
             <i class="fas fa-phone"></i>
             <%= user.clienteTelemovel || 'Mobile phone not provided' %>

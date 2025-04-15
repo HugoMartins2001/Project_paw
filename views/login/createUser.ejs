@@ -58,8 +58,8 @@
         <label for="role" class="form-label">Role</label>
         <select class="form-select" id="role" name="role" required onchange="toggleForm()">
           <option value="" selected disabled>Select a role</option>
-          <option value="cliente">Client</option>
-          <option value="manager">Manager</option>
+          <option value="Client">Client</option>
+          <option value="Manager">Manager</option>
         </select>
       </div>
       
@@ -87,8 +87,9 @@
             placeholder="Phone number" pattern="[0-9]{9}" title="The number must be 9 digits" />
         </div>
       </div>
+      <button type="submit" class="btn btn-register">Register</button>
     </form>
-    <button type="submit" class="btn btn-register">Register</button>
+
     <div class="login">
       <span>Already have an account? <a href="/auth/login">Log in here</a></span>
     </div>
@@ -100,7 +101,7 @@
   const clienteFields = document.getElementById("cliente-fields");
   const managerFields = document.getElementById("manager-fields");
 
-  if (role === "cliente") {
+  if (role === "client") {
     clienteFields.classList.remove("hidden");
     clienteFields.style.display = "grid";
     managerFields.classList.add("hidden");
@@ -111,7 +112,6 @@
     clienteFields.classList.add("hidden");
     clienteFields.style.display = "none";
   } else {
-    // Oculta ambos os campos se nenhuma role for selecionada
     clienteFields.classList.add("hidden");
     clienteFields.style.display = "none";
     managerFields.classList.add("hidden");
