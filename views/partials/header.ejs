@@ -28,6 +28,9 @@ nav a {
   display: flex;
   align-items: center;
 }
+.navbar-right a:hover {
+  color: #6c63ff;
+}
 .logout-btn {
   background: none;
   border: none;
@@ -51,15 +54,17 @@ nav a {
     <nav class="navbar-left">
       <a href="/dashboard">Dashboard</a>
       <a href="/restaurants/showRestaurants">Restaurants</a>
-      <a href="/profile">Profile</a>
+      <a href="/menus/showMenus">Menus</a>
+      <a href="/dishes/showDishes">Dishes</a>
       <!--<a href="/orders">Orders</a>-->
     </nav>
-    <div class="navbar-right">
+    <nav class="navbar-right">
+      <a href="/profile">Profile</a>
       <form action="/auth/logout">
         <button type="submit" class="logout-btn">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </form>
-    </div>
+    </nav>
   </div>
 </header>
