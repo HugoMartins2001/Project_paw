@@ -4,27 +4,49 @@ const mongoMenu = require("../models/menu");
 
 let restaurantsController = {};
 
-restaurantsController.showAll = function (req, res, next) {
+restaurantsController.showAll = async function (req, res, next) {
   if (!req.user) return res.redirect("/auth/login");
 
-  let query = {};
+  try {
+    let query = {};
 
-  if (req.user.role === "Manager") {
-    query = { managerId: req.user._id };
-  } else if (req.user.role === "client") {
-    query = { isApproved: true };
-  }
+    // Filtrar restaurantes com base no papel do usuário
+    if (req.user.role === "Manager") {
+      query = { managerId: req.user._id }; // Gerentes só podem ver seus próprios restaurantes
+    } else if (req.user.role === "client") {
+      query = { isApproved: true }; // Clientes só podem ver restaurantes aprovados
+    }
 
-  mongoRestaurant
-    .find(query)
-    .populate("menus")
-    .then((restaurantList) => {
-      res.render("restaurants/showRestaurants", {
-        restaurants: restaurantList,
-        user: req.user,
+    // Buscar restaurantes com base no filtro
+    const restaurants = await mongoRestaurant.find(query).populate("menus");
+
+    // Filtrar menus para que apenas os criados pelo gerente logado sejam exibidos
+    const filteredRestaurants = restaurants.map((restaurant) => {
+      const filteredMenus = restaurant.menus.filter((menu) => {
+        // Administradores podem ver todos os menus
+        if (req.user.role === "Admin") {
+          return true;
+        }
+
+        // Gerentes só podem ver menus que eles criaram
+        return menu.managerId.toString() === req.user._id.toString();
       });
-    })
-    .catch((err) => next(err));
+
+      return {
+        ...restaurant.toObject(),
+        menus: filteredMenus,
+      };
+    });
+
+    // Renderizar a página com os restaurantes filtrados
+    res.render("restaurants/showRestaurants", {
+      restaurants: filteredRestaurants,
+      user: req.user,
+    });
+  } catch (err) {
+    console.error("Error fetching restaurants:", err);
+    next(err);
+  }
 };
 
 restaurantsController.showDetails = function (req, res, next) {
@@ -41,8 +63,22 @@ restaurantsController.showDetails = function (req, res, next) {
         return res.render("restaurants/showRestaurant", { restaurant: null });
       }
 
+      // Filtrar menus para que apenas os criados pelo gerente logado sejam exibidos
+      const filteredMenus = restaurantDB.menus.filter((menu) => {
+        // Administradores podem ver todos os menus
+        if (req.user.role === "Admin") {
+          return true;
+        }
+
+        // Gerentes só podem ver menus que eles criaram
+        return menu.managerId.toString() === req.user._id.toString();
+      });
+
       const inputs = {
-        restaurant: restaurantDB,
+        restaurant: {
+          ...restaurantDB.toObject(),
+          menus: filteredMenus,
+        },
       };
 
       res.render("restaurants/showRestaurant", inputs);
