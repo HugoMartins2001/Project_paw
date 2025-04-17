@@ -8,7 +8,9 @@ var mongoose = require("mongoose");
 var flash = require("connect-flash");
 var session = require("express-session");
 var passport = require("./config/passport-config");
+const swaggerUi = require('swagger-ui-express');
 
+const swaggerDocument = require('./views/swagger/swagger.json');
 const indexRouter = require("./routes/dashboard");
 const authRouter = require("./routes/auth");
 const restaurantsRouter = require("./routes/restaurant");
@@ -18,8 +20,7 @@ const dishRoutes = require("./routes/dishes");
 const homeRoutes = require("./routes/home");
 const usersRouter = require("./routes/users");
 
-var mongoDB =
-  "mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+var mongoDB = "mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(mongoDB);
 
@@ -58,6 +59,8 @@ app.use((req, res, next) => {
   next();
 });
 
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/", homeRoutes);
 app.use("/dashboard", indexRouter);
 app.use("/restaurants", restaurantsRouter);

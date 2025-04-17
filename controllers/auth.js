@@ -22,10 +22,8 @@ authController.submittedLogin = function (req, res, next) {
                     if (result === true) {
                         const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: 86400000 });
                         res.cookie('auth-token', authToken, { maxAge: 86400000 });
-                        // Renderiza a página com a mensagem de sucesso
                         res.render('login/index', { successMessage: 'Login realizado com sucesso!' });
                     } else {
-                        // Caso a senha esteja incorreta
                         res.render('login/index', { errorMessage: 'Senha incorreta!' });
                     }
                 });

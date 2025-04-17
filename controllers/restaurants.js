@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const mongoRestaurant = require("../models/restaurant");
 const mongoMenu = require("../models/menu");
 
@@ -43,6 +42,7 @@ restaurantsController.showAll = async function (req, res, next) {
       restaurants: filteredRestaurants,
       user: req.user,
     });
+    res.status(200).json(restaurants);
   } catch (err) {
     console.error("Error fetching restaurants:", err);
     next(err);
@@ -63,7 +63,7 @@ restaurantsController.showDetails = function (req, res, next) {
         return res.render("restaurants/showRestaurant", { restaurant: null, user: req.user });
       }
 
-      // Filtrar menus para que apenas os criados pelo gerente logado sejam exibidos
+      // Filtrar menus para que apenas os que são criados pelo gerente autenticado sejam exibidos
       const filteredMenus = restaurantDB.menus.filter((menu) => {
         // Administradores podem ver todos os menus
         if (req.user.role === "Admin") {
@@ -79,7 +79,7 @@ restaurantsController.showDetails = function (req, res, next) {
           ...restaurantDB.toObject(),
           menus: filteredMenus,
         },
-        user: req.user, // Passa o usuário logado para a view
+        user: req.user,
       };
 
       res.render("restaurants/showRestaurant", inputs);
