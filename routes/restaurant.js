@@ -3,13 +3,14 @@ var router = express.Router();
 const restaurantsController = require("../controllers/restaurants");
 const authController = require("../controllers/auth");
 
-router.get(
-  "/showRestaurant/:name",
-  authController.verifyLoginUser,
-  function (req, res, next) {
+router.use((req, res, next) => {
+  res.locals.user = req.user || null; // Passa o usuário logado ou null
+  next();
+});
+
+router.get("/showRestaurant/:name", authController.verifyLoginUser,function (req, res, next) {
     restaurantsController.showDetails(req, res, next);
-  }
-);
+  });
 
 router.get("/submitRestaurant", authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.renderCreateRestaurant(req, res, next);

@@ -40,8 +40,8 @@ authController.login = function (req, res, next) {
 };
 
 authController.logout = function (req, res, next) {
-    res.clearCookie('auth-token')
-    res.redirect('/')
+    res.clearCookie('auth-token');
+    res.redirect('/?logoutSuccess=true'); 
 };
 
 authController.createLogin = function (req, res, next) {

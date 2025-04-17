@@ -60,7 +60,7 @@ restaurantsController.showDetails = function (req, res, next) {
     .populate("menus")
     .then(function (restaurantDB) {
       if (!restaurantDB) {
-        return res.render("restaurants/showRestaurant", { restaurant: null });
+        return res.render("restaurants/showRestaurant", { restaurant: null, user: req.user });
       }
 
       // Filtrar menus para que apenas os criados pelo gerente logado sejam exibidos
@@ -79,6 +79,7 @@ restaurantsController.showDetails = function (req, res, next) {
           ...restaurantDB.toObject(),
           menus: filteredMenus,
         },
+        user: req.user, // Passa o usuário logado para a view
       };
 
       res.render("restaurants/showRestaurant", inputs);

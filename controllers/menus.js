@@ -130,11 +130,12 @@ menusController.showMenu = async function (req, res, next) {
       return res.status(404).send("Menu not found.");
     }
 
-    // Buscar todos os restaurantes que contêm este menu e foram criados pelo gerente logado
-    const allRestaurants = await mongoRestaurant.find({
-      menus: menuId,
-      managerId: req.user._id, // Filtrar pelo gerente logado
-    }).select("name");
+    // Buscar todos os restaurantes que contêm este menu
+    const query = req.user.role === "Manager"
+      ? { menus: menuId, managerId: req.user._id } // Gerentes só veem seus próprios restaurantes
+      : { menus: menuId }; // Administradores veem todos os restaurantes
+
+    const allRestaurants = await mongoRestaurant.find(query).select("name");
 
     // Criar uma lista de restaurantes com nome e ID
     const restaurantList = allRestaurants.map((restaurant) => ({
@@ -146,14 +147,13 @@ menusController.showMenu = async function (req, res, next) {
     res.render("menus/showMenu", {
       menu: menu.toObject(),
       restaurantList,
+      user: req.user, // Passa o usuário logado para o header
     });
   } catch (err) {
     console.error("Error fetching menu details:", err);
     next(err);
   }
 };
-
-
 
 menusController.deleteMenu = function (req, res, next) {
   const user = req.user;

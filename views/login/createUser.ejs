@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/stylesheets/createUser.css" />
   <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -41,15 +42,23 @@
         <label for="email" class="form-label">Email</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required />
       </div>
-      <div class="mb-3">
+      <div class="mb-3 password-container">
         <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password"
-          required />
+        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required />
+        <button type="button" id="togglePassword" class="toggle-password">
+          <i class="fas fa-eye"></i>
+        </button>
+        <div id="passwordStrength" class="passwordStrength">
+          <div id="strength-bar" class="strength-bar"></div>
+        </div>
+        <small id="strength-text" class="strength-text"></small>
       </div>
-      <div class="mb-3">
+      <div class="mb-3 password-container">
         <label for="confirmPassword" class="form-label">Confirm Password</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
-          placeholder="Confirm your password" required />
+        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required />
+        <button type="button" id="toggleConfirmPassword" class="toggle-password">
+          <i class="fas fa-eye"></i>
+        </button>
       </div>
       <div class="mb-3">
         <label for="profilePic" class="form-label">Profile Picture</label>
@@ -182,7 +191,6 @@ document.getElementById("role").addEventListener("change", toggleForm);
         }
       });
   </script>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   // Verifica se há mensagens de sucesso passadas pelo servidor
@@ -199,6 +207,82 @@ document.getElementById("role").addEventListener("change", toggleForm);
       // Redireciona para a página de login após o alerta
       window.location.href = '/auth/login';
     });
+  }
+</script>
+
+<script>
+  const togglePassword = document.getElementById('togglePassword');
+  const passwordField = document.getElementById('password');
+  const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+  const confirmPasswordField = document.getElementById('confirmPassword');
+
+  togglePassword.addEventListener('click', () => {
+    const type = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = type;
+    togglePassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+  });
+
+  toggleConfirmPassword.addEventListener('click', () => {
+    const type = confirmPasswordField.type === 'password' ? 'text' : 'password';
+    confirmPasswordField.type = type;
+    toggleConfirmPassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+  });
+</script>
+<script>
+  const PasswordField = document.getElementById('password');
+  const strengthBar = document.getElementById('strength-bar');
+  const strengthText = document.getElementById('strength-text');
+  const passwordStrength = document.getElementById('passwordStrength');
+
+  PasswordField.addEventListener('input', () => {
+    const password = PasswordField.value;
+
+    // Exibe a barra e o texto apenas quando o usuário digitar algo
+    if (password.length > 0) {
+      passwordStrength.style.display = 'block'; // Exibe a barra
+      strengthText.style.display = 'block'; // Exibe o texto
+    } else {
+      passwordStrength.style.display = 'none'; // Oculta a barra
+      strengthText.style.display = 'none'; // Oculta o texto
+    }
+
+    const strength = calculatePasswordStrength(password);
+
+    // Atualiza a barra de força
+    strengthBar.style.width = `${strength.percent}%`;
+    strengthBar.style.backgroundColor = strength.color;
+
+    // Atualiza o texto de força
+    strengthText.textContent = strength.message;
+    strengthText.style.color = strength.color;
+  });
+
+  function calculatePasswordStrength(password) {
+    let score = 0;
+
+    // Incrementa o score com base em critérios
+    if (password.length >= 8) score += 1; // Comprimento mínimo
+    if (/[A-Z]/.test(password)) score += 1; // Letras maiúsculas
+    if (/[a-z]/.test(password)) score += 1; // Letras minúsculas
+    if (/[0-9]/.test(password)) score += 1; // Números
+    if (/[^A-Za-z0-9]/.test(password)) score += 1; // Caracteres especiais
+
+    // Define a força com base no score
+    switch (score) {
+      case 0:
+      case 1:
+        return { percent: 20, color: 'red', message: 'Very Weak' };
+      case 2:
+        return { percent: 40, color: 'orange', message: 'Weak' };
+      case 3:
+        return { percent: 60, color: 'yellow', message: 'Moderate' };
+      case 4:
+        return { percent: 80, color: 'lightgreen', message: 'Strong' };
+      case 5:
+        return { percent: 100, color: 'green', message: 'Very Strong' };
+      default:
+        return { percent: 0, color: 'red', message: 'Very Weak' };
+    }
   }
 </script>
 </body>

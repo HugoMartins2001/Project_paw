@@ -64,6 +64,13 @@
         
         <div class="info-item">
           <label for="profilePic">Foto de Perfil:</label>
+          <div class="profile-pic-preview">
+            <img 
+              src="<%= user.profilePic ? '/uploads/' + user.profilePic : '/images/default-user.png' %>" 
+              alt="Foto de Perfil" 
+              class="profile-pic"
+            />
+          </div>
           <input type="file" id="profilePic" name="profilePic" accept="image/*" />
         </div>        
 
