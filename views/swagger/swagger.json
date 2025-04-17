@@ -105,8 +105,6 @@
                 "properties": {
                   "name": { "type": "string" },
                   "address": { "type": "string" },
-                  "latitude": { "type": "number" },
-                  "longitude": { "type": "number" },
                   "phone": { "type": "string" },
                   "email": { "type": "string" },
                   "openingHours": { "type": "string" },

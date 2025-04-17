@@ -112,8 +112,6 @@ restaurantsController.createRestaurant = function (req, res, next) {
   const newRestaurant = new mongoRestaurant({
     name: req.body.name,
     address: req.body.address,
-    latitude: req.body.latitude,
-    longitude: req.body.longitude,
     phone: req.body.phone,
     email: req.body.email,
     openingHours: req.body.openingHours,
