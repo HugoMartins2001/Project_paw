@@ -28,6 +28,7 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "Erro de conexão á base de dados"));
 db.once("open", function () {
   console.log("Conectado á base de dados!");
+  console.log("Servidor a correr em http://localhost:3000");
 });
 
 var app = express();
@@ -60,7 +61,11 @@ app.use((req, res, next) => {
 });
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+  swaggerOptions: {
+    docExpansion: "none"
+  }
+}));
 app.use("/", homeRoutes);
 app.use("/dashboard", indexRouter);
 app.use("/restaurants", restaurantsRouter);
