@@ -13,6 +13,12 @@
   <body>
     <%- include('../partials/header') %> 
 
+    <% if (user.role === 'Manager' || user.role === 'Admin') { %>
+      <div class="create-menu-btn">
+        <a href="/menus/submitMenu" class="btn btn-info">Create New Menu</a>
+      </div>
+    <% } %>
+
     <div class="container">
       <h1>Available Menus</h1>
 
@@ -60,13 +66,19 @@
           <% }) %>
         </div>
       <% } %>
-    </div>
 
-    <div class="text-center mt-5">
-      <% if (user.role === 'Manager' || user.role === 'Admin') { %>
-        <a href="/menus/submitMenu" class="btn btn-info me-2">Create New Menu</a>
-      <% } %>
-      <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+      <!-- Paginação -->
+      <div class="text-center mt-5">
+        <% if (currentPage > 1) { %>
+          <a href="?page=<%= currentPage - 1 %>" class="btn btn-outline-primary me-2">Previous</a>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="btn <%= currentPage === i ? 'btn-primary' : 'btn-outline-primary' %> me-2"><%= i %></a>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+          <a href="?page=<%= currentPage + 1 %>" class="btn btn-outline-primary">Next</a>
+        <% } %>
+      </div>
     </div>
 
     <script>

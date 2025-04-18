@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"="width=device-width, initial-scale=1.0">
   <title>Logs & Statistics</title>
   <link rel="stylesheet" href="/stylesheets/dashboard/managerDashboard.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
   <%- include('../partials/header') %>
 
-    
   <div class="admin-stats">
     <% if (user.role === 'Admin' && stats) { %>
       <h2 class="stats-title">Admin Statistics</h2>
@@ -54,16 +55,46 @@
     <% } %>
   </div>
 
-    <!-- Logs -->
-    <div class="logs-section">
-      <h2>Logs</h2>
+  <!-- Logs -->
+  <div class="logs-section">
+    <h2>Logs</h2>
+
+  <!-- Filtros Compactos -->
+  <div class="filters-section">
+    <form method="GET" action="/admin/logs" class="filters-form">
+      <input type="text" name="userName" placeholder="Search by User" value="<%= filters.userName || '' %>">
+      <select name="action">
+        <option value="">All Actions</option>
+      <option value="Created Dish" <%= filters.action === 'Created Dish' ? 'selected' : '' %>>Created Dish</option>
+      <option value="Updated Dish" <%= filters.action === 'Updated Dish' ? 'selected' : '' %>>Updated Dish</option>
+      <option value="Deleted Dish" <%= filters.action === 'Deleted Dish' ? 'selected' : '' %>>Deleted Dish</option>
+      <option value="Created Menu" <%= filters.action === 'Created Menu' ? 'selected' : '' %>>Created Menu</option>
+      <option value="Updated Menu" <%= filters.action === 'Updated Menu' ? 'selected' : '' %>>Updated Menu</option>
+      <option value="Deleted Menu" <%= filters.action === 'Deleted Menu' ? 'selected' : '' %>>Deleted Menu</option>
+      <option value="Created Restaurant" <%= filters.action === 'Created Restaurant' ? 'selected' : '' %>>Created Restaurant</option>
+      <option value="Updated Restaurant" <%= filters.action === 'Updated Restaurant' ? 'selected' : '' %>>Updated Restaurant</option>
+      <option value="Deleted Restaurant" <%= filters.action === 'Deleted Restaurant' ? 'selected' : '' %>>Deleted Restaurant</option>
+        <!-- Adicione mais ações conforme necessário -->
+      </select>
+      <input type="date" name="startDate" value="<%= filters.startDate || '' %>">
+      <input type="date" name="endDate" value="<%= filters.endDate || '' %>">
+      <button type="submit" class="filter-button">Apply</button>
+    </form>
+  </div>
+
+    <% if (logs.length === 0) { %>
+      <p class="no-logs-message">No logs available at the moment.</p>
+    <% } else { %>
+      <button class="delete-logs-button" onclick="confirmDeleteAllLogs()">Delete All Logs</button>
       <table class="logs-table">
         <thead>
           <tr>
             <th>Action</th>
             <th>User</th>
+            <th>Role</th>
             <th>Details</th>
             <th>Timestamp</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -71,6 +102,7 @@
             <tr>
               <td><%= log.action %></td>
               <td><%= log.userName %></td>
+              <td><%= log.role || "Unknown Role" %></td>
               <td>
                 <% if (log.details) { %>
                   <% Object.keys(log.details).forEach(key => { %>
@@ -81,11 +113,101 @@
                 <% } %>
               </td>
               <td><%= new Date(log.timestamp).toLocaleString() %></td>
+              <td>
+                <button class="delete-log-button" onclick="confirmDeleteLog('<%= log._id %>')">Delete</button>
+              </td>
             </tr>
           <% }) %>
         </tbody>
       </table>
-    </div>
+    <% } %>
   </div>
+
+  <!-- Paginação -->
+  <div class="pagination">
+    <% if (currentPage > 1) { %>
+      <a href="?<%= new URLSearchParams({ ...filters, page: currentPage - 1 }).toString() %>" class="pagination-button">Previous</a>
+    <% } %>
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <a href="?<%= new URLSearchParams({ ...filters, page: i }).toString() %>" class="pagination-button <%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+    <% } %>
+    <% if (currentPage < totalPages) { %>
+      <a href="?<%= new URLSearchParams({ ...filters, page: currentPage + 1 }).toString() %>" class="pagination-button">Next</a>
+    <% } %>
+  </div>
+
+  <script>
+    // Função para confirmar exclusão de todos os logs
+    function confirmDeleteAllLogs() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "This will delete all logs permanently!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete all!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fetch('/admin/logs/deleteAll', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }).then(() => {
+            Swal.fire(
+              'Deleted!',
+              'All logs have been deleted.',
+              'success'
+            ).then(() => {
+              location.reload();
+            });
+          }).catch((error) => {
+            Swal.fire(
+              'Error!',
+              'There was an error deleting the logs.',
+              'error'
+            );
+          });
+        }
+      });
+    }
+
+    // Função para confirmar exclusão de um log específico
+    function confirmDeleteLog(logId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "This will delete the log permanently!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fetch(`/admin/logs/${logId}/delete`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }).then(() => {
+            Swal.fire(
+              'Deleted!',
+              'The log has been deleted.',
+              'success'
+            ).then(() => {
+              location.reload();
+            });
+          }).catch((error) => {
+            Swal.fire(
+              'Error!',
+              'There was an error deleting the log.',
+              'error'
+            );
+          });
+        }
+      });
+    }
+  </script>
 </body>
 </html>

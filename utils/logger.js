@@ -5,8 +5,10 @@ async function logAction(action, user, details = {}) {
     await Log.create({
       action,
       userId: user._id,
-      userName: user.name,
+      userName: user.name || "Unknown User",
+      role: user.role || "Unknown Role", // Adiciona o papel do usuário
       details,
+      timestamp: new Date(), // Adiciona o timestamp
     });
   } catch (err) {
     console.error("Error logging action:", err);

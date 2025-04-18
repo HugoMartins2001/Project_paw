@@ -8,6 +8,9 @@ restaurantsController.showAll = async function (req, res, next) {
   if (!req.user) return res.redirect("/auth/login");
 
   try {
+    const { page = 1, limit = 6 } = req.query; // Página atual e limite de itens por página
+    const skip = (page - 1) * limit;
+
     let query = {};
 
     // Filtrar restaurantes com base no papel do usuário
@@ -17,11 +20,15 @@ restaurantsController.showAll = async function (req, res, next) {
       query = { isApproved: true }; // Clientes só podem ver restaurantes aprovados
     }
 
-    // Buscar restaurantes com base no filtro
-    const restaurants = await mongoRestaurant.find(query).populate("menus");
+    // Buscar restaurantes com base no filtro e aplicar paginação
+    const restaurantList = await mongoRestaurant.find(query).populate("menus").skip(skip).limit(parseInt(limit));
+
+    // Total de restaurantes para paginação
+    const totalRestaurants = await mongoRestaurant.countDocuments(query);
+    const totalPages = Math.ceil(totalRestaurants / limit);
 
     // Filtrar menus para que apenas os criados pelo gerente logado sejam exibidos
-    const filteredRestaurants = restaurants.map((restaurant) => {
+    const filteredRestaurants = restaurantList.map((restaurant) => {
       const filteredMenus = restaurant.menus.filter((menu) => {
         // Administradores podem ver todos os menus
         if (req.user.role === "Admin") {
@@ -38,14 +45,13 @@ restaurantsController.showAll = async function (req, res, next) {
       };
     });
 
-    // Escolha entre renderizar a página ou enviar JSON
+    // Renderizar a página com os restaurantes filtrados e informações de paginação
     res.render("restaurants/showRestaurants", {
       restaurants: filteredRestaurants,
       user: req.user,
+      currentPage: parseInt(page),
+      totalPages,
     });
-
-    // Remova esta linha para evitar o erro
-    // res.status(200).json(restaurants);
   } catch (err) {
     console.error("Error fetching restaurants:", err);
     next(err);
@@ -113,7 +119,10 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
       menus = await mongoMenu.find();
     }
 
-    res.render("restaurants/submitRestaurant", { menus });
+    res.render("restaurants/submitRestaurant", {
+      menus,
+      user: req.user, // Passa o usuário logado para o EJS
+    });
   } catch (error) {
     console.error(error);
     next(error);

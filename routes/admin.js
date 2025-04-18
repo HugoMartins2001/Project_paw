@@ -14,4 +14,7 @@ router.use(authController.verifyLoginUser, (req, res, next) => {
 
 router.get("/logs", adminController.viewLogs);
 
+router.post("/logs/deleteAll", adminController.deleteAllLogs);
+router.post("/logs/:logId/delete", adminController.deleteLog);
+
 module.exports = router;

@@ -125,3 +125,48 @@ h1 {
   color: #92400e;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
 }
+
+/* Paginação */
+.text-center .btn {
+  margin: 5px;
+}
+
+.text-center .btn-primary {
+  background-color: #6c63ff;
+  border-color: #6c63ff;
+  color: white;
+}
+
+.text-center .btn-outline-primary {
+  border-color: #6c63ff;
+  color: #6c63ff;
+}
+
+.text-center .btn-outline-primary:hover {
+  background-color: #6c63ff;
+  color: white;
+}
+
+/* Botão "Create New Restaurant" no canto superior direito */
+.create-restaurant-btn {
+  position: absolute;
+  top: 80px; /* Ajuste conforme necessário para alinhar com o botão de logout */
+  right: 20px;
+  z-index: 1000;
+}
+
+.create-restaurant-btn .btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.create-restaurant-btn .btn:hover {
+  background-color: #5548c8;
+  color: white;
+}

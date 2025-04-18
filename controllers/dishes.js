@@ -11,9 +11,11 @@ let dishesController = {};
 dishesController.showAll = async function (req, res, next) {
   try {
     const user = req.user;
+    const { page = 1, limit = 6 } = req.query; // Página atual e limite de itens por página
+    const skip = (page - 1) * limit;
 
-    // Buscar todos os pratos
-    const dishList = await mongoDish.find();
+    // Buscar todos os pratos com paginação
+    const dishList = await mongoDish.find().skip(skip).limit(parseInt(limit));
 
     // Buscar todos os menus
     const menuList = await mongoMenu.find().populate("dishes");
@@ -78,10 +80,16 @@ dishesController.showAll = async function (req, res, next) {
       });
     }
 
-    // Renderizar a página com os pratos filtrados
+    // Total de pratos para paginação
+    const totalDishes = await mongoDish.countDocuments();
+    const totalPages = Math.ceil(totalDishes / limit);
+
+    // Renderizar a página com os pratos filtrados e paginação
     res.render("dishes/showDishes", {
       dishes: filteredDishes,
       user: user,
+      currentPage: parseInt(page),
+      totalPages,
     });
   } catch (error) {
     console.error(error);
@@ -91,7 +99,9 @@ dishesController.showAll = async function (req, res, next) {
 
 dishesController.renderCreateDishes = function (req, res, next) {
   try {
-    res.render("dishes/submitDishes");
+    res.render("dishes/submitDishes", {
+      user: req.user, // Passa o usuário logado para o EJS
+    });
   } catch (error) {
     console.error(error);
     next(error);
@@ -157,7 +167,7 @@ dishesController.createDish = async function (req, res, next) {
       managerId: user._id,
     };
 
-    await mongoDish.create(dishData);
+    const newDish = await mongoDish.create(dishData);
 
     logAction("Created Dish", user, { dishId: newDish._id, name });
 

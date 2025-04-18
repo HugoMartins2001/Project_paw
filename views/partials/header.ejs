@@ -10,6 +10,9 @@
       <a href="/menus/showMenus">Menus</a>
       <a href="/dishes/showDishes">Dishes</a>
       <!--<a href="/orders">Orders</a>-->
+      <% if (user && user.role === 'Admin') { %>
+        <a href="/admin/logs">Logs & Statistics</a>
+      <% } %>
     </nav>
     <nav class="navbar-right">
       <% if (user) { %>

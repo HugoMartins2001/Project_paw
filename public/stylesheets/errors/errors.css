@@ -1,51 +1,114 @@
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f8f9fa;
-  color: #333;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #6c63ff, #5548c8);
+  color: #fff;
   margin: 0;
-  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
 }
 
 .error-container {
   text-align: center;
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1s ease-in-out;
 }
 
-.error-container h1 {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.error-icon {
+  font-size: 6rem;
+  color: #ff4d4d;
+  margin-bottom: 20px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+h1 {
   font-size: 3rem;
-  color: #dc3545;
-  margin-bottom: 20px;
-}
-
-.error-container p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.error-container a {
-  display: inline-block;
-  text-decoration: none;
-  background-color: #007bff;
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.error-container a:hover {
-  background-color: #0056b3;
-}
-
-.error-container img {
-  max-width: 100%;
-  height: auto;
   margin-bottom: 20px;
+  animation: slideIn 1s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+p {
+  font-size: 1.5rem;
+  color: #f0f0f0;
+  margin-bottom: 30px;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.back-button {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  color: #fff;
+  background: linear-gradient(135deg, #6c63ff, #5548c8);
+  text-decoration: none;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 2s ease-in-out;
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, #5548c8, #6c63ff);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  .back-button {
+    font-size: 1rem;
+    padding: 12px 25px;
+  }
 }

@@ -13,6 +13,12 @@
   <body>
     <%- include('../partials/header') %>
 
+    <% if (user.role === 'Manager' || user.role === 'Admin') { %>
+      <div class="create-dish-btn">
+        <a href="/dishes/submitDishes" class="btn btn-info">Create New Dish</a>
+      </div>
+    <% } %>
+
     <div class="container mt-4">
       <h1>Available Dishes</h1>
 
@@ -71,11 +77,17 @@
         </div>
       <% } %>
 
+      <!-- Paginação -->
       <div class="text-center mt-5">
-        <% if (user.role === 'Manager' || user.role === 'Admin') { %>
-          <a href="/dishes/submitDishes" class="btn btn-info me-2">Create New Dish</a>
+        <% if (currentPage > 1) { %>
+          <a href="?page=<%= currentPage - 1 %>" class="btn btn-outline-primary me-2">Previous</a>
         <% } %>
-        <a href="/dashboard" class="btn btn-secondary">Go to Dashboard</a>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="btn <%= currentPage === i ? 'btn-primary' : 'btn-outline-primary' %> me-2"><%= i %></a>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+          <a href="?page=<%= currentPage + 1 %>" class="btn btn-outline-primary">Next</a>
+        <% } %>
       </div>
     </div>
 

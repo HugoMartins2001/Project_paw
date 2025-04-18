@@ -19,9 +19,11 @@ menusController.renderCreateMenu = async function (req, res, next) {
 menusController.showAll = async function (req, res, next) {
   try {
     const user = req.user;
+    const { page = 1, limit = 6 } = req.query; // Página atual e limite de itens por página
+    const skip = (page - 1) * limit;
 
-    // Buscar todos os menus
-    const menuList = await mongoMenu.find().populate("dishes");
+    // Buscar todos os menus com paginação
+    const menuList = await mongoMenu.find().populate("dishes").skip(skip).limit(parseInt(limit));
 
     // Buscar todos os restaurantes
     const allRestaurants = await mongoRestaurant.find();
@@ -68,10 +70,16 @@ menusController.showAll = async function (req, res, next) {
       return false;
     });
 
-    // Renderizar a página com os menus filtrados
+    // Total de menus para paginação
+    const totalMenus = await mongoMenu.countDocuments();
+    const totalPages = Math.ceil(totalMenus / limit);
+
+    // Renderizar a página com os menus filtrados e informações de paginação
     res.render("menus/showMenus", {
       menus: filteredMenus,
       user: user,
+      currentPage: parseInt(page),
+      totalPages,
     });
   } catch (err) {
     console.error(err);
@@ -89,7 +97,10 @@ menusController.renderCreateMenu = async function (req, res, next) {
       dishes = await mongoDish.find();
     }
 
-    res.render("menus/submitMenu", { dishes });
+    res.render("menus/submitMenu", {
+      dishes,
+      user: req.user, // Passa o usuário logado para o EJS
+    });
   } catch (error) {
     console.error(error);
     next(error);
@@ -217,8 +228,8 @@ menusController.renderEditMenu = async function (req, res, next) {
       req.user.role !== "Admin" && // Admin pode acessar qualquer menu
       menu.managerId.toString() !== req.user._id.toString() // Apenas o gerente que criou o menu pode acessá-lo
     ) {
-      return res.status(403).render("errors/403"); // Renderiza a página 403
-    }
+      return res.status(403).render("errors/403", { message: "You do not have permission to edit this menu." });
+      }
 
     let allDishes;
     if (req.user.role === "Manager") {

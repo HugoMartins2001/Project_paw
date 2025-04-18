@@ -8,8 +8,8 @@ var mongoose = require("mongoose");
 var flash = require("connect-flash");
 var session = require("express-session");
 var passport = require("./config/passport-config");
-const swaggerUi = require('swagger-ui-express');
 
+const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./views/swagger/swagger.json');
 const indexRouter = require("./routes/dashboard");
 const authRouter = require("./routes/auth");
