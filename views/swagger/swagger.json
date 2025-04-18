@@ -91,7 +91,7 @@
         }
       }
     },
-    "/restaurants/createRestaurant": {
+    "/restaurants/submittedRestaurant": {
       "post": {
         "tags": ["Restaurantes"],
         "summary": "Criar um novo restaurante",
@@ -103,15 +103,29 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "address": { "type": "string" },
-                  "phone": { "type": "string" },
-                  "email": { "type": "string" },
-                  "openingHours": { "type": "string" },
-                  "paymentMethods": { "type": "string" },
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "openingHours": {
+                    "type": "string"
+                  },
+                  "paymentMethods": {
+                    "type": "string"
+                  },
                   "menus": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": {
+                      "type": "string"
+                    }
                   }
                 },
                 "required": ["name", "address", "phone", "email"]
@@ -129,8 +143,8 @@
         }
       }
     },
-    "/restaurants/updateRestaurant/{id}": {
-      "put": {
+    "/restaurants/editRestaurant/{id}": {
+      "post": {
         "tags": ["Restaurantes"],
         "summary": "Atualiza um restaurante existente",
         "description": "Permite que um manager ou administrador atualize os detalhes de um restaurante.",
@@ -152,15 +166,29 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "address": { "type": "string" },
-                  "phone": { "type": "string" },
-                  "email": { "type": "string" },
-                  "openingHours": { "type": "string" },
-                  "paymentMethods": { "type": "string" },
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "openingHours": {
+                    "type": "string"
+                  },
+                  "paymentMethods": {
+                    "type": "string"
+                  },
                   "menus": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -192,10 +220,18 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "name": { "type": "string" },
-                      "address": { "type": "string" },
-                      "phone": { "type": "string" },
-                      "email": { "type": "string" }
+                      "name": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -223,13 +259,23 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "name": { "type": "string" },
-                      "address": { "type": "string" },
-                      "phone": { "type": "string" },
-                      "email": { "type": "string" },
+                      "name": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
                       "menus": {
                         "type": "array",
-                        "items": { "type": "string" }
+                        "items": {
+                          "type": "string"
+                        }
                       }
                     }
                   }
@@ -286,19 +332,33 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "name": { "type": "string" },
-                      "description": { "type": "string" },
-                      "category": { "type": "string" },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "category": {
+                        "type": "string"
+                      },
                       "ingredients": {
                         "type": "array",
-                        "items": { "type": "string" }
+                        "items": {
+                          "type": "string"
+                        }
                       },
                       "prices": {
                         "type": "object",
                         "properties": {
-                          "pequena": { "type": "number" },
-                          "media": { "type": "number" },
-                          "grande": { "type": "number" }
+                          "pequena": {
+                            "type": "number"
+                          },
+                          "media": {
+                            "type": "number"
+                          },
+                          "grande": {
+                            "type": "number"
+                          }
                         }
                       }
                     }
@@ -310,7 +370,7 @@
         }
       }
     },
-    "/dishes/createDish": {
+    "/dishes/submittedDish": {
       "post": {
         "tags": ["Pratos"],
         "summary": "Cria um novo prato",
@@ -322,24 +382,40 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "description": { "type": "string" },
-                  "category": { "type": "string" },
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
                   "ingredients": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": {
+                      "type": "string"
+                    }
                   },
                   "prices": {
                     "type": "object",
                     "properties": {
-                      "pequena": { "type": "number" },
-                      "media": { "type": "number" },
-                      "grande": { "type": "number" }
+                      "pequena": {
+                        "type": "number"
+                      },
+                      "media": {
+                        "type": "number"
+                      },
+                      "grande": {
+                        "type": "number"
+                      }
                     }
                   },
                   "allergens": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": {
+                      "type": "string"
+                    }
                   }
                 },
                 "required": ["name", "description", "category", "ingredients"]
@@ -380,19 +456,33 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": { "type": "string" },
-                    "description": { "type": "string" },
-                    "category": { "type": "string" },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
                     "ingredients": {
                       "type": "array",
-                      "items": { "type": "string" }
+                      "items": {
+                        "type": "string"
+                      }
                     },
                     "prices": {
                       "type": "object",
                       "properties": {
-                        "pequena": { "type": "number" },
-                        "media": { "type": "number" },
-                        "grande": { "type": "number" }
+                        "pequena": {
+                          "type": "number"
+                        },
+                        "media": {
+                          "type": "number"
+                        },
+                        "grande": {
+                          "type": "number"
+                        }
                       }
                     }
                   }
@@ -434,8 +524,8 @@
         }
       }
     },
-    "/dishes/updateDish/{dishId}": {
-      "put": {
+    "/dishes/editDish/{dishId}": {
+      "post": {
         "tags": ["Pratos"],
         "summary": "Atualiza um prato existente",
         "parameters": [
@@ -456,24 +546,40 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "description": { "type": "string" },
-                  "category": { "type": "string" },
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
                   "ingredients": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": {
+                      "type": "string"
+                    }
                   },
                   "prices": {
                     "type": "object",
                     "properties": {
-                      "pequena": { "type": "number" },
-                      "media": { "type": "number" },
-                      "grande": { "type": "number" }
+                      "pequena": {
+                        "type": "number"
+                      },
+                      "media": {
+                        "type": "number"
+                      },
+                      "grande": {
+                        "type": "number"
+                      }
                     }
                   },
                   "allergens": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -505,14 +611,20 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "name": { "type": "string" },
+                      "name": {
+                        "type": "string"
+                      },
                       "dishes": {
                         "type": "array",
-                        "items": { "type": "string" }
+                        "items": {
+                          "type": "string"
+                        }
                       },
                       "restaurantNames": {
                         "type": "array",
-                        "items": { "type": "string" }
+                        "items": {
+                          "type": "string"
+                        }
                       }
                     }
                   }
@@ -523,7 +635,7 @@
         }
       }
     },
-    "/menus/createMenu": {
+    "/menus/submittedMenu": {
       "post": {
         "tags": ["Menus"],
         "summary": "Cria um novo menu",
@@ -535,12 +647,18 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
+                  "name": {
+                    "type": "string"
+                  },
                   "dishes": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": {
+                      "type": "string"
+                    }
                   },
-                  "restaurant": { "type": "string" }
+                  "restaurant": {
+                    "type": "string"
+                  }
                 },
                 "required": ["name", "dishes", "restaurant"]
               }
@@ -580,14 +698,20 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": { "type": "string" },
+                    "name": {
+                      "type": "string"
+                    },
                     "dishes": {
                       "type": "array",
-                      "items": { "type": "string" }
+                      "items": {
+                        "type": "string"
+                      }
                     },
                     "restaurantNames": {
                       "type": "array",
-                      "items": { "type": "string" }
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -628,8 +752,8 @@
         }
       }
     },
-    "/menus/updateMenu/{menuId}": {
-      "put": {
+    "/menus/editMenu/{menuId}": {
+      "post": {
         "tags": ["Menus"],
         "summary": "Atualiza um menu existente",
         "parameters": [
@@ -650,12 +774,18 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
+                  "name": {
+                    "type": "string"
+                  },
                   "dishes": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": {
+                      "type": "string"
+                    }
                   },
-                  "restaurant": { "type": "string" }
+                  "restaurant": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -683,7 +813,7 @@
         }
       }
     },
-    "/auth/submittedLogin": {
+    "/auth/loginSubmitted": {
       "post": {
         "tags": ["Autenticação"],
         "summary": "Realiza o login do utilizador",
@@ -695,8 +825,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": { "type": "string" },
-                  "password": { "type": "string" }
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
                 },
                 "required": ["email", "password"]
               }
@@ -725,19 +859,19 @@
         }
       }
     },
-    "/auth/createLogin": {
+    "/auth/register": {
       "get": {
         "tags": ["Autenticação"],
-        "summary": "Exibe a página de registro",
+        "summary": "Exibe a página de registo",
         "description": "Renderiza a página para criar um novo utilizador.",
         "responses": {
           "200": {
-            "description": "Página de registro exibida com sucesso"
+            "description": "Página de registo exibida com sucesso"
           }
         }
       }
     },
-    "/auth/createLoginSubmitted": {
+    "/auth/registerSubmitted": {
       "post": {
         "tags": ["Autenticação"],
         "summary": "Cria um novo utilizador",
@@ -749,10 +883,27 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": { "type": "string" },
-                  "password": { "type": "string" },
-                  "name": { "type": "string" },
-                  "profilePic": { "type": "string" }
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "clienteNif": {
+                    "type": "string"
+                  },
+                  "clienteTelemovel": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "profilePic": {
+                    "type": "string"
+                  }
                 },
                 "required": ["email", "password", "name"]
               }
@@ -811,10 +962,18 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "name": { "type": "string" },
-                      "email": { "type": "string" },
-                      "role": { "type": "string" },
-                      "profilePic": { "type": "string" }
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "role": {
+                        "type": "string"
+                      },
+                      "profilePic": {
+                        "type": "string"
+                      }
                     }
                   }
                 }

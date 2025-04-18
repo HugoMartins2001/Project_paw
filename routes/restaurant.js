@@ -4,7 +4,7 @@ const restaurantsController = require("../controllers/restaurants");
 const authController = require("../controllers/auth");
 
 router.use((req, res, next) => {
-  res.locals.user = req.user || null; // Passa o usuário logado ou null
+  res.locals.user = req.user || null;
   next();
 });
 

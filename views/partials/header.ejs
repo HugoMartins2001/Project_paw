@@ -80,4 +80,9 @@
       }, 1500); // Tempo do spinner antes de redirecionar
     });
   });
+
+  // Remove o spinner ao carregar a página
+  window.addEventListener('pageshow', () => {
+    loadingSpinner.classList.remove('show');
+  });
 </script>

@@ -124,15 +124,24 @@ dishesController.createDish = async function (req, res, next) {
     const protein = nutritionData?.protein?.value || 0;
     const carbs = nutritionData?.carbs?.value || 0;
 
-    const allergensList = allergens
-      ? allergens.split(",").map((el) => el.trim())
-      : [];
+    // Verificar se ingredients é uma string antes de usar .split()
+    const ingredientsList = Array.isArray(ingredients)
+      ? ingredients // Se já for um array, use diretamente
+      : ingredients
+      ? ingredients.split(",").map((el) => el.trim()) // Se for string, divida e limpe
+      : []; // Caso contrário, use um array vazio
+
+    const allergensList = Array.isArray(allergens)
+      ? allergens // Se já for um array, use diretamente
+      : allergens
+      ? allergens.split(",").map((el) => el.trim()) // Se for string, divida e limpe
+      : []; // Caso contrário, use um array vazio
 
     const dishData = {
       name,
       description,
       category,
-      ingredients: ingredients.split(",").map((el) => el.trim()),
+      ingredients: ingredientsList,
       prices: prices,
       nutrition: {
         calories,
@@ -244,7 +253,18 @@ dishesController.renderEditDish = function (req, res, next) {
 
 dishesController.updateDish = function (req, res, next) {
   const dishId = req.params.dishId;
-  const { name, description, category, ingredients, calories, fat, protein, carbs, nutriScore, allergens, } = req.body;
+  const {
+    name,
+    description,
+    category,
+    ingredients,
+    calories,
+    fat,
+    protein,
+    carbs,
+    nutriScore,
+    allergens,
+  } = req.body;
 
   const prices = {
     pequena: req.body["prices[pequena]"] || 0,
@@ -261,7 +281,9 @@ dishesController.updateDish = function (req, res, next) {
         category,
         ingredients: Array.isArray(ingredients)
           ? ingredients
-          : ingredients.split(",").map((el) => el.trim()),
+          : ingredients
+          ? ingredients.split(",").map((el) => el.trim())
+          : dish.ingredients || [],
         prices: prices,
         nutrition: {
           calories: calories || dish.nutrition.calories,
@@ -270,7 +292,9 @@ dishesController.updateDish = function (req, res, next) {
           carbs: carbs || dish.nutrition.carbs,
         },
         nutriScore: nutriScore || dish.nutriScore || "N/A",
-        allergens: allergens
+        allergens: Array.isArray(allergens)
+          ? allergens
+          : allergens
           ? allergens.split(",").map((el) => el.trim())
           : dish.allergens || [],
       };
