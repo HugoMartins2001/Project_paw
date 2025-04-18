@@ -5,14 +5,31 @@
 <header>
   <div class="navbar-container">
     <nav class="navbar-left">
-      <a href="/dashboard">Dashboard</a>
-      <a href="/restaurants/showRestaurants">Restaurants</a>
-      <a href="/menus/showMenus">Menus</a>
-      <a href="/dishes/showDishes">Dishes</a>
-      <!--<a href="/orders">Orders</a>-->
+      <a href="/dashboard">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </a>
+      <a href="/restaurants/showRestaurants">
+        <i class="fas fa-utensils"></i> Restaurants
+      </a>
+      <a href="/menus/showMenus">
+        <i class="fas fa-book"></i> Menus
+      </a>
+      <a href="/dishes/showDishes">
+        <i class="fas fa-hamburger"></i> Dishes
+      </a>
+      <!--<a href="/orders">
+        <i class="fas fa-shopping-cart"></i> Orders
+      </a>-->
       <% if (user && user.role === 'Admin') { %>
-        <a href="/restaurants/pendingApproval">Approve Restaurants</a>
-        <a href="/admin/logs">Logs & Statistics</a>
+        <a href="/users/showUsers">
+          <i class="fas fa-users"></i> Users
+        </a>
+        <a href="/restaurants/pendingApproval">
+          <i class="fas fa-check-circle"></i> Approve Restaurants
+        </a>
+        <a href="/admin/logs">
+          <i class="fas fa-chart-line"></i> Logs & Statistics
+        </a>
       <% } %>
     </nav>
     <nav class="navbar-right">

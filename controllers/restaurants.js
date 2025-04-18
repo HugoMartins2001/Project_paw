@@ -278,6 +278,8 @@ restaurantsController.showPendingRestaurants = async function (req, res, next) {
     const { page = 1, limit = 10 } = req.query; // Página atual e limite de itens por página
     const skip = (page - 1) * limit;
 
+    const user = req.user;
+
     // Buscar restaurantes pendentes de aprovação com paginação
     const restaurants = await mongoRestaurant
       .find({ isApproved: false })
@@ -293,6 +295,7 @@ restaurantsController.showPendingRestaurants = async function (req, res, next) {
       restaurants,
       currentPage: parseInt(page),
       totalPages,
+      user,
     });
   } catch (err) {
     console.error("Error fetching pending restaurants:", err);
