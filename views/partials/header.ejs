@@ -1,5 +1,6 @@
 <head>
   <link rel="stylesheet" href="/stylesheets/header/header.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <header>
   <div class="navbar-container">
@@ -17,9 +18,7 @@
           alt="Foto de perfil" class="profile-pic"/>   
           Profile
         </a>
-      <% } else { %>
-        <a href="/auth/login">Login</a>
-      <% } %>
+      <% }  %>
       <form id="logoutForm" action="/auth/logout" method="POST">
         <button type="submit" class="logout-btn">
           <i class="fas fa-sign-out-alt"></i> Logout

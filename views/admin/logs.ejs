@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logs & Statistics</title>
+  <link rel="stylesheet" href="/stylesheets/dashboard/managerDashboard.css">
+</head>
+<body>
+  <%- include('../partials/header') %>
+
+    
+  <div class="admin-stats">
+    <% if (user.role === 'Admin' && stats) { %>
+      <h2 class="stats-title">Admin Statistics</h2>
+      <div class="stats-container">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-store"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Restaurants</h3>
+            <p><%= stats.restaurantsCount %></p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Users</h3>
+            <p><%= stats.usersCount %></p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Menus</h3>
+            <p><%= stats.menusCount %></p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="fas fa-utensils"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Dishes</h3>
+            <p><%= stats.dishesCount %></p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+    <!-- Logs -->
+    <div class="logs-section">
+      <h2>Logs</h2>
+      <table class="logs-table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>User</th>
+            <th>Details</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% logs.forEach(log => { %>
+            <tr>
+              <td><%= log.action %></td>
+              <td><%= log.userName %></td>
+              <td>
+                <% if (log.details) { %>
+                  <% Object.keys(log.details).forEach(key => { %>
+                    <strong><%= key %>:</strong> <%= log.details[key] %><br>
+                  <% }) %>
+                <% } else { %>
+                  No details available
+                <% } %>
+              </td>
+              <td><%= new Date(log.timestamp).toLocaleString() %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

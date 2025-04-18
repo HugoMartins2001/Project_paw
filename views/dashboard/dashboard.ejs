@@ -8,7 +8,6 @@
     <%= user.role %> dashboard
   </title>
   <link rel="stylesheet" href="/stylesheets/dashboard/managerDashboard.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" type="image/png" href="/favicon.png">
 </head>
@@ -49,6 +48,7 @@
           <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create plate</a>
           <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show plates</a>
           <a href="/users/showUsers" class="menu-btn"><i class="fas fa-users"></i> Show users</a>
+          <a href="/admin/logs" class="menu-btn"><i class="fas fa-chart-line"></i> View Logs & Statistics</a>
           <% } else if (user.role==='Client' ) { %>
             <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
             <% } %>

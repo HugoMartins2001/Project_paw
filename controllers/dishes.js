@@ -1,7 +1,10 @@
 const mongoDish = require("../models/dish");
 const axios = require("axios");
 const mongoMenu = require("../models/menu");
-const mongoRestaurant = require("../models/restaurant"); // Certifique-se de importar também o modelo de restaurante
+const mongoRestaurant = require("../models/restaurant");
+const logAction = require("../utils/logger");
+
+
 
 let dishesController = {};
 
@@ -155,6 +158,10 @@ dishesController.createDish = async function (req, res, next) {
     };
 
     await mongoDish.create(dishData);
+
+    logAction("Created Dish", user, { dishId: newDish._id, name });
+
+    
     res.redirect("/dishes/showDishes");
   } catch (error) {
     console.error(error);
@@ -168,7 +175,17 @@ dishesController.showDish = async function (req, res, next) {
 
     // Buscar o prato pelo ID
     const dish = await mongoDish.findById(req.params.dishId);
-    if (!dish) return res.status(404).send("Dish not found.");
+    if (!dish) {
+      return res.status(404).render("errors/404", { message: "Dish not found." });
+    }
+
+    // Verificar permissões
+    if (
+      user.role !== "Admin" && // Apenas Admin pode acessar qualquer prato
+      (!dish.managerId || dish.managerId.toString() !== user._id.toString()) // Gerente só pode acessar seus próprios pratos
+    ) {
+      return res.status(403).render("errors/403", { message: "Access denied." });
+    }
 
     // Buscar todos os menus
     const menuList = await mongoMenu.find().populate("dishes");
@@ -235,7 +252,9 @@ dishesController.deleteDish = function (req, res, next) {
           .send("You don´t have permission do delete this plate.");
       }
 
-      return mongoDish.findByIdAndDelete(req.params.dishId);
+      return mongoDish.findByIdAndDelete(req.params.dishId).then(() => {
+        logAction("Deleted Dish", user, { dishId: dish._id, name: dish.name });
+      });
     })
     .then(() => res.redirect("/dishes/showDishes"))
     .catch(next);
@@ -245,11 +264,23 @@ dishesController.renderEditDish = function (req, res, next) {
   mongoDish
     .findById(req.params.dishId)
     .then((dish) => {
-      if (!dish) return res.status(404).send("Plate not found.");
-      res.render("dishes/editDish", { dish });
+      if (!dish) return res.status(404).render("errors/404", { message: "Restaurant not found." });
+
+      const user = req.user;
+
+      // Verificar permissões
+      if (
+        user.role !== "Admin" &&
+        (!dish.managerId || dish.managerId.toString() !== user._id.toString())
+      ) {
+        return res.status(403).render("errors/403", { message: "Access denied." });
+      }
+
+      res.render("dishes/editDish", { dish, user });
     })
     .catch(next);
 };
+
 
 dishesController.updateDish = function (req, res, next) {
   const dishId = req.params.dishId;
@@ -275,6 +306,22 @@ dishesController.updateDish = function (req, res, next) {
   mongoDish
     .findById(dishId)
     .then((dish) => {
+      if (!dish) {
+        return res.status(404).send("Dish not found.");
+      }
+
+      const user = req.user;
+
+      // Verificar permissões
+      if (
+        user.role !== "Admin" &&
+        (!dish.managerId || dish.managerId.toString() !== user._id.toString())
+      ) {
+        return res
+          .status(403)
+          .send("You do not have permission to edit this dish.");
+      }
+
       const updatedDishData = {
         name,
         description,
@@ -299,10 +346,13 @@ dishesController.updateDish = function (req, res, next) {
           : dish.allergens || [],
       };
 
-      mongoDish
-        .findByIdAndUpdate(dishId, updatedDishData, { new: true })
-        .then(() => res.redirect("/dishes/showDishes"))
-        .catch(next);
+      return mongoDish.findByIdAndUpdate(dishId, updatedDishData, { new: true });
+    })
+    .then((updatedDish) => {
+      // Registrar log
+      logAction("Updated Dish", req.user, { dishId: updatedDish._id, name: updatedDish.name });
+
+      res.redirect("/dishes/showDishes");
     })
     .catch(next);
 };

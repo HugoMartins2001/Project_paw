@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const authController = require('../controllers/auth')
+const authController = require('../controllers/auth');
+const dashboardController = require('../controllers/dashboard');
 
-
-router.get('/', authController.verifyLoginUser, function(req, res) {~
-  res.render('dashboard/dashboard', { user: req.user });
-});
+// Rota para o dashboard
+router.get('/', authController.verifyLoginUser, dashboardController.renderDashboard);
 
 module.exports = router;

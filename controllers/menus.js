@@ -1,6 +1,8 @@
 const mongoMenu = require("../models/menu");
 const mongoDish = require("../models/dish");
 const mongoRestaurant = require("../models/restaurant");
+const logAction = require("../utils/logger");
+
 
 let menusController = {};
 
@@ -112,6 +114,8 @@ menusController.createMenu = async function (req, res, next) {
 
     await newMenu.save();
 
+    logAction("Created Menu", req.user, { menuId: newMenu._id, name });
+
     res.redirect("/menus/showMenus");
   } catch (error) {
     console.error(error);
@@ -127,13 +131,22 @@ menusController.showMenu = async function (req, res, next) {
     const menu = await mongoMenu.findById(menuId).populate("dishes");
 
     if (!menu) {
-      return res.status(404).send("Menu not found.");
+      return res.status(404).render("errors/404", { message: "Menu not found." });
+    }
+
+    // Verificar permissões
+    if (
+      req.user.role !== "Admin" && // Apenas Admin pode acessar qualquer menu
+      (!menu.managerId || menu.managerId.toString() !== req.user._id.toString()) // Gerente só pode acessar seus próprios menus
+    ) {
+      return res.status(403).render("errors/403", { message: "Access denied." });
     }
 
     // Buscar todos os restaurantes que contêm este menu
-    const query = req.user.role === "Manager"
-      ? { menus: menuId, managerId: req.user._id } // Gerentes só veem seus próprios restaurantes
-      : { menus: menuId }; // Administradores veem todos os restaurantes
+    const query =
+      req.user.role === "Manager"
+        ? { menus: menuId, managerId: req.user._id } // Gerentes só veem seus próprios restaurantes
+        : { menus: menuId }; // Administradores veem todos os restaurantes
 
     const allRestaurants = await mongoRestaurant.find(query).select("name");
 
@@ -174,7 +187,9 @@ menusController.deleteMenu = function (req, res, next) {
           .send("You dont have permission to delete this menu.");
       }
 
-      return mongoMenu.findByIdAndDelete(req.params.menuId);
+      return mongoMenu.findByIdAndDelete(req.params.menuId).then(() => {
+        logAction("Deleted Menu", user, { menuId: menu._id, name: menu.name });
+      });
     })
     .then(function () {
       res.redirect("/menus/showMenus");
@@ -190,8 +205,22 @@ menusController.renderEditMenu = async function (req, res, next) {
       .findById(req.params.menuId)
       .populate("dishes")
       .populate("restaurant");
-    let allDishes;
 
+    if (!menu) {
+      return res.status(404).render("errors/404", { message: "Menu not found." });
+    }
+
+    const user = req.user;
+
+    // Verificar permissões
+    if (
+      req.user.role !== "Admin" && // Admin pode acessar qualquer menu
+      menu.managerId.toString() !== req.user._id.toString() // Apenas o gerente que criou o menu pode acessá-lo
+    ) {
+      return res.status(403).render("errors/403"); // Renderiza a página 403
+    }
+
+    let allDishes;
     if (req.user.role === "Manager") {
       allDishes = await mongoDish.find({ managerId: req.user._id });
     } else {
@@ -200,41 +229,56 @@ menusController.renderEditMenu = async function (req, res, next) {
 
     const restaurants = await mongoRestaurant.find();
 
-    if (!menu) {
-      return res.status(404).send("Menu not found.");
-    }
-
-    res.render("menus/editMenu", { menu, dishes: allDishes, restaurants });
+    res.render("menus/editMenu", { menu, dishes: allDishes, restaurants, user });
   } catch (err) {
     next(err);
   }
 };
 
-menusController.updateMenu = function (req, res, next) {
-  const menuId = req.params.menuId;
-  const updatedData = {
-    name: req.body.name,
-    dishes: Array.isArray(req.body.dishes)
+menusController.updateMenu = async function (req, res, next) {
+  try {
+    const menuId = req.params.menuId;
+
+    // Buscar o menu pelo ID
+    const menu = await mongoMenu.findById(menuId);
+
+    if (!menu) {
+      return res.status(404).send("Menu not found.");
+    }
+
+    // Verificar permissões
+    if (
+      req.user.role !== "Admin" && // Admin pode editar qualquer menu
+      menu.managerId.toString() !== req.user._id.toString() // Apenas o gerente que criou o menu pode editá-lo
+    ) {
+      return res.status(403).send("Access denied.");
+    }
+
+    // Atualizar os dados do menu
+    const dishesArray = Array.isArray(req.body.dishes)
       ? req.body.dishes
-      : [req.body.dishes],
-    restaurant: req.body.restaurant,
-  };
+      : [req.body.dishes];
+    const updatedData = {
+      name: req.body.name,
+      dishes: dishesArray,
+      restaurant: req.body.restaurant,
+    };
 
-  if (req.file) {
-    updatedData.menuPic = req.file.filename;
-  }  
+    if (req.file) {
+      updatedData.menuPic = req.file.filename;
+    }
 
-  mongoMenu
-    .findByIdAndUpdate(menuId, updatedData, { new: true, runValidators: true })
-    .then(function (updated) {
-      if (!updated) {
-        return res.status(404).send("Menu not found.");
-      }
-      res.redirect("/menus/showMenus");
-    })
-    .catch(function (err) {
-      next(err);
+    const updatedMenu = await mongoMenu.findByIdAndUpdate(menuId, updatedData, {
+      new: true,
+      runValidators: true,
     });
+
+    logAction("Updated Menu", req.user, { menuId: updatedMenu._id, name: updatedMenu.name });
+
+    res.redirect("/menus/showMenus");
+  } catch (err) {
+    next(err);
+  }
 };
 
 module.exports = menusController;
