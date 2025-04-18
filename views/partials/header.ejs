@@ -11,6 +11,7 @@
       <a href="/dishes/showDishes">Dishes</a>
       <!--<a href="/orders">Orders</a>-->
       <% if (user && user.role === 'Admin') { %>
+        <a href="/restaurants/pendingApproval">Approve Restaurants</a>
         <a href="/admin/logs">Logs & Statistics</a>
       <% } %>
     </nav>

@@ -271,15 +271,33 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
   }
 };
 
-restaurantsController.showPendingRestaurants = function (req, res, next) {
+restaurantsController.showPendingRestaurants = async function (req, res, next) {
   if (req.user.role !== "Admin") return res.status(403).send("Access denied.");
 
-  mongoRestaurant
-    .find({ isApproved: false })
-    .then((restaurants) => {
-      res.render("restaurants/pendingApproval", { restaurants });
-    })
-    .catch((err) => next(err));
+  try {
+    const { page = 1, limit = 10 } = req.query; // Página atual e limite de itens por página
+    const skip = (page - 1) * limit;
+
+    // Buscar restaurantes pendentes de aprovação com paginação
+    const restaurants = await mongoRestaurant
+      .find({ isApproved: false })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    // Total de restaurantes pendentes
+    const totalRestaurants = await mongoRestaurant.countDocuments({ isApproved: false });
+    const totalPages = Math.ceil(totalRestaurants / limit);
+
+    // Renderizar a página com os restaurantes e informações de paginação
+    res.render("restaurants/pendingApproval", {
+      restaurants,
+      currentPage: parseInt(page),
+      totalPages,
+    });
+  } catch (err) {
+    console.error("Error fetching pending restaurants:", err);
+    next(err);
+  }
 };
 
 restaurantsController.approveRestaurant = function (req, res, next) {

@@ -5,38 +5,8 @@ body {
   padding: 0;
 }
 
-.header {
-  background-color: #ffffff;
-  padding: 16px 40px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header h3 {
-  margin: 0;
-  font-weight: 600;
-  color: #333;
-  font-size: 22px;
-}
-
-.logout-btn {
-  background: none;
-  border: none;
-  color: #333;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.logout-btn:hover {
-  color: #6c63ff;
-}
-
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 40px auto;
   padding: 0 20px;
 }
@@ -45,7 +15,7 @@ body {
   background: white;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -55,27 +25,72 @@ h2 {
   margin-bottom: 30px;
 }
 
+/* Layout de grade para os cartões */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Cartão do restaurante */
 .restaurant-card {
-  background-color: #fdfdfd;
+  background-color: #ffffff;
   border-radius: 10px;
   border: 1px solid #eee;
   padding: 20px;
+  margin-bottom: 30px; /* Espaçamento entre os cartões */
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.restaurant-card:hover {
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+/* Título do cartão */
+.restaurant-card h5 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Texto do cartão */
+.restaurant-card p {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 .btn {
   border-radius: 8px;
-  padding: 8px 14px;
+  padding: 10px 16px;
   font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-success {
   background-color: #6c63ff;
+  color: white;
   border: none;
-  transition: background-color 0.3s ease;
 }
 
 .btn-success:hover {
   background-color: #574fdb;
+  transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+  border-color: #6c63ff;
+  color: #6c63ff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #6c63ff;
+  color: white;
 }
 
 .custom-secondary-btn {
@@ -93,11 +108,61 @@ h2 {
   background-color: #ccc;
   color: #333;
 }
-
-
-
-.alert {
+/* Paginação */
+.text-center .btn {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
   border-radius: 8px;
-  padding: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
 
+.text-center .btn-primary {
+  background-color: #6c63ff;
+  border-color: #6c63ff;
+  color: white;
+  box-shadow: 0px 4px 10px rgba(108, 99, 255, 0.3);
+}
+
+.text-center .btn-primary:hover {
+  background-color: #574fdb;
+  border-color: #574fdb;
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 15px rgba(87, 79, 219, 0.4);
+}
+
+.text-center .btn-outline-primary {
+  border: 2px solid #6c63ff;
+  color: #6c63ff;
+  background-color: transparent;
+  box-shadow: 0px 4px 10px rgba(108, 99, 255, 0.1);
+}
+
+.text-center .btn-outline-primary:hover {
+  background-color: #6c63ff;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 15px rgba(108, 99, 255, 0.3);
+}
+
+/* Botão de aprovação */
+.btn-approve {
+  margin-top: 15px;
+  margin-bottom: 20px; /* Espaçamento inferior */
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(108, 99, 255, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-approve:hover {
+  background-color: #574fdb;
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 15px rgba(87, 79, 219, 0.4);
 }

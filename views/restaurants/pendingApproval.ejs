@@ -13,37 +13,44 @@
     <%- include('../partials/header') %> 
 
     <div class="container">
-      <div class="card">
-        <h2>Pending Restaurant List</h2>
+      <h2 class="text-center mb-4">Pending Restaurant List</h2>
 
-        <% if (restaurants.length === 0) { %>
-          <div class="alert alert-success text-center">
-            <h4>No restaurants pending approval.</h4>
-          </div>
-        <% } else { %>
-          <div class="row">
-            <% restaurants.forEach(function(restaurant) { %>
-              <div class="col-md-12 mb-4">
-                <div class="restaurant-card shadow-sm">
-                  <h5 class="fw-semibold mb-2"><%= restaurant.name %></h5>
-                  <p><strong>Street:</strong> <%= restaurant.address %></p>
-                  <p><strong>Email:</strong> <%= restaurant.email %></p>
-                  <p><strong>Phone:</strong> <%= restaurant.phone %></p>
-
-                  <form class="approve-form mt-3" action="/restaurants/approveRestaurant/<%= restaurant._id %>" method="POST">
-                    <button type="submit" class="btn btn-success w-100">Approve Restaurant</button>
-                  </form>
-                </div>
-              </div>
-            <% }) %>
-          </div>
-        <% } %>
-
-        <div class="mt-4 text-center">
-          <div class="text-center mt-4">
-            <a href="/dashboard" class="btn custom-secondary-btn">Back to Dashboard</a>
-          </div>                  
+      <% if (restaurants.length === 0) { %>
+        <div class="alert alert-success text-center">
+          <h4>No restaurants pending approval.</h4>
         </div>
+      <% } else { %>
+        <div class="card-grid">
+          <% restaurants.forEach(function(restaurant) { %>
+            <div class="restaurant-card">
+              <h5><%= restaurant.name %></h5>
+              <p><strong>Street:</strong> <%= restaurant.address %></p>
+              <p><strong>Email:</strong> <%= restaurant.email %></p>
+              <p><strong>Phone:</strong> <%= restaurant.phone %></p>
+
+              <form class="approve-form mt-3" action="/restaurants/approveRestaurant/<%= restaurant._id %>" method="POST">
+                <button type="submit" class="btn btn-approve">Approve Restaurant</button>
+              </form>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <!-- Paginação -->
+      <div class="text-center mt-5">
+        <% if (currentPage > 1) { %>
+          <a href="?page=<%= currentPage - 1 %>" class="btn btn-outline-primary me-2">Previous</a>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="btn <%= currentPage === i ? 'btn-primary' : 'btn-outline-primary' %> me-2"><%= i %></a>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+          <a href="?page=<%= currentPage + 1 %>" class="btn btn-outline-primary">Next</a>
+        <% } %>
+      </div>
+
+      <div class="mt-4 text-center">
+        <a href="/dashboard" class="btn custom-secondary-btn">Back to Dashboard</a>
       </div>
     </div>
 
