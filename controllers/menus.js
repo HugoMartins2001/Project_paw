@@ -19,11 +19,35 @@ menusController.renderCreateMenu = async function (req, res, next) {
 menusController.showAll = async function (req, res, next) {
   try {
     const user = req.user;
-    const { page = 1, limit = 6 } = req.query; // Página atual e limite de itens por página
+    const { page = 1, limit = 6, name, restaurant, minPrice, maxPrice, sortBy = "name", order = "asc" } = req.query; // Parâmetros de filtro e ordenação
     const skip = (page - 1) * limit;
 
-    // Buscar todos os menus com paginação
-    const menuList = await mongoMenu.find().populate("dishes").skip(skip).limit(parseInt(limit));
+    // Construir o filtro de busca
+    let query = {};
+
+    // Filtrar por nome do menu
+    if (name) {
+      query.name = { $regex: name, $options: "i" }; // Busca por nome (case insensitive)
+    }
+
+    // Filtrar menus com base no papel do usuário
+    if (user.role === "Manager") {
+      query.managerId = user._id; // Gerentes só podem ver menus que eles criaram
+    }
+
+    // Ordenação
+    const sortOrder = order === "desc" ? -1 : 1; // Ordem ascendente ou descendente
+    const sortOptions = {};
+    sortOptions[sortBy] = sortOrder;
+
+    // Buscar menus com base no filtro e aplicar paginação e ordenação
+    const menuList = await mongoMenu
+      .find(query)
+      .populate("dishes")
+      .populate("restaurant")
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(parseInt(limit));
 
     // Buscar todos os restaurantes
     const allRestaurants = await mongoRestaurant.find();
@@ -71,7 +95,7 @@ menusController.showAll = async function (req, res, next) {
     });
 
     // Total de menus para paginação
-    const totalMenus = await mongoMenu.countDocuments();
+    const totalMenus = await mongoMenu.countDocuments(query);
     const totalPages = Math.ceil(totalMenus / limit);
 
     // Renderizar a página com os menus filtrados e informações de paginação
@@ -80,6 +104,7 @@ menusController.showAll = async function (req, res, next) {
       user: user,
       currentPage: parseInt(page),
       totalPages,
+      filters: { name, sortBy, order },
     });
   } catch (err) {
     console.error(err);

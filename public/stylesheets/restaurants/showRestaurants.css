@@ -170,3 +170,33 @@ h1 {
   background-color: #5548c8;
   color: white;
 }
+
+/* Estilo para a seção de filtros */
+.filters-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters-section .form-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.filters-section .form-control,
+.filters-section .form-select {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+}
+
+.filters-section .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.filters-section .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}

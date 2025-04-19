@@ -22,6 +22,39 @@
     <div class="container mt-4">
       <h1>Available Restaurants</h1>
 
+      <div class="filters-section mb-4">
+        <form id="filtersForm" method="GET" action="/restaurants/showRestaurants" class="row g-3 align-items-end">
+          <!-- Filtro por Nome -->
+          <div class="col-md-4">
+            <label for="name" class="form-label">Restaurant Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Search by Name" value="<%= filters.name || '' %>">
+          </div>
+
+          <!-- Filtro por Localização -->
+          <div class="col-md-4">
+            <label for="address" class="form-label">Location</label>
+            <input type="text" id="address" name="address" class="form-control" placeholder="Search by Location" value="<%= filters.address || '' %>">
+          </div>
+
+          <!-- Ordenação -->
+          <div class="col-md-4">
+            <label for="sortBy" class="form-label">Sort By</label>
+            <select id="sortBy" name="sortBy" class="form-select">
+              <option value="name" <%= filters.sortBy === 'name' ? 'selected' : '' %>>Name</option>
+              <option value="averagePrice" <%= filters.sortBy === 'averagePrice' ? 'selected' : '' %>>Price</option>
+              <option value="location" <%= filters.sortBy === 'location' ? 'selected' : '' %>>Location</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label for="order" class="form-label">Order</label>
+            <select id="order" name="order" class="form-select">
+              <option value="asc" <%= filters.order === 'asc' ? 'selected' : '' %>>Ascending</option>
+              <option value="desc" <%= filters.order === 'desc' ? 'selected' : '' %>>Descending</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
       <% if (restaurants.length === 0) { %>
         <div class="alert alert-warning text-center">
           <h3>No restaurants found.</h3>
@@ -96,43 +129,92 @@
     </div>
 
     <script>
-      document.querySelectorAll('.delete-restaurant-btn').forEach(button => {
-        button.addEventListener('click', function () {
-          const restaurantId = this.getAttribute('data-restaurant-id');
-
-          Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#6b7280',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              fetch(`/restaurants/deleteRestaurant/${restaurantId}`, {
-                method: 'POST'
-              }).then(response => {
-                if (response.ok) {
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Deleted!',
-                    text: 'The restaurant has been deleted.',
-                    timer: 1500,
-                    showConfirmButton: false
-                  }).then(() => window.location.reload());
-                } else {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Failed to delete the restaurant.'
-                  });
-                }
-              });
-            }
+      // Função para reaplicar eventos aos elementos
+      function applyEventListeners() {
+        // Reaplicar eventos aos botões de exclusão
+        document.querySelectorAll('.delete-restaurant-btn').forEach(button => {
+          button.addEventListener('click', function () {
+            const restaurantId = this.getAttribute('data-restaurant-id');
+    
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#ef4444',
+              cancelButtonColor: '#6b7280',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                fetch(`/restaurants/deleteRestaurant/${restaurantId}`, {
+                  method: 'POST'
+                }).then(response => {
+                  if (response.ok) {
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Deleted!',
+                      text: 'The restaurant has been deleted.',
+                      timer: 1500,
+                      showConfirmButton: false
+                    }).then(() => window.location.reload());
+                  } else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: 'Failed to delete the restaurant.'
+                    });
+                  }
+                });
+              }
+            });
           });
         });
-      });
+    
+        // Reaplicar eventos aos campos de filtro
+        const filtersForm = document.getElementById('filtersForm');
+        const filterInputs = filtersForm.querySelectorAll('input, select');
+    
+        // Função debounce para atrasar a execução
+        function debounce(func, delay) {
+          let timeout;
+          return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+          };
+        }
+    
+        // Função para atualizar os resultados dinamicamente
+        const updateResults = debounce(() => {
+          // Salvar o estado atual dos filtros
+          const formData = new FormData(filtersForm);
+          const queryString = new URLSearchParams(formData).toString();
+          const url = `${filtersForm.action}?${queryString}`;
+    
+          // Atualizar a página com os novos resultados
+          fetch(url)
+            .then(response => response.text())
+            .then(html => {
+              // Substituir o conteúdo da lista de restaurantes
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              const newContent = doc.querySelector('.container.mt-4').innerHTML;
+              document.querySelector('.container.mt-4').innerHTML = newContent;
+    
+              // Reaplicar eventos aos novos elementos
+              applyEventListeners();
+            })
+            .catch(error => console.error('Error fetching filtered results:', error));
+        }, 300); // Atraso de 300ms
+    
+        // Adicionar evento de input e change com debounce
+        filterInputs.forEach(input => {
+          input.addEventListener('input', updateResults);
+          input.addEventListener('change', updateResults); // Para selects
+        });
+      }
+    
+      // Aplicar eventos iniciais
+      applyEventListeners();
     </script>
   </body>
 </html>

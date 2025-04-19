@@ -8,26 +8,54 @@ restaurantsController.showAll = async function (req, res, next) {
   if (!req.user) return res.redirect("/auth/login");
 
   try {
-    const { page = 1, limit = 6 } = req.query; // Página atual e limite de itens por página
+    const { 
+      page = 1, 
+      limit = 6, 
+      name, 
+      address, 
+      sortBy = "name", 
+      order = "asc" 
+    } = req.query; // Parâmetros de filtro e ordenação
+
     const skip = (page - 1) * limit;
 
+    // Construir o filtro de busca
     let query = {};
+
+    // Filtrar por nome do restaurante
+    if (name) {
+      query.name = { $regex: name, $options: "i" }; // Busca por nome (case insensitive)
+    }
+
+    // Filtrar por localização
+    if (address) {
+      query.address = { $regex: address, $options: "i" }; // Busca por localização (case insensitive)
+    }
 
     // Filtrar restaurantes com base no papel do usuário
     if (req.user.role === "Manager") {
-      query = { managerId: req.user._id }; // Gerentes só podem ver seus próprios restaurantes
-    } else if (req.user.role === "client") {
-      query = { isApproved: true }; // Clientes só podem ver restaurantes aprovados
+      query.managerId = req.user._id; // Gerentes só podem ver seus próprios restaurantes
+    } else if (req.user.role === "Client") {
+      query.isApproved = true; // Clientes só podem ver restaurantes aprovados
     }
 
-    // Buscar restaurantes com base no filtro e aplicar paginação
-    const restaurantList = await mongoRestaurant.find(query).populate("menus").skip(skip).limit(parseInt(limit));
+    // Ordenação
+    const sortOrder = order === "desc" ? -1 : 1; // Ordem ascendente ou descendente
+    const sortOptions = {};
+    sortOptions[sortBy] = sortOrder;
+
+    // Buscar restaurantes com base no filtro e aplicar paginação e ordenação
+    const restaurantList = await mongoRestaurant
+      .find(query)
+      .populate("menus")
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(parseInt(limit));
 
     // Total de restaurantes para paginação
     const totalRestaurants = await mongoRestaurant.countDocuments(query);
     const totalPages = Math.ceil(totalRestaurants / limit);
 
-    // Filtrar menus para que apenas os criados pelo gerente logado sejam exibidos
     const filteredRestaurants = restaurantList.map((restaurant) => {
       const filteredMenus = restaurant.menus.filter((menu) => {
         // Administradores podem ver todos os menus
@@ -48,9 +76,11 @@ restaurantsController.showAll = async function (req, res, next) {
     // Renderizar a página com os restaurantes filtrados e informações de paginação
     res.render("restaurants/showRestaurants", {
       restaurants: filteredRestaurants,
+      restaurants: restaurantList,
       user: req.user,
       currentPage: parseInt(page),
       totalPages,
+      filters: { name, address, sortBy, order },
     });
   } catch (err) {
     console.error("Error fetching restaurants:", err);

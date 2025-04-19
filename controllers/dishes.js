@@ -11,11 +11,36 @@ let dishesController = {};
 dishesController.showAll = async function (req, res, next) {
   try {
     const user = req.user;
-    const { page = 1, limit = 6 } = req.query; // Página atual e limite de itens por página
+    const { page = 1, limit = 6, name, minPrice, maxPrice, category, allergens } = req.query; // Parâmetros de filtro
     const skip = (page - 1) * limit;
 
-    // Buscar todos os pratos com paginação
-    const dishList = await mongoDish.find().skip(skip).limit(parseInt(limit));
+    // Construir o filtro de busca
+    let query = {};
+
+    // Filtrar por nome do prato
+    if (name) {
+      query.name = { $regex: name, $options: "i" }; // Busca por nome (case insensitive)
+    }
+
+    // Filtrar por faixa de preço
+    if (minPrice || maxPrice) {
+      query["prices.media"] = {}; // Considerando o preço médio como base
+      if (minPrice) query["prices.media"].$gte = parseFloat(minPrice); // Preço mínimo
+      if (maxPrice) query["prices.media"].$lte = parseFloat(maxPrice); // Preço máximo
+    }
+
+    // Filtrar por categoria
+    if (category) {
+      query.category = { $regex: category, $options: "i" }; // Busca por categoria (case insensitive)
+    }
+
+    // Filtrar por alérgenos
+    if (allergens) {
+      query.allergens = { $regex: allergens, $options: "i" }; // Busca por alérgenos (case insensitive)
+    }
+
+    // Buscar todos os pratos com paginação e aplicar os filtros
+    const dishList = await mongoDish.find(query).skip(skip).limit(parseInt(limit));
 
     // Buscar todos os menus
     const menuList = await mongoMenu.find().populate("dishes");
@@ -81,7 +106,7 @@ dishesController.showAll = async function (req, res, next) {
     }
 
     // Total de pratos para paginação
-    const totalDishes = await mongoDish.countDocuments();
+    const totalDishes = await mongoDish.countDocuments(query);
     const totalPages = Math.ceil(totalDishes / limit);
 
     // Renderizar a página com os pratos filtrados e paginação
@@ -90,6 +115,7 @@ dishesController.showAll = async function (req, res, next) {
       user: user,
       currentPage: parseInt(page),
       totalPages,
+      filters: { name, minPrice, maxPrice, category, allergens },
     });
   } catch (error) {
     console.error(error);

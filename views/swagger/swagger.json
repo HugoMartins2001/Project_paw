@@ -290,7 +290,7 @@
       }
     },
     "/restaurants/deleteRestaurant/{id}": {
-      "delete": {
+      "post": {
         "tags": ["Restaurantes"],
         "summary": "Eleminar um restaurante",
         "parameters": [
@@ -497,7 +497,7 @@
       }
     },
     "/dishes/deleteDish/{dishId}": {
-      "delete": {
+      "post": {
         "tags": ["Pratos"],
         "summary": "Eleminar um prato",
         "parameters": [
@@ -725,7 +725,7 @@
       }
     },
     "/menus/deleteMenu/{menuId}": {
-      "delete": {
+      "post": {
         "tags": ["Menus"],
         "summary": "Eleminar um menu",
         "parameters": [

@@ -32,26 +32,26 @@
       <% if (user.role==='Manager' ) { %>
         <a href="/restaurants/submitRestaurant" class="menu-btn"><i class="fas fa-plus-circle"></i> Create
           restaurant</a>
-        <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
+        <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-store"></i> Show restaurants</a>
         <a href="/menus/submitMenu" class="menu-btn"><i class="fas fa-book"></i> Create menu</a>
         <a href="/menus/showMenus" class="menu-btn"><i class="fas fa-book-open"></i> Show menus</a>
-        <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create plate</a>
-        <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show plates</a>
+        <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create Dishes</a>
+        <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show Dishes</a>
         <% } else if (user.role==='Admin' ) { %>
           <a href="/restaurants/submitRestaurant" class="menu-btn"><i class="fas fa-plus-circle"></i> Create
             restaurant</a>
-          <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
+          <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-store"></i> Show restaurants</a>
           <a href="/restaurants/pendingApproval" class="menu-btn"><i class="fas fa-check-circle"></i> Approve
             restaurants</a>
           <a href="/menus/submitMenu" class="menu-btn"><i class="fas fa-book"></i> Create menu</a>
           <a href="/menus/showMenus" class="menu-btn"><i class="fas fa-book-open"></i> Show menus</a>
-          <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create plate</a>
-          <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show plates</a>
+          <a href="/dishes/submitDishes" class="menu-btn"><i class="fas fa-utensil-spoon"></i> Create Dishes</a>
+          <a href="/dishes/showDishes" class="menu-btn"><i class="fas fa-list-ol"></i> Show Dishes</a>
           <a href="/users/showUsers" class="menu-btn"><i class="fas fa-users"></i> Show users</a>
           <a href="/admin/logs" class="menu-btn"><i class="fas fa-chart-line"></i> View Logs & Statistics</a>
           <a href="/orders/ordersHistory" class="menu-btn"><i class="fas fa-shopping-cart"></i> Orders history</a>
           <% } else if (user.role==='Client' ) { %>
-            <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-list"></i> Show restaurants</a>
+            <a href="/restaurants/showRestaurants" class="menu-btn"><i class="fas fa-store"></i> Show restaurants</a>
             <% } %>
     </div>
   </div>
