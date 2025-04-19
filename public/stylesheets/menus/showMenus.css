@@ -150,7 +150,7 @@ h1 {
 /* Botão "Create New Menu" no canto superior direito */
 .create-menu-btn {
   position: absolute;
-  top: 80px; /* Ajuste conforme necessário para alinhar com o botão de logout */
+  top: 150px; /* Ajuste conforme necessário para alinhar com o botão de logout */
   right: 20px;
   z-index: 1000;
 }
@@ -169,4 +169,27 @@ h1 {
 .create-menu-btn .btn:hover {
   background-color: #5548c8;
   color: white;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .create-menu-btn {
+    position: static; /* Remove a posição absoluta */
+    margin: 10px auto; /* Centraliza o botão */
+    text-align: center; /* Centraliza o conteúdo */
+  }
+
+  .create-menu-btn .btn {
+    width: 100%; /* O botão ocupa toda a largura */
+    font-size: 0.9rem; /* Reduz o tamanho da fonte */
+    padding: 8px 15px; /* Ajusta o espaçamento interno */
+  }
+}
+
+/* Responsividade para telas muito pequenas */
+@media (max-width: 480px) {
+  .create-menu-btn .btn {
+    font-size: 0.8rem; /* Reduz ainda mais o tamanho da fonte */
+    padding: 6px 10px; /* Ajusta o espaçamento interno */
+  }
 }

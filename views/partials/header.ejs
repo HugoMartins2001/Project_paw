@@ -4,7 +4,12 @@
 </head>
 <header>
   <div class="navbar-container">
-    <nav class="navbar-left">
+    <!-- Botão de menu para telas pequenas -->
+    <button class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <nav class="navbar-left" id="navbarMenu">
       <a href="/dashboard">
         <i class="fas fa-tachometer-alt"></i> Dashboard
       </a>
@@ -32,6 +37,7 @@
         </a>
       <% } %>
     </nav>
+
     <nav class="navbar-right">
       <% if (user) { %>
         <a href="/profile">
@@ -104,5 +110,12 @@
   // Remove o spinner ao carregar a página
   window.addEventListener('pageshow', () => {
     loadingSpinner.classList.remove('show');
+  });
+
+  const menuToggle = document.getElementById('menuToggle');
+  const navbarMenu = document.getElementById('navbarMenu');
+
+  menuToggle.addEventListener('click', () => {
+    navbarMenu.classList.toggle('show'); // Adiciona ou remove a classe "show"
   });
 </script>
