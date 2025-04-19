@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order History</title>
+  <link rel="stylesheet" href="/stylesheets/orders/ordersHistory.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <%- include('../partials/header') %>
+
+  <div class="orders-history-container">
+    <h2 class="page-title">Order History</h2>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <form method="GET" action="/orders/history" class="filters-form">
+        <input type="text" name="restaurantName" placeholder="Search by Restaurant" value="<%= filters.restaurantName || '' %>">
+        <input type="date" name="startDate" value="<%= filters.startDate || '' %>">
+        <input type="date" name="endDate" value="<%= filters.endDate || '' %>">
+        <button type="submit" class="filter-button">Apply Filters</button>
+      </form>
+    </div>
+
+    <!-- Orders Table -->
+    <% if (orders.length === 0) { %>
+      <p class="no-orders-message">No orders found.</p>
+    <% } else { %>
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Restaurant</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% orders.forEach(order => { %>
+            <tr>
+              <td><%= order.id %></td>
+              <td><%= order.restaurantName %></td>
+              <td><%= new Date(order.date).toLocaleDateString() %></td>
+              <td>€<%= order.total.toFixed(2) %></td>
+              <td class="<%= order.status.toLowerCase() %>"><%= order.status %></td>
+              <td>
+                <a href="/orders/<%= order.id %>" class="details-button">View</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <% if (currentPage > 1) { %>
+        <a href="?<%= new URLSearchParams({ ...filters, page: currentPage - 1 }).toString() %>" class="pagination-button">Previous</a>
+      <% } %>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <a href="?<%= new URLSearchParams({ ...filters, page: i }).toString() %>" class="pagination-button <%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+      <% } %>
+      <% if (currentPage < totalPages) { %>
+        <a href="?<%= new URLSearchParams({ ...filters, page: currentPage + 1 }).toString() %>" class="pagination-button">Next</a>
+      <% } %>
+    </div>
+  </div>
+</body>
+
+</html>

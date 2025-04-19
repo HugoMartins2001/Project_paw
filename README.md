@@ -2,8 +2,6 @@ RESTAURANT WEBSITE PROJECT
 
 atualizações a serem feitas
 
-meter mais campos para atualizar no profile 
-
 adicionar pagina de historico de encomendas 
 
 Campos a encriptar: NÃO FEITO
