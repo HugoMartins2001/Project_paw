@@ -79,10 +79,13 @@
                       <p class="text-muted">This menu is not associated with any restaurant yet.</p>
                     <% } %>                                                    
                     <div class="d-flex justify-content-between mt-3">
-                      <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-outline-primary">View</a>
+                      <a href="/menus/showMenu/<%= menu._id %>" class="btn btn-sm btn-outline-primary">View</a>
                       <% if (user.role === 'Admin' || isManagerMenu) { %>
-                        <a href="/menus/editMenu/<%= menu._id %>" class="btn btn-outline-secondary">Edit</a>
-                        <button class="btn btn-outline-danger delete-menu-btn" data-menu-id="<%= menu._id %>">Delete</button>
+                        <a href="/menus/editMenu/<%= menu._id %>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <button class="btn btn-sm btn-outline-danger delete-menu-btn" data-menu-id="<%= menu._id %>">Delete</button>
+                        <button class="btn btn-sm btn-outline-warning toggle-visibility-btn" data-menu-id="<%= menu._id %>" data-is-visible="<%= menu.isVisible %>">
+                          <%= menu.isVisible ? 'Hide' : 'Show' %>
+                        </button>
                       <% } %>
                     </div>
                   </div>
@@ -194,6 +197,52 @@
     
       // Aplicar eventos iniciais
       applyEventListeners();
+      document.addEventListener('DOMContentLoaded', () => {
+        // Adicionar evento aos botões de alternância de visibilidade
+        document.querySelectorAll('.toggle-visibility-btn').forEach(button => {
+          button.addEventListener('click', function () {
+            const menuId = this.getAttribute('data-menu-id');
+            const isVisible = this.getAttribute('data-is-visible') === 'true';
+
+            // Enviar solicitação para alternar visibilidade
+            fetch(`/menus/toggleVisibility/${menuId}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ isVisible: !isVisible }),
+            })
+              .then(response => {
+                if (response.ok) {
+                  // Atualizar o botão após a alternância
+                  this.setAttribute('data-is-visible', !isVisible);
+                  this.textContent = !isVisible ? 'Hide' : 'Show';
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Updated!',
+                    text: `The menu is now ${!isVisible ? 'visible' : 'hidden'}.`,
+                    timer: 1500,
+                    showConfirmButton: false,
+                  });
+                } else {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to update visibility.',
+                  });
+                }
+              })
+              .catch(error => {
+                console.error('Error toggling visibility:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error!',
+                  text: 'An unexpected error occurred.',
+                });
+              });
+          });
+        });
+      });
     </script>
   </body>
 </html>

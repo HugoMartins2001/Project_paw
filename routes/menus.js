@@ -32,4 +32,7 @@ router.post("/editMenu/:menuId", authController.verifyLoginUser, upload.single("
     menusController.updateMenu(req, res, next);
   });
 
+router.post('/toggleVisibility/:id', menusController.toggleVisibility);
+
+
 module.exports = router;

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { create } = require("./menu");
 
 const DishSchema = new mongoose.Schema({
   name: { type: String, required: true },

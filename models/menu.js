@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { create } = require("./dish");
 
 const MenuSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -19,6 +18,7 @@ const MenuSchema = new mongoose.Schema({
     required: false,
   },
   createdAt: { type: Date, default: Date.now },
+  isVisible: { type: Boolean, default: true },
 });
 
 module.exports = mongoose.model("Menu", MenuSchema);

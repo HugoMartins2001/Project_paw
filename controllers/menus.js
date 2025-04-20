@@ -33,6 +33,8 @@ menusController.showAll = async function (req, res, next) {
     // Filtrar menus com base no papel do usuário
     if (user.role === "Manager") {
       query.managerId = user._id; // Gerentes só podem ver menus que eles criaram
+    }else if (req.user.role === 'Client') {
+      query.isVisible = true; // Clientes só podem ver menus visíveis
     }
 
     // Ordenação
@@ -314,6 +316,28 @@ menusController.updateMenu = async function (req, res, next) {
     res.redirect("/menus/showMenus");
   } catch (err) {
     next(err);
+  }
+};
+
+menusController.toggleVisibility = async function (req, res, next) {
+  try {
+    const { id } = req.params;
+    const { isVisible } = req.body;
+
+    const menu = await mongoMenu.findByIdAndUpdate(
+      id,
+      { isVisible },
+      { new: true }
+    );
+
+    if (!menu) {
+      return res.status(404).send('Menu not found.');
+    }
+
+    res.status(200).send('Visibility updated successfully.');
+  } catch (err) {
+    console.error('Error toggling visibility:', err);
+    res.status(500).send('An error occurred while updating visibility.');
   }
 };
 

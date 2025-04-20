@@ -27,6 +27,7 @@ const RestaurantSchema = new mongoose.Schema({
   isApproved: { type: Boolean, default: false },
   restaurantPic: { type: String },
   createdAt: { type: Date, default: Date.now },
+  isVisible: { type: Boolean, default: true },
 });
 
 module.exports = mongoose.model("Restaurant", RestaurantSchema);

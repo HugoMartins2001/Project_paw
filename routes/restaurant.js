@@ -45,4 +45,8 @@ router.post("/approveRestaurant/:id", authController.verifyLoginUser,
   restaurantsController.approveRestaurant
 );
 
+router.post('/toggleVisibility/:id', restaurantsController.toggleVisibility);
+
+module.exports = router;
+
 module.exports = router;

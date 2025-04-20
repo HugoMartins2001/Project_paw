@@ -37,6 +37,7 @@ restaurantsController.showAll = async function (req, res, next) {
       query.managerId = req.user._id; // Gerentes só podem ver seus próprios restaurantes
     } else if (req.user.role === "Client") {
       query.isApproved = true; // Clientes só podem ver restaurantes aprovados
+      query.isVisible = true; // Clientes só podem ver restaurantes visíveis
     }
 
     // Ordenação
@@ -349,6 +350,28 @@ restaurantsController.approveRestaurant = function (req, res, next) {
       res.redirect("/restaurants/pendingApproval");
     })
     .catch((err) => next(err));
+};
+
+restaurantsController.toggleVisibility = async function (req, res, next) {
+  try {
+    const { id } = req.params;
+    const { isVisible } = req.body;
+
+    const restaurant = await mongoRestaurant.findByIdAndUpdate(
+      id,
+      { isVisible },
+      { new: true }
+    );
+
+    if (!restaurant) {
+      return res.status(404).send('Restaurant not found.');
+    }
+
+    res.status(200).send('Visibility updated successfully.');
+  } catch (err) {
+    console.error('Error toggling visibility:', err);
+    res.status(500).send('An error occurred while updating visibility.');
+  }
 };
 
 module.exports = restaurantsController;
