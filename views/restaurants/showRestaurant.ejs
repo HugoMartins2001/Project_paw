@@ -21,9 +21,9 @@
       <h1 class="text-center text-primary my-4 text-dark"><%= restaurant.name %></h1>
       <div class="card mb-4">
         <div class="card-body">
-          <% if (restaurant.image) { %>
+          <% if (restaurant.restaurantPic) { %>
             <div class="text-center mb-3">
-              <img src="/uploads/<%= restaurant.image %>" alt="<%= restaurant.name %>" class="img-fluid rounded" style="max-height: 200px;" />
+              <img src="/uploads/<%= restaurant.restaurantPic %>" alt="<%= restaurant.name %>" class="img-fluid rounded" style="max-height: 200px;" />
             </div>
           <% } else { %>
             <p class="text-center"><em>No image available for this restaurant.</em></p>

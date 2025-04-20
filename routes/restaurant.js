@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const restaurantsController = require("../controllers/restaurants");
 const authController = require("../controllers/auth");
+const upload = require("../middlewares/upload");
 
 router.use((req, res, next) => {
   res.locals.user = req.user || null;
@@ -16,7 +17,7 @@ router.get("/submitRestaurant", authController.verifyLoginUser, function (req, r
     restaurantsController.renderCreateRestaurant(req, res, next);
   });
 
-router.post("/submittedRestaurant", authController.verifyLoginUser, function (req, res, next) {
+router.post("/submittedRestaurant",upload.single("restaurantPic"), authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.createRestaurant(req, res, next);
   });
 
@@ -32,7 +33,7 @@ router.get("/editRestaurant/:id", authController.verifyLoginUser, function (req,
     restaurantsController.renderEditRestaurant(req, res, next);
   });
 
-router.post("/editRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
+router.post("/editRestaurant/:id", upload.single("restaurantPic"), authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.updateRestaurant(req, res, next);
   });
 

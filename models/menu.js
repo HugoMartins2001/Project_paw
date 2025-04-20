@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { create } = require("./dish");
 
 const MenuSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -16,7 +17,8 @@ const MenuSchema = new mongoose.Schema({
   menuPic: {
     type: String,
     required: false,
-  }
+  },
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Menu", MenuSchema);

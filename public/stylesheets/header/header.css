@@ -1,123 +1,6 @@
 header {
-    background-color: #ffffff;
-    padding: 16px 40px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  .navbar-left {
-    display: flex;
-    gap: 30px;
-  }
-  .navbar-left a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    font-size: 16px;
-    transition: color 0.2s ease;
-  }
-  .navbar-left a:hover {
-    color: #6c63ff;
-  }
-  nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #444;
-    font-weight: 500;
-  }
-  .navbar-right {
-    display: flex;
-    align-items: center;
-  }
-  .navbar-right a:hover {
-    color: #6c63ff;
-  }
-  .logout-btn {
-    background: none;
-    border: none;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
-  .logout-btn:hover {
-    color: #6c63ff;
-  }
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .profile-pic {
-    width: 30px;
-    height: 30px; 
-    border-radius: 50%; 
-    object-fit: cover;
-    margin-right: 8px;
-    vertical-align: middle; 
-  }
-  
-  .loading-spinner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  
-  .spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .spinner div {
-    width: 15px;
-    height: 15px;
-    background-color: #6c63ff;
-    border-radius: 50%;
-    animation: bounce 1.5s infinite ease-in-out;
-  }
-  
-  .spinner div:nth-child(2) {
-    animation-delay: 0.3s;
-  }
-  
-  .spinner div:nth-child(3) {
-    animation-delay: 0.6s;
-  }
-  
-  
-  @keyframes bounce {
-    0%, 80%, 100% {
-      transform: scale(0);
-    }
-    40% {
-      transform: scale(1);
-    }
-  }
-  
-  .loading-spinner.show {
-    visibility: visible;
-    opacity: 1;
-  }
-
-/* Estilo padrão do header */
-.navbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 40px;
   background-color: #ffffff;
+  padding: 16px 40px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -136,6 +19,150 @@ header {
 
 .navbar-left a:hover {
   color: #6c63ff;
+}
+
+nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #444;
+  font-weight: 500;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right a:hover {
+  color: #6c63ff;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.logout-btn:hover {
+  color: #6c63ff;
+}
+
+/* Ajustar o tamanho da fonte e o espaçamento dos itens do menu */
+.navbar-container {
+  font-size: 0.1rem;
+}
+
+.navbar-left a,
+.navbar-right a {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+.navbar-left a i,
+.navbar-right a i {
+  font-size: 1rem;
+  /* Ajusta o tamanho dos ícones */
+}
+
+/* Ajustar o tamanho do botão de menu para telas pequenas */
+.menu-toggle {
+  font-size: 1.2rem;
+  /* Reduz o tamanho do ícone do botão */
+  padding: 6px 10px;
+  /* Reduz o espaçamento interno */
+}
+
+
+.profile-pic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner div {
+  width: 15px;
+  height: 15px;
+  background-color: #6c63ff;
+  border-radius: 50%;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.spinner div:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.spinner div:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+
+@keyframes bounce {
+
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+}
+
+.loading-spinner.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Estilo padrão do header */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px; /* Reduz o espaçamento interno */
+  font-size: 0.9rem; /* Reduz o tamanho da fonte */
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-left a, .navbar-right a {
+  padding: 5px 10px; /* Reduz o espaçamento interno dos links */
+  font-size: 0.85rem; /* Reduz o tamanho da fonte dos links */
+}
+/* Ajustar o layout do menu responsivo */
+.navbar-left.show {
+  font-size: 0.85rem; /* Reduz o tamanho da fonte no menu responsivo */
 }
 
 .navbar-right {
@@ -157,12 +184,11 @@ header {
   color: #6c63ff;
 }
 
+/* Ajustar o tamanho da imagem de perfil */
 .profile-pic {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 8px;
+  width: 30px; /* Reduz a largura da imagem */
+  height: 30px; /* Reduz a altura da imagem */
+  border-radius: 50%; /* Mantém a imagem redonda */
 }
 
 /* Botão de menu (hambúrguer) */
@@ -178,11 +204,13 @@ header {
 /* Responsividade para telas pequenas */
 @media (max-width: 768px) {
   .menu-toggle {
-    display: block; /* Exibe o botão de menu */
+    display: block;
+    /* Exibe o botão de menu */
   }
 
   .navbar-left {
-    display: none; /* Esconde o menu por padrão */
+    display: none;
+    /* Esconde o menu por padrão */
     flex-direction: column;
     background-color: #ffffff;
     position: absolute;
@@ -193,17 +221,4 @@ header {
     z-index: 1000;
   }
 
-  .navbar-left a {
-    padding: 10px 20px;
-    border-bottom: 1px solid #f0f0f0;
-  }
-
-  .navbar-left a:hover {
-    background-color: #f9f9f9;
-    color: #6c63ff;
-  }
-
-  .navbar-left.show {
-    display: flex; /* Exibe o menu quando ativado */
-  }
 }

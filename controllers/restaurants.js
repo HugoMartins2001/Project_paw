@@ -162,6 +162,8 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
 restaurantsController.createRestaurant = function (req, res, next) {
   const managerId = req.user._id;
 
+  const restaurantPic = req.file ? req.file.filename : null;
+
   const newRestaurant = new mongoRestaurant({
     name: req.body.name,
     address: req.body.address,
@@ -172,6 +174,7 @@ restaurantsController.createRestaurant = function (req, res, next) {
     menus: req.body.menus || [],
     managerId: managerId,
     isApproved: false,
+    restaurantPic: restaurantPic, 
   });
 
   newRestaurant
@@ -275,6 +278,10 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
       paymentMethods: req.body.paymentMethods,
       menus: req.body.menus || [],
     };
+
+    if (req.file) {
+      updatedData.restaurantPic = req.file.filename; // Atualizar o campo com o novo nome do arquivo
+    }
 
     // Atualizar o restaurante no banco de dados
     const updatedRestaurant = await mongoRestaurant.findOneAndUpdate(

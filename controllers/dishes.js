@@ -5,7 +5,6 @@ const mongoRestaurant = require("../models/restaurant");
 const logAction = require("../utils/logger");
 
 
-
 let dishesController = {};
 
 dishesController.showAll = async function (req, res, next) {
@@ -138,6 +137,8 @@ dishesController.createDish = async function (req, res, next) {
   try {
     const { name, description, category, ingredients, allergens } = req.body;
 
+    const dishPic = req.file ? req.file.filename : null;
+
     const prices = {
       pequena: req.body["prices[pequena]"] || 0,
       media: req.body["prices[media]"] || 0,
@@ -191,6 +192,7 @@ dishesController.createDish = async function (req, res, next) {
       nutriScore: nutritionData?.nutritionGrade || "N/A",
       allergens: allergensList,
       managerId: user._id,
+      dishPic: dishPic,
     };
 
     const newDish = await mongoDish.create(dishData);
@@ -356,6 +358,10 @@ dishesController.updateDish = function (req, res, next) {
         return res
           .status(403)
           .send("You do not have permission to edit this dish.");
+      }
+
+      if (req.file) {
+        updatedData.dishPic = req.file.filename;
       }
 
       const updatedDishData = {

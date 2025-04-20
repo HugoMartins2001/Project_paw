@@ -17,7 +17,7 @@
       <div class="card">
         <h2>New Restaurant</h2>
 
-        <form id="restaurantForm" method="post" action="/restaurants/submittedRestaurant">
+        <form id="restaurantForm" method="post" action="/restaurants/submittedRestaurant" enctype="multipart/form-data">
           <div class="form-group">
             <label for="f_name">Restaurant Name</label>
             <input type="text" id="f_name" name="name" required />
@@ -41,6 +41,10 @@
           <div class="form-group">
             <label for="f_paymentMethods">Payment Methods</label>
             <input type="text" id="f_paymentMethods" name="paymentMethods" required />
+          </div>
+          <div class="form-group">
+            <label for="restaurantPic" class="form-label">Restaurant Picture</label>
+            <input type="file" id="restaurantPic" name="restaurantPic" accept="image/*"/>
           </div>
           <div class="form-group form-full">
             <label for="menus">Menus</label>
@@ -71,8 +75,8 @@
 
         Swal.fire({
           icon: "success",
-          title: "Restaurante criado com sucesso!",
-          text: "Você será redirecionado para a lista de restaurantes.",
+          title: "Restaurant successfully created!",
+          text: "You will be redirected to the restaurant list.",
           confirmButtonColor: "#4CAF50",
           timer: 1000, 
           showConfirmButton: false,

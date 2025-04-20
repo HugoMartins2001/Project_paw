@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +16,7 @@
     <div class="container mt-5">
         <div class="card shadow-lg p-4 rounded-4">
 
-            <form id="editDishForm" action="/dishes/editDish/<%= dish._id %>" method="POST">
+            <form id="editDishForm" action="/dishes/editDish/<%= dish._id %>" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name of the dish:</label>
                     <input type="text" id="name" name="name" value="<%= dish.name %>" class="form-control" required>
@@ -62,6 +61,18 @@
                 <div class="mb-3">
                     <label for="allergens" class="form-label">Allergens (separated by commas):</label>
                     <input type="text" id="allergens" name="allergens" value="<%= dish.allergens.join(', ') %>" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label for="dishPic" class="form-label">Dish picture:</label>
+                    <div class="mt-2 text-center">
+                      <% if (dish.dishPic) { %>
+                        <img src="/uploads/<%= dish.dishPic %>" alt="<%= dish.name %>" class="img-thumbnail" style="max-width: 150px; max-height: 150px;" />
+                      <% } else { %>
+                        <p class="text-center"><em>No image available for this dish.</em></p>
+                      <% } %>
+                    </div>
+                    <input type="file" id="dishPic" name="dishPic" class="form-control mt-2">
                 </div>
 
                 <div class="buttons">

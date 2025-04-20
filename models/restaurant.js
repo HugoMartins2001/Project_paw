@@ -25,6 +25,8 @@ const RestaurantSchema = new mongoose.Schema({
   },
   menus: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menu" }],
   isApproved: { type: Boolean, default: false },
+  restaurantPic: { type: String },
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Restaurant", RestaurantSchema);

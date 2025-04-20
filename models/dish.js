@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { create } = require("./menu");
 
 const DishSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -27,6 +28,8 @@ const DishSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  dishPic: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Dish", DishSchema);

@@ -15,21 +15,34 @@ adminController.viewLogs = async function (req, res, next) {
     const filter = {};
     if (action) filter.action = action;
     if (userName) filter.userName = { $regex: userName, $options: "i" };
+
+    // Validar e adicionar intervalo de datas ao filtro
     if (startDate || endDate) {
-      filter.timestamp = {};
-      if (startDate) filter.timestamp.$gte = new Date(startDate);
-      if (endDate) filter.timestamp.$lte = new Date(endDate);
+      const timestampFilter = {};
+      if (startDate && !isNaN(Date.parse(startDate))) {
+        timestampFilter.$gte = new Date(startDate);
+      }
+      if (endDate && !isNaN(Date.parse(endDate))) {
+        timestampFilter.$lte = new Date(endDate);
+      }
+      if (Object.keys(timestampFilter).length > 0) {
+        filter.timestamp = timestampFilter;
+      }
     }
 
-    // Paginação
-    const skip = (page - 1) * limit;
-    const logs = await Log.find(filter)
-      .sort({ timestamp: -1 }) 
-      .skip(skip)
-      .limit(parseInt(limit));
+    // Garantir que `page` e `limit` sejam números
+    const pageNumber = parseInt(page, 10) || 1;
+    const limitNumber = parseInt(limit, 10) || 10;
 
-    const totalLogs = await Log.countDocuments(filter); 
-    const totalPages = Math.ceil(totalLogs / limit);
+    // Paginação
+    const skip = (pageNumber - 1) * limitNumber;
+    const logs = await Log.find(filter)
+      .sort({ timestamp: -1 })
+      .skip(skip)
+      .limit(limitNumber);
+
+    const totalLogs = await Log.countDocuments(filter);
+    const totalPages = Math.ceil(totalLogs / limitNumber);
 
     // Apenas Admin pode ver os contadores
     let stats = {};
@@ -46,7 +59,7 @@ adminController.viewLogs = async function (req, res, next) {
       logs,
       stats,
       user: req.user,
-      currentPage: parseInt(page),
+      currentPage: pageNumber,
       totalPages,
       filters: { action, userName, startDate, endDate },
     });
