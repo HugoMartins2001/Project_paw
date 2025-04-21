@@ -28,6 +28,7 @@ const DishSchema = new mongoose.Schema({
     required: true,
   },
   dishPic: { type: String, required: true },
+  isVisible: { type: Boolean, default: true }, // Campo para controlar visibilidade
   createdAt: { type: Date, default: Date.now },
 });
 

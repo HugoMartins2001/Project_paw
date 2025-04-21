@@ -86,6 +86,10 @@ menusController.showAll = async function (req, res, next) {
         return true;
       }
 
+      if (user.role === "Client" && menu.isVisible) {
+        return true;
+      }
+
       if (
         user.role === "Manager" &&
         menu.managerId.toString() === user._id.toString()
@@ -99,6 +103,7 @@ menusController.showAll = async function (req, res, next) {
     // Total de menus para paginação
     const totalMenus = await mongoMenu.countDocuments(query);
     const totalPages = Math.ceil(totalMenus / limit);
+
 
     // Renderizar a página com os menus filtrados e informações de paginação
     res.render("menus/showMenus", {

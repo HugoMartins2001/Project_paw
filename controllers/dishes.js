@@ -14,7 +14,12 @@ dishesController.showAll = async function (req, res, next) {
     const skip = (page - 1) * limit;
 
     // Construir o filtro de busca
-    let query = {};
+    let query = { isVisible: true }; // Apenas pratos visíveis por padrão
+
+    // Admin pode ver todos os pratos, incluindo os ocultos
+    if (user.role === "Admin") {
+      delete query.isVisible; // Remove o filtro de visibilidade para Admin
+    }
 
     // Filtrar por nome do prato
     if (name) {
@@ -83,6 +88,11 @@ dishesController.showAll = async function (req, res, next) {
       if (user.role === "Manager") {
         // Manager só pode ver os pratos que ele criou
         return dish.managerId && dish.managerId.toString() === user._id.toString();
+      }
+
+      if (user.role === "Client") {
+        // Client pode ver apenas pratos visíveis
+        return dish.isVisible;
       }
 
       // Outros papéis (se houver) não podem ver pratos
@@ -397,6 +407,44 @@ dishesController.updateDish = function (req, res, next) {
       res.redirect("/dishes/showDishes");
     })
     .catch(next);
+};
+
+dishesController.toggleVisibility = async function (req, res, next) {
+  try {
+    const dishId = req.params.dishId;
+    const user = req.user;
+
+    // Verificar se o usuário está autenticado
+    if (!user) {
+      return res.status(401).send("You must be logged in to perform this action.");
+    }
+
+    // Buscar o prato pelo ID
+    const dish = await mongoDish.findById(dishId);
+    if (!dish) {
+      return res.status(404).send("Dish not found.");
+    }
+
+    // Verificar permissões
+    if (
+      user.role !== "Admin" &&
+      (!dish.managerId || dish.managerId.toString() !== user._id.toString())
+    ) {
+      return res.status(403).send("You do not have permission to modify this dish.");
+    }
+
+    // Alternar visibilidade usando updateOne para evitar validação completa
+    await mongoDish.updateOne({ _id: dishId }, { $set: { isVisible: !dish.isVisible } });
+
+    // Registrar log
+    logAction(dish.isVisible ? "Dish Shown" : "Dish Hidden", user, { dishId: dish._id, name: dish.name });
+
+    // Redirecionar para a página de pratos
+    res.redirect("/dishes/showDishes");
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 };
 
 module.exports = dishesController;

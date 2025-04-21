@@ -32,4 +32,7 @@ router.post("/editDish/:dishId",upload.single("dishPic"), authController.verifyL
     dishesController.updateDish(req, res, next);
   });
 
+router.post("/toggleVisibility/:dishId", authController.verifyLoginUser, dishesController.toggleVisibility);
+
+
 module.exports = router;

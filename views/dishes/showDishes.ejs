@@ -102,10 +102,16 @@
                     </ul>
                   </div>
                   <div class="d-flex justify-content-between mt-3">
-                    <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-outline-primary">View</a>
-                    <% if ((user.role === 'Manager' && dish.managerId.toString() === user._id.toString()) || user.role === 'Admin') { %>
-                      <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-outline-secondary">Edit</a>
-                      <button class="btn btn-outline-danger delete-dish-btn" data-dish-id="<%= dish._id %>">Delete</button>
+                    <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-sm btn-outline-primary">View</a>
+                    <% if (user.role === 'Admin' || (user.role === 'Manager' && dish.managerId.toString() === user._id.toString())) { %>
+                      <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                      <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                      <form action="/dishes/toggleVisibility/<%= dish._id %>" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-warning">
+                          <%= dish.isVisible ? 'Hide' : 'Show' %>
+                        </button>
+                      </form>
+                      <form action="/dishes/deleteDish/<%= dish._id %>" method="POST" style="display: inline;">                      </form>
                     <% } %>
                   </div>
                 </div>
@@ -221,4 +227,3 @@
     </script>
   </body>
 </html>
-``` 
