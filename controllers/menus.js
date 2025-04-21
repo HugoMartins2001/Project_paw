@@ -3,12 +3,32 @@ const mongoDish = require("../models/dish");
 const mongoRestaurant = require("../models/restaurant");
 const logAction = require("../utils/logger");
 
-
 let menusController = {};
 
 menusController.renderCreateMenu = async function (req, res, next) {
   try {
-    const dishes = await mongoDish.find();
+    let dishes;
+
+    if (req.user.role === "Manager") {
+      dishes = await mongoDish.find({ managerId: req.user._id });
+    } else {
+      dishes = await mongoDish.find();
+    }
+
+    res.render("menus/submitMenu", {
+      dishes,
+      user: req.user, // Passa o usuário logado para o EJS
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+// Renderiza a página para criar um menu
+menusController.renderCreateMenu = async function (req, res, next) {
+  try {
+    const dishes = await mongoDish.find(); // Busca todos os pratos disponíveis
     res.render("menus/submitMenu", { dishes });
   } catch (error) {
     console.error(error);
@@ -16,6 +36,7 @@ menusController.renderCreateMenu = async function (req, res, next) {
   }
 };
 
+// Controlador para exibir todos os menus
 menusController.showAll = async function (req, res, next) {
   try {
     const user = req.user;
@@ -33,7 +54,7 @@ menusController.showAll = async function (req, res, next) {
     // Filtrar menus com base no papel do usuário
     if (user.role === "Manager") {
       query.managerId = user._id; // Gerentes só podem ver menus que eles criaram
-    }else if (req.user.role === 'Client') {
+    } else if (req.user.role === "Client") {
       query.isVisible = true; // Clientes só podem ver menus visíveis
     }
 
@@ -45,8 +66,8 @@ menusController.showAll = async function (req, res, next) {
     // Buscar menus com base no filtro e aplicar paginação e ordenação
     const menuList = await mongoMenu
       .find(query)
-      .populate("dishes")
-      .populate("restaurant")
+      .populate("dishes") // Popula os pratos associados ao menu
+      .populate("restaurant") // Popula os restaurantes associados ao menu
       .sort(sortOptions)
       .skip(skip)
       .limit(parseInt(limit));
@@ -72,29 +93,29 @@ menusController.showAll = async function (req, res, next) {
 
       return {
         ...menu.toObject(),
-        restaurantNames: associatedRestaurants,
+        restaurantNames: associatedRestaurants, // Adiciona os nomes dos restaurantes associados
       };
     });
 
     // Filtrar menus com base no papel do usuário
     const filteredMenus = menusWithRestaurants.filter((menu) => {
       if (!menu.managerId) {
-        return false;
+        return false; // Ignora menus sem um gerente associado
       }
 
       if (user.role === "Admin") {
-        return true;
+        return true; // Admin pode ver todos os menus
       }
 
       if (user.role === "Client" && menu.isVisible) {
-        return true;
+        return true; // Clientes só podem ver menus visíveis
       }
 
       if (
         user.role === "Manager" &&
         menu.managerId.toString() === user._id.toString()
       ) {
-        return true;
+        return true; // Gerentes só podem ver menus que eles criaram
       }
 
       return false;
@@ -103,7 +124,6 @@ menusController.showAll = async function (req, res, next) {
     // Total de menus para paginação
     const totalMenus = await mongoMenu.countDocuments(query);
     const totalPages = Math.ceil(totalMenus / limit);
-
 
     // Renderizar a página com os menus filtrados e informações de paginação
     res.render("menus/showMenus", {
@@ -119,39 +139,19 @@ menusController.showAll = async function (req, res, next) {
   }
 };
 
-menusController.renderCreateMenu = async function (req, res, next) {
-  try {
-    let dishes;
-
-    if (req.user.role === "Manager") {
-      dishes = await mongoDish.find({ managerId: req.user._id });
-    } else {
-      dishes = await mongoDish.find();
-    }
-
-    res.render("menus/submitMenu", {
-      dishes,
-      user: req.user, // Passa o usuário logado para o EJS
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
-
+// Controlador para criar um menu
 menusController.createMenu = async function (req, res, next) {
   try {
     const { name, dishes, restaurant } = req.body;
-    const menuPic = req.file ? req.file.filename : null; 
+    const menuPic = req.file ? req.file.filename : null; // Verifica se há uma imagem enviada
 
-
-    const dishesArray = Array.isArray(dishes) ? dishes : [dishes];
+    const dishesArray = Array.isArray(dishes) ? dishes : [dishes]; // Garante que `dishes` seja um array
 
     const newMenu = new mongoMenu({
       name,
       dishes: dishesArray,
       restaurant,
-      managerId: req.user._id,
+      managerId: req.user._id, // Associa o menu ao gerente logado
       menuPic,
     });
 
@@ -166,6 +166,7 @@ menusController.createMenu = async function (req, res, next) {
   }
 };
 
+// Controlador para exibir os detalhes de um menu
 menusController.showMenu = async function (req, res, next) {
   const menuId = req.params.menuId;
 
@@ -211,6 +212,7 @@ menusController.showMenu = async function (req, res, next) {
   }
 };
 
+// Controlador para deletar um menu
 menusController.deleteMenu = function (req, res, next) {
   const user = req.user;
 

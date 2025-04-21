@@ -4,9 +4,9 @@ const mongoMenu = require("../models/menu");
 const mongoRestaurant = require("../models/restaurant");
 const logAction = require("../utils/logger");
 
-
 let dishesController = {};
 
+// Controlador para exibir todos os pratos
 dishesController.showAll = async function (req, res, next) {
   try {
     const user = req.user;
@@ -132,17 +132,7 @@ dishesController.showAll = async function (req, res, next) {
   }
 };
 
-dishesController.renderCreateDishes = function (req, res, next) {
-  try {
-    res.render("dishes/submitDishes", {
-      user: req.user, // Passa o usuário logado para o EJS
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
-
+// Controlador para criar um prato
 dishesController.createDish = async function (req, res, next) {
   try {
     const { name, description, category, ingredients, allergens } = req.body;
@@ -157,6 +147,7 @@ dishesController.createDish = async function (req, res, next) {
 
     const user = req.user;
 
+    // Chamada à API externa para obter informações nutricionais
     const nutritionRes = await axios.get(
       "https://api.spoonacular.com/recipes/guessNutrition",
       {
@@ -209,8 +200,18 @@ dishesController.createDish = async function (req, res, next) {
 
     logAction("Created Dish", user, { dishId: newDish._id, name });
 
-    
     res.redirect("/dishes/showDishes");
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+dishesController.renderCreateDishes = function (req, res, next) {
+  try {
+    res.render("dishes/submitDishes", {
+      user: req.user, // Passa o usuário logado para o EJS
+    });
   } catch (error) {
     console.error(error);
     next(error);

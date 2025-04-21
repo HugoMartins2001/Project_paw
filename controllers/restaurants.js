@@ -4,8 +4,9 @@ const logAction = require("../utils/logger");
 
 let restaurantsController = {};
 
+// Controlador para exibir todos os restaurantes
 restaurantsController.showAll = async function (req, res, next) {
-  if (!req.user) return res.redirect("/auth/login");
+  if (!req.user) return res.redirect("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
 
   try {
     const { 
@@ -48,7 +49,7 @@ restaurantsController.showAll = async function (req, res, next) {
     // Buscar restaurantes com base no filtro e aplicar paginação e ordenação
     const restaurantList = await mongoRestaurant
       .find(query)
-      .populate("menus")
+      .populate("menus") // Popula os menus associados ao restaurante
       .sort(sortOptions)
       .skip(skip)
       .limit(parseInt(limit));
@@ -89,6 +90,7 @@ restaurantsController.showAll = async function (req, res, next) {
   }
 };
 
+// Controlador para exibir os detalhes de um restaurante
 restaurantsController.showDetails = function (req, res, next) {
   const query =
     req.user.role === "Manager"
@@ -97,7 +99,7 @@ restaurantsController.showDetails = function (req, res, next) {
 
   mongoRestaurant
     .findOne(query)
-    .populate("menus")
+    .populate("menus") // Popula os menus associados ao restaurante
     .then(function (restaurantDB) {
       if (!restaurantDB) {
         // Retorna 404 se o restaurante não for encontrado
@@ -160,6 +162,7 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
   }
 };
 
+// Controlador para criar um restaurante
 restaurantsController.createRestaurant = function (req, res, next) {
   const managerId = req.user._id;
 
@@ -174,14 +177,13 @@ restaurantsController.createRestaurant = function (req, res, next) {
     paymentMethods: req.body.paymentMethods,
     menus: req.body.menus || [],
     managerId: managerId,
-    isApproved: false,
+    isApproved: false, // Restaurantes criados inicialmente não são aprovados
     restaurantPic: restaurantPic, 
   });
 
   newRestaurant
     .save()
     .then(function (restaurant) {
-
       logAction("Created Restaurant", req.user, {
         restaurantId: restaurant._id,
         name: restaurant.name,
@@ -194,11 +196,12 @@ restaurantsController.createRestaurant = function (req, res, next) {
     });
 };
 
+// Controlador para deletar um restaurante
 restaurantsController.deleteRestaurant = function (req, res, next) {
   const query = { _id: req.params.id }; 
 
   if (req.user.role === "Manager") {
-    query.managerId = req.user._id; 
+    query.managerId = req.user._id; // Gerentes só podem deletar seus próprios restaurantes
   }
 
   mongoRestaurant

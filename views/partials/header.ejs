@@ -12,14 +12,16 @@
     <nav class="navbar-left" id="navbarMenu">
       <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
       <a href="/restaurants/showRestaurants"><i class="fas fa-store"></i> Restaurants</a>
+      <% if (user && user.role === 'Admin') { %>
+        <a href="/restaurants/pendingApproval"><i class="fas fa-check-circle"></i> Approve Restaurants</a>
+      <% } %>
       <a href="/menus/showMenus"><i class="fas fa-book-open"></i></i> Menus</a>
       <a href="/dishes/showDishes"><i class="fas fa-list-ol"></i> Dishes</a>
-      <a href="/orders/ordersHistory"><i class="fas fa-shopping-cart"></i> Orders history</a>
       <% if (user && user.role === 'Admin') { %>
         <a href="/users/showUsers"><i class="fas fa-users"></i> Users</a>
-        <a href="/restaurants/pendingApproval"><i class="fas fa-check-circle"></i> Approve Restaurants</a>
         <a href="/admin/logs"><i class="fas fa-chart-line"></i> Logs & Statistics</a>
       <% } %>
+      <a href="/orders/ordersHistory"><i class="fas fa-shopping-cart"></i> Orders history</a>
     </nav>
 
     <nav class="navbar-right">
