@@ -158,7 +158,7 @@ dishesController.createDish = async function (req, res, next) {
             title: name,
             apiKey: process.env.SPOONACULAR_API_KEY,
           },
-          timeout: 5000, // Tempo limite de 5 segundos
+          timeout: 5000, //foi implementado pois a api estava a dar problemas na criação dos pratos e assim se demorar mais de 5 segundos nao vem informação nenhuma metendo os campos a 0 por default;
         }
       );
       nutritionData = nutritionRes.data;
