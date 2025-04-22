@@ -49,6 +49,18 @@
             <i class="fas fa-phone"></i>
             <%= user.managerTelemovel || 'Mobile phone not provided' %>
           </div>
+          <div class="info-item">
+            <i class="fas fa-store"></i>
+            Total Restaurants: <%= totalRestaurants || 0 %>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-check-circle"></i>
+            Approved Restaurants: <%= approvedRestaurants || 0 %>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-times-circle"></i>
+            Not Approved Restaurants: <%= notApprovedRestaurants || 0 %>
+          </div>
 
           <% } else if (user.role==='Admin' ) { %>
           <div class="info-item">

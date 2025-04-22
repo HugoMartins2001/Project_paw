@@ -1,6 +1,39 @@
 const mongoUser = require("../models/user");
+const mongoRestaurant = require("../models/restaurant"); 
 
 const profile = {};
+
+// Renderizar a página de perfil
+profile.showProfile = async function (req, res, next) {
+  try {
+    if (!req.user) return res.redirect("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
+
+    let totalRestaurants = 0;
+    let approvedRestaurants = 0;
+    let notApprovedRestaurants = 0;
+
+    // Se o usuário for um gerente, buscar os restaurantes associados
+    if (req.user.role === "Manager") {
+      const restaurants = await mongoRestaurant.find({ managerId: req.user._id });
+
+      // Calcula os números
+      totalRestaurants = restaurants.length;
+      approvedRestaurants = restaurants.filter(r => r.isApproved).length;
+      notApprovedRestaurants = totalRestaurants - approvedRestaurants;
+    }
+
+    // Renderiza a página de perfil com os dados do usuário e os números dos restaurantes
+    res.render("dashboard/profile", {
+      user: req.user,
+      totalRestaurants, // Passa o total de restaurantes
+      approvedRestaurants, // Passa os restaurantes aprovados
+      notApprovedRestaurants, // Passa os restaurantes não aprovados
+    });
+  } catch (err) {
+    console.error("Error fetching manager's restaurants:", err); // Loga erros no console
+    next(err); // Passa o erro para o middleware de tratamento de erros
+  }
+};
 
 // Renderizar a página de edição de perfil
 profile.editProfile = function (req, res, next) {
