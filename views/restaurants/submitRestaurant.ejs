@@ -36,11 +36,68 @@
           </div>
           <div class="form-group">
             <label for="f_openingHours">Opening Hours</label>
-            <input type="text" id="f_openingHours" name="openingHours" required />
+            <div id="openingHoursContainer">
+              <!-- Horário padrão para todos os dias -->
+              <div class="row mb-3 align-items-center">
+                <div class="col-md-3">
+                  <label>Default Hours</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="time" name="openingHours[default][start]" class="form-control" placeholder="Start Time" />
+                </div>
+                <div class="col-md-4">
+                  <input type="time" name="openingHours[default][end]" class="form-control" placeholder="End Time" />
+                </div>
+              </div>
+
+              <!-- Botão para personalizar horários -->
+              <button type="button" class="btn btn-custom d-flex align-items-center" id="customizeHoursBtn">
+                <i class="bi bi-calendar3 me-2"></i> Customize Saturday and Sunday
+              </button>
+
+              <!-- Horários específicos para sábado e domingo -->
+              <div id="customHours" style="display: none;">
+                <% const daysOfWeek = ['Saturday', 'Sunday']; %>
+                <% daysOfWeek.forEach(function(day) { %>
+                  <div class="row mb-2 align-items-center">
+                    <div class="col-md-3">
+                      <label><%= day %></label>
+                    </div>
+                    <div class="col-md-3">
+                      <input type="time" name="openingHours[<%= day %>][start]" class="form-control" placeholder="Start Time" />
+                    </div>
+                    <div class="col-md-3">
+                      <input type="time" name="openingHours[<%= day %>][end]" class="form-control" placeholder="End Time" />
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                      <input type="checkbox" name="openingHours[<%= day %>][closed]" value="true" class="me-2" />
+                      <label class="mb-0">Closed</label>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="f_paymentMethods">Payment Methods</label>
-            <input type="text" id="f_paymentMethods" name="paymentMethods" required />
+            <div id="paymentMethodsContainer">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="paymentMethods" value="Cash" id="paymentCash">
+                <label class="form-check-label" for="paymentCash">Cash</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="paymentMethods" value="Credit Card" id="paymentCreditCard">
+                <label class="form-check-label" for="paymentCreditCard">Credit Card</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="paymentMethods" value="Debit Card" id="paymentDebitCard">
+                <label class="form-check-label" for="paymentDebitCard">Debit Card</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="paymentMethods" value="Mobile Payment" id="paymentMobile">
+                <label class="form-check-label" for="paymentMobile">Mobile Payment</label>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="restaurantPic" class="form-label">Restaurant Picture</label>
@@ -84,6 +141,18 @@
           restaurantForm.submit();
         });
       });
+
+      document.getElementById("customizeHoursBtn").addEventListener("click", function () {
+    const customHours = document.getElementById("customHours");
+    if (customHours.style.display === "none") {
+      customHours.style.display = "block";
+      this.textContent = "Hide Customization";
+    } else {
+      customHours.style.display = "none";
+      this.textContent = "Customize Saturday and Sunday";
+    }
+  });
     </script>
   </body>
 </html>
+``` 

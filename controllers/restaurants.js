@@ -4,6 +4,57 @@ const logAction = require("../utils/logger");
 
 let restaurantsController = {};
 
+// Função auxiliar para processar os horários de funcionamento
+function processOpeningHours(openingHours) {
+  const processedOpeningHours = {};
+  const defaultHours = openingHours.default;
+
+  for (const day in openingHours) {
+    if (day === "default") continue;
+
+    if (openingHours[day].closed === "true") {
+      processedOpeningHours[day] = { closed: true };
+    } else {
+      processedOpeningHours[day] = {
+        start: openingHours[day].start || defaultHours.start,
+        end: openingHours[day].end || defaultHours.end,
+        closed: false,
+      };
+    }
+  }
+
+  // Adicionar os horários padrão ao objeto processado
+  processedOpeningHours.default = defaultHours;
+
+  return processedOpeningHours;
+}
+
+// Middleware para processar os horários antes de criar um restaurante
+restaurantsController.processCreateRestaurant = function (req, res, next) {
+  try {
+    if (req.body.openingHours) {
+      req.body.openingHours = processOpeningHours(req.body.openingHours);
+    }
+    next();
+  } catch (err) {
+    console.error("Error processing opening hours:", err);
+    next(err);
+  }
+};
+
+// Middleware para processar os horários antes de atualizar um restaurante
+restaurantsController.processUpdateRestaurant = function (req, res, next) {
+  try {
+    if (req.body.openingHours) {
+      req.body.openingHours = processOpeningHours(req.body.openingHours);
+    }
+    next();
+  } catch (err) {
+    console.error("Error processing opening hours:", err);
+    next(err);
+  }
+};
+
 // Controlador para exibir todos os restaurantes
 restaurantsController.showAll = async function (req, res, next) {
   if (!req.user) return res.redirect("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
@@ -174,7 +225,7 @@ restaurantsController.createRestaurant = function (req, res, next) {
     phone: req.body.phone,
     email: req.body.email,
     openingHours: req.body.openingHours,
-    paymentMethods: req.body.paymentMethods,
+    paymentMethods: Array.isArray(req.body.paymentMethods) ? req.body.paymentMethods : [req.body.paymentMethods], // Garantir que seja um array
     menus: req.body.menus || [],
     managerId: managerId,
     isApproved: false, // Restaurantes criados inicialmente não são aprovados
@@ -279,7 +330,7 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
       phone: req.body.phone,
       email: req.body.email,
       openingHours: req.body.openingHours,
-      paymentMethods: req.body.paymentMethods,
+      paymentMethods: Array.isArray(req.body.paymentMethods) ? req.body.paymentMethods : [req.body.paymentMethods], // Garantir que seja um array
       menus: req.body.menus || [],
     };
 

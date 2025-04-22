@@ -37,13 +37,70 @@
 
           <div class="form-group">
             <label for="openingHours">Opening Hours</label>
-            <input type="text" id="openingHours" name="openingHours" value="<%= restaurant.openingHours %>" required />
+
+            <!-- Horário padrão para todos os dias -->
+            <div class="row mb-3 align-items-center">
+              <div class="col-md-3">
+                <label>Default Hours</label>
+              </div>
+              <div class="col-md-4">
+                <input type="time" name="openingHours[default][start]" class="form-control" 
+                       value="<%= restaurant.openingHours.get('default')?.start || '' %>" />
+              </div>
+              <div class="col-md-4">
+                <input type="time" name="openingHours[default][end]" class="form-control" 
+                       value="<%= restaurant.openingHours.get('default')?.end || '' %>" />
+              </div>
+            </div>
+
+            <!-- Botão para personalizar horários -->
+            <div class="text-center mt-3">
+              <button type="button" class="btn btn-custom d-flex align-items-center justify-content-center" id="customizeHoursBtn">
+                <i class="bi bi-calendar3 me-2"></i> Customize Saturday and Sunday
+              </button>
+            </div>
+
+            <!-- Horários específicos para sábado e domingo -->
+            <div id="customHours" style="display: none;" class="mt-4">
+              <% const daysOfWeek = ['Saturday', 'Sunday']; %>
+              <% daysOfWeek.forEach(function(day) { %>
+                <div class="row mb-3 align-items-center">
+                  <div class="col-md-3">
+                    <label><%= day %></label>
+                  </div>
+                  <div class="col-md-3">
+                    <input type="time" name="openingHours[<%= day %>][start]" class="form-control" 
+                           value="<%= restaurant.openingHours.get(day)?.start || '' %>" />
+                  </div>
+                  <div class="col-md-3">
+                    <input type="time" name="openingHours[<%= day %>][end]" class="form-control" 
+                           value="<%= restaurant.openingHours.get(day)?.end || '' %>" />
+                  </div>
+                  <div class="col-md-3 d-flex align-items-center">
+                    <input type="checkbox" name="openingHours[<%= day %>][closed]" value="true" 
+                           class="me-2" <%= restaurant.openingHours.get(day)?.closed ? 'checked' : '' %> />
+                    <label class="mb-0">Closed</label>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
           </div>
 
           <div class="form-group">
             <label for="paymentMethods">Payment Methods</label>
-            <input type="text" id="paymentMethods" name="paymentMethods" value="<%= restaurant.paymentMethods %>" required />
+            <div id="paymentMethodsContainer" class="d-flex flex-wrap gap-3">
+              <% const paymentOptions = ["Cash", "Credit Card", "Debit Card", "Mobile Payment"]; %>
+              <% paymentOptions.forEach(function(option) { %>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="paymentMethods" value="<%= option %>" 
+                         id="payment<%= option.replace(' ', '') %>" 
+                         <%= restaurant.paymentMethods.includes(option) ? 'checked' : '' %> />
+                  <label class="form-check-label" for="payment<%= option.replace(' ', '') %>"><%= option %></label>
+                </div>
+              <% }) %>
+            </div>
           </div>
+
           <div class="form-group">
             <label for="restaurantPic" class="form-label">Restaurant picture:</label>
             <div class="mt-2 text-center">
@@ -57,7 +114,7 @@
         </div>
           <div class="form-group">
             <label for="menus">Associated Menus</label>
-            <select name="menus" id="menus" multiple required>
+            <select name="menus" id="menus" multiple >
               <% menus.forEach(menu => { %>
                 <option value="<%= menu._id %>" <% if (restaurant.menus.includes(menu._id.toString())) { %> selected <% } %>>
                   <%= menu.name %>
@@ -87,6 +144,17 @@
           showConfirmButton: false
         }).then(() => form.submit());
       });
+
+      const customizeHoursBtn = document.getElementById("customizeHoursBtn");
+      const customHours = document.getElementById("customHours");
+
+      customizeHoursBtn.addEventListener("click", () => {
+        customHours.style.display = customHours.style.display === "none" ? "block" : "none";
+        customizeHoursBtn.textContent = customHours.style.display === "block"
+          ? "Hide Customization"
+          : "Customize Saturday and Sunday";
+      });
     </script>
   </body>
 </html>
+``` 

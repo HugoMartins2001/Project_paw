@@ -76,26 +76,25 @@
                     <p class="mb-1"><strong>Associated Menus:</strong></p>
                     <ul class="list-group">
                       <% if (dish.associatedMenus && dish.associatedMenus.length > 0) { %>
-                        <li class="list-group-item">
-                          - <%= dish.associatedMenus[0].menuName %> 
-                          <% if (dish.associatedMenus.length > 1) { %>
-                            <span class="text-muted">
-                              +<%= dish.associatedMenus.length - 1 %> more
-                            </span>
-                          <% } %>
-                          <% if (dish.associatedMenus[0].restaurants && dish.associatedMenus[0].restaurants.length > 0) { %>
-                            <ul class="mt-2">
-                              <li>
-                                Restaurants:<%= dish.associatedMenus[0].restaurants[0].name %> 
-                                <% if (dish.associatedMenus[0].restaurants.length > 1) { %>
-                                  <span class="text-muted">
-                                    +<%= dish.associatedMenus[0].restaurants.length - 1 %> more
-                                  </span>
-                                <% } %>
-                              </li>
-                            </ul>
-                          <% } %>
-                        </li>
+                        <% dish.associatedMenus.forEach(function(menu, index) { %>
+                          <li class="list-group-item">
+                            - <%= menu.menuName || 'Unnamed Menu' %>
+                            <% if (menu.restaurants && menu.restaurants.length > 0) { %>
+                              <ul class="mt-2">
+                                <li>
+                                  Restaurants: <%= menu.restaurants[0].name || 'Unnamed Restaurant' %>
+                                  <% if (menu.restaurants.length > 1) { %>
+                                    <span class="text-muted">
+                                      +<%= menu.restaurants.length - 1 %> more
+                                    </span>
+                                  <% } %>
+                                </li>
+                              </ul>
+                            <% } else { %>
+                              <span class="text-muted">No associated restaurants.</span>
+                            <% } %>
+                          </li>
+                        <% }) %>
                       <% } else { %>
                         <li class="text-muted">No associated menus.</li>
                       <% } %>
@@ -105,13 +104,12 @@
                     <a href="/dishes/showDish/<%= dish._id %>" class="btn btn-sm btn-outline-primary">View</a>
                     <% if (user.role === 'Admin' || (user.role === 'Manager' && dish.managerId.toString() === user._id.toString())) { %>
                       <a href="/dishes/editDish/<%= dish._id %>" class="btn btn-sm btn-outline-secondary">Edit</a>
-                      <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                      <button class="btn btn-outline-danger delete-dish-btn" data-dish-id="<%= dish._id %>">Delete</button>
                       <form action="/dishes/toggleVisibility/<%= dish._id %>" method="POST" style="display: inline;">
                         <button type="submit" class="btn btn-sm btn-outline-warning">
                           <%= dish.isVisible ? 'Hide' : 'Show' %>
                         </button>
                       </form>
-                      <form action="/dishes/deleteDish/<%= dish._id %>" method="POST" style="display: inline;">                      </form>
                     <% } %>
                   </div>
                 </div>
@@ -227,3 +225,4 @@
     </script>
   </body>
 </html>
+``` 

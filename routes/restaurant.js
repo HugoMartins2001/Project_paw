@@ -17,9 +17,10 @@ router.get("/submitRestaurant", authController.verifyLoginUser, function (req, r
     restaurantsController.renderCreateRestaurant(req, res, next);
   });
 
-router.post("/submittedRestaurant",upload.single("restaurantPic"), authController.verifyLoginUser, function (req, res, next) {
+router.post("/submittedRestaurant", upload.single("restaurantPic"), authController.verifyLoginUser, restaurantsController.processCreateRestaurant, function (req, res, next) {
     restaurantsController.createRestaurant(req, res, next);
-  });
+  }
+);
 
 router.get("/showRestaurants", authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.showAll(req, res, next);
@@ -33,9 +34,10 @@ router.get("/editRestaurant/:id", authController.verifyLoginUser, function (req,
     restaurantsController.renderEditRestaurant(req, res, next);
   });
 
-router.post("/editRestaurant/:id", upload.single("restaurantPic"), authController.verifyLoginUser, function (req, res, next) {
+router.post("/editRestaurant/:id", upload.single("restaurantPic"), authController.verifyLoginUser, restaurantsController.processUpdateRestaurant,  function (req, res, next) {
     restaurantsController.updateRestaurant(req, res, next);
-  });
+  }
+);
 
 router.get("/pendingApproval", authController.verifyLoginUser,
   restaurantsController.showPendingRestaurants
@@ -46,7 +48,5 @@ router.post("/approveRestaurant/:id", authController.verifyLoginUser,
 );
 
 router.post('/toggleVisibility/:id', restaurantsController.toggleVisibility);
-
-module.exports = router;
 
 module.exports = router;

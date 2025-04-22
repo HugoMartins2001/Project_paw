@@ -16,8 +16,20 @@ const RestaurantSchema = new mongoose.Schema({
     match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     message: "O email deve ser válido",
   },
-  openingHours: { type: String, required: true },
-  paymentMethods: { type: String, required: true },
+  openingHours: {
+    type: Map,
+    of: {
+      start: { type: String },
+      end: { type: String },   
+      closed: { type: Boolean, default: false }, 
+    },
+    required: true,
+  },
+  paymentMethods: {
+    type: [String],
+    required: true,
+    enum: ["Cash", "Credit Card", "Debit Card", "Mobile Payment"], // Valores permitidos
+  },
   managerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

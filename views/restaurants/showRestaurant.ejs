@@ -31,8 +31,25 @@
           <p><strong>Street:</strong> <%= restaurant.address %></p>
           <p><strong>Phone:</strong> <%= restaurant.phone %></p>
           <p><strong>Email:</strong> <%= restaurant.email %></p>
-          <p><strong>Opening Hours:</strong> <%= restaurant.openingHours %></p>
-          <p><strong>Payment Methods:</strong> <%= restaurant.paymentMethods %></p>
+          <p><strong>Opening Hours:</strong></p>
+          <ul class="list-group">
+            <% for (const [day, hours] of restaurant.openingHours.entries()) { %>
+              <li class="list-group-item">
+                <strong><%= day %>:</strong>
+                <% if (hours.closed) { %>
+                  Closed
+                <% } else { %>
+                  <%= hours.start %> - <%= hours.end %>
+                <% } %>
+              </li>
+            <% } %>
+          </ul>
+          <p><strong>Payment Methods:</strong></p>
+          <ul class="list-group">
+            <% restaurant.paymentMethods.forEach(function(method) { %>
+              <li class="list-group-item"><%= method %></li>
+            <% }) %>
+          </ul>
         </div>
       </div>
 

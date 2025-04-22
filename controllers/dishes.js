@@ -60,21 +60,22 @@ dishesController.showAll = async function (req, res, next) {
         .map((menu) => {
           // Encontrar restaurantes associados ao menu
           const associatedRestaurants = allRestaurants
-            .filter((restaurant) => restaurant.menus.includes(menu._id))
+            .filter((restaurant) => restaurant.menus.some((menuId) => menuId.equals(menu._id)))
             .map((restaurant) => ({
               name: restaurant.name,
               managerId: restaurant.managerId,
             }));
 
           return {
+            _id: menu._id,
             menuName: menu.name,
-            restaurants: associatedRestaurants,
+            restaurants: associatedRestaurants.length > 0 ? associatedRestaurants : [], // Garante que seja um array vazio se não houver restaurantes
           };
         });
 
       return {
         ...dish.toObject(),
-        associatedMenus,
+        associatedMenus: associatedMenus.length > 0 ? associatedMenus : [], // Garante que seja um array vazio se não houver menus
       };
     });
 
@@ -140,25 +141,38 @@ dishesController.createDish = async function (req, res, next) {
     const dishPic = req.file ? req.file.filename : null;
 
     const prices = {
-      pequena: req.body["prices[pequena]"] || 0,
-      media: req.body["prices[media]"] || 0,
-      grande: req.body["prices[grande]"] || 0,
+      pequena: parseFloat(req.body.price_pequena) || 0,
+      media: parseFloat(req.body.price_media) || 0,
+      grande: parseFloat(req.body.price_grande) || 0,
     };
 
     const user = req.user;
 
     // Chamada à API externa para obter informações nutricionais
-    const nutritionRes = await axios.get(
-      "https://api.spoonacular.com/recipes/guessNutrition",
-      {
-        params: {
-          title: name,
-          apiKey: process.env.SPOONACULAR_API_KEY,
-        },
-      }
-    );
-
-    const nutritionData = nutritionRes.data;
+    let nutritionData = {};
+    try {
+      const nutritionRes = await axios.get(
+        "https://api.spoonacular.com/recipes/guessNutrition",
+        {
+          params: {
+            title: name,
+            apiKey: process.env.SPOONACULAR_API_KEY,
+          },
+          timeout: 5000, // Tempo limite de 5 segundos
+        }
+      );
+      nutritionData = nutritionRes.data;
+    } catch (error) {
+      console.error("Error fetching nutrition data:", error.message);
+      // Valores padrão em caso de falha
+      nutritionData = {
+        calories: { value: 0 },
+        fat: { value: 0 },
+        protein: { value: 0 },
+        carbs: { value: 0 },
+        nutritionGrade: "N/A",
+      };
+    }
 
     const calories = nutritionData?.calories?.value || 0;
     const fat = nutritionData?.fat?.value || 0;
@@ -183,7 +197,7 @@ dishesController.createDish = async function (req, res, next) {
       description,
       category,
       ingredients: ingredientsList,
-      prices: prices,
+      prices,
       nutrition: {
         calories,
         fat,
@@ -248,16 +262,16 @@ dishesController.showDish = async function (req, res, next) {
       .map((menu) => {
         // Encontrar restaurantes associados ao menu
         const associatedRestaurants = allRestaurants
-          .filter((restaurant) => restaurant.menus.includes(menu._id))
+          .filter((restaurant) => restaurant.menus.some((menuId) => menuId.equals(menu._id)))
           .map((restaurant) => ({
             name: restaurant.name,
             managerId: restaurant.managerId,
           }));
 
         return {
-          _id: menu._id, // Certifique-se de incluir o ID do menu
+          _id: menu._id,
           menuName: menu.name,
-          restaurants: associatedRestaurants,
+          restaurants: associatedRestaurants.length > 0 ? associatedRestaurants : [], // Garante que seja um array vazio se não houver restaurantes
         };
       });
 
@@ -347,9 +361,9 @@ dishesController.updateDish = function (req, res, next) {
   } = req.body;
 
   const prices = {
-    pequena: req.body["prices[pequena]"] || 0,
-    media: req.body["prices[media]"] || 0,
-    grande: req.body["prices[grande]"] || 0,
+    pequena: parseFloat(req.body.price_pequena) || 0,
+    media: parseFloat(req.body.price_media) || 0,
+    grande: parseFloat(req.body.price_grande) || 0,
   };
 
   mongoDish
@@ -384,7 +398,7 @@ dishesController.updateDish = function (req, res, next) {
           : ingredients
           ? ingredients.split(",").map((el) => el.trim())
           : dish.ingredients || [],
-        prices: prices,
+        prices,
         nutrition: {
           calories: calories || dish.nutrition.calories,
           fat: fat || dish.nutrition.fat,

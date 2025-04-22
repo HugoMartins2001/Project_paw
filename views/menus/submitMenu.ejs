@@ -32,7 +32,7 @@
           </div>
           <div class="mb-3">
             <label for="dishes" class="form-label">Dishes</label>
-            <select id="dishes" name="dishes" class="form-select" multiple required>
+            <select id="dishes" name="dishes" class="form-select" multiple>
               <% dishes.forEach(function(dish) { %>
                 <option value="<%= dish._id %>"><%= dish.name %></option>
               <% }) %>

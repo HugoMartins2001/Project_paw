@@ -90,3 +90,39 @@ a.btn-secondary {
 a.btn-secondary:hover {
   background-color: #4b4b4b;
 }
+
+/* Estilo personalizado para o botão */
+.btn-custom {
+  background-color: #6366f1; /* Cor roxa */
+  color: #fff; /* Texto branco */
+  border: none; /* Sem borda */
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px; /* Bordas arredondadas */
+  transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover {
+  background-color: #6366f1; /* Cor roxa mais escura no hover */
+  color: #fff;
+}
+
+/* Estilo para o container dos métodos de pagamento */
+#paymentMethodsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Espaçamento entre os checkboxes */
+}
+
+/* Estilo para os checkboxes */
+.form-check-input {
+  accent-color: #6366f1; /* Cor roxa para os checkboxes */
+  width: 20px;
+  height: 20px;
+}
+
+.form-check-label {
+  font-size: 16px;
+  margin-left: 8px;
+  color: #333; /* Cor do texto */
+}
