@@ -15,12 +15,15 @@ authController.submittedLogin = function (req, res, next) {
     const passwordInput = req.body.password;
     const clientIp = req.ip; // Obtém o IP do cliente
 
+    // Cria uma chave única para rastrear tentativas por email e IP
+    const loginKey = `${emailInput}-${clientIp}`;
+
     // Inicializa ou incrementa o contador de tentativas de login
-    if (!loginAttempts[clientIp]) {
-        loginAttempts[clientIp] = { count: 0, lastAttempt: Date.now() };
+    if (!loginAttempts[loginKey]) {
+        loginAttempts[loginKey] = { count: 0, lastAttempt: Date.now() };
     }
 
-    const attempts = loginAttempts[clientIp];
+    const attempts = loginAttempts[loginKey];
 
     // Bloqueia o login se houver muitas tentativas em um curto período
     if (attempts.count >= 5 && Date.now() - attempts.lastAttempt < 15 * 60 * 1000) {
@@ -40,7 +43,7 @@ authController.submittedLogin = function (req, res, next) {
                 .then(function (result) {
                     if (result === true) {
                         // Login bem-sucedido, reseta o contador de tentativas
-                        loginAttempts[clientIp] = { count: 0, lastAttempt: Date.now() };
+                        loginAttempts[loginKey] = { count: 0, lastAttempt: Date.now() };
 
                         const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: 86400000 });
                         res.cookie('auth-token', authToken, { maxAge: 86400000 });

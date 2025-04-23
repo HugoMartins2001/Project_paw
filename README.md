@@ -1,6 +1,6 @@
 RESTAURANT WEBSITE PROJECT 
 
-possiveis implmentações no projeto:
+possiveis implementações no projeto:
 
 
 📱 Extras e Experiência do Utilizador

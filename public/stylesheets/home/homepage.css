@@ -199,3 +199,10 @@ body::-webkit-scrollbar {
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
+
+/* Ajustar o tamanho da imagem de perfil */
+.home-pic {
+  width: 120px; /* Reduz a largura da imagem */
+  height: 120px; /* Reduz a altura da imagem */
+  border-radius: 40%; /* Mantém a imagem redonda */
+}
