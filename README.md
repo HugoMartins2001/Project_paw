@@ -1,22 +1,35 @@
 RESTAURANT WEBSITE PROJECT 
 
+possiveis implmentações no projeto:
+
+
+📱 Extras e Experiência do Utilizador
+Localização dos restaurantes no mapa (Google Maps API);
+Sliders com pratos em destaque;
+
+📊 Funcionalidades Avançadas
+Dashboard com gráficos (ex: Chart.js): número de restaurantes criados por dia, menus mais populares, etc;
+
+🍽️ Funcionalidades para Clientes
+Favoritos (guardar menus ou pratos preferidos);
+Avaliar pratos/restaurantes (reviews e estrelas);
+Explorar menus e pratos de cada restaurante;
+Realizar encomendas (orders);
+Acompanhar estado das encomendas;
+
+🧑‍💼 Funcionalidades para Admin
+Gerir utilizadores (bloquear, etc.)
+Estado do restaurante: "pendente", "aprovado", "rejeitado";
+
+
 atualizações a serem feitas
 
-adicionar pagina de historico de encomendas 
+adicionar pagina de historico de encomendas FEITO
 
-Campos a encriptar: NÃO FEITO
-
-email,
-telemovel,
-nif,
-address,
-postalCode,
-city,
-managerCode;
 
 coisas a implementar: FEITO
 
-utilizar o mesmo email para o manager e o cliente para que nao existe erro;
+utilizar o mesmo email para o manager e o cliente para que nao existe erro; FEITO
 
 
 Dashboard: FEITO
