@@ -5,6 +5,7 @@ const logAction = require("../utils/logger");
 
 let menusController = {};
 
+// Renderiza a página para criar um menu
 menusController.renderCreateMenu = async function (req, res, next) {
   try {
     let dishes;
@@ -17,19 +18,8 @@ menusController.renderCreateMenu = async function (req, res, next) {
 
     res.render("menus/submitMenu", {
       dishes,
-      user: req.user, // Passa o usuário logado para o EJS
+      user: req.user, // Passa o usuário autenticado para o EJS
     });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
-
-// Renderiza a página para criar um menu
-menusController.renderCreateMenu = async function (req, res, next) {
-  try {
-    const dishes = await mongoDish.find(); // Busca todos os pratos disponíveis
-    res.render("menus/submitMenu", { dishes });
   } catch (error) {
     console.error(error);
     next(error);

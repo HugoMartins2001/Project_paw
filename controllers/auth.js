@@ -27,7 +27,7 @@ authController.submittedLogin = function (req, res, next) {
 
     // Bloqueia o login se houver muitas tentativas em um curto período
     if (attempts.count >= 5 && Date.now() - attempts.lastAttempt < 15 * 60 * 1000) {
-        return res.render('login/index', { errorMessage: 'Muitas tentativas de login. Tente novamente mais tarde.' });
+        return res.render('login/index', { errorMessage: 'Too many login attempts. Please try again later..' });
     }
 
     mongoUser.findOne({ email: emailInput })
@@ -36,7 +36,7 @@ authController.submittedLogin = function (req, res, next) {
                 // Caso o email não seja encontrado
                 attempts.count++;
                 attempts.lastAttempt = Date.now();
-                return res.render('login/index', { errorMessage: 'Email não encontrado!' });
+                return res.render('login/index', { errorMessage: 'Email not found!' });
             }
 
             bcrypt.compare(passwordInput, user.password)
@@ -47,12 +47,12 @@ authController.submittedLogin = function (req, res, next) {
 
                         const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: 86400000 });
                         res.cookie('auth-token', authToken, { maxAge: 86400000 });
-                        res.render('login/index', { successMessage: 'Login realizado com sucesso!' });
+                        res.render('login/index', { successMessage: 'Login successfully!' });
                     } else {
                         // Senha incorreta
                         attempts.count++;
                         attempts.lastAttempt = Date.now();
-                        res.render('login/index', { errorMessage: 'Senha incorreta!' });
+                        res.render('login/index', { errorMessage: 'Password incorrect!' });
                     }
                 });
         })
@@ -85,18 +85,18 @@ authController.createLoginSubmitted = function (req, res, next) {
 
     // Validação de entrada: verifica se os campos obrigatórios estão presentes
     if (!req.body.email || !req.body.password) {
-        return res.render('login/createUser', { errorMessage: 'Email e senha são obrigatórios!' });
+        return res.render('login/createUser', { errorMessage: 'Email and password are required!' });
     }
 
     // Validação de formato do email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(req.body.email)) {
-        return res.render('login/createUser', { errorMessage: 'Formato de email inválido!' });
+        return res.render('login/createUser', { errorMessage: 'Invalid email format!' });
     }
 
     // Validação de força da senha (mínimo de 8 caracteres)
     if (req.body.password.length < 8) {
-        return res.render('login/createUser', { errorMessage: 'A senha deve ter pelo menos 8 caracteres!' });
+        return res.render('login/createUser', { errorMessage: 'Password must be at least 8 characters long!' });
     }
 
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
@@ -104,7 +104,7 @@ authController.createLoginSubmitted = function (req, res, next) {
 
     mongoUser.create(req.body)
         .then(function () {
-            res.render('login/createUser', { successMessage: 'Registro realizado com sucesso!' });
+            res.render('login/createUser', { successMessage: 'Registration completed successfully!' });
         })
         .catch(function (err) {
             next(err);

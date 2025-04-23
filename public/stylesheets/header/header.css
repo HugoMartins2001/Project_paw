@@ -66,7 +66,7 @@ header {
 
 /* Spinner styles mantêm-se como estavam */
 
-@media (max-width: 768px) {
+@media (max-width: 1135px) {
   .menu-toggle {
     display: block;
   }
@@ -93,4 +93,5 @@ header {
     width: 100%;
     padding: 10px;
   }
+  
 }
