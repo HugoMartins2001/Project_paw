@@ -4,35 +4,42 @@ const dishesController = require("../controllers/dishes");
 const authController = require("../controllers/auth");
 const upload = require("../middlewares/upload");
 
-router.get("/showDishes", authController.verifyLoginUser,function (req, res, next) {
+// Rota para exibir todos os pratos
+router.get("/showDishes", authController.verifyLoginUser, function (req, res, next) {
     dishesController.showAll(req, res, next);
-  });
+});
 
-router.get("/submitDishes", authController.verifyLoginUser,function (req, res, next) {
+// Rota para exibir o formulário de criação de pratos
+router.get("/submitDishes", authController.verifyLoginUser, function (req, res, next) {
     dishesController.renderCreateDishes(req, res, next);
-  });
+});
 
+// Rota para exibir os detalhes de um prato específico
 router.get("/showDish/:dishId", authController.verifyLoginUser, function (req, res, next) {
     dishesController.showDish(req, res, next);
-  });
+});
 
-router.post("/submittedDish", upload.single("dishPic"), authController.verifyLoginUser,function (req, res, next) {
+// Rota para processar o formulário de criação de pratos, incluindo upload de imagem
+router.post("/submittedDish", upload.single("dishPic"), authController.verifyLoginUser, function (req, res, next) {
     dishesController.createDish(req, res, next);
-  });
+});
 
-router.post("/deleteDish/:dishId",authController.verifyLoginUser, function (req, res, next) {
+// Rota para deletar um prato específico pelo ID
+router.post("/deleteDish/:dishId", authController.verifyLoginUser, function (req, res, next) {
     dishesController.deleteDish(req, res, next);
-  });
+});
 
+// Rota para exibir o formulário de edição de um prato específico
 router.get("/editDish/:dishId", authController.verifyLoginUser, function (req, res, next) {
     dishesController.renderEditDish(req, res, next);
-  });
+});
 
-router.post("/editDish/:dishId",upload.single("dishPic"), authController.verifyLoginUser, function (req, res, next) {
+// Rota para processar o formulário de edição de pratos, incluindo upload de imagem
+router.post("/editDish/:dishId", upload.single("dishPic"), authController.verifyLoginUser, function (req, res, next) {
     dishesController.updateDish(req, res, next);
-  });
+});
 
+// Rota para alternar a visibilidade de um prato (ex.: visível/invisível)
 router.post("/toggleVisibility/:dishId", authController.verifyLoginUser, dishesController.toggleVisibility);
 
-
-module.exports = router;
+module.exports = router; // Exporta o roteador para ser usado em outros arquivos
