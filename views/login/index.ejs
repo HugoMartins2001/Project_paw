@@ -50,23 +50,24 @@
   </div>
 
   <script>
-   // Verifica se há mensagens de erro passadas pelo servidor
-   const errorMessage = "<%= typeof errorMessage !== 'undefined' ? errorMessage : '' %>";
-    const successMessage = "<%= typeof successMessage !== 'undefined' ? successMessage : '' %>";
+  // Verifica se há mensagens de erro ou sucesso passadas pelo servidor
+  const errorMessage = "<%= typeof errorMessage !== 'undefined' ? errorMessage : '' %>";
+  const successMessage = "<%= typeof successMessage !== 'undefined' ? successMessage : '' %>";
 
+  // Exibe a mensagem de erro, se houver
+  if (errorMessage) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: errorMessage,
+    });
+  }
 
-    if (errorMessage) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: errorMessage,
-      });
-    }
-
-    if (successMessage) {
+  // Exibe a mensagem de sucesso, se houver
+  if (successMessage) {
     Swal.fire({
       icon: 'success',
-      title: 'Sucess!',
+      title: 'Success!',
       text: successMessage,
       timer: 2000,
       showConfirmButton: false,
@@ -75,6 +76,7 @@
     });
   }
 
+  // Alterna a visibilidade da senha
   const togglePassword = document.getElementById('togglePassword');
   const passwordField = document.getElementById('password');
 

@@ -35,6 +35,13 @@
                 <td><%= user.name %></td>
                 <td><%= user.email %></td>
                 <td><%= user.role %></td>
+                <td>
+                  <form action="/users/block/<%= user._id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="btn <%= user.isBlocked ? 'btn-success' : 'btn-danger' %>">
+                      <%= user.isBlocked ? 'Unblock' : 'Block' %>
+                    </button>
+                  </form>
+                </td>
               </tr>
             <% }); %>
           </tbody>

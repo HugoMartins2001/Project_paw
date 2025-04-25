@@ -12,7 +12,10 @@ function onlyAdmins(req, res, next) {
   }
 }
 
-// Rota para exibir todos os usuários (apenas para administradores)
+// Rota para exibir todos os utilizadores (apenas para administradores)
 router.get("/showUsers", verifyJWT, onlyAdmins, usersController.showUsers);
+
+// Rota para bloquear os utilizadores (apenas para administradores)
+router.post('/block/:id', verifyJWT, onlyAdmins, usersController.blockUser);
 
 module.exports = router; // Exporta o roteador para ser usado em outros arquivos

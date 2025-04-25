@@ -39,6 +39,11 @@ authController.submittedLogin = function (req, res, next) {
                 return res.render('login/index', { errorMessage: 'Email not found!' });
             }
 
+            // Verifica se o utilizador está bloqueado
+            if (user.isBlocked) {
+                return res.render('login/index', { errorMessage: 'Your account has been blocked. Please contact support.' });
+            }
+
             bcrypt.compare(passwordInput, user.password)
                 .then(function (result) {
                     if (result === true) {
@@ -117,19 +122,29 @@ authController.verifyLoginUser = function (req, res, next) {
     if (authToken) {
         jwt.verify(authToken, config.secret, function (err, decoded) {
             if (err) {
-                return res.redirect('/auth/login');
+                return res.redirect('/auth/login'); // Redireciona para a página de login em caso de erro
             }
             mongoUser.findOne({ email: decoded.email })
                 .then(function (user) {
-                    req.user = user;
-                    next();
+                    if (!user) {
+                        return res.redirect('/auth/login'); // Redireciona se o usuário não for encontrado
+                    }
+
+                    // Verifica se o usuário está bloqueado
+                    if (user.isBlocked) {
+                        res.clearCookie('auth-token'); // Remove o cookie de autenticação
+                        return res.redirect('/auth/login?error=blocked'); // Redireciona com mensagem de erro
+                    }
+
+                    req.user = user; // Adiciona o usuário à requisição
+                    next(); // Permite o acesso à próxima rota
                 })
                 .catch(function (err) {
-                    next(err);
+                    next(err); // Passa o erro para o middleware de tratamento de erros
                 });
         });
     } else {
-        next();
+        res.redirect('/auth/login'); // Redireciona para a página de login se o token não estiver presente
     }
 };
 

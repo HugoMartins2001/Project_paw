@@ -17,4 +17,24 @@ usersController.showUsers = async (req, res, next) => {
   }
 };
 
+// Controlador para bloquear/desbloquear usuários
+usersController.blockUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id; // Obtém o ID do usuário a ser bloqueado/desbloqueado
+    const user = await mongoUser.findById(userId);
+
+    if (!user) {
+      return res.status(404).send("User not found"); // Retorna erro 404 se o usuário não for encontrado
+    }
+
+    // Alterna o status de bloqueio do usuário
+    user.isBlocked = !user.isBlocked;
+    await user.save(); // Salva a alteração no banco de dados
+
+    res.redirect("/users/showUsers"); // Redireciona para a lista de usuários
+  } catch (err) {
+    next(err); // Passa o erro para o middleware de tratamento de erros
+  }
+};
+
 module.exports = usersController;
