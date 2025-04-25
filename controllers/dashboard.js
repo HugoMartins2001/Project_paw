@@ -24,10 +24,45 @@ dashboardController.renderDashboard = async function (req, res, next) {
 // Controlador para fornecer os dados do dashboard
 dashboardController.getDashboardData = async function (req, res, next) {
   try {
-    // Dados de exemplo para os gráficos
+    // Verifica se o usuário é administrador
+    if (req.user.role !== "Admin") {
+      return res.status(403).send("Acesso negado. Apenas administradores podem visualizar esses dados.");
+    }
+
+    // Agrupar restaurantes criados por mês
+    const restaurantsByMonth = await mongoRestaurant.aggregate([
+      {
+        $group: {
+          _id: { $month: "$createdAt" }, // Agrupa por mês
+          count: { $sum: 1 }, // Conta o número de restaurantes
+        },
+      },
+      { $sort: { _id: 1 } }, // Ordena por mês
+    ]);
+
+    // Agrupar usuários registrados por mês
+    const usersByMonth = await mongoUser.aggregate([
+      {
+        $group: {
+          _id: { $month: "$createdAt" }, // Agrupa por mês
+          count: { $sum: 1 }, // Conta o número de usuários
+        },
+      },
+      { $sort: { _id: 1 } }, // Ordena por mês
+    ]);
+
+    // Converter os dados para um formato utilizável no gráfico
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const restaurantData = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
-    const userData = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+    const restaurantData = Array(12).fill(0);
+    const userData = Array(12).fill(0);
+
+    restaurantsByMonth.forEach((item) => {
+      restaurantData[item._id - 1] = item.count; // Preenche os dados no índice correto
+    });
+
+    usersByMonth.forEach((item) => {
+      userData[item._id - 1] = item.count; // Preenche os dados no índice correto
+    });
 
     // Retorna os dados como JSON
     res.json({ months, restaurantData, userData });

@@ -109,6 +109,10 @@
   async function loadDashboardData() {
     try {
       const response = await fetch('/dashboard/data'); // Faz a requisição para o endpoint
+      if (!response.ok) {
+        throw new Error("Erro ao carregar os dados do dashboard");
+      }
+
       const { months, restaurantData, userData } = await response.json();
 
       // Gráfico de restaurantes criados
@@ -139,7 +143,7 @@
           labels: months, // Meses
           datasets: [
             {
-              label: "Usuários Registrados",
+              label: "Utilizadores Registados",
               data: userData, // Dados de usuários
               borderColor: "rgba(108, 99, 255, 1)", // Cor da linha
               backgroundColor: "rgba(108, 99, 255, 0.2)", // Cor de preenchimento abaixo da linha
@@ -158,7 +162,7 @@
         options: chartOptions,
       });
     } catch (err) {
-      console.error("Error loading dashboard data:", err);
+      console.error("Erro ao carregar os dados do dashboard:", err);
     }
   }
 
