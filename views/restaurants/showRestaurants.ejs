@@ -73,8 +73,10 @@
                     <div>
                       <h5 class="card-title d-flex align-items-center justify-content-between">
                         <%= restaurant.name %>
-                        <% if (!restaurant.isApproved) { %>
-                          <span class="badge bg-warning text-dark">Pending</span>
+                        <% if (restaurant.isApproved) { %>
+                          <span class="badge bg-success text-light">Approved</span>
+                        <% } else { %>
+                          <span class="badge bg-danger text-light">Not approved</span>
                         <% } %>
                       </h5>
                       <p class="mb-2"><strong>Street:</strong> <%= restaurant.address %></p>
