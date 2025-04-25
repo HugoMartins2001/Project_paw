@@ -6,4 +6,7 @@ const dashboardController = require('../controllers/dashboard');
 // Rota para o dashboard
 router.get('/', authController.verifyLoginUser, dashboardController.renderDashboard);
 
+// Rota para buscar os dados do dashboard
+router.get('/data', authController.verifyLoginUser, dashboardController.getDashboardData);
+
 module.exports = router;

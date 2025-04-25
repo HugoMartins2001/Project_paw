@@ -54,71 +54,117 @@
   </div>
 
   <script>
-    const chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: "#6c63ff",
-          padding: 12,
-          usePointStyle: true,
-        },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: {
-            color: "rgba(0, 0, 0, 0.05)",
-          },
-        },
-        x: {
-          grid: {
-            display: false,
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true, // Exibe a legenda
+        labels: {
+          color: "#333", // Cor do texto da legenda
+          font: {
+            size: 14, // Tamanho da fonte
+            family: "Arial, sans-serif", // Fonte personalizada
           },
         },
       },
-    };
+      tooltip: {
+        backgroundColor: "#6c63ff", // Cor de fundo do tooltip
+        titleColor: "#fff", // Cor do título no tooltip
+        bodyColor: "#fff", // Cor do texto no tooltip
+        padding: 12, // Espaçamento interno do tooltip
+        usePointStyle: true, // Usa estilo de ponto no tooltip
+        borderColor: "#fff", // Borda do tooltip
+        borderWidth: 1, // Largura da borda
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(0, 0, 0, 0.05)", // Cor da grade do eixo Y
+        },
+        ticks: {
+          color: "#333", // Cor dos números no eixo Y
+          font: {
+            size: 12, // Tamanho da fonte
+          },
+        },
+      },
+      x: {
+        grid: {
+          display: false, // Oculta a grade do eixo X
+        },
+        ticks: {
+          color: "#333", // Cor dos números no eixo X
+          font: {
+            size: 12, // Tamanho da fonte
+          },
+        },
+      },
+    },
+  };
 
-    const ordersChart = new Chart(document.getElementById("ordersChart"), {
-      type: "bar",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-        datasets: [
-          {
-            label: "Encomendas",
-            data: [12, 19, 3, 5, 7],
-            backgroundColor: "#6c63ff",
-            borderRadius: 6,
-            borderSkipped: false,
-          },
-        ],
-      },
-      options: chartOptions,
-    });
+  // Função para carregar os dados do dashboard
+  async function loadDashboardData() {
+    try {
+      const response = await fetch('/dashboard/data'); // Faz a requisição para o endpoint
+      const { months, restaurantData, userData } = await response.json();
 
-    const clientsChart = new Chart(document.getElementById("clientsChart"), {
-      type: "line",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-        datasets: [
-          {
-            label: "Clientes",
-            data: [5, 9, 7, 10, 12],
-            borderColor: "#6c63ff",
-            backgroundColor: "rgba(108, 99, 255, 0.1)",
-            tension: 0.4,
-            fill: true,
-            borderWidth: 2,
-            pointBackgroundColor: "#fff",
-            pointBorderColor: "#6c63ff",
-            pointBorderWidth: 2,
-          },
-        ],
-      },
-      options: chartOptions,
-    });
-  </script>
+      // Gráfico de restaurantes criados
+      new Chart(document.getElementById("ordersChart"), {
+        type: "bar",
+        data: {
+          labels: months, // Meses
+          datasets: [
+            {
+              label: "Restaurantes Criados",
+              data: restaurantData, // Dados de restaurantes
+              backgroundColor: "rgba(108, 99, 255, 0.8)", // Cor das barras
+              borderColor: "rgba(108, 99, 255, 1)", // Cor da borda das barras
+              borderWidth: 2, // Largura da borda
+              borderRadius: 10, // Bordas arredondadas
+              hoverBackgroundColor: "rgba(108, 99, 255, 1)", // Cor ao passar o mouse
+              hoverBorderColor: "#fff", // Cor da borda ao passar o mouse
+            },
+          ],
+        },
+        options: chartOptions,
+      });
+
+      // Gráfico de usuários registrados
+      new Chart(document.getElementById("clientsChart"), {
+        type: "line",
+        data: {
+          labels: months, // Meses
+          datasets: [
+            {
+              label: "Usuários Registrados",
+              data: userData, // Dados de usuários
+              borderColor: "rgba(108, 99, 255, 1)", // Cor da linha
+              backgroundColor: "rgba(108, 99, 255, 0.2)", // Cor de preenchimento abaixo da linha
+              tension: 0.4, // Suaviza as curvas da linha
+              fill: true, // Preenche a área abaixo da linha
+              borderWidth: 3, // Largura da linha
+              pointBackgroundColor: "#fff", // Cor do ponto
+              pointBorderColor: "rgba(108, 99, 255, 1)", // Cor da borda do ponto
+              pointBorderWidth: 2, // Largura da borda do ponto
+              pointHoverBackgroundColor: "#fff", // Cor do ponto ao passar o mouse
+              pointHoverBorderColor: "rgba(108, 99, 255, 1)", // Cor da borda ao passar o mouse
+              pointHoverBorderWidth: 3, // Largura da borda ao passar o mouse
+            },
+          ],
+        },
+        options: chartOptions,
+      });
+    } catch (err) {
+      console.error("Error loading dashboard data:", err);
+    }
+  }
+
+  // Carregar os dados ao carregar a página
+  loadDashboardData();
+</script>
 </body>
 
 </html>
