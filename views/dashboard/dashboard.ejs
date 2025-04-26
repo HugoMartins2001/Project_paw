@@ -15,15 +15,17 @@
 <body>
   <%- include('../partials/header') %> 
 
+  <% if (user.role === 'Admin') { %>
   <div class="dashboard-container">
     <div style="flex: 2">
-      <div class="chart-container" style="width: 900px; height: 250px; margin: auto; margin-bottom: 10px;">
+      <div class="chart-container" style="width: 700px; height: 250px; margin: auto; margin-bottom: 10px;">
         <canvas id="generalGraph"></canvas>
       </div>
-      <div class="chart-container">
+      <div class="chart-container" style="width: 700px; height: 250px; margin: auto; margin-bottom: 10px;">
         <canvas id="clientsGraph"></canvas>
       </div>
     </div>
+    <% } %>
 
     <div class="manager-menu">
       <h2><%= user.role %> menu</h2>

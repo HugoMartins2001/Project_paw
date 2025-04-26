@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { create } = require('./dish');
 
 const orderSchema = new mongoose.Schema({
   restaurantName: {
@@ -14,6 +15,10 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   status: {
     type: String,
