@@ -9,7 +9,7 @@ const RestaurantSchema = new mongoose.Schema({
     match: /^[0-9]{9}$/,
     message: "O telefone deve conter exatamente 9 dígitos numéricos",
   },
-  email: {
+  restaurantEmail: {
     type: String,
     required: true,
     unique: true,

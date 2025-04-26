@@ -223,7 +223,7 @@ restaurantsController.createRestaurant = function (req, res, next) {
     name: req.body.name,
     address: req.body.address,
     phone: req.body.phone,
-    email: req.body.email,
+    restaurantEmail: req.body.restaurantEmail,
     openingHours: req.body.openingHours,
     paymentMethods: Array.isArray(req.body.paymentMethods) ? req.body.paymentMethods : [req.body.paymentMethods], // Garantir que seja um array
     menus: req.body.menus || [],
@@ -328,7 +328,7 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       phone: req.body.phone,
-      email: req.body.email,
+      restaurantEmail: req.body.restaurantEmail,
       openingHours: req.body.openingHours,
       paymentMethods: Array.isArray(req.body.paymentMethods) ? req.body.paymentMethods : [req.body.paymentMethods], // Garantir que seja um array
       menus: req.body.menus || [],
