@@ -33,9 +33,9 @@ const User = new mongoose.Schema({
     required: function() { return !this.googleId; } 
   },
   googleId: { type: String, unique: true, sparse: true }, 
-  dataRegisto: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
   profilePic: { type: String },
-  isBlocked: { type: Boolean, default: false } // Campo para bloquear o usuário
+  isBlocked: { type: Boolean, default: false }, // Campo para bloquear o usuário
 });
 
 module.exports = mongoose.model('users', User);

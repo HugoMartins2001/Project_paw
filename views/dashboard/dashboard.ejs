@@ -59,56 +59,57 @@
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true, // Exibe a legenda
+        display: true,
         labels: {
-          color: "#333", // Cor do texto da legenda
+          color: "#333",
           font: {
-            size: 14, // Tamanho da fonte
-            family: "Arial, sans-serif", // Fonte personalizada
+            size: 14,
+            family: "Arial, sans-serif",
           },
         },
       },
       tooltip: {
-        backgroundColor: "#6c63ff", // Cor de fundo do tooltip
-        titleColor: "#fff", // Cor do título no tooltip
-        bodyColor: "#fff", // Cor do texto no tooltip
-        padding: 12, // Espaçamento interno do tooltip
-        usePointStyle: true, // Usa estilo de ponto no tooltip
-        borderColor: "#fff", // Borda do tooltip
-        borderWidth: 1, // Largura da borda
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        padding: 12,
+        usePointStyle: true,
+        borderColor: "#fff",
+        borderWidth: 1,
+        cornerRadius: 8,
       },
     },
     scales: {
       y: {
         beginAtZero: true,
         grid: {
-          color: "rgba(0, 0, 0, 0.05)", // Cor da grade do eixo Y
+          color: "rgba(0, 0, 0, 0.05)",
         },
         ticks: {
-          color: "#333", // Cor dos números no eixo Y
+          stepSize: 1,
+          color: "#333",
           font: {
-            size: 12, // Tamanho da fonte
+            size: 12,
           },
         },
       },
       x: {
         grid: {
-          display: false, // Oculta a grade do eixo X
+          display: false,
         },
         ticks: {
-          color: "#333", // Cor dos números no eixo X
+          color: "#333",
           font: {
-            size: 12, // Tamanho da fonte
+            size: 12,
           },
         },
       },
     },
   };
 
-  // Função para carregar os dados do dashboard
   async function loadDashboardData() {
     try {
-      const response = await fetch('/dashboard/data'); // Faz a requisição para o endpoint
+      const response = await fetch('/dashboard/data');
       if (!response.ok) {
         throw new Error("Erro ao carregar os dados do dashboard");
       }
@@ -119,54 +120,71 @@
       new Chart(document.getElementById("ordersChart"), {
         type: "bar",
         data: {
-          labels: months, // Meses
+          labels: months,
           datasets: [
             {
               label: "Restaurantes Criados",
-              data: restaurantData, // Dados de restaurantes
-              backgroundColor: "rgba(108, 99, 255, 0.8)", // Cor das barras
-              borderColor: "rgba(108, 99, 255, 1)", // Cor da borda das barras
-              borderWidth: 2, // Largura da borda
-              borderRadius: 10, // Bordas arredondadas
-              hoverBackgroundColor: "rgba(108, 99, 255, 1)", // Cor ao passar o mouse
-              hoverBorderColor: "#fff", // Cor da borda ao passar o mouse
+              data: restaurantData,
+              backgroundColor: "rgba(108, 99, 255, 0.8)",
+              borderColor: "rgba(108, 99, 255, 1)",
+              borderWidth: 2,
+              borderRadius: 10,
+              hoverBackgroundColor: "rgba(108, 99, 255, 1)",
+              hoverBorderColor: "#fff",
             },
           ],
         },
-        options: chartOptions,
+        options: {
+          ...chartOptions,
+          scales: {
+            ...chartOptions.scales,
+            y: {
+              ...chartOptions.scales.y,
+              max: 4, // Limita o eixo Y a 4
+            },
+          },
+        },
       });
 
-      // Gráfico de usuários registrados
+      // Gráfico de utilizadores registrados
       new Chart(document.getElementById("clientsChart"), {
         type: "line",
         data: {
-          labels: months, // Meses
+          labels: months,
           datasets: [
             {
               label: "Utilizadores Registados",
-              data: userData, // Dados de usuários
-              borderColor: "rgba(108, 99, 255, 1)", // Cor da linha
-              backgroundColor: "rgba(108, 99, 255, 0.2)", // Cor de preenchimento abaixo da linha
-              tension: 0.4, // Suaviza as curvas da linha
-              fill: true, // Preenche a área abaixo da linha
-              borderWidth: 3, // Largura da linha
-              pointBackgroundColor: "#fff", // Cor do ponto
-              pointBorderColor: "rgba(108, 99, 255, 1)", // Cor da borda do ponto
-              pointBorderWidth: 2, // Largura da borda do ponto
-              pointHoverBackgroundColor: "#fff", // Cor do ponto ao passar o mouse
-              pointHoverBorderColor: "rgba(108, 99, 255, 1)", // Cor da borda ao passar o mouse
-              pointHoverBorderWidth: 3, // Largura da borda ao passar o mouse
+              data: userData,
+              borderColor: "rgba(255, 99, 132, 1)",
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
+              tension: 0.4,
+              fill: true,
+              borderWidth: 3,
+              pointBackgroundColor: "#fff",
+              pointBorderColor: "rgba(255, 99, 132, 1)",
+              pointBorderWidth: 2,
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "rgba(255, 99, 132, 1)",
+              pointHoverBorderWidth: 3,
             },
           ],
         },
-        options: chartOptions,
+        options: {
+          ...chartOptions,
+          scales: {
+            ...chartOptions.scales,
+            y: {
+              ...chartOptions.scales.y,
+              max: 6, // Limita o eixo Y a 6
+            },
+          },
+        },
       });
     } catch (err) {
       console.error("Erro ao carregar os dados do dashboard:", err);
     }
   }
 
-  // Carregar os dados ao carregar a página
   loadDashboardData();
 </script>
 </body>

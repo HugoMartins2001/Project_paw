@@ -32,6 +32,9 @@ dashboardController.getDashboardData = async function (req, res, next) {
     // Agrupar restaurantes criados por mês
     const restaurantsByMonth = await mongoRestaurant.aggregate([
       {
+        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+      },
+      {
         $group: {
           _id: { $month: "$createdAt" }, // Agrupa por mês
           count: { $sum: 1 }, // Conta o número de restaurantes
@@ -42,6 +45,9 @@ dashboardController.getDashboardData = async function (req, res, next) {
 
     // Agrupar usuários registrados por mês
     const usersByMonth = await mongoUser.aggregate([
+      {
+        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+      },
       {
         $group: {
           _id: { $month: "$createdAt" }, // Agrupa por mês
