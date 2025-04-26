@@ -17,11 +17,11 @@
 
   <div class="dashboard-container">
     <div style="flex: 2">
-      <div class="chart-container">
-        <canvas id="ordersChart"></canvas>
+      <div class="chart-container" style="width: 900px; height: 250px; margin: auto; margin-bottom: 10px;">
+        <canvas id="generalGraph"></canvas>
       </div>
       <div class="chart-container">
-        <canvas id="clientsChart"></canvas>
+        <canvas id="clientsGraph"></canvas>
       </div>
     </div>
 
@@ -114,46 +114,96 @@
         throw new Error("Erro ao carregar os dados do dashboard");
       }
 
-      const { months, restaurantData, userData } = await response.json();
+      const { months, restaurantData, userData, menuData, dishData, orderData } = await response.json();
 
-      // Gráfico de restaurantes criados
-      new Chart(document.getElementById("ordersChart"), {
-        type: "bar",
+      // Gráfico de dados gerais (Restaurantes, Menus, Pratos e Orders)
+      new Chart(document.getElementById("generalGraph"), {
+        type: "pie", // Alterado para o tipo "pie"
         data: {
-          labels: months,
+          labels: ["Restaurants created", "Menus created", "Dishes created", "Orders created"],
           datasets: [
             {
-              label: "Restaurantes Criados",
-              data: restaurantData,
-              backgroundColor: "rgba(108, 99, 255, 0.8)",
-              borderColor: "rgba(108, 99, 255, 1)",
+              label: "Dados Gerais",
+              data: [
+                restaurantData.reduce((a, b) => a + b, 0),
+                menuData.reduce((a, b) => a + b, 0),
+                dishData.reduce((a, b) => a + b, 0),
+                orderData.reduce((a, b) => a + b, 0),
+              ],
+              backgroundColor: [
+                "rgba(54, 162, 235, 0.8)", // Azul para Restaurantes
+                "rgba(255, 206, 86, 0.8)", // Amarelo para Menus
+                "rgba(75, 192, 192, 0.8)", // Verde para Pratos
+                "rgba(153, 102, 255, 0.8)", // Roxo para Orders
+              ],
+              hoverBackgroundColor: [
+                "rgba(54, 162, 235, 1)", // Azul mais forte para Restaurantes
+                "rgba(255, 206, 86, 1)", // Amarelo mais forte para Menus
+                "rgba(75, 192, 192, 1)", // Verde mais forte para Pratos
+                "rgba(153, 102, 255, 1)", // Roxo mais forte para Orders
+              ],
+              borderColor: "rgba(255, 255, 255, 1)", // Borda branca para contraste
               borderWidth: 2,
-              borderRadius: 10,
-              hoverBackgroundColor: "rgba(108, 99, 255, 1)",
-              hoverBorderColor: "#fff",
             },
           ],
         },
         options: {
-          ...chartOptions,
-          scales: {
-            ...chartOptions.scales,
-            y: {
-              ...chartOptions.scales.y,
-              max: 4, // Limita o eixo Y a 4
+          responsive: true,
+          maintainAspectRatio: false, // Permite ajustar o tamanho do gráfico
+          plugins: {
+            legend: {
+              display: true,
+              position: "bottom", // Move a legenda para baixo
+              labels: {
+                color: "#333", // Cor do texto da legenda
+                font: {
+                  size: 16, // Aumenta o tamanho do texto da legenda
+                  family: "Arial, sans-serif",
+                },
+                padding: 20, // Espaçamento entre os itens da legenda
+                usePointStyle: true, // Usa pontos ao invés de caixas na legenda
+              },
+            },
+            tooltip: {
+              backgroundColor: "rgba(0, 0, 0, 0.9)", // Fundo escuro para o tooltip
+              titleColor: "#fff", // Cor do título no tooltip
+              bodyColor: "#fff", // Cor do texto no tooltip
+              padding: 15,
+              usePointStyle: true,
+              borderColor: "#fff",
+              borderWidth: 1,
+              cornerRadius: 10,
+            },
+            datalabels: {
+              color: "#fff", // Cor do texto dentro do gráfico
+              font: {
+                size: 14,
+                weight: "bold",
+              },
+              formatter: (value, context) => {
+                const label = context.chart.data.labels[context.dataIndex];
+                return `${label}: ${value}`; // Exibe o texto e o valor
+              },
+            },
+          },
+          layout: {
+            padding: {
+              top: 20,
+              bottom: 20,
+              left: 20,
+              right: 20,
             },
           },
         },
       });
-
-      // Gráfico de utilizadores registrados
-      new Chart(document.getElementById("clientsChart"), {
+      // Gráfico de utilizadores registados
+      new Chart(document.getElementById("clientsGraph"), {
         type: "line",
         data: {
           labels: months,
           datasets: [
             {
-              label: "Utilizadores Registados",
+              label: "registered users",
               data: userData,
               borderColor: "rgba(255, 99, 132, 1)",
               backgroundColor: "rgba(255, 99, 132, 0.2)",
@@ -181,8 +231,9 @@
         },
       });
     } catch (err) {
-      console.error("Erro ao carregar os dados do dashboard:", err);
+      console.error("Error loading dashboard data:", err);
     }
+    
   }
 
   loadDashboardData();

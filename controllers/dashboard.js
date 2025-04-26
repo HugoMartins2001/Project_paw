@@ -1,5 +1,9 @@
 const mongoRestaurant = require("../models/restaurant");
 const mongoUser = require("../models/user");
+const mongoMenu = require("../models/menu"); 
+const mongoDish = require("../models/dish"); 
+const mongoOrder = require("../models/order");
+
 
 const dashboardController = {};
 
@@ -57,10 +61,55 @@ dashboardController.getDashboardData = async function (req, res, next) {
       { $sort: { _id: 1 } }, // Ordena por mês
     ]);
 
+    // Agrupar menus criados por mês
+    const menusByMonth = await mongoMenu.aggregate([
+      {
+        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+      },
+      {
+        $group: {
+          _id: { $month: "$createdAt" }, // Agrupa por mês
+          count: { $sum: 1 }, // Conta o número de menus
+        },
+      },
+      { $sort: { _id: 1 } }, // Ordena por mês
+    ]);
+
+    // Agrupar pratos criados por mês
+    const dishesByMonth = await mongoDish.aggregate([
+      {
+        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+      },
+      {
+        $group: {
+          _id: { $month: "$createdAt" }, // Agrupa por mês
+          count: { $sum: 1 }, // Conta o número de pratos
+        },
+      },
+      { $sort: { _id: 1 } }, // Ordena por mês
+    ]);
+
+    // Agrupar orders criadas por mês
+    const ordersByMonth = await mongoOrder.aggregate([
+      {
+        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+      },
+      {
+        $group: {
+          _id: { $month: "$createdAt" }, // Agrupa por mês
+          count: { $sum: 1 }, // Conta o número de orders
+        },
+      },
+      { $sort: { _id: 1 } }, // Ordena por mês
+    ]);
+
     // Converter os dados para um formato utilizável no gráfico
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const restaurantData = Array(12).fill(0);
     const userData = Array(12).fill(0);
+    const menuData = Array(12).fill(0);
+    const dishData = Array(12).fill(0);
+    const orderData = Array(12).fill(0);
 
     restaurantsByMonth.forEach((item) => {
       restaurantData[item._id - 1] = item.count; // Preenche os dados no índice correto
@@ -70,8 +119,20 @@ dashboardController.getDashboardData = async function (req, res, next) {
       userData[item._id - 1] = item.count; // Preenche os dados no índice correto
     });
 
+    menusByMonth.forEach((item) => {
+      menuData[item._id - 1] = item.count; // Preenche os dados no índice correto
+    });
+
+    dishesByMonth.forEach((item) => {
+      dishData[item._id - 1] = item.count; // Preenche os dados no índice correto
+    });
+
+    ordersByMonth.forEach((item) => {
+      orderData[item._id - 1] = item.count; // Preenche os dados no índice correto
+    });
+
     // Retorna os dados como JSON
-    res.json({ months, restaurantData, userData });
+    res.json({ months, restaurantData, userData, menuData, dishData, orderData });
   } catch (err) {
     console.error("Error fetching dashboard data:", err);
     res.status(500).send("Error fetching dashboard data");
