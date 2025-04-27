@@ -88,22 +88,6 @@ authController.createLoginSubmitted = function (req, res, next) {
         req.body.profilePic = `/uploads/${req.file.filename}`;
     }
 
-    // Validação de entrada: verifica se os campos obrigatórios estão presentes
-    if (!req.body.email || !req.body.password) {
-        return res.render('login/createUser', { errorMessage: 'Email and password are required!' });
-    }
-
-    // Validação de formato do email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(req.body.email)) {
-        return res.render('login/createUser', { errorMessage: 'Invalid email format!' });
-    }
-
-    // Validação de força da senha (mínimo de 8 caracteres)
-    if (req.body.password.length < 8) {
-        return res.render('login/createUser', { errorMessage: 'Password must be at least 8 characters long!' });
-    }
-
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
     req.body.password = hashedPassword;
 
