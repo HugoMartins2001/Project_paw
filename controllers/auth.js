@@ -50,8 +50,8 @@ authController.submittedLogin = function (req, res, next) {
                         // Login bem-sucedido, reseta o contador de tentativas
                         loginAttempts[loginKey] = { count: 0, lastAttempt: Date.now() };
 
-                        const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: 86400000 });
-                        res.cookie('auth-token', authToken, { maxAge: 86400000 });
+                        const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: '2h' }); // Token expira em 2 horas
+                        res.cookie('auth-token', authToken, { maxAge: 2 * 60 * 60 * 1000 }); // Cookie expira em 2 horas (em milissegundos)
                         res.render('login/index', { successMessage: 'Login successfully!' });
                     } else {
                         // Senha incorreta

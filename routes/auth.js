@@ -37,8 +37,8 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback', 
     passport.authenticate('google', { failureRedirect: '/auth/login' }),
     (req, res) => {
-        const authToken = jwt.sign({ email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '1d' });
-        res.cookie('auth-token', authToken, { maxAge: 86400000 }); // 1 dia
+        const authToken = jwt.sign({ email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '2h' });
+        res.cookie('auth-token', authToken, { maxAge: 2 * 60 * 60 * 1000  }); // 2 horas
         res.redirect('/dashboard'); // Agora já podes ir para o dashboard
     }
 );
