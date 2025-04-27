@@ -214,37 +214,52 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
 };
 
 // Controlador para criar um restaurante
-restaurantsController.createRestaurant = function (req, res, next) {
+restaurantsController.createRestaurant = async function (req, res, next) {
   const managerId = req.user._id;
-
   const restaurantPic = req.file ? req.file.filename : null;
 
-  const newRestaurant = new mongoRestaurant({
-    name: req.body.name,
-    address: req.body.address,
-    phone: req.body.phone,
-    restaurantEmail: req.body.restaurantEmail,
-    openingHours: req.body.openingHours,
-    paymentMethods: Array.isArray(req.body.paymentMethods) ? req.body.paymentMethods : [req.body.paymentMethods], // Garantir que seja um array
-    menus: req.body.menus || [],
-    managerId: managerId,
-    isApproved: false, // Restaurantes criados inicialmente não são aprovados
-    restaurantPic: restaurantPic, 
-  });
-
-  newRestaurant
-    .save()
-    .then(function (restaurant) {
-      logAction("Created Restaurant", req.user, {
-        restaurantId: restaurant._id,
-        name: restaurant.name,
-      });
-
-      res.redirect("/restaurants/showRestaurants");
-    })
-    .catch(function (err) {
-      next(err);
+  try {
+    // Verificar se já existe um restaurante com o mesmo email para outro gerente
+    const existingRestaurant = await mongoRestaurant.findOne({
+      restaurantEmail: req.body.restaurantEmail,
+      managerId: { $ne: managerId }, // Verifica se o email pertence a outro gerente
     });
+
+    if (existingRestaurant) {
+      // Retorna um erro se o email já estiver em uso por outro gerente
+      return res.status(400).render("errors/400", {
+        message: "Este email já está em uso por outro gerente.",
+      });
+    }
+
+    // Criar o novo restaurante
+    const newRestaurant = new mongoRestaurant({
+      name: req.body.name,
+      address: req.body.address,
+      phone: req.body.phone,
+      restaurantEmail: req.body.restaurantEmail,
+      openingHours: req.body.openingHours,
+      paymentMethods: Array.isArray(req.body.paymentMethods)
+        ? req.body.paymentMethods
+        : [req.body.paymentMethods], // Garantir que seja um array
+      menus: req.body.menus || [],
+      managerId: managerId,
+      isApproved: false, // Restaurantes criados inicialmente não são aprovados
+      restaurantPic: restaurantPic,
+    });
+
+    await newRestaurant.save();
+
+    logAction("Created Restaurant", req.user, {
+      restaurantId: newRestaurant._id,
+      name: newRestaurant.name,
+    });
+
+    res.redirect("/restaurants/showRestaurants");
+  } catch (err) {
+    console.error("Error creating restaurant:", err);
+    next(err);
+  }
 };
 
 // Controlador para deletar um restaurante
@@ -321,6 +336,20 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
         ? { _id: req.params.id }
         : { _id: req.params.id, managerId: req.user._id }; // Apenas o gerente que criou o restaurante pode editá-lo
 
+    // Verificar se já existe um restaurante com o mesmo email para outro gerente
+    const existingRestaurant = await mongoRestaurant.findOne({
+      restaurantEmail: req.body.restaurantEmail,
+      _id: { $ne: req.params.id }, // Ignorar o restaurante que está sendo atualizado
+      managerId: { $ne: req.user._id }, // Verifica se o email pertence a outro gerente
+    });
+
+    if (existingRestaurant) {
+      // Retorna um erro se o email já estiver em uso por outro gerente
+      return res.status(400).render("errors/400", {
+        message: "Este email já está em uso por outro gerente.",
+      });
+    }
+
     // Dados atualizados
     const updatedData = {
       name: req.body.name,
@@ -330,7 +359,9 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
       phone: req.body.phone,
       restaurantEmail: req.body.restaurantEmail,
       openingHours: req.body.openingHours,
-      paymentMethods: Array.isArray(req.body.paymentMethods) ? req.body.paymentMethods : [req.body.paymentMethods], // Garantir que seja um array
+      paymentMethods: Array.isArray(req.body.paymentMethods)
+        ? req.body.paymentMethods
+        : [req.body.paymentMethods], // Garantir que seja um array
       menus: req.body.menus || [],
     };
 
