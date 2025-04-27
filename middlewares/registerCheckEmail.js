@@ -1,6 +1,6 @@
 const mongoUser = require('../models/user');
 
-const checkEmail = async (req, res, next) => {
+const registerCheckEmail = async (req, res, next) => {
     try {
         const existingUser = await mongoUser.findOne({ email: req.body.email });
         if (existingUser) {
@@ -12,4 +12,4 @@ const checkEmail = async (req, res, next) => {
     }
 };
 
-module.exports = checkEmail;
+module.exports = registerCheckEmail;

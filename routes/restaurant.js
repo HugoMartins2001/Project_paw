@@ -21,12 +21,7 @@ router.get("/submitRestaurant", authController.verifyLoginUser, function (req, r
 });
 
 // Rota para processar o formulário de criação de restaurantes, incluindo upload de imagem
-router.post(
-  "/submittedRestaurant",
-  upload.single("restaurantPic"),
-  authController.verifyLoginUser,
-  restaurantsController.processCreateRestaurant,
-  function (req, res, next) {
+router.post("/submittedRestaurant", upload.single("restaurantPic"), authController.verifyLoginUser, restaurantsController.processCreateRestaurant, function (req, res, next) {
     restaurantsController.createRestaurant(req, res, next);
   }
 );
@@ -47,29 +42,16 @@ router.get("/editRestaurant/:id", authController.verifyLoginUser, function (req,
 });
 
 // Rota para processar o formulário de edição de restaurantes, incluindo upload de imagem
-router.post(
-  "/editRestaurant/:id",
-  upload.single("restaurantPic"),
-  authController.verifyLoginUser,
-  restaurantsController.processUpdateRestaurant,
-  function (req, res, next) {
+router.post("/editRestaurant/:id", upload.single("restaurantPic"), authController.verifyLoginUser, restaurantsController.processUpdateRestaurant, function (req, res, next) {
     restaurantsController.updateRestaurant(req, res, next);
   }
 );
 
 // Rota para exibir restaurantes pendentes de aprovação
-router.get(
-  "/pendingApproval",
-  authController.verifyLoginUser,
-  restaurantsController.showPendingRestaurants
-);
+router.get("/pendingApproval", authController.verifyLoginUser, restaurantsController.showPendingRestaurants);
 
 // Rota para aprovar um restaurante específico pelo ID
-router.post(
-  "/approveRestaurant/:id",
-  authController.verifyLoginUser,
-  restaurantsController.approveRestaurant
-);
+router.post("/approveRestaurant/:id", authController.verifyLoginUser, restaurantsController.approveRestaurant);
 
 // Rota para alternar a visibilidade de um restaurante (ex.: visível/invisível)
 router.post('/toggleVisibility/:id', restaurantsController.toggleVisibility);

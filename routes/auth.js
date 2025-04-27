@@ -3,7 +3,7 @@ var router = express.Router();
 const authController = require('../controllers/auth');
 const passport = require('passport');
 const upload = require('../middlewares/upload');
-const checkEmail = require('../middlewares/checkEmail');
+const registerCheckEmail = require('../middlewares/registerCheckEmail');
 
 // Rota para exibir a página de login
 router.get('/login', authController.login);
@@ -18,7 +18,7 @@ router.get('/logout', authController.logout);
 router.get('/register', authController.createLogin);
 
 // Rota para processar o formulário de registro submetido, incluindo upload de imagem de perfil
-router.post('/registerSubmitted', upload.single('profilePic'), checkEmail, authController.createLoginSubmitted);
+router.post('/registerSubmitted', upload.single('profilePic'), registerCheckEmail, authController.createLoginSubmitted);
 
 // Rota para exibir o formulário de login (exemplo de renderização direta)
 router.get('/loginform', (req, res) => {
