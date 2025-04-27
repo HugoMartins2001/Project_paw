@@ -4,6 +4,7 @@ const authController = require('../controllers/auth');
 const passport = require('passport');
 const upload = require('../middlewares/upload');
 const registerCheckEmail = require('../middlewares/registerCheckEmail');
+const jwt = require('jsonwebtoken');
 
 // Rota para exibir a página de login
 router.get('/login', authController.login);
@@ -31,12 +32,14 @@ router.get('/registerform', (req, res) => {
 });
 
 // Rota para autenticação com Google (redireciona para o Google para autenticação)
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }), authController.verifyLoginUser);
 
-// Rota de callback para autenticação com Google (redireciona após autenticação bem-sucedida ou falha)
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }),
+router.get('/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/auth/login' }),
     (req, res) => {
-        res.redirect('/dashboard'); // Redireciona para o dashboard após login bem-sucedido
+        const authToken = jwt.sign({ email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        res.cookie('auth-token', authToken, { maxAge: 86400000 }); // 1 dia
+        res.redirect('/dashboard'); // Agora já podes ir para o dashboard
     }
 );
 

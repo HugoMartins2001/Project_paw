@@ -5,12 +5,18 @@ const User = require('../models/user');
 
 // Serialização do usuário
 passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.id); // Só guardar o ID
 });
 
-passport.deserializeUser((user, done) => {
-    done(null, user);
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id); // Buscar o user pelo ID
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
 });
+
 
 // Configuração do Google OAuth
 passport.use(new GoogleStrategy({
@@ -27,7 +33,8 @@ passport.use(new GoogleStrategy({
             user = await User.create({
                 googleId: profile.id,
                 email: profile.emails[0].value, // Obtém o email do perfil
-                name: profile.displayName// Obtém o nome do perfil
+                name: profile.displayName,// Obtém o nome do perfil
+                role: 'Client', // Define o papel padrão como 'Client'
             });
         }
 
