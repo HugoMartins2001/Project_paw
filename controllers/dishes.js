@@ -385,9 +385,6 @@ dishesController.updateDish = function (req, res, next) {
           .send("You do not have permission to edit this dish.");
       }
 
-      if (req.file) {
-        updatedData.dishPic = req.file.filename;
-      }
 
       const updatedDishData = {
         name,
@@ -412,6 +409,10 @@ dishesController.updateDish = function (req, res, next) {
           ? allergens.split(",").map((el) => el.trim())
           : dish.allergens || [],
       };
+
+      if (req.file) {
+        updatedDishData.dishPic = req.file.filename;
+      }
 
       return mongoDish.findByIdAndUpdate(dishId, updatedDishData, { new: true });
     })
