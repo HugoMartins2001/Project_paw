@@ -193,3 +193,60 @@ h1 {
     padding: 6px 10px; /* Ajusta o espaçamento interno */
   }
 }
+
+/* fotos dos menus */
+/* Estilo aprimorado para as imagens dos menus */
+.menu-img-container {
+  position: relative;
+  overflow: hidden; /* Garante que o zoom não ultrapasse os limites */
+  border-radius: 12px; /* Bordas arredondadas mais suaves */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra mais elegante */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.menu-img-container:hover {
+  transform: translateY(-5px); /* Leve elevação ao passar o mouse */
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3); /* Sombra mais intensa no hover */
+}
+
+.menu-img {
+  width: 100%;
+  height: 200px; /* Altura consistente para todas as imagens */
+  object-fit: cover; /* Garante que a imagem se ajuste sem distorção */
+  transition: transform 0.4s ease; /* Transição suave para o zoom */
+}
+
+.menu-img-container:hover .menu-img {
+  transform: scale(1.1); /* Leve zoom ao passar o mouse */
+}
+
+/* Adiciona um gradiente de fundo para destacar a imagem */
+.menu-img-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  border-radius: 12px; /* Segue o formato da borda */
+}
+
+.menu-img-container:hover::before {
+  opacity: 1; /* Gradiente aparece no hover */
+}
+
+/* Texto sobreposto na imagem (opcional) */
+.menu-img-container .overlay-text {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); /* Texto com sombra para melhor visibilidade */
+}
