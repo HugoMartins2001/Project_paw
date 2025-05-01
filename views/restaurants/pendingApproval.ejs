@@ -25,7 +25,7 @@
             <div class="restaurant-card">
               <h5><%= restaurant.name %></h5>
               <p><strong>Street:</strong> <%= restaurant.address %></p>
-              <p><strong>Email:</strong> <%= restaurant.email %></p>
+              <p><strong>Email:</strong> <%= restaurant.restaurantEmail %></p>
               <p><strong>Phone:</strong> <%= restaurant.phone %></p>
 
               <form class="approve-form mt-3" action="/restaurants/approveRestaurant/<%= restaurant._id %>" method="POST">
