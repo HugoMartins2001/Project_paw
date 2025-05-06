@@ -42,4 +42,7 @@ router.post("/editDish/:dishId", upload.single("dishPic"), authController.verify
 // Rota para alternar a visibilidade de um prato (ex.: visível/invisível)
 router.post("/toggleVisibility/:dishId", authController.verifyLoginUser, dishesController.toggleVisibility);
 
+// Rota para exibir o formulário de criação de categorias
+router.post('/addCategory', dishesController.addCategory);
+
 module.exports = router; // Exporta o roteador para ser usado em outros arquivos

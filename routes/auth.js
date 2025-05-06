@@ -36,10 +36,16 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 router.get('/google/callback', 
     passport.authenticate('google', { failureRedirect: '/auth/login' }),
-    (req, res) => {
+    async (req, res) => {
         const authToken = jwt.sign({ email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '2h' });
-        res.cookie('auth-token', authToken, { maxAge: 2 * 60 * 60 * 1000  }); // 2 horas
-        res.redirect('/dashboard'); // Agora já podes ir para o dashboard
+
+        // Verificar se o usuário está bloqueado
+        if (req.user.isBlocked) {
+            return res.redirect('/?login=blocked'); // Redireciona com o parâmetro de erro
+        }
+
+        res.cookie('auth-token', authToken, { maxAge: 2 * 60 * 60 * 1000 }); // 2 horas
+        res.redirect('/?login=success'); // Redireciona com o parâmetro de sucesso
     }
 );
 

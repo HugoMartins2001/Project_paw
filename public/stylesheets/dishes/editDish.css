@@ -88,7 +88,7 @@ select {
 }
 
 .btn-primary:hover {
-  background-color: #5a52e8;
+  background-color: #6c63ff;
 }
 
 .btn-secondary {
@@ -105,4 +105,18 @@ select {
 
 .btn-secondary:hover {
   background-color: #4a4a4a;
+}
+
+#addCategoryBtn {
+  font-weight: bold;
+  background-color: #6c63ff;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+#addCategoryBtn:hover {
+  background-color: #6c63ff;
+  color: white;
+  transform: scale(1.05);
 }

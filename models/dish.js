@@ -10,17 +10,20 @@ const DishSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["carne", "peixe", "sobremesa", "vegetariano"],
     required: true,
   },
   ingredients: { type: [String], required: true },
   nutrition: {
-    calories: { type: Number },
-    fat: { type: Number },
-    protein: { type: Number },
-    carbs: { type: Number },
+    calories: { type: Number, default: 0 }, // Valor padrão para calorias
+    fat: { type: Number, default: 0 }, // Valor padrão para gorduras
+    protein: { type: Number, default: 0 }, // Valor padrão para proteínas
+    carbs: { type: Number, default: 0 }, // Valor padrão para carboidratos
   },
-  nutriScore: { type: String, default: "N/A" },
+  nutriScore: {
+    type: String,
+    enum: ["A", "B", "C", "D", "E", "N/A"], // Valores permitidos para Nutri-Score
+    default: "N/A",
+  },
   allergens: { type: [String], default: [] },
   managerId: {
     type: mongoose.Schema.Types.ObjectId,

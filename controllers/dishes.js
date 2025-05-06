@@ -136,7 +136,7 @@ dishesController.showAll = async function (req, res, next) {
 // Controlador para criar um prato
 dishesController.createDish = async function (req, res, next) {
   try {
-    const { name, description, category, ingredients, allergens } = req.body;
+    const { name, description, category, ingredients, allergens, calories, fat, protein, carbs, nutriScore } = req.body;
 
     const dishPic = req.file ? req.file.filename : null;
 
@@ -148,6 +148,15 @@ dishesController.createDish = async function (req, res, next) {
 
     const user = req.user;
 
+    // Verificar se a categoria já existe
+    const existingCategories = await mongoDish.distinct("category");
+    let finalCategory = category;
+
+    if (!existingCategories.includes(category)) {
+      // Adicionar a nova categoria se ela não existir
+      finalCategory = category.trim();
+    }
+
     // Chamada à API externa para obter informações nutricionais
     let nutritionData = {};
     try {
@@ -158,7 +167,7 @@ dishesController.createDish = async function (req, res, next) {
             title: name,
             apiKey: process.env.SPOONACULAR_API_KEY,
           },
-          timeout: 5000, //foi implementado pois a api estava a dar problemas na criação dos pratos e assim se demorar mais de 5 segundos nao vem informação nenhuma metendo os campos a 0 por default;
+          timeout: 5000, // Timeout para evitar problemas com a API
         }
       );
       nutritionData = nutritionRes.data;
@@ -166,45 +175,46 @@ dishesController.createDish = async function (req, res, next) {
       console.error("Error fetching nutrition data:", error.message);
       // Valores padrão em caso de falha
       nutritionData = {
-        calories: { value: 0 },
-        fat: { value: 0 },
-        protein: { value: 0 },
-        carbs: { value: 0 },
-        nutritionGrade: "N/A",
+        calories: { value: parseFloat(calories) || 0 },
+        fat: { value: parseFloat(fat) || 0 },
+        protein: { value: parseFloat(protein) || 0 },
+        carbs: { value: parseFloat(carbs) || 0 },
+        nutritionGrade: nutriScore || "N/A",
       };
     }
 
-    const calories = nutritionData?.calories?.value || 0;
-    const fat = nutritionData?.fat?.value || 0;
-    const protein = nutritionData?.protein?.value || 0;
-    const carbs = nutritionData?.carbs?.value || 0;
+    const finalCalories = nutritionData?.calories?.value || parseFloat(calories) || 0;
+    const finalFat = nutritionData?.fat?.value || parseFloat(fat) || 0;
+    const finalProtein = nutritionData?.protein?.value || parseFloat(protein) || 0;
+    const finalCarbs = nutritionData?.carbs?.value || parseFloat(carbs) || 0;
+    const finalNutriScore = nutritionData?.nutritionGrade || nutriScore || "N/A";
 
     // Verificar se ingredients é uma string antes de usar .split()
     const ingredientsList = Array.isArray(ingredients)
-      ? ingredients // Se já for um array, use diretamente
+      ? ingredients
       : ingredients
-      ? ingredients.split(",").map((el) => el.trim()) // Se for string, divida e limpe
-      : []; // Caso contrário, use um array vazio
+      ? ingredients.split(",").map((el) => el.trim())
+      : [];
 
     const allergensList = Array.isArray(allergens)
-      ? allergens // Se já for um array, use diretamente
+      ? allergens
       : allergens
-      ? allergens.split(",").map((el) => el.trim()) // Se for string, divida e limpe
-      : []; // Caso contrário, use um array vazio
+      ? allergens.split(",").map((el) => el.trim())
+      : [];
 
     const dishData = {
       name,
       description,
-      category,
+      category: finalCategory, // Usar a categoria final (nova ou existente)
       ingredients: ingredientsList,
       prices,
       nutrition: {
-        calories,
-        fat,
-        protein,
-        carbs,
+        calories: finalCalories,
+        fat: finalFat,
+        protein: finalProtein,
+        carbs: finalCarbs,
       },
-      nutriScore: nutritionData?.nutritionGrade || "N/A",
+      nutriScore: finalNutriScore,
       allergens: allergensList,
       managerId: user._id,
       dishPic: dishPic,
@@ -221,13 +231,18 @@ dishesController.createDish = async function (req, res, next) {
   }
 };
 
-dishesController.renderCreateDishes = function (req, res, next) {
+dishesController.renderCreateDishes = async function (req, res, next) {
   try {
+    // Buscar todas as categorias existentes
+    const categories = await mongoDish.distinct("category");
+
+    // Renderizar a página com as categorias
     res.render("dishes/submitDishes", {
       user: req.user, // Passa o usuário logado para o EJS
+      categories, // Passa as categorias para o EJS
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching categories:", error);
     next(error);
   }
 };
@@ -326,8 +341,8 @@ dishesController.deleteDish = function (req, res, next) {
 dishesController.renderEditDish = function (req, res, next) {
   mongoDish
     .findById(req.params.dishId)
-    .then((dish) => {
-      if (!dish) return res.status(404).render("errors/404", { message: "Restaurant not found." });
+    .then(async (dish) => {
+      if (!dish) return res.status(404).render("errors/404", { message: "Dish not found." });
 
       const user = req.user;
 
@@ -339,7 +354,11 @@ dishesController.renderEditDish = function (req, res, next) {
         return res.status(403).render("errors/403", { message: "Access denied." });
       }
 
-      res.render("dishes/editDish", { dish, user });
+      // Buscar categorias existentes
+      const categories = await mongoDish.distinct("category");
+
+      // Renderizar a página de edição com as categorias
+      res.render("dishes/editDish", { dish, user, categories });
     })
     .catch(next);
 };
@@ -385,7 +404,6 @@ dishesController.updateDish = function (req, res, next) {
           .send("You do not have permission to edit this dish.");
       }
 
-
       const updatedDishData = {
         name,
         description,
@@ -397,10 +415,10 @@ dishesController.updateDish = function (req, res, next) {
           : dish.ingredients || [],
         prices,
         nutrition: {
-          calories: calories || dish.nutrition.calories,
-          fat: fat || dish.nutrition.fat,
-          protein: protein || dish.nutrition.protein,
-          carbs: carbs || dish.nutrition.carbs,
+          calories: parseFloat(calories) || dish.nutrition.calories,
+          fat: parseFloat(fat) || dish.nutrition.fat,
+          protein: parseFloat(protein) || dish.nutrition.protein,
+          carbs: parseFloat(carbs) || dish.nutrition.carbs,
         },
         nutriScore: nutriScore || dish.nutriScore || "N/A",
         allergens: Array.isArray(allergens)
@@ -460,6 +478,29 @@ dishesController.toggleVisibility = async function (req, res, next) {
   } catch (error) {
     console.error(error);
     next(error);
+  }
+};
+
+// Adicionar uma nova categoria
+dishesController.addCategory = async function (req, res, next) {
+  try {
+    const { category } = req.body;
+
+    if (!category || category.trim() === "") {
+      return res.status(400).send("Category name cannot be empty.");
+    }
+
+    // Verificar se a categoria já existe
+    const existingCategories = await mongoDish.distinct("category");
+    if (existingCategories.includes(category)) {
+      return res.status(400).send("Category already exists.");
+    }
+
+    // Adicionar a nova categoria (não diretamente no banco, mas como referência)
+    res.status(200).send({ success: true, message: "Category added successfully." });
+  } catch (error) {
+    console.error("Error adding category:", error);
+    res.status(500).send("Internal server error.");
   }
 };
 

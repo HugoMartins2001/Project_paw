@@ -127,15 +127,27 @@
 
     <script>
       const restaurantForm = document.getElementById("restaurantForm");
+      const phoneInput = document.getElementById("f_phone");
+
       restaurantForm.addEventListener("submit", function (event) {
         event.preventDefault();
+
+        const phone = phoneInput?.value;
+        if (phone && !/^[0-9]{9}$/.test(phone)) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Invalid Phone Number',
+            text: 'Phone number must be 9 digits.',
+          });
+          return;
+        }
 
         Swal.fire({
           icon: "success",
           title: "Restaurant successfully created!",
           text: "You will be redirected to the restaurant list.",
           confirmButtonColor: "#4CAF50",
-          timer: 1000, 
+          timer: 1000,
           showConfirmButton: false,
         }).then(() => {
           restaurantForm.submit();
@@ -143,16 +155,15 @@
       });
 
       document.getElementById("customizeHoursBtn").addEventListener("click", function () {
-    const customHours = document.getElementById("customHours");
-    if (customHours.style.display === "none") {
-      customHours.style.display = "block";
-      this.textContent = "Hide Customization";
-    } else {
-      customHours.style.display = "none";
-      this.textContent = "Customize Saturday and Sunday";
-    }
-  });
+        const customHours = document.getElementById("customHours");
+        if (customHours.style.display === "none") {
+          customHours.style.display = "block";
+          this.textContent = "Hide Customization";
+        } else {
+          customHours.style.display = "none";
+          this.textContent = "Customize Saturday and Sunday";
+        }
+      });
     </script>
   </body>
 </html>
-``` 
