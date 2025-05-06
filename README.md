@@ -1,5 +1,7 @@
 RESTAURANT WEBSITE PROJECT 
 
+atualizações a serem feitas
+
 possiveis implementações no projeto:
 
 
@@ -18,11 +20,20 @@ Realizar encomendas (orders);
 Acompanhar estado das encomendas;
 
 🧑‍💼 Funcionalidades para Admin
-Gerir utilizadores (bloquear, etc.)
-Estado do restaurante: "pendente", "aprovado", "rejeitado";
+Gerir utilizadores (bloquear, etc.)FEITO
+Estado do restaurante: "aprovado", "rejeitado";FEITO
+
+para melhorar no site de paw:
+criar categorias para os pratos,FEITO
+meter informações nutricionais cdaso não aparecer na api FEITO
+ao associar o prato ao menu não aparece,FEITO
+ao meter o numero de telemovel no restaurante se meter mais de 9 da erro e não da alerta.FEITO
+
+tentar fazer login:
+bloquear o utilizador e manda email;FEITO
 
 
-atualizações a serem feitas
+
 
 adicionar pagina de historico de encomendas FEITO
 
