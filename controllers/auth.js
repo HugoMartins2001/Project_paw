@@ -1,3 +1,16 @@
+require('dotenv').config(); // Carrega as variáveis do .env
+
+const nodemailer = require('nodemailer');
+
+// Configuração do Nodemailer usando variáveis de ambiente
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
 const mongoUser = require('../models/user');
 const jwt = require('jsonwebtoken');
 const config = require('../jwt_secret/config');
@@ -25,9 +38,63 @@ authController.submittedLogin = function (req, res, next) {
 
     const attempts = loginAttempts[loginKey];
 
-    // Bloqueia o login se houver muitas tentativas em um curto período
-    if (attempts.count >= 5 && Date.now() - attempts.lastAttempt < 15 * 60 * 1000) {
-        return res.render('login/index', { errorMessage: 'Too many login attempts. Please try again later..' });
+    // Bloqueia o login após 5 tentativas falhadas
+    if (attempts.count >= 2) {
+        // Bloqueia o usuário no banco de dados
+        mongoUser.findOneAndUpdate({ email: emailInput }, { isBlocked: true }, { new: true }) // Retorna o documento atualizado
+            .then((user) => {
+                if (user) {
+                    // Envia um e-mail ao administrador
+                    const mailOptions = {
+                        from: process.env.EMAIL_USER,
+                        to: 'hugolm280@hotmail.com', // Substitua pelo e-mail do administrador
+                        subject: '🚨 User Blocked Due to Failed Login Attempts',
+                        html: `
+                            <div style="font-family: 'Roboto', sans-serif; max-width: 600px; margin: 0 auto; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                                <div style="background-color: #2c3e50; color: white; padding: 20px; text-align: center;">
+                                    <h1 style="margin: 0; font-size: 28px;">🚨 User Blocked Alert</h1>
+                                    <p style="margin: 5px 0 0; font-size: 16px;">Immediate Action Required</p>
+                                </div>
+                                <div style="padding: 20px; background-color: #ecf0f1; color: #2c3e50; line-height: 1.6;">
+                                    <p style="font-size: 16px; margin: 0 0 10px;">Dear Administrator,</p>
+                                    <p style="font-size: 14px; margin: 0 0 20px;">The following user has been <strong style="color: #e74c3c;">blocked</strong> due to multiple failed login attempts:</p>
+                                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;">
+                                        <tr>
+                                            <td style="padding: 10px; border: 1px solid #bdc3c7; background-color: #ffffff;"><strong>Email:</strong></td>
+                                            <td style="padding: 10px; border: 1px solid #bdc3c7; background-color: #ffffff;">${emailInput}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 10px; border: 1px solid #bdc3c7; background-color: #ffffff;"><strong>Role:</strong></td>
+                                            <td style="padding: 10px; border: 1px solid #bdc3c7; background-color: #ffffff;">${user.role || 'N/A'}</td>
+                                        </tr>
+                                    </table>
+                                    <p style="font-size: 14px; margin: 0 0 20px;">Please review the user's account and take the necessary actions to unblock them if appropriate.</p>
+                                    <div style="text-align: center; margin: 20px 0;">
+                                        <a href="http://localhost:3000" style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; font-size: 14px; border-radius: 5px; display: inline-block;">Unblock User</a>
+                                    </div>
+                                    <p style="font-size: 14px; margin: 0;">If you have any questions, please contact the support team.</p>
+                                </div>
+                                <div style="background-color: #34495e; color: white; padding: 10px; text-align: center; font-size: 12px;">
+                                    <p style="margin: 0;">This is an automated message. Please do not reply to this email.</p>
+                                </div>
+                            </div>
+                        `
+                    };
+    
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.error('Error sending email:', error);
+                        } else {
+                            console.log('Email sent:', info.response);
+                        }
+                    });
+                }
+            })
+            .catch((err) => {
+                console.error('Error blocking user:', err);
+            });
+    
+        return res.render('login/index', { errorMessage: 'Your account has been blocked. Please contact support.' });
     }
 
     mongoUser.findOne({ email: emailInput })
