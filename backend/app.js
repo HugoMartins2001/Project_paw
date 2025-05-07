@@ -21,6 +21,25 @@ const homeRoutes = require("./routes/home");
 const usersRouter = require("./routes/users");
 const adminRoutes = require('./routes/admin');
 const ordersRouter = require("./routes/orders");
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Project PAW API',
+            version: '1.0.0',
+            description: 'API documentation for Project PAW',
+        },
+        servers: [
+            {
+                url: 'http://localhost:3000', // URL do seu back-end
+            },
+        ],
+    },
+    apis: ['./routes/*.js'], // Caminho para os arquivos de rotas
+};
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
 var mongoDB = "mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -45,6 +64,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(flash());
 app.use("/uploads", express.static("public/uploads"));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(
   session({
