@@ -44,56 +44,129 @@ authController.submittedLogin = function (req, res, next) {
         mongoUser.findOneAndUpdate({ email: emailInput }, { isBlocked: true }, { new: true }) // Retorna o documento atualizado
             .then((user) => {
                 if (user) {
-                    // Envia um e-mail ao administrador
-                    const mailOptions = {
+                    // Envia um e-mail para o usuário bloqueado
+                    const userMailOptions = {
                         from: process.env.EMAIL_USER,
-                        to: 'hugolm280@hotmail.com', // Substitua pelo e-mail do administrador
-                        subject: '🚨 User Blocked Due to Failed Login Attempts',
+                        to: emailInput,
+                        subject: '🚨 Your Account Has Been Blocked',
                         html: `
-                            <div style="font-family: 'Roboto', sans-serif; max-width: 600px; margin: 0 auto; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-                                <div style="background-color: #2c3e50; color: white; padding: 20px; text-align: center;">
-                                    <h1 style="margin: 0; font-size: 28px;">🚨 User Blocked Alert</h1>
-                                    <p style="margin: 5px 0 0; font-size: 16px;">Immediate Action Required</p>
+                            <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); background-color: #ffffff; border: 1px solid #e0e0e0;">
+                                <!-- Header with Logo -->
+                                <div style="background: #e74c3c; padding: 30px 20px; text-align: center;">
+                                    <img src="https://i.imgur.com/v1irJwp.jpeg" alt="App Logo" width="60" height="60" style=" margin-bottom: 20px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: block; margin-left: auto; margin-right: auto;" />
+                                    <h1 style="color: #ffffff; font-size: 24px; margin: 0;">🚨 Account Blocked</h1>
+                                    <p style="color: #f9f9f9; font-size: 15px; margin-top: 8px;">Security Notification</p>
                                 </div>
-                                <div style="padding: 20px; background-color: #ecf0f1; color: #2c3e50; line-height: 1.6;">
-                                    <p style="font-size: 16px; margin: 0 0 10px;">Dear Administrator,</p>
-                                    <p style="font-size: 14px; margin: 0 0 20px;">The following user has been <strong style="color: #e74c3c;">blocked</strong> due to multiple failed login attempts:</p>
-                                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;">
-                                        <tr>
-                                            <td style="padding: 10px; border: 1px solid #bdc3c7; background-color: #ffffff;"><strong>Email:</strong></td>
-                                            <td style="padding: 10px; border: 1px solid #bdc3c7; background-color: #ffffff;">${emailInput}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 10px; border: 1px solid #bdc3c7; background-color: #ffffff;"><strong>Role:</strong></td>
-                                            <td style="padding: 10px; border: 1px solid #bdc3c7; background-color: #ffffff;">${user.role || 'N/A'}</td>
-                                        </tr>
-                                    </table>
-                                    <p style="font-size: 14px; margin: 0 0 20px;">Please review the user's account and take the necessary actions to unblock them if appropriate.</p>
-                                    <div style="text-align: center; margin: 20px 0;">
-                                        <a href="http://localhost:3000" style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; font-size: 14px; border-radius: 5px; display: inline-block;">Unblock User</a>
+                    
+                                <!-- Body -->
+                                <div style="padding: 25px 20px; color: #2c3e50; background-color: #f9f9f9;">
+                                    <p style="font-size: 16px; margin-bottom: 15px;">Dear User,</p>
+                                    <p style="font-size: 14px; margin-bottom: 25px;">
+                                        Your account has been <strong style="color: #e74c3c;">temporarily blocked</strong> due to multiple failed login attempts.
+                                    </p>
+                                    <p style="font-size: 14px; margin-bottom: 20px;">
+                                        If you believe this was a mistake, please reach out to our support team for further assistance.
+                                    </p>
+                                    <div style="text-align: center; margin-bottom: 30px;">
+                                        <a href="mailto:support@OrdEat.com" 
+                                           style="background: linear-gradient(to right, #3498db, #2980b9); color: white; padding: 14px 30px; text-decoration: none; font-size: 15px; border-radius: 6px; font-weight: bold;">
+                                            📩 Contact Support
+                                        </a>
                                     </div>
-                                    <p style="font-size: 14px; margin: 0;">If you have any questions, please contact the support team.</p>
+                                    <p style="font-size: 13px; color: #666;">We take account security seriously and thank you for your understanding.</p>
                                 </div>
-                                <div style="background-color: #34495e; color: white; padding: 10px; text-align: center; font-size: 12px;">
-                                    <p style="margin: 0;">This is an automated message. Please do not reply to this email.</p>
+                    
+                                <!-- Footer -->
+                                <div style="background-color: #ecf0f1; color: #7f8c8d; text-align: center; font-size: 12px; padding: 15px;">
+                                    <p style="margin: 0;">This is an automated message from <strong>OrdEat</strong>. Do not reply directly to this email.</p>
                                 </div>
                             </div>
                         `
-                    };
-    
-                    transporter.sendMail(mailOptions, (error, info) => {
+                    };                    
+
+                    transporter.sendMail(userMailOptions, (error, info) => {
                         if (error) {
-                            console.error('Error sending email:', error);
+                            console.error('Error sending email to user:', error);
                         } else {
-                            console.log('Email sent:', info.response);
+                            console.log('Email sent to user:', info.response);
                         }
+                    });
+
+                    // Busca todos os administradores no banco de dados
+                    mongoUser.find({ role: 'Admin' }).then((admins) => {
+                        const adminEmails = admins.map(admin => admin.email); // Extrai os e-mails dos administradores
+
+                        if (adminEmails.length > 0) {
+                            // Envia um e-mail para todos os administradores
+                            const adminMailOptions = {
+                                from: process.env.EMAIL_USER,
+                                to: adminEmails.join(','), // Junta os e-mails em uma string separada por vírgulas
+                                subject: '🚨 User Blocked Due to Failed Login Attempts',
+                                html: `
+                                    <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); background-color: #ffffff; border: 1px solid #e0e0e0;">
+                                        <!-- Header -->
+                                        <div style="background: #2c3e50; padding: 30px 20px; text-align: center;">
+                                            <img src="https://i.imgur.com/v1irJwp.jpeg" alt="App Logo" width="60" height="60" style=" margin-bottom: 20px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: block; margin-left: auto; margin-right: auto;" />
+                                            <h1 style="color: #ffffff; font-size: 24px; margin: 0;">🚨 User Blocked Alert</h1>
+                                            <p style="color: #ecf0f1; font-size: 15px; margin-top: 8px;">Security Notification</p>
+                                        </div>
+                            
+                                        <!-- Body -->
+                                        <div style="padding: 25px 20px; color: #2c3e50; background-color: #f9f9f9;">
+                                            <p style="font-size: 16px; margin-bottom: 15px;">Dear Administrator,</p>
+                                            <p style="font-size: 14px; margin-bottom: 25px;">
+                                                A user account has been <strong style="color: #e74c3c;">temporarily blocked</strong> due to repeated failed login attempts. Please review the details below:
+                                            </p>
+                            
+                                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+                                                <tr>
+                                                    <td style="padding: 12px; background-color: #ffffff; border: 1px solid #dcdcdc;"><strong>📧 Email:</strong></td>
+                                                    <td style="padding: 12px; background-color: #ffffff; border: 1px solid #dcdcdc;">${emailInput}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 12px; background-color: #ffffff; border: 1px solid #dcdcdc;"><strong>👤 Role:</strong></td>
+                                                    <td style="padding: 12px; background-color: #ffffff; border: 1px solid #dcdcdc;">${user.role || 'N/A'}</td>
+                                                </tr>
+                                            </table>
+                            
+                                            <p style="font-size: 14px; margin-bottom: 20px;">Click the button below to manage or unblock this user if appropriate:</p>
+                            
+                                            <div style="text-align: center; margin-bottom: 30px;">
+                                                <a href="http://localhost:3000" style="background: linear-gradient(to right, #27ae60, #2ecc71); color: white; padding: 14px 30px; text-decoration: none; font-size: 15px; border-radius: 6px; font-weight: bold;">
+                                                    🔓 Unblock User
+                                                </a>
+                                            </div>
+                            
+                                            <p style="font-size: 13px; color: #666;">If this alert was not expected, please investigate immediately or contact your IT security team.</p>
+                                        </div>
+                            
+                                        <!-- Footer -->
+                                        <div style="background-color: #ecf0f1; color: #7f8c8d; text-align: center; font-size: 12px; padding: 15px;">
+                                            <p style="margin: 0;">This is an automated message from <strong>Your Website</strong>. Do not reply directly to this email.</p>
+                                        </div>
+                                    </div>
+                                `
+                            };
+
+                            transporter.sendMail(adminMailOptions, (error, info) => {
+                                if (error) {
+                                    console.error('Error sending email to admins:', error);
+                                } else {
+                                    console.log('Email sent to admins:', info.response);
+                                }
+                            });
+                        } else {
+                            console.warn('No administrators found to notify.');
+                        }
+                    }).catch((err) => {
+                        console.error('Error fetching administrators:', err);
                     });
                 }
             })
             .catch((err) => {
                 console.error('Error blocking user:', err);
             });
-    
+
         return res.render('login/index', { errorMessage: 'Your account has been blocked. Please contact support.' });
     }
 
