@@ -394,4 +394,5 @@ authController.googleCallback = passport.authenticate('google', { failureRedirec
     res.redirect('/'); // Redireciona para a página inicial após login
 });
 
+
 module.exports = authController;

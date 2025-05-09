@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { MenusComponent } from './components/menus/menus.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true, // ← isto é obrigatório
-  imports: [MenusComponent], // ← aqui sim, MenusComponent incluído
+  standalone: true, // Standalone component
+  imports: [RouterModule], // Certifique-se de importar o RouterModule
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'] // ← era 'styleUrl' (com erro)
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'frontend';
