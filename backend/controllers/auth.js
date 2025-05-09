@@ -68,7 +68,7 @@ authController.forgotPassword = async function (req, res) {
                     </p>
                     <div style="text-align: center; margin-bottom: 30px;">
                     <a href="${resetUrl}" 
-                        style="background: linear-gradient(to right, #3498db, #2980b9); color: white; padding: 14px 28px; text-decoration: none; font-size: 15px; border-radius: 6px; font-weight: bold;">
+                        style="background: linear-gradient(to right, #3498db, #2980b9); background-color: black; color: white; padding: 14px 28px; text-decoration: none; font-size: 15px; border-radius: 6px; font-weight: bold;">
                         🔐 Reset Password
                     </a>
                     </div>
@@ -144,7 +144,7 @@ authController.submittedLogin = function (req, res, next) {
     const attempts = loginAttempts[loginKey];
 
     // Bloqueia o login após 5 tentativas falhadas
-    if (attempts.count >= 2) {
+    if (attempts.count >= 5) {
         // Bloqueia o usuário no banco de dados
         mongoUser.findOneAndUpdate({ email: emailInput }, { isBlocked: true }, { new: true }) // Retorna o documento atualizado
             .then((user) => {

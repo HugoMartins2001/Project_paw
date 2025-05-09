@@ -233,13 +233,16 @@ dishesController.createDish = async function (req, res, next) {
 
 dishesController.renderCreateDishes = async function (req, res, next) {
   try {
-    // Buscar todas as categorias existentes
-    const categories = await mongoDish.distinct("category");
+    // Categorias predefinidas
+    const predefinedCategories = ['Meat', 'Vegetarian', 'Vegan', 'Dessert'];
+
+    // Combinar categorias predefinidas com as existentes, removendo duplicatas
+    const categories = Array.from(new Set([...predefinedCategories]));
 
     // Renderizar a página com as categorias
     res.render("dishes/submitDishes", {
       user: req.user, // Passa o usuário logado para o EJS
-      categories, // Passa as categorias para o EJS
+      categories, // Passa as categorias combinadas para o EJS
     });
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -355,7 +358,12 @@ dishesController.renderEditDish = function (req, res, next) {
       }
 
       // Buscar categorias existentes
-      const categories = await mongoDish.distinct("category");
+       // Categorias predefinidas
+    const predefinedCategories = ['Meat', 'Vegetarian', 'Vegan', 'Dessert'];
+
+    // Combinar categorias predefinidas com as existentes, removendo duplicatas
+    const categories = Array.from(new Set([...predefinedCategories]));
+
 
       // Renderizar a página de edição com as categorias
       res.render("dishes/editDish", { dish, user, categories });
