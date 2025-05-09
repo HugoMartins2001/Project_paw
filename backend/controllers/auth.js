@@ -16,11 +16,116 @@ const jwt = require('jsonwebtoken');
 const config = require('../jwt_secret/config');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const crypto = require('crypto');
 
 let authController = {};
 
 // Armazena tentativas de login por IP para evitar ataques de força bruta
 const loginAttempts = {};
+
+authController.forgotPassword = async function (req, res) {
+    const { email } = req.body;
+
+    try {
+        const user = await mongoUser.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'Email not found!' });
+        }
+
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+        user.resetPasswordToken = resetTokenHash;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hora
+        await user.save();
+
+        const resetUrl = `http://localhost:3000/auth/reset-password/${resetToken}`;
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: '🔐 Password Reset Request',
+            html: `
+                <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 0 15px rgba(0, 0, 0, 0.08); background-color: #ffffff; border: 1px solid #e0e0e0;">
+                
+                <!-- Header -->
+                <div style="background-color: #3498db; padding: 30px 20px; text-align: center;">
+                    <img 
+                    src="https://i.imgur.com/v1irJwp.jpeg" 
+                    alt="App Logo" 
+                    width="80" 
+                    height="80" 
+                    style="border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); margin-bottom: 10px;"
+                    />
+                    <h1 style="color: #ffffff; font-size: 22px; margin: 10px 0 0;">Password Reset Request</h1>
+                    <p style="color: #ecf0f1; font-size: 14px; margin: 5px 0 0;">Secure your account with a new password</p>
+                </div>
+
+                <!-- Body -->
+                <div style="padding: 25px 20px; color: #2c3e50; background-color: #f9f9f9;">
+                    <p style="font-size: 16px; margin-bottom: 15px;">Hi there, ${user.name}</p>
+                    <p style="font-size: 14px; margin-bottom: 25px;">
+                    We received a request to reset your password. Click the button below to proceed. This link is valid for a limited time.
+                    </p>
+                    <div style="text-align: center; margin-bottom: 30px;">
+                    <a href="${resetUrl}" 
+                        style="background: linear-gradient(to right, #3498db, #2980b9); color: white; padding: 14px 28px; text-decoration: none; font-size: 15px; border-radius: 6px; font-weight: bold;">
+                        🔐 Reset Password
+                    </a>
+                    </div>
+                    <p style="font-size: 13px; color: #7f8c8d;">If you didn't request this, you can safely ignore this email.</p>
+                </div>
+
+                <!-- Footer -->
+                <div style="background-color: #ecf0f1; color: #7f8c8d; text-align: center; font-size: 12px; padding: 15px;">
+                    <p style="margin: 0;">This is an automated message from <strong>OrdEat</strong>. Please do not reply.</p>
+                </div>
+                </div>
+            `
+        };
+
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+                return res.status(500).json({ success: false, message: 'Error sending email. Please try again later.' });
+            }
+            console.log('Email sent:', info.response);
+            res.status(200).json({ success: true, message: 'Password reset email sent successfully!' });
+        });
+    } catch (error) {
+        console.error('Error during password reset request:', error);
+        res.status(500).json({ success: false, message: 'An error occurred. Please try again later.' });
+    }
+};
+
+authController.resetPassword = async function (req, res) {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    try {
+        const resetTokenHash = crypto.createHash('sha256').update(token).digest('hex');
+
+        const user = await mongoUser.findOne({
+            resetPasswordToken: resetTokenHash,
+            resetPasswordExpires: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired token!' });
+        }
+
+        const hashedPassword = bcrypt.hashSync(password, 8);
+        user.password = hashedPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.status(200).json({ success: true, message: 'Password reset successfully!' });
+    } catch (error) {
+        console.error('Error during password reset:', error);
+        res.status(500).json({ success: false, message: 'An error occurred. Please try again later.' });
+    }
+};
 
 // Controlador para processar o login submetido
 authController.submittedLogin = function (req, res, next) {

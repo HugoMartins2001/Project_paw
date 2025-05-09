@@ -35,7 +35,9 @@ const User = new mongoose.Schema({
   googleId: { type: String, unique: true, sparse: true }, 
   createdAt: { type: Date, default: Date.now },
   profilePic: { type: String },
-  isBlocked: { type: Boolean, default: false }, // Campo para bloquear o usuário
+  isBlocked: { type: Boolean, default: false },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date }, // Campo para expirar o token de redefinição de senha
 });
 
 module.exports = mongoose.model('users', User);

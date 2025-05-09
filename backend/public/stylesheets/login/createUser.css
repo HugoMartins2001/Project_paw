@@ -11,8 +11,8 @@ body {
 .register-container {
   display: flex;
   flex-direction: column;
-  width: 85%;
-  height: 680px;
+  width: 75%;
+  height: 580px;
   background: #ffffff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
@@ -32,7 +32,7 @@ body {
   font-weight: bold;
   margin-bottom: 20px;
   color: #333;
-  padding-left: 480px;
+  text-align: center;
 }
 
 /* Formulário */

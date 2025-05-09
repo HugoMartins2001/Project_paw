@@ -12,8 +12,8 @@ body::-webkit-scrollbar {
 .container {
   display: flex;
   flex-direction: row;
-  width: 85%;
-  height: 680px;
+  width: 75%;
+  height: 580px;
   background: #ffffff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border-radius: 15px;

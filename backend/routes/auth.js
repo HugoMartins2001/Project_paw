@@ -26,6 +26,23 @@ router.get('/loginform', (req, res) => {
     res.render('login/dashboard'); 
 });
 
+// Rota para exibir o formulário de recuperação de senha
+router.get('/forgot-password', (req, res) => {
+    res.render('login/forgotPassword'); // Renderiza a página forgotPassword.ejs
+});
+
+// Rota para processar o formulário de recuperação de senha
+router.post('/forgot-password', authController.forgotPassword);
+
+// Rota para exibir o formulário de redefinição de senha
+router.get('/reset-password/:token', (req, res) => {
+    const { token } = req.params;
+    res.render('login/resetPassword', { token, errorMessage: null });
+});
+
+// Rota para processar a redefinição de senha
+router.post('/reset-password/:token', authController.resetPassword);
+
 // Rota para exibir o formulário de registro (exemplo de renderização direta)
 router.get('/registerform', (req, res) => {
     res.render('login/createUser'); 
