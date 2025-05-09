@@ -292,13 +292,13 @@
     "/restaurants/deleteRestaurant/{id}": {
       "post": {
         "tags": ["Restaurantes"],
-        "summary": "Eleminar um restaurante",
+        "summary": "Eliminar um restaurante",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "ID do restaurante a ser eleminado",
+            "description": "ID do restaurante a ser eliminado",
             "schema": {
               "type": "string"
             }
@@ -306,7 +306,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Restaurante Eleminado com sucesso"
+            "description": "Restaurante eliminado com sucesso"
           },
           "404": {
             "description": "Restaurante não encontrado ou sem permissão"
@@ -839,10 +839,36 @@
         },
         "responses": {
           "200": {
-            "description": "Login realizado com sucesso"
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+              }
+            }
           },
           "401": {
-            "description": "Credenciais inválidas"
+            "description": "Credenciais inválidas",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Invalid credentials"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "An error occurred. Please try again later."
+                }
+              }
+            }
           }
         }
       }
@@ -947,6 +973,115 @@
         }
       }
     },
+    "/auth/forgot-password": {
+      "post": {
+        "tags": ["Autenticação"],
+        "summary": "Solicitar redefinição de senha",
+        "description": "Envia um link de redefinição de senha para o e-mail fornecido.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email"]
+              },
+              "example": {
+                "email": "user@example.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "E-mail enviado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Password reset email sent successfully!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "E-mail não encontrado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Email not found!"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "An error occurred. Please try again later."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/reset-password/{token}": {
+      "post": {
+        "tags": ["Autenticação"],
+        "summary": "Redefinir senha",
+        "description": "Permite redefinir a senha do utilizador usando um token válido.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "description": "Token de redefinição de senha",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["password"]
+              },
+              "example": {
+                "password": "newpassword123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha redefinida com sucesso"
+          },
+          "400": {
+            "description": "Token inválido ou expirado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    }, 
     "/users/showUsers": {
       "get": {
         "tags": ["Utilizadores"],
@@ -986,5 +1121,38 @@
         }
       }
     }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+    "UnauthorizedError": {
+      "description": "Token de autenticação inválido ou ausente",
+      "content": {
+        "application/json": {
+          "example": {
+            "success": false,
+            "message": "Unauthorized"
+          }
+        }
+      }
+    },
+    "ValidationError": {
+      "description": "Erro de validação nos dados enviados",
+      "content": {
+        "application/json": {
+          "example": {
+            "success": false,
+            "message": "Validation error"
+            }
+          }
+        }
+      }  
+    }
+    }
   }
-}
