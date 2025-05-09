@@ -137,7 +137,8 @@ label {
 }
 /* Botão de registro */
 .btn-register {
-  width: 30%; /* Reduz a largura do botão para centralizá-lo */
+  width: 50%;
+  height: 79%;
   margin: 0 auto; /* Centraliza o botão horizontalmente */
   padding: 12px;
   border: none;
