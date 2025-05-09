@@ -1,15 +1,1574 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
-    "title": "API Documentation",
     "version": "1.0.0",
-    "description": "Documentação da API do Project_paw"
+    "title": "API Documentation",
+    "description": "Documentação da API do Project_paw",
+    "contact": {}
   },
-  "servers": [
-    {
-      "url": "http://localhost:3000"
-    }
+  "host": "localhost:3000",
+  "basePath": "/",
+  "securityDefinitions": {},
+  "schemes": [
+    "http"
   ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/restaurants/showRestaurant/{name}": {
+      "get": {
+        "description": "",
+        "summary": "Retorna os detalhes de um restaurante",
+        "tags": [
+          "Restaurantes"
+        ],
+        "operationId": "Retornaosdetalhesdeumrestaurante",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Nome do restaurante"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do restaurante",
+            "schema": {
+              "$ref": "#/definitions/RestaurantsShowRestaurantResponse"
+            },
+            "headers": {}
+          },
+          "404": {
+            "description": "Restaurante não encontrado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/restaurants/submittedRestaurant": {
+      "post": {
+        "description": "Permite que um manager crie um novo restaurante.",
+        "summary": "Criar um novo restaurante",
+        "tags": [
+          "Restaurantes"
+        ],
+        "operationId": "Criarumnovorestaurante",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RestaurantsSubmittedRestaurantRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Restaurante criado com sucesso",
+            "headers": {}
+          },
+          "400": {
+            "description": "Erro de validação",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/restaurants/editRestaurant/{id}": {
+      "post": {
+        "description": "Permite que um manager ou administrador atualize os detalhes de um restaurante.",
+        "summary": "Atualiza um restaurante existente",
+        "tags": [
+          "Restaurantes"
+        ],
+        "operationId": "Atualizaumrestauranteexistente",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do restaurante a ser atualizado"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RestaurantsEditRestaurantRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restaurante atualizado com sucesso",
+            "headers": {}
+          },
+          "404": {
+            "description": "Restaurante não encontrado ou sem permissão",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/restaurants/pendingApproval": {
+      "get": {
+        "description": "Permite que um administrador veja todos os restaurantes que aguardam aprovação.",
+        "summary": "Lista restaurantes pendentes de aprovação",
+        "tags": [
+          "Restaurantes"
+        ],
+        "operationId": "Listarestaurantespendentesdeaprovação",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de restaurantes pendentes",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RestaurantsPendingApprovalResponse"
+              }
+            },
+            "headers": {}
+          },
+          "403": {
+            "description": "Acesso negado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/restaurants/showRestaurants": {
+      "get": {
+        "description": "Retorna uma lista de restaurantes com base no papel do Utilizador.",
+        "summary": "Retorna todos os restaurantes",
+        "tags": [
+          "Restaurantes"
+        ],
+        "operationId": "Retornatodososrestaurantes",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de restaurantes",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RestaurantsShowRestaurantsResponse"
+              }
+            },
+            "headers": {}
+          },
+          "403": {
+            "description": "Acesso negado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/restaurants/deleteRestaurant/{id}": {
+      "post": {
+        "description": "",
+        "summary": "Eliminar um restaurante",
+        "tags": [
+          "Restaurantes"
+        ],
+        "operationId": "Eliminarumrestaurante",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do restaurante a ser eliminado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restaurante eliminado com sucesso",
+            "headers": {}
+          },
+          "404": {
+            "description": "Restaurante não encontrado ou sem permissão",
+            "headers": {}
+          },
+          "403": {
+            "description": "Acesso negado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/dishes/showDishes": {
+      "get": {
+        "description": "Retorna uma lista de pratos disponíveis.",
+        "summary": "Retorna todos os pratos",
+        "tags": [
+          "Pratos"
+        ],
+        "operationId": "Retornatodosospratos",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de pratos",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DishesShowDishesResponse"
+              }
+            },
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/dishes/submittedDish": {
+      "post": {
+        "description": "Permite que um manager crie um novo prato.",
+        "summary": "Cria um novo prato",
+        "tags": [
+          "Pratos"
+        ],
+        "operationId": "Criaumnovoprato",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DishesSubmittedDishRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Prato criado com sucesso",
+            "headers": {}
+          },
+          "400": {
+            "description": "Erro de validação",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/dishes/showDish/{dishId}": {
+      "get": {
+        "description": "",
+        "summary": "Retorna os detalhes de um prato",
+        "tags": [
+          "Pratos"
+        ],
+        "operationId": "Retornaosdetalhesdeumprato",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "dishId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do prato"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do prato",
+            "schema": {
+              "$ref": "#/definitions/DishesShowDishResponse"
+            },
+            "headers": {}
+          },
+          "404": {
+            "description": "Prato não encontrado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/dishes/deleteDish/{dishId}": {
+      "post": {
+        "description": "",
+        "summary": "Eleminar um prato",
+        "tags": [
+          "Pratos"
+        ],
+        "operationId": "Eleminarumprato",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "dishId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do prato a ser eleminado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prato eleminado com sucesso",
+            "headers": {}
+          },
+          "404": {
+            "description": "Prato não encontrado",
+            "headers": {}
+          },
+          "403": {
+            "description": "Acesso negado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/dishes/editDish/{dishId}": {
+      "post": {
+        "description": "",
+        "summary": "Atualiza um prato existente",
+        "tags": [
+          "Pratos"
+        ],
+        "operationId": "Atualizaumpratoexistente",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "dishId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do prato a ser atualizado"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/DishesEditDishRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prato atualizado com sucesso",
+            "headers": {}
+          },
+          "404": {
+            "description": "Prato não encontrado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/menus/showMenus": {
+      "get": {
+        "description": "Retorna uma lista de menus disponíveis.",
+        "summary": "Retorna todos os menus",
+        "tags": [
+          "Menus"
+        ],
+        "operationId": "Retornatodososmenus",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de menus",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MenusShowMenusResponse"
+              }
+            },
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/menus/submittedMenu": {
+      "post": {
+        "description": "Permite que um manager crie um novo menu.",
+        "summary": "Cria um novo menu",
+        "tags": [
+          "Menus"
+        ],
+        "operationId": "Criaumnovomenu",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/MenusSubmittedMenuRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Menu criado com sucesso",
+            "headers": {}
+          },
+          "400": {
+            "description": "Erro de validação",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/menus/showMenu/{menuId}": {
+      "get": {
+        "description": "",
+        "summary": "Retorna os detalhes de um menu",
+        "tags": [
+          "Menus"
+        ],
+        "operationId": "Retornaosdetalhesdeummenu",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do menu"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do menu",
+            "schema": {
+              "$ref": "#/definitions/MenusShowMenuResponse"
+            },
+            "headers": {}
+          },
+          "404": {
+            "description": "Menu não encontrado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/menus/deleteMenu/{menuId}": {
+      "post": {
+        "description": "",
+        "summary": "Eleminar um menu",
+        "tags": [
+          "Menus"
+        ],
+        "operationId": "Eleminarummenu",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do menu a ser Eleminado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Menu Eleminado com sucesso",
+            "headers": {}
+          },
+          "404": {
+            "description": "Menu não encontrado",
+            "headers": {}
+          },
+          "403": {
+            "description": "Acesso negado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/menus/editMenu/{menuId}": {
+      "post": {
+        "description": "",
+        "summary": "Atualiza um menu existente",
+        "tags": [
+          "Menus"
+        ],
+        "operationId": "Atualizaummenuexistente",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do menu a ser atualizado"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/MenusEditMenuRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Menu atualizado com sucesso",
+            "headers": {}
+          },
+          "404": {
+            "description": "Menu não encontrado",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/users/showUsers": {
+      "get": {
+        "description": "Retorna uma lista de utilizadores registados no sistema, sem incluir as senhas.",
+        "summary": "Retorna todos os utilizadores",
+        "tags": [
+          "Utilizadores"
+        ],
+        "operationId": "Retornatodososutilizadores",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de utilizadores",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UsersShowUsersResponse"
+              }
+            },
+            "headers": {}
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "get": {
+        "description": "Renderiza a página de login para o utilizador.",
+        "summary": "Exibe a página de login",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "Exibeapáginadelogin",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Página de login exibida com sucesso",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/loginSubmitted": {
+      "post": {
+        "description": "Verifica as credenciais do utilizador e retorna um token de autenticação.",
+        "summary": "Realiza o login do utilizador",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "Realizaologindoutilizador",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AuthLoginSubmittedRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "schema": {
+              "$ref": "#/definitions/AuthLoginSubmittedResponse"
+            },
+            "examples": {
+              "application/json": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "Credenciais inválidas",
+            "schema": {
+              "$ref": "#/definitions/AuthLoginSubmittedResponse1"
+            },
+            "examples": {
+              "application/json": {
+                "success": false,
+                "message": "Invalid credentials"
+              }
+            },
+            "headers": {}
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "schema": {
+              "$ref": "#/definitions/AuthLoginSubmittedResponse1"
+            },
+            "examples": {
+              "application/json": {
+                "success": false,
+                "message": "An error occurred. Please try again later."
+              }
+            },
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "Remove o token de autenticação e redireciona para a página inicial.",
+        "summary": "Realiza o logout do utilizador",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "Realizaologoutdoutilizador",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Logout realizado com sucesso",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "get": {
+        "description": "Renderiza a página para criar um novo utilizador.",
+        "summary": "Exibe a página de registo",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "Exibeapáginaderegisto",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Página de registo exibida com sucesso",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/registerSubmitted": {
+      "post": {
+        "description": "Registra um novo utilizador no sistema.",
+        "summary": "Cria um novo utilizador",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "Criaumnovoutilizador",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AuthRegisterSubmittedRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Utilizador criado com sucesso",
+            "headers": {}
+          },
+          "400": {
+            "description": "Erro de validação",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "description": "Redireciona o utilizador para a página de autenticação do Google.",
+        "summary": "Inicia o login com Google",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "IniciaologincomGoogle",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "Redirecionamento para o Google",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "description": "Recebe o retorno do Google após a autenticação.",
+        "summary": "Callback do login com Google",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "CallbackdologincomGoogle",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "Redirecionamento para a página inicial após login bem-sucedido",
+            "headers": {}
+          },
+          "401": {
+            "description": "Falha na autenticação com o Google",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "description": "Envia um link de redefinição de senha para o e-mail fornecido.",
+        "summary": "Solicitar redefinição de senha",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "Solicitarredefiniçãodesenha",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AuthForgotPasswordRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "E-mail enviado com sucesso",
+            "schema": {
+              "$ref": "#/definitions/AuthForgotPasswordResponse"
+            },
+            "examples": {
+              "application/json": {
+                "success": true,
+                "message": "Password reset email sent successfully!"
+              }
+            },
+            "headers": {}
+          },
+          "404": {
+            "description": "E-mail não encontrado",
+            "schema": {
+              "$ref": "#/definitions/AuthForgotPasswordResponse"
+            },
+            "examples": {
+              "application/json": {
+                "success": false,
+                "message": "Email not found!"
+              }
+            },
+            "headers": {}
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "schema": {
+              "$ref": "#/definitions/AuthForgotPasswordResponse"
+            },
+            "examples": {
+              "application/json": {
+                "success": false,
+                "message": "An error occurred. Please try again later."
+              }
+            },
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/reset-password/{token}": {
+      "post": {
+        "description": "Permite redefinir a senha do utilizador usando um token válido.",
+        "summary": "Redefinir senha",
+        "tags": [
+          "Autenticação"
+        ],
+        "operationId": "Redefinirsenha",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Token de redefinição de senha"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "application/json"
+            ],
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AuthResetPasswordRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Senha redefinida com sucesso",
+            "headers": {}
+          },
+          "400": {
+            "description": "Token inválido ou expirado",
+            "headers": {}
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "headers": {}
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RestaurantsShowRestaurantResponse": {
+      "title": "RestaurantsShowRestaurantResponse",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "openingHours": {
+          "type": "string"
+        },
+        "paymentMethods": {
+          "type": "string"
+        },
+        "menus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "RestaurantsSubmittedRestaurantRequest": {
+      "title": "RestaurantsSubmittedRestaurantRequest",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "openingHours": {
+          "type": "string"
+        },
+        "paymentMethods": {
+          "type": "string"
+        },
+        "menus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "address",
+        "phone",
+        "email"
+      ]
+    },
+    "RestaurantsEditRestaurantRequest": {
+      "title": "RestaurantsEditRestaurantRequest",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "openingHours": {
+          "type": "string"
+        },
+        "paymentMethods": {
+          "type": "string"
+        },
+        "menus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "RestaurantsPendingApprovalResponse": {
+      "title": "RestaurantsPendingApprovalResponse",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "RestaurantsShowRestaurantsResponse": {
+      "title": "RestaurantsShowRestaurantsResponse",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "menus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DishesShowDishesResponse": {
+      "title": "DishesShowDishesResponse",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prices": {
+          "$ref": "#/definitions/Prices"
+        }
+      }
+    },
+    "Prices": {
+      "title": "Prices",
+      "type": "object",
+      "properties": {
+        "pequena": {
+          "type": "number",
+          "format": "double"
+        },
+        "media": {
+          "type": "number",
+          "format": "double"
+        },
+        "grande": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "DishesSubmittedDishRequest": {
+      "title": "DishesSubmittedDishRequest",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prices": {
+          "$ref": "#/definitions/Prices"
+        },
+        "allergens": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "category",
+        "ingredients"
+      ]
+    },
+    "DishesShowDishResponse": {
+      "title": "DishesShowDishResponse",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prices": {
+          "$ref": "#/definitions/Prices"
+        }
+      }
+    },
+    "DishesEditDishRequest": {
+      "title": "DishesEditDishRequest",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prices": {
+          "$ref": "#/definitions/Prices"
+        },
+        "allergens": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "MenusShowMenusResponse": {
+      "title": "MenusShowMenusResponse",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dishes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "restaurantNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "MenusSubmittedMenuRequest": {
+      "title": "MenusSubmittedMenuRequest",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dishes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "restaurant": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "dishes",
+        "restaurant"
+      ]
+    },
+    "MenusShowMenuResponse": {
+      "title": "MenusShowMenuResponse",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dishes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "restaurantNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "MenusEditMenuRequest": {
+      "title": "MenusEditMenuRequest",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dishes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "restaurant": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthLoginSubmittedRequest": {
+      "title": "AuthLoginSubmittedRequest",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "AuthLoginSubmittedResponse": {
+      "title": "AuthLoginSubmittedResponse",
+      "example": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      },
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "token"
+      ]
+    },
+    "AuthLoginSubmittedResponse1": {
+      "title": "AuthLoginSubmittedResponse1",
+      "example": {
+        "success": false,
+        "message": "Invalid credentials"
+      },
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "success",
+        "message"
+      ]
+    },
+    "AuthRegisterSubmittedRequest": {
+      "title": "AuthRegisterSubmittedRequest",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "clienteNif": {
+          "type": "string"
+        },
+        "clienteTelemovel": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "profilePic": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "password",
+        "name"
+      ]
+    },
+    "AuthForgotPasswordRequest": {
+      "title": "AuthForgotPasswordRequest",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "AuthForgotPasswordResponse": {
+      "title": "AuthForgotPasswordResponse",
+      "example": {
+        "success": true,
+        "message": "Password reset email sent successfully!"
+      },
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "success",
+        "message"
+      ]
+    },
+    "AuthResetPasswordRequest": {
+      "title": "AuthResetPasswordRequest",
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "password"
+      ]
+    },
+    "UsersShowUsersResponse": {
+      "title": "UsersShowUsersResponse",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "profilePic": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "security": [],
   "tags": [
     {
       "name": "Restaurantes",
@@ -31,1128 +1590,5 @@
       "name": "Autenticação",
       "description": "Endpoints relacionados à autenticação"
     }
-  ],
-  "paths": {
-    "/restaurants/showRestaurant/{name}": {
-      "get": {
-        "tags": ["Restaurantes"],
-        "summary": "Retorna os detalhes de um restaurante",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "name",
-            "required": true,
-            "description": "Nome do restaurante",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detalhes do restaurante",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "address": {
-                      "type": "string"
-                    },
-                    "phone": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "openingHours": {
-                      "type": "string"
-                    },
-                    "paymentMethods": {
-                      "type": "string"
-                    },
-                    "menus": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Restaurante não encontrado"
-          }
-        }
-      }
-    },
-    "/restaurants/submittedRestaurant": {
-      "post": {
-        "tags": ["Restaurantes"],
-        "summary": "Criar um novo restaurante",
-        "description": "Permite que um manager crie um novo restaurante.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "address": {
-                    "type": "string"
-                  },
-                  "phone": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "openingHours": {
-                    "type": "string"
-                  },
-                  "paymentMethods": {
-                    "type": "string"
-                  },
-                  "menus": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": ["name", "address", "phone", "email"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Restaurante criado com sucesso"
-          },
-          "400": {
-            "description": "Erro de validação"
-          }
-        }
-      }
-    },
-    "/restaurants/editRestaurant/{id}": {
-      "post": {
-        "tags": ["Restaurantes"],
-        "summary": "Atualiza um restaurante existente",
-        "description": "Permite que um manager ou administrador atualize os detalhes de um restaurante.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "ID do restaurante a ser atualizado",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "address": {
-                    "type": "string"
-                  },
-                  "phone": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "openingHours": {
-                    "type": "string"
-                  },
-                  "paymentMethods": {
-                    "type": "string"
-                  },
-                  "menus": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Restaurante atualizado com sucesso"
-          },
-          "404": {
-            "description": "Restaurante não encontrado ou sem permissão"
-          }
-        }
-      }
-    },
-    "/restaurants/pendingApproval": {
-      "get": {
-        "tags": ["Restaurantes"],
-        "summary": "Lista restaurantes pendentes de aprovação",
-        "description": "Permite que um administrador veja todos os restaurantes que aguardam aprovação.",
-        "responses": {
-          "200": {
-            "description": "Lista de restaurantes pendentes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "address": {
-                        "type": "string"
-                      },
-                      "phone": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Acesso negado"
-          }
-        }
-      }
-    },
-    "/restaurants/showRestaurants": {
-      "get": {
-        "tags": ["Restaurantes"],
-        "summary": "Retorna todos os restaurantes",
-        "description": "Retorna uma lista de restaurantes com base no papel do Utilizador.",
-        "responses": {
-          "200": {
-            "description": "Lista de restaurantes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "address": {
-                        "type": "string"
-                      },
-                      "phone": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string"
-                      },
-                      "menus": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Acesso negado"
-          }
-        }
-      }
-    },
-    "/restaurants/deleteRestaurant/{id}": {
-      "post": {
-        "tags": ["Restaurantes"],
-        "summary": "Eliminar um restaurante",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "ID do restaurante a ser eliminado",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Restaurante eliminado com sucesso"
-          },
-          "404": {
-            "description": "Restaurante não encontrado ou sem permissão"
-          },
-          "403": {
-            "description": "Acesso negado"
-          }
-        }
-      }
-    },
-    "/dishes/showDishes": {
-      "get": {
-        "tags": ["Pratos"],
-        "summary": "Retorna todos os pratos",
-        "description": "Retorna uma lista de pratos disponíveis.",
-        "responses": {
-          "200": {
-            "description": "Lista de pratos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "description": {
-                        "type": "string"
-                      },
-                      "category": {
-                        "type": "string"
-                      },
-                      "ingredients": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "prices": {
-                        "type": "object",
-                        "properties": {
-                          "pequena": {
-                            "type": "number"
-                          },
-                          "media": {
-                            "type": "number"
-                          },
-                          "grande": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/dishes/submittedDish": {
-      "post": {
-        "tags": ["Pratos"],
-        "summary": "Cria um novo prato",
-        "description": "Permite que um manager crie um novo prato.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "category": {
-                    "type": "string"
-                  },
-                  "ingredients": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "prices": {
-                    "type": "object",
-                    "properties": {
-                      "pequena": {
-                        "type": "number"
-                      },
-                      "media": {
-                        "type": "number"
-                      },
-                      "grande": {
-                        "type": "number"
-                      }
-                    }
-                  },
-                  "allergens": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": ["name", "description", "category", "ingredients"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Prato criado com sucesso"
-          },
-          "400": {
-            "description": "Erro de validação"
-          }
-        }
-      }
-    },
-    "/dishes/showDish/{dishId}": {
-      "get": {
-        "tags": ["Pratos"],
-        "summary": "Retorna os detalhes de um prato",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "dishId",
-            "required": true,
-            "description": "ID do prato",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detalhes do prato",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "category": {
-                      "type": "string"
-                    },
-                    "ingredients": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "prices": {
-                      "type": "object",
-                      "properties": {
-                        "pequena": {
-                          "type": "number"
-                        },
-                        "media": {
-                          "type": "number"
-                        },
-                        "grande": {
-                          "type": "number"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Prato não encontrado"
-          }
-        }
-      }
-    },
-    "/dishes/deleteDish/{dishId}": {
-      "post": {
-        "tags": ["Pratos"],
-        "summary": "Eleminar um prato",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "dishId",
-            "required": true,
-            "description": "ID do prato a ser eleminado",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Prato eleminado com sucesso"
-          },
-          "404": {
-            "description": "Prato não encontrado"
-          },
-          "403": {
-            "description": "Acesso negado"
-          }
-        }
-      }
-    },
-    "/dishes/editDish/{dishId}": {
-      "post": {
-        "tags": ["Pratos"],
-        "summary": "Atualiza um prato existente",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "dishId",
-            "required": true,
-            "description": "ID do prato a ser atualizado",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "category": {
-                    "type": "string"
-                  },
-                  "ingredients": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "prices": {
-                    "type": "object",
-                    "properties": {
-                      "pequena": {
-                        "type": "number"
-                      },
-                      "media": {
-                        "type": "number"
-                      },
-                      "grande": {
-                        "type": "number"
-                      }
-                    }
-                  },
-                  "allergens": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Prato atualizado com sucesso"
-          },
-          "404": {
-            "description": "Prato não encontrado"
-          }
-        }
-      }
-    },
-    "/menus/showMenus": {
-      "get": {
-        "tags": ["Menus"],
-        "summary": "Retorna todos os menus",
-        "description": "Retorna uma lista de menus disponíveis.",
-        "responses": {
-          "200": {
-            "description": "Lista de menus",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "dishes": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "restaurantNames": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/menus/submittedMenu": {
-      "post": {
-        "tags": ["Menus"],
-        "summary": "Cria um novo menu",
-        "description": "Permite que um manager crie um novo menu.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "dishes": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "restaurant": {
-                    "type": "string"
-                  }
-                },
-                "required": ["name", "dishes", "restaurant"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Menu criado com sucesso"
-          },
-          "400": {
-            "description": "Erro de validação"
-          }
-        }
-      }
-    },
-    "/menus/showMenu/{menuId}": {
-      "get": {
-        "tags": ["Menus"],
-        "summary": "Retorna os detalhes de um menu",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "menuId",
-            "required": true,
-            "description": "ID do menu",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detalhes do menu",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "dishes": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "restaurantNames": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Menu não encontrado"
-          }
-        }
-      }
-    },
-    "/menus/deleteMenu/{menuId}": {
-      "post": {
-        "tags": ["Menus"],
-        "summary": "Eleminar um menu",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "menuId",
-            "required": true,
-            "description": "ID do menu a ser Eleminado",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Menu Eleminado com sucesso"
-          },
-          "404": {
-            "description": "Menu não encontrado"
-          },
-          "403": {
-            "description": "Acesso negado"
-          }
-        }
-      }
-    },
-    "/menus/editMenu/{menuId}": {
-      "post": {
-        "tags": ["Menus"],
-        "summary": "Atualiza um menu existente",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "menuId",
-            "required": true,
-            "description": "ID do menu a ser atualizado",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "dishes": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "restaurant": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Menu atualizado com sucesso"
-          },
-          "404": {
-            "description": "Menu não encontrado"
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "get": {
-        "tags": ["Autenticação"],
-        "summary": "Exibe a página de login",
-        "description": "Renderiza a página de login para o utilizador.",
-        "responses": {
-          "200": {
-            "description": "Página de login exibida com sucesso"
-          }
-        }
-      }
-    },
-    "/auth/loginSubmitted": {
-      "post": {
-        "tags": ["Autenticação"],
-        "summary": "Realiza o login do utilizador",
-        "description": "Verifica as credenciais do utilizador e retorna um token de autenticação.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "required": ["email", "password"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Login realizado com sucesso",
-            "content": {
-              "application/json": {
-                "example": {
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Credenciais inválidas",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": false,
-                  "message": "Invalid credentials"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Erro interno do servidor",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": false,
-                  "message": "An error occurred. Please try again later."
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "get": {
-        "tags": ["Autenticação"],
-        "summary": "Realiza o logout do utilizador",
-        "description": "Remove o token de autenticação e redireciona para a página inicial.",
-        "responses": {
-          "200": {
-            "description": "Logout realizado com sucesso"
-          }
-        }
-      }
-    },
-    "/auth/register": {
-      "get": {
-        "tags": ["Autenticação"],
-        "summary": "Exibe a página de registo",
-        "description": "Renderiza a página para criar um novo utilizador.",
-        "responses": {
-          "200": {
-            "description": "Página de registo exibida com sucesso"
-          }
-        }
-      }
-    },
-    "/auth/registerSubmitted": {
-      "post": {
-        "tags": ["Autenticação"],
-        "summary": "Cria um novo utilizador",
-        "description": "Registra um novo utilizador no sistema.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "address": {
-                    "type": "string"
-                  },
-                  "clienteNif": {
-                    "type": "string"
-                  },
-                  "clienteTelemovel": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "profilePic": {
-                    "type": "string"
-                  }
-                },
-                "required": ["email", "password", "name"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Utilizador criado com sucesso"
-          },
-          "400": {
-            "description": "Erro de validação"
-          }
-        }
-      }
-    },
-    "/auth/google": {
-      "get": {
-        "tags": ["Autenticação"],
-        "summary": "Inicia o login com Google",
-        "description": "Redireciona o utilizador para a página de autenticação do Google.",
-        "responses": {
-          "302": {
-            "description": "Redirecionamento para o Google"
-          }
-        }
-      }
-    },
-    "/auth/google/callback": {
-      "get": {
-        "tags": ["Autenticação"],
-        "summary": "Callback do login com Google",
-        "description": "Recebe o retorno do Google após a autenticação.",
-        "responses": {
-          "302": {
-            "description": "Redirecionamento para a página inicial após login bem-sucedido"
-          },
-          "401": {
-            "description": "Falha na autenticação com o Google"
-          }
-        }
-      }
-    },
-    "/auth/forgot-password": {
-      "post": {
-        "tags": ["Autenticação"],
-        "summary": "Solicitar redefinição de senha",
-        "description": "Envia um link de redefinição de senha para o e-mail fornecido.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  }
-                },
-                "required": ["email"]
-              },
-              "example": {
-                "email": "user@example.com"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "E-mail enviado com sucesso",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true,
-                  "message": "Password reset email sent successfully!"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "E-mail não encontrado",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": false,
-                  "message": "Email not found!"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Erro interno do servidor",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": false,
-                  "message": "An error occurred. Please try again later."
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/reset-password/{token}": {
-      "post": {
-        "tags": ["Autenticação"],
-        "summary": "Redefinir senha",
-        "description": "Permite redefinir a senha do utilizador usando um token válido.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "token",
-            "required": true,
-            "description": "Token de redefinição de senha",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "required": ["password"]
-              },
-              "example": {
-                "password": "newpassword123"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Senha redefinida com sucesso"
-          },
-          "400": {
-            "description": "Token inválido ou expirado"
-          },
-          "500": {
-            "description": "Erro interno do servidor"
-          }
-        }
-      }
-    }, 
-    "/users/showUsers": {
-      "get": {
-        "tags": ["Utilizadores"],
-        "summary": "Retorna todos os utilizadores",
-        "description": "Retorna uma lista de utilizadores registados no sistema, sem incluir as senhas.",
-        "responses": {
-          "200": {
-            "description": "Lista de utilizadores",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string"
-                      },
-                      "role": {
-                        "type": "string"
-                      },
-                      "profilePic": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Erro interno do servidor"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "BearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
-    },
-    "responses": {
-    "UnauthorizedError": {
-      "description": "Token de autenticação inválido ou ausente",
-      "content": {
-        "application/json": {
-          "example": {
-            "success": false,
-            "message": "Unauthorized"
-          }
-        }
-      }
-    },
-    "ValidationError": {
-      "description": "Erro de validação nos dados enviados",
-      "content": {
-        "application/json": {
-          "example": {
-            "success": false,
-            "message": "Validation error"
-            }
-          }
-        }
-      }  
-    }
-    }
-  }
+  ]
+}
