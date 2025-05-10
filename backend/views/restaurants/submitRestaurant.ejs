@@ -15,7 +15,8 @@
 
     <div class="container">
       <div class="card">
-        <h2>New Restaurant</h2>
+        <h2>Create New Restaurant</h2>
+        <p class="text-muted">Please fill in the details below to create a new restaurant.</p>
 
         <form id="restaurantForm" method="post" action="/restaurants/submittedRestaurant" enctype="multipart/form-data">
           <div class="form-group">
@@ -105,14 +106,20 @@
           </div>
           <div class="form-group form-full">
             <label for="menus">Menus</label>
-            <select id="menus" name="menus" multiple>
-              <% menus.forEach(function(menu) { %>
-                <option value="<%= menu._id %>"><%= menu.name %></option>
-              <% }) %>
-            </select>
-            <small class="form-text text-muted">
-              Choose the menus associated with the restaurant.
-            </small>
+            <% if (menus.length > 0) { %>
+              <select id="menus" name="menus" multiple>
+                <% menus.forEach(function(menu) { %>
+                  <option value="<%= menu._id %>"><%= menu.name %></option>
+                <% }) %>
+              </select>
+              <small class="form-text text-muted">
+                Choose the menus associated with the restaurant.
+              </small>
+            <% } else { %>
+              <div class="alert alert-warning" role="alert">
+              No menus available. Please <a href="/menus/submitMenu"> create a menu</a> first.
+              </div>
+            <% } %>
           </div>
 
           <div class="form-group form-full">

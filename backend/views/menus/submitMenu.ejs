@@ -15,11 +15,8 @@
 
     <div class="container mt-5">
       <div class="card">
-        <h2>New Menu</h2>
-
-        <div id="error-alert" class="alert alert-danger d-none text-center" role="alert">
-          ⚠️ You cannot select more than 10 dishes!
-        </div>
+        <h2>Create New Menu</h2>
+        <p class="text-muted">Please fill in the details below to create a new menu.</p>
 
         <form id="menuForm" method="post" action="/menus/submittedMenu" enctype="multipart/form-data">
           <div class="mb-3">
@@ -32,12 +29,18 @@
           </div>
           <div class="mb-3">
             <label for="dishes" class="form-label">Dishes</label>
-            <select id="dishes" name="dishes" class="form-select" multiple>
-              <% dishes.forEach(function(dish) { %>
-                <option value="<%= dish._id %>"><%= dish.name %></option>
-              <% }) %>
-            </select>
-            <small class="form-text text-muted">Choose up to 10 dishes for this menu.</small>
+            <% if (dishes && dishes.length > 0) { %>
+              <select id="dishes" name="dishes" class="form-select" multiple>
+                <% dishes.forEach(function(dish) { %>
+                  <option value="<%= dish._id %>"><%= dish.name %></option>
+                <% }) %>
+              </select>
+              <small class="form-text text-muted">Choose up to 10 dishes for this menu.</small>
+            <% } else { %>
+              <div class="alert alert-warning" role="alert">
+               No dishes available. Please <a href="/dishes/submitDishes">create a dish</a> first.
+              </div>
+            <% } %>
           </div>
           <button type="submit" class="btn btn-primary w-100">Create Menu</button>
         </form>
@@ -60,15 +63,15 @@
 
         if (selectedDishes.length > 10) {
           event.preventDefault();
-          const errorAlert = document.getElementById("error-alert");
-          errorAlert.classList.remove("d-none");
-          setTimeout(() => {
-            errorAlert.classList.add("d-none");
-          }, 4000);
+          Swal.fire({
+            icon: "error",
+            title: "Too many dishes selected!",
+            text: "You cannot select more than 10 dishes for a menu.",
+            confirmButtonColor: "#d33",
+          });
           return;
         }
 
-        event.preventDefault();
         Swal.fire({
           icon: "success",
           title: "Menu successfully created!",

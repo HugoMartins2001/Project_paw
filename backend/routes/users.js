@@ -16,6 +16,6 @@ function onlyAdmins(req, res, next) {
 router.get("/showUsers", verifyJWT, onlyAdmins, usersController.showUsers);
 
 // Rota para bloquear os utilizadores (apenas para administradores)
-router.post('/block/:id', verifyJWT, onlyAdmins, usersController.blockUser);
+router.post('/block/:id', verifyJWT, onlyAdmins, usersController.toggleBlockUser);
 
 module.exports = router; // Exporta o roteador para ser usado em outros arquivos

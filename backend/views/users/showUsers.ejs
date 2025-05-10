@@ -80,11 +80,61 @@
             confirmButtonText: actionButtonText,
           }).then((result) => {
             if (result.isConfirmed) {
-              document.getElementById(formId).submit();
+             fetch(`/users/block/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                console.log(response);
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: data.message,
+                        icon: 'success',
+                        confirmButtonColor: '#4CAF50',
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.message,
+                        icon: 'error',
+                        confirmButtonColor: '#d33',
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred. Please try again later.',
+                    icon: 'error',
+                    confirmButtonColor: '#d33',
+                });
+            });
             }
           });
         });
       });
+
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Verifica se há um parâmetro de sucesso indicando que o usuário foi desbloqueado
+      if (urlParams.get('success') === 'unblocked') {
+        Swal.fire({
+          icon: 'success',
+          title: 'User Unblocked',
+          text: 'The user has been successfully unblocked.',
+          confirmButtonColor: '#4CAF50',
+        });
+      }
     });
   </script>
 </body>

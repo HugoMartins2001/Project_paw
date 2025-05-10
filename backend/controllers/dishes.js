@@ -79,6 +79,15 @@ dishesController.showAll = async function (req, res, next) {
       };
     });
 
+    // Garantir que os menus associados sejam exibidos mesmo sem restaurantes
+    dishesWithAssociations.forEach((dish) => {
+      dish.associatedMenus.forEach((menu) => {
+        if (!menu.restaurants || menu.restaurants.length === 0) {
+          menu.restaurants = [{ name: "No associated restaurant", managerId: null }];
+        }
+      });
+    });
+
     // Filtrar pratos com base no papel do usuário
     const filteredDishes = dishesWithAssociations.filter((dish) => {
       if (user.role === "Admin") {
