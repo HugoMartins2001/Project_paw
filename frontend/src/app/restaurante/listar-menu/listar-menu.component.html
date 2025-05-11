@@ -1,0 +1,56 @@
+<section
+  class="hero-banner text-white d-flex align-items-center justify-content-center"
+>
+  <div class="text-center">
+    <h1 class="display-4 fw-bold">🍽️ Bem-vindo Aos Menus do Restaurante!</h1>
+    <p class="lead">
+      Explora os menus incríveis criados especialmente para ti.
+    </p>
+  </div>
+</section>
+<div class="container py-5 text-center">
+  <div class="text-start mb-4">
+    <button class="btn btn-outline-secondary" (click)="voltarAoDashboard()">
+      ← Voltar
+    </button>
+  </div>
+  <h2 class="fw-bold mb-5">🍔 Menus Disponíveis</h2>
+
+  <div class="row">
+    <div
+      class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+      *ngFor="let menu of menus"
+    >
+      <div class="card border-0 shadow-sm h-100">
+        <img
+          [src]="'http://localhost:3000' + menu.imagem"
+          class="card-img-top img-fluid p-3"
+          alt="{{ menu.nome }}"
+          style="max-height: 160px; object-fit: contain"
+        />
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">{{ menu.nome }}</h5>
+        </div>
+        <div class="card-footer bg-transparent border-0">
+          <button class="btn-ver-mais" (click)="verDetalhes(menu._id)">
+            Ver mais
+          </button>
+        </div>
+        <div>
+          <button
+            class="btn btn-sm btn-warning me-2"
+            (click)="editarMenu(menu._id)"
+          >
+            ✏️
+          </button>
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="eliminarMenu(menu._id)"
+          >
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

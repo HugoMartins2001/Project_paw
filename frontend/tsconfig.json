@@ -16,24 +16,12 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
-    "types": ["node","jest"],
+    "module": "ES2022"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.html",
-    "src/**/*.scss",
-    "src/**/*.css",
-    "src/**/*.json",
-    "src/**/*.svg",
-    "src/**/*.png",
-    "src/**/*.jpg",
-    "src/**/*.jpeg"
-  ],	
+  }
 }

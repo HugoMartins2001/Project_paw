@@ -1,1 +1,0 @@
-import 'zone.js'; // Inclui Zone.js, necessário para o Angular

@@ -1,0 +1,171 @@
+/* Estilo geral */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #e3dfd9, #e2940d); /* Gradiente de fundo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  max-width: 800px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 40px;
+  margin: 20px auto;
+  transition: transform 0.3s ease;
+}
+
+.wrapper:hover {
+  transform: scale(1.02);
+}
+
+/* Título */
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Formulário */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background: #f9f9f9;
+  color: #333;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+label {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+/* Botão de submissão */
+button[type="submit"] {
+  width: 50%;
+  margin: 20px auto;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(135deg, #feb47b, #ff7e5f);
+  box-shadow: 0 4px 10px rgba(255, 126, 95, 0.5);
+}
+
+/* Campos de senha */
+.password-container {
+  position: relative;
+}
+
+.password-container .form-control {
+  padding-right: 40px; /* Espaço reservado para o ícone */
+}
+
+.password-container .btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.password-container .btn:focus {
+  outline: none;
+}
+
+/* Barra de força da senha */
+.passwordStrength {
+  margin-top: 10px;
+  height: 8px;
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.strength-bar {
+  height: 100%;
+  width: 0;
+  transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.strength-text {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Campos dinâmicos */
+#cliente-fields,
+#manager-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+#cliente-fields .mb-3,
+#manager-fields .mb-3 {
+  display: flex;
+  flex-direction: column;
+}
+
+#cliente-fields #address {
+  grid-column: span 2; /* Campo de morada ocupa duas colunas */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .wrapper {
+    width: 90%;
+    padding: 20px;
+  }
+
+  #cliente-fields,
+  #manager-fields {
+    grid-template-columns: 1fr;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+  }
+}
