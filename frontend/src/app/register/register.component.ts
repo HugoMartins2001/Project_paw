@@ -1,21 +1,38 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [FormsModule], // Não inclua RouterModule aqui
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css',
+  '../../assets/css/login.css']
 })
-export class RegisterComponent {
-  userData = {
-    name: '',
-    email: '',
-    password: ''
-  };
 
-  onRegister() {
-    console.log('Registering user:', this.userData);
+export class RegisterComponent{
+  error: string;
+  name: string;
+  email: string;
+  nif: string;
+  password: string;
+
+  constructor(private authService: AuthService, private router: Router) {
+    this.error = '';
+    this.name = '';
+    this.email = '';
+    this.nif = '';
+    this.password = '';
+  }
+
+  register(): void {
+    this.authService.register({ name: this.name, email: this.email, nif: this.nif, password: this.password }).pipe().subscribe((error) => {
+      if (error !== '') {
+        this.error = error;
+        return;
+      }
+      this.authService.login({ email: this.nif, password: this.password }).pipe().subscribe((error) => {
+        this.router.navigate(['/dashboard']);
+      });
+    });
   }
 }

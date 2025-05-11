@@ -9,9 +9,8 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppComponent,
-    AppRoutingModule // já inclui o RouterModule.forRoot(routes)
+    AppRoutingModule,// já inclui o RouterModule.forRoot(routes)
+    AppComponent
   ],
 })
-
 export class AppModule { }
