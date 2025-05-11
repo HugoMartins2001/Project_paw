@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-//import { AuthGuard } from './auth.guard';
-
+import { HomeComponent } from './home/home.component'; // Importe o HomeComponent
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent, // Página inicial
+    title: 'Home'
+  },
   {
     path: 'login',
     component: LoginComponent,
@@ -18,7 +21,8 @@ const routes: Routes = [
     title: 'Register'
   },
   {
-    path: '**', redirectTo: '/login'
+    path: '**',
+    redirectTo: '' // Redireciona rotas desconhecidas para a página inicial
   }
 ];
 
