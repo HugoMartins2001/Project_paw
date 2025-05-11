@@ -15,8 +15,8 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router : Router) {}
 
-  login(credentials: { username: string; password: string }): Observable<string> {
-    return this.http.post<{ error: string, token?: string, user: any }>(`${this.apiUrl}/login`, credentials, { headers }).pipe(
+  login(credentials: { email: string; password: string }): Observable<string> {
+    return this.http.post<{ error: string, token?: string, user: any }>(`${this.apiUrl}/auth/loginSubmitted`, credentials, { headers }).pipe(
       map(res => {
         if (res.token && res.user) {
           localStorage.setItem(this.tokenKey, res.token);
@@ -27,7 +27,7 @@ export class AuthService {
         return res.error;
       }),
       catchError(error => {
-        return of(error)
+        return of(error);
       })
     );
   }

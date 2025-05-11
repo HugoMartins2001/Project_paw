@@ -46,6 +46,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(flash());
 app.use("/uploads", express.static("public/uploads"));
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(
   session({

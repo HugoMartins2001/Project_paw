@@ -22,20 +22,6 @@ export class ApiService {
     }));
   }
 
-  tickets(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/tickets`).pipe(catchError(error => {
-      this.router.navigate(['/error', { queryParams: { error: error.message } }]);
-      return of({})
-    }));
-  }
-
-  ticket(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/tickets/${id}`).pipe(catchError(error => {
-      this.router.navigate(['/error', { queryParams: { error: error.message } }]);
-      return of({})
-    }));
-  }
-
   profile(): Observable<any> {
     return this.http.get(`${this.apiUrl}/profile`).pipe(catchError(error => {
       this.router.navigate(['/error', { queryParams: { error: error.message } }]);
