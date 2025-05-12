@@ -1,14 +1,15 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { appRoutes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http'; 
+import { HttpClientModule } from '@angular/common/http';
+
+import { routes } from './app.routes'; // Import the routes array
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(appRoutes),
-    provideHttpClient(),
-    provideClientHydration(withEventReplay())
+    provideRouter(routes), // Provide the routes from app.routes.ts
+    importProvidersFrom(HttpClientModule) // Provide HttpClient
+    // FormsModule is imported by standalone components that need it.
+    // BrowserModule is implicitly handled by bootstrapApplication.
+    // CommonModule is imported by standalone components that need its directives/pipes.
   ]
 };

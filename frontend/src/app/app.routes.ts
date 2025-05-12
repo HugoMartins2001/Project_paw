@@ -1,15 +1,36 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProductComponent } from './product/product.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductAddComponent } from './product-add/product-add.component';
+import { ProductEditComponent } from './product-edit/product-edit.component';
 
-export const appRoutes: Routes = [
-  { path: '', redirectTo: 'registo', pathMatch: 'full' },
-  { path: 'registo', loadComponent: () => import('./auth/registo/registo.component').then(m => m.RegistoComponent) },
-  { path: 'login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
-  { path: 'restaurante/dashboard/:id', loadComponent: () => import('./restaurante/dashboard.component').then(m => m.DashboardRestauranteComponent) },
-  { path: 'prato/adicionar', loadComponent: () => import('./restaurante/adicionar-prato/adicionar-prato.component').then(m => m.AdicionarPratoComponent) },
-  { path: 'prato/editar/:id', loadComponent: () => import('./restaurante/adicionar-prato/adicionar-prato.component').then(m => m.AdicionarPratoComponent) },
-  { path: 'prato/listar', loadComponent: () => import('./restaurante/listar-prato/listar-prato.component').then(m => m.ListarPratoComponent) },
-  { path: 'prato/detalhes/:id', loadComponent: () => import('./restaurante/detalhes-prato/detalhes-prato.component').then(m => m.DetalhesPratoComponent) },
-  { path: 'menu/adicionar', loadComponent: () => import('./restaurante/criar-menu/criar-menu.component').then(m => m.CriarMenuComponent) },
-  //{ path: 'menu/listar', loadComponent: () => import('./restaurante/listar-menu/listar-menu.component').then(m => m.ListarMenuComponent) },
-
+export const routes: Routes = [ // Export the routes
+  {
+    path: 'products',
+    component: ProductComponent,
+    data: { title: 'Product List' }
+  },
+  {
+    path: 'product-details/:id',
+    component: ProductDetailComponent,
+    data: { title: 'Product Details' }
+  },
+  {
+    path: 'product-add',
+    component: ProductAddComponent,
+    data: { title: 'Product Add' }
+  },
+  {
+    path: 'product-edit/:id',
+    component: ProductEditComponent,
+    data: { title: 'Product Edit' }
+  },
+  { path: '', redirectTo: '/products', pathMatch: 'full' }
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
