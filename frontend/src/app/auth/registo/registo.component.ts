@@ -196,8 +196,7 @@ onRoleChange(): void {
 
 
     this.http.post('http://localhost:3000/api/auth/registerSubmitted', formData).subscribe({
-      next: (response) => {
-          console.log('Resposta da API:', response);
+      next: () => {
         Swal.fire({
           icon: 'success',
           title: 'Conta criada com sucesso!',
