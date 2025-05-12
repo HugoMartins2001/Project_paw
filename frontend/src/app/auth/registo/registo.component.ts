@@ -17,19 +17,10 @@ export class RegistoComponent {
   registoForm: FormGroup;
   errors: any = {};
   files: any = {};
-  metodosSelecionados: string[] = [];
-  passwordStrength = { percent: 0, color: 'red', message: 'Muito Fraca' };
+  passwordStrength = { percent: 0, color: 'red', message: 'Very Weak' };
   passwordVisible = false;
   confirmPasswordVisible = false;
   passwordMismatch = false;
-
-  metodosPagamento: string[] = [
-    'Dinheiro',
-    'MB Way',
-    'Cartão de Crédito/Débito',
-    'Multibanco',
-    'Outro',
-  ];
 
   constructor(
     private fb: FormBuilder,
@@ -39,7 +30,7 @@ export class RegistoComponent {
     this.registoForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required]],
       confirmPassword: ['', Validators.required],
       role: ['', Validators.required],
       clienteTelemovel: ['', [Validators.pattern(/^\d{9}$/)]],
@@ -92,21 +83,11 @@ onRoleChange(): void {
       managerTelemovel: '',
     });
     this.files = {};
-    this.metodosSelecionados = [];
   }
 
   onFileChange(event: any, field: string) {
     if (event.target.files.length > 0) {
       this.files[field] = event.target.files[0];
-    }
-  }
-
-  onPagamentoChange(event: any) {
-    const valor = event.target.value;
-    if (event.target.checked) {
-      this.metodosSelecionados.push(valor);
-    } else {
-      this.metodosSelecionados = this.metodosSelecionados.filter(v => v !== valor);
     }
   }
 
@@ -163,15 +144,15 @@ onRoleChange(): void {
     if (tipo === 'Client') {
       // Apaga os campos de restaurante do objeto
       [
-        'managerTelemovel',
-      ].forEach(campo => this.registoForm.get(campo)?.setValue(undefined));
-    }
-
-    if (tipo === 'restaurante') {
-      [
         'clienteTelemovel',
         'clienteNif',
         'address',
+      ].forEach(campo => this.registoForm.get(campo)?.setValue(undefined));
+    }
+
+    if (tipo === 'Manager') {
+      [
+        'managerTelemovel',
       ].forEach(campo => this.registoForm.get(campo)?.setValue(undefined));
     }
 
@@ -213,12 +194,10 @@ onRoleChange(): void {
       formData.append(key, this.files[key]);
     }
 
-    this.metodosSelecionados.forEach(metodo => {
-      formData.append('metodosPagamento[]', metodo);
-    });
 
-    this.http.post('http://localhost:3000/api/auth/registar', formData).subscribe({
-      next: () => {
+    this.http.post('http://localhost:3000/api/auth/registerSubmitted', formData).subscribe({
+      next: (response) => {
+          console.log('Resposta da API:', response);
         Swal.fire({
           icon: 'success',
           title: 'Conta criada com sucesso!',
@@ -229,7 +208,6 @@ onRoleChange(): void {
         }).then(() => {
           this.registoForm.reset();
           this.files = {};
-          this.metodosSelecionados = [];
           this.router.navigate(['/login']);
         });
       },
