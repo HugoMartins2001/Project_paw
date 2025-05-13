@@ -103,6 +103,10 @@ restaurantsController.showAll = async function (req, res, next) {
     } else if (req.user.role === "Client") {
       query.isApproved = true; // Clientes só podem ver restaurantes aprovados
       query.isVisible = true; // Clientes só podem ver restaurantes visíveis
+    }else {
+      // Visitantes (não autenticados) só podem ver restaurantes aprovados e visíveis
+      query.isApproved = true;
+      query.isVisible = true;
     }
 
     // Ordenação
@@ -142,8 +146,8 @@ restaurantsController.showAll = async function (req, res, next) {
     // jsonizar a página com os restaurantes filtrados e informações de paginação
     res.json({
       restaurants: filteredRestaurants,
-      restaurants: restaurantList,
-      user: req.user,
+      //restaurants: restaurantList,
+      //user: req.user,
       currentPage: parseInt(page),
       totalPages,
       filters: { name, address, sortBy, order },
