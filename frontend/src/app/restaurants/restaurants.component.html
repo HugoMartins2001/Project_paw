@@ -1,17 +1,18 @@
 <div class="restaurants-container">
-  <header class="restaurants-header">
-    <h1>Descubra Nossos Restaurantes</h1>
-    <p>Explore os melhores lugares para saborear pratos incríveis.</p>
-  </header>
+  <h1>Lista de Restaurantes</h1>
 
-  <section class="restaurants-list">
-    <div class="restaurant-card" *ngFor="let restaurant of restaurants">
-      <img [src]="restaurant.image" [alt]="restaurant.name" class="restaurant-image" />
-      <div class="restaurant-info">
-        <h2>{{ restaurant.name }}</h2>
-        <p>{{ restaurant.description }}</p>
-        <button class="details-button" (click)="viewDetails(restaurant.id)">Ver Detalhes</button>
-      </div>
-    </div>
-  </section>
+  <div *ngIf="isLoading" class="loading">
+    Carregando restaurantes...
+  </div>
+
+  <div *ngIf="!isLoading && restaurants.length === 0" class="no-data">
+    Nenhum restaurante encontrado.
+  </div>
+
+  <ul *ngIf="!isLoading && restaurants.length > 0">
+    <li *ngFor="let restaurant of restaurants">
+      <h2>{{ restaurant.name }}</h2>
+      <p><strong>Endereço:</strong> {{ restaurant.name }}</p>
+    </li>
+  </ul>
 </div>
