@@ -19,27 +19,27 @@
           <label for="confirmPassword">Confirmar Senha</label>
           <input type="password" id="confirmPassword" placeholder="Confirme sua senha" [(ngModel)]="confirmPassword" name="confirmPassword" required />
         </div>
+        <div class="form-group">
+          <label for="profilePic">Foto de Perfil</label>
+          <input type="file" id="profilePic" (change)="onFileSelected($event)" />
+        </div>
       </div>
-
-      <button type="button" class="role-button" (click)="toggleRoleSelection()">Selecionar Role</button>
-
-      <div *ngIf="showRoleSelection" class="role-selection">
-        <label>
-          <input type="radio" name="role" value="Client" [(ngModel)]="role" (change)="onRoleChange()" /> Client
-        </label>
-        <label>
-          <input type="radio" name="role" value="Manager" [(ngModel)]="role" (change)="onRoleChange()" /> Manager
-        </label>
+      <div class="form-group">
+        <label for="role">Selecione o Role</label>
+        <select id="role" [(ngModel)]="role" name="role" (change)="onRoleChange()" required>
+          <option value="" disabled selected>Escolha uma opção</option>
+          <option value="Client">Client</option>
+          <option value="Manager">Manager</option>
+        </select>
       </div>
-
       <div *ngIf="role === 'Client'" class="form-grid">
         <div class="form-group">
-          <label for="phone">Número de Telemóvel</label>
-          <input type="text" id="phone" placeholder="Digite seu número de telemóvel" [(ngModel)]="phone" name="phone" required />
+          <label for="clienteTelemovel">Número de Telemóvel</label>
+          <input type="text" id="clienteTelemovel" placeholder="Digite seu número de telemóvel" [(ngModel)]="clienteTelemovel" name="clienteTelemovel" required />
         </div>
         <div class="form-group">
-          <label for="nif">NIF</label>
-          <input type="text" id="nif" placeholder="Digite seu NIF" [(ngModel)]="nif" name="nif" required />
+          <label for="clienteNif">NIF</label>
+          <input type="text" id="clienteNif" placeholder="Digite seu NIF" [(ngModel)]="clienteNif" name="clienteNif" required />
         </div>
         <div class="form-group">
           <label for="address">Endereço</label>
@@ -48,8 +48,8 @@
       </div>
 
       <div *ngIf="role === 'Manager'" class="form-group">
-        <label for="phone">Número de Telemóvel</label>
-        <input type="text" id="phone" placeholder="Digite seu número de telemóvel" [(ngModel)]="phone" name="phone" required />
+        <label for="managerTelemovel">Número de Telemóvel</label>
+        <input type="text" id="managerTelemovel" placeholder="Digite seu número de telemóvel" [(ngModel)]="managerTelemovel" name="managerTelemovel" required />
       </div>
 
       <button type="submit" class="register-button">Registrar</button>

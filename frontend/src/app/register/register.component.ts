@@ -1,42 +1,46 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Importar FormsModule se necessário
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service'; // Certifique-se de que o caminho está correto
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-
-  constructor(private router: Router) {}
-
-  navigateToLogin(): void {
-    this.router.navigate(['/login']); // Substitua pela rota de login
-  }
-
   name: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
   role: string = '';
-  phone: string = '';
-  nif: string = '';
+  clienteTelemovel: string = '';
+  clienteNif: string = '';
+  managerTelemovel: string = '';
   address: string = '';
-  showRoleSelection: boolean = false;
+  profilePic: File | null = null; // Variável para armazenar o arquivo de foto de perfil
 
-  toggleRoleSelection(): void {
-    this.showRoleSelection = !this.showRoleSelection;
+  constructor(private router: Router, private authService: AuthService) {}
+
+  navigateToLogin(): void {
+    this.router.navigate(['/login']); 
   }
 
   onRoleChange(): void {
-    // Limpa os campos específicos ao trocar de role
-    this.phone = '';
-    this.nif = '';
+    this.clienteTelemovel = '';
+    this.clienteNif = '';
     this.address = '';
+  }
+
+  
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.profilePic = file;
+    }
   }
 
   onSubmit(): void {
@@ -45,17 +49,32 @@ export class RegisterComponent {
       return;
     }
 
-    const formData = {
-      name: this.name,
-      email: this.email,
-      password: this.password,
-      role: this.role,
-      phone: this.phone,
-      nif: this.role === 'Client' ? this.nif : null,
-      address: this.role === 'Client' ? this.address : null
-    };
+    const formData = new FormData();
+    formData.append('name', this.name);
+    formData.append('email', this.email);
+    formData.append('password', this.password);
+    formData.append('role', this.role);
+    if (this.role === 'Client') {
+      formData.append('clienteNif', this.clienteNif);
+      formData.append('clienteTelemovel', this.clienteTelemovel);
+      formData.append('address', this.address);
+    } else if (this.role === 'Manager') {
+      formData.append('managerTelemovel', this.managerTelemovel);
+    }
+    if (this.profilePic) {
+      formData.append('profilePic', this.profilePic); // Adiciona o arquivo ao FormData
+    }
 
-    console.log('Dados do formulário:', formData);
-    // Adicione aqui a lógica para enviar os dados ao backend
+    this.authService.register(formData).subscribe(
+      (response) => {
+        console.log('Registro bem-sucedido:', response);
+        alert('Registro realizado com sucesso!');
+        this.router.navigate(['/login']); // Redirecione para a página de login
+      },
+      (error) => {
+        console.error('Erro ao registrar:', error);
+        alert('Ocorreu um erro ao realizar o registro.');
+      }
+    );
   }
 }
