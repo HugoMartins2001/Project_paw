@@ -1,0 +1,59 @@
+########## nos ficheiros .ts dos componentes (product, product-add, product-detail e product-edit):
+
+-ADICIONAR
+ import { CommonModule, NgIf } from '@angular/common'; // Import CommonModule or NgIf // NECESSARIO ADICIONAR
+- ADICIONAR
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+
+@Component({
+ selector: 'app-product-add',
+  standalone: true, // NECESSARIO ADICIONAR
+ imports: [ //NECESSARIO ADICIONAR
+    CommonModule, // This provides *ngIf, *ngFor, async pipe, etc.
+    // Or you could import just NgIf:
+    // NgIf,
+    // RouterLink, // If you use <a routerLink="...">
+     FormsModule, // If you use [(ngModel)] in this component's template
+  ],
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.css']
+})
+
+
+########## No product-detail.component.ts e no product.component.ts:
+- Adicionar RouterModule
+import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // Import RouterModule
+
+@Component({
+ selector: 'app-product-detail',
+ standalone: true, // NECESSARIO ADICIONAR
+ imports: [ //NECESSARIO ADICIONAR
+    CommonModule, // This provides *ngIf, *ngFor, async pipe, etc.
+    // Or you could import just NgIf:
+    // NgIf,
+    // RouterLink, // If you use <a routerLink="...">
+    // FormsModule, // If you use [(ngModel)] in this component's template
+    RouterModule
+  ],
+ templateUrl: './product-detail.component.html',
+ styleUrls: ['./product-detail.component.css']
+})
+
+
+########## No product-edit.component.ts
+
+updateProduct() {
+    const currentProductId = this.route.snapshot.params['id'];
+    this.rest.updateProduct(currentProductId, this.productData).subscribe((result) => {
+      console.log('API response from updateProduct:', result); // Log to see what the API returns
+      // Navigate using the ID we already know, which is reliable.
+      this.router.navigate(['/product-details/' + currentProductId]);
+ }, (err) => {
+ console.log(err);
+ });
+
+########## Alterar o ficheiro app.routes.ts
+
+########## Alterar o ficheiro app.config.ts
+
+

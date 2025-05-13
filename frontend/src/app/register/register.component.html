@@ -1,0 +1,58 @@
+<div class="register-container">
+  <div class="register-card">
+    <h1>Crie sua Conta</h1>
+    <form (submit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input type="text" id="name" placeholder="Digite seu nome" [(ngModel)]="name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Digite seu email" [(ngModel)]="email" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" placeholder="Digite sua senha" [(ngModel)]="password" name="password" required />
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Senha</label>
+          <input type="password" id="confirmPassword" placeholder="Confirme sua senha" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+        </div>
+      </div>
+
+      <button type="button" class="role-button" (click)="toggleRoleSelection()">Selecionar Role</button>
+
+      <div *ngIf="showRoleSelection" class="role-selection">
+        <label>
+          <input type="radio" name="role" value="Client" [(ngModel)]="role" (change)="onRoleChange()" /> Client
+        </label>
+        <label>
+          <input type="radio" name="role" value="Manager" [(ngModel)]="role" (change)="onRoleChange()" /> Manager
+        </label>
+      </div>
+
+      <div *ngIf="role === 'Client'" class="form-grid">
+        <div class="form-group">
+          <label for="phone">Número de Telemóvel</label>
+          <input type="text" id="phone" placeholder="Digite seu número de telemóvel" [(ngModel)]="phone" name="phone" required />
+        </div>
+        <div class="form-group">
+          <label for="nif">NIF</label>
+          <input type="text" id="nif" placeholder="Digite seu NIF" [(ngModel)]="nif" name="nif" required />
+        </div>
+        <div class="form-group">
+          <label for="address">Endereço</label>
+          <input type="text" id="address" placeholder="Digite seu endereço" [(ngModel)]="address" name="address" required />
+        </div>
+      </div>
+
+      <div *ngIf="role === 'Manager'" class="form-group">
+        <label for="phone">Número de Telemóvel</label>
+        <input type="text" id="phone" placeholder="Digite seu número de telemóvel" [(ngModel)]="phone" name="phone" required />
+      </div>
+
+      <button type="submit" class="register-button">Registrar</button>
+    </form>
+  </div>
+</div>

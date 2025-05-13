@@ -1,0 +1,17 @@
+<div class="restaurants-container">
+  <header class="restaurants-header">
+    <h1>Descubra Nossos Restaurantes</h1>
+    <p>Explore os melhores lugares para saborear pratos incríveis.</p>
+  </header>
+
+  <section class="restaurants-list">
+    <div class="restaurant-card" *ngFor="let restaurant of restaurants">
+      <img [src]="restaurant.image" [alt]="restaurant.name" class="restaurant-image" />
+      <div class="restaurant-info">
+        <h2>{{ restaurant.name }}</h2>
+        <p>{{ restaurant.description }}</p>
+        <button class="details-button" (click)="viewDetails(restaurant.id)">Ver Detalhes</button>
+      </div>
+    </div>
+  </section>
+</div>

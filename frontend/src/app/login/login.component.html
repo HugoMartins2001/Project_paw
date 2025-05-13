@@ -1,0 +1,20 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>Bem-vindo de Volta!</h1>
+    <p>Faça login para aceder há sua conta</p>
+    <form>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Digite seu email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="Digite sua senha"  name="password" required />
+      </div>
+      <button type="submit" class="login-button">Entrar</button>
+    </form>
+    <p class="register-link">
+      Não tem uma conta? <a (click)="navigateToRegister()">Registe-se</a>
+    </p>
+  </div>
+</div>
