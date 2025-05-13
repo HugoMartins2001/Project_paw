@@ -1,0 +1,18 @@
+<div class="restaurants-container">
+  <h1>Lista de Restaurantes</h1>
+
+  <div *ngIf="isLoading" class="loading">
+    Carregando restaurantes...
+  </div>
+
+  <div *ngIf="!isLoading && restaurants.length === 0" class="no-data">
+    Nenhum restaurante encontrado.
+  </div>
+
+  <ul *ngIf="!isLoading && restaurants.length > 0">
+    <li *ngFor="let restaurant of restaurants">
+      <h2>{{ restaurant.name }}</h2>
+      <p><strong>Endereço:</strong> {{ restaurant.name }}</p>
+    </li>
+  </ul>
+</div>

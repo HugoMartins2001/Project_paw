@@ -1,0 +1,105 @@
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: linear-gradient(135deg, #e0eafc, #cfdef3); /* Tons de azul e cinza */
+  color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  border-radius: 50%;
+  border: 2px solid #6c63ff; /* Azul suave */
+}
+
+.logo h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+  color: #6c63ff; /* Azul suave */
+}
+
+.navigation ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s, border-bottom 0.3s;
+  border-bottom: 2px solid transparent;
+}
+
+.navigation a:hover,
+.navigation a.active {
+  color: #6c63ff; /* Azul suave */
+  border-bottom: 2px solid #6c63ff;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.login-button,
+.register-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.login-button {
+  background-color: white;
+  color: #6c63ff; /* Azul suave */
+  border: 2px solid #6c63ff;
+}
+
+.login-button:hover {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.register-button {
+  background-color: #6c63ff; /* Azul suave */
+  color: white;
+}
+
+.register-button:hover {
+  background-color: #574b90; /* Azul mais escuro */
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .navigation ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .auth-buttons {
+    margin-top: 15px;
+  }
+}

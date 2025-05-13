@@ -23,9 +23,6 @@
       "get": {
         "description": "",
         "summary": "Retorna os detalhes de um restaurante",
-        "tags": [
-          "Restaurantes"
-        ],
         "operationId": "Retornaosdetalhesdeumrestaurante",
         "deprecated": false,
         "produces": [
@@ -59,9 +56,6 @@
       "post": {
         "description": "Permite que um manager crie um novo restaurante.",
         "summary": "Criar um novo restaurante",
-        "tags": [
-          "Restaurantes"
-        ],
         "operationId": "Criarumnovorestaurante",
         "deprecated": false,
         "produces": [
@@ -107,9 +101,6 @@
       "post": {
         "description": "Permite que um manager ou administrador atualize os detalhes de um restaurante.",
         "summary": "Atualiza um restaurante existente",
-        "tags": [
-          "Restaurantes"
-        ],
         "operationId": "Atualizaumrestauranteexistente",
         "deprecated": false,
         "produces": [
@@ -162,9 +153,6 @@
       "get": {
         "description": "Permite que um administrador veja todos os restaurantes que aguardam aprovação.",
         "summary": "Lista restaurantes pendentes de aprovação",
-        "tags": [
-          "Restaurantes"
-        ],
         "operationId": "Listarestaurantespendentesdeaprovação",
         "deprecated": false,
         "produces": [
@@ -193,10 +181,7 @@
       "get": {
         "description": "Retorna uma lista de restaurantes com base no papel do Utilizador.",
         "summary": "Retorna todos os restaurantes",
-        "tags": [
-          "Restaurantes"
-        ],
-        "operationId": "Retornatodososrestaurantes",
+        "operationId": "showRestaurants",
         "deprecated": false,
         "produces": [
           "application/json"
@@ -224,9 +209,6 @@
       "post": {
         "description": "",
         "summary": "Eliminar um restaurante",
-        "tags": [
-          "Restaurantes"
-        ],
         "operationId": "Eliminarumrestaurante",
         "deprecated": false,
         "produces": [
@@ -261,9 +243,6 @@
       "get": {
         "description": "Retorna uma lista de pratos disponíveis.",
         "summary": "Retorna todos os pratos",
-        "tags": [
-          "Pratos"
-        ],
         "operationId": "Retornatodosospratos",
         "deprecated": false,
         "produces": [
@@ -288,9 +267,6 @@
       "post": {
         "description": "Permite que um manager crie um novo prato.",
         "summary": "Cria um novo prato",
-        "tags": [
-          "Pratos"
-        ],
         "operationId": "Criaumnovoprato",
         "deprecated": false,
         "produces": [
@@ -336,9 +312,6 @@
       "get": {
         "description": "",
         "summary": "Retorna os detalhes de um prato",
-        "tags": [
-          "Pratos"
-        ],
         "operationId": "Retornaosdetalhesdeumprato",
         "deprecated": false,
         "produces": [
@@ -372,9 +345,6 @@
       "post": {
         "description": "",
         "summary": "Eleminar um prato",
-        "tags": [
-          "Pratos"
-        ],
         "operationId": "Eleminarumprato",
         "deprecated": false,
         "produces": [
@@ -409,9 +379,6 @@
       "post": {
         "description": "",
         "summary": "Atualiza um prato existente",
-        "tags": [
-          "Pratos"
-        ],
         "operationId": "Atualizaumpratoexistente",
         "deprecated": false,
         "produces": [
@@ -464,9 +431,6 @@
       "get": {
         "description": "Retorna uma lista de menus disponíveis.",
         "summary": "Retorna todos os menus",
-        "tags": [
-          "Menus"
-        ],
         "operationId": "Retornatodososmenus",
         "deprecated": false,
         "produces": [
@@ -491,9 +455,6 @@
       "post": {
         "description": "Permite que um manager crie um novo menu.",
         "summary": "Cria um novo menu",
-        "tags": [
-          "Menus"
-        ],
         "operationId": "Criaumnovomenu",
         "deprecated": false,
         "produces": [
@@ -539,9 +500,6 @@
       "get": {
         "description": "",
         "summary": "Retorna os detalhes de um menu",
-        "tags": [
-          "Menus"
-        ],
         "operationId": "Retornaosdetalhesdeummenu",
         "deprecated": false,
         "produces": [
@@ -575,9 +533,6 @@
       "post": {
         "description": "",
         "summary": "Eleminar um menu",
-        "tags": [
-          "Menus"
-        ],
         "operationId": "Eleminarummenu",
         "deprecated": false,
         "produces": [
@@ -612,9 +567,6 @@
       "post": {
         "description": "",
         "summary": "Atualiza um menu existente",
-        "tags": [
-          "Menus"
-        ],
         "operationId": "Atualizaummenuexistente",
         "deprecated": false,
         "produces": [
@@ -667,9 +619,6 @@
       "get": {
         "description": "Retorna uma lista de utilizadores registados no sistema, sem incluir as senhas.",
         "summary": "Retorna todos os utilizadores",
-        "tags": [
-          "Utilizadores"
-        ],
         "operationId": "Retornatodososutilizadores",
         "deprecated": false,
         "produces": [
@@ -698,9 +647,6 @@
       "get": {
         "description": "Renderiza a página de login para o utilizador.",
         "summary": "Exibe a página de login",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "Exibeapáginadelogin",
         "deprecated": false,
         "produces": [
@@ -719,9 +665,6 @@
       "post": {
         "description": "Verifica as credenciais do utilizador e retorna um token de autenticação.",
         "summary": "Realiza o login do utilizador",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "Realizaologindoutilizador",
         "deprecated": false,
         "produces": [
@@ -797,9 +740,6 @@
       "get": {
         "description": "Remove o token de autenticação e redireciona para a página inicial.",
         "summary": "Realiza o logout do utilizador",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "Realizaologoutdoutilizador",
         "deprecated": false,
         "produces": [
@@ -818,9 +758,6 @@
       "get": {
         "description": "Renderiza a página para criar um novo utilizador.",
         "summary": "Exibe a página de registo",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "Exibeapáginaderegisto",
         "deprecated": false,
         "produces": [
@@ -839,9 +776,6 @@
       "post": {
         "description": "Registra um novo utilizador no sistema.",
         "summary": "Cria um novo utilizador",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "Criaumnovoutilizador",
         "deprecated": false,
         "produces": [
@@ -887,9 +821,6 @@
       "get": {
         "description": "Redireciona o utilizador para a página de autenticação do Google.",
         "summary": "Inicia o login com Google",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "IniciaologincomGoogle",
         "deprecated": false,
         "produces": [
@@ -908,9 +839,6 @@
       "get": {
         "description": "Recebe o retorno do Google após a autenticação.",
         "summary": "Callback do login com Google",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "CallbackdologincomGoogle",
         "deprecated": false,
         "produces": [
@@ -933,9 +861,6 @@
       "post": {
         "description": "Envia um link de redefinição de senha para o e-mail fornecido.",
         "summary": "Solicitar redefinição de senha",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "Solicitarredefiniçãodesenha",
         "deprecated": false,
         "produces": [
@@ -1012,9 +937,6 @@
       "post": {
         "description": "Permite redefinir a senha do utilizador usando um token válido.",
         "summary": "Redefinir senha",
-        "tags": [
-          "Autenticação"
-        ],
         "operationId": "Redefinirsenha",
         "deprecated": false,
         "produces": [
@@ -1567,28 +1489,5 @@
         }
       }
     }
-  },
-  "security": [],
-  "tags": [
-    {
-      "name": "Restaurantes",
-      "description": "Endpoints relacionados a restaurantes"
-    },
-    {
-      "name": "Pratos",
-      "description": "Endpoints relacionados a pratos"
-    },
-    {
-      "name": "Menus",
-      "description": "Endpoints relacionados a menus"
-    },
-    {
-      "name": "Utilizadores",
-      "description": "Endpoints relacionados aos utilizadores"
-    },
-    {
-      "name": "Autenticação",
-      "description": "Endpoints relacionados à autenticação"
-    }
-  ]
+  }
 }
