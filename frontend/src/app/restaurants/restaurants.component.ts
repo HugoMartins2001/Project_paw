@@ -19,16 +19,21 @@ export class RestaurantsComponent implements OnInit {
     this.fetchRestaurants();
   }
 
-  fetchRestaurants(): void {
-    this.restaurantService.getRestaurants().subscribe({
-      next: (data) => {
+ fetchRestaurants(): void {
+  this.restaurantService.getRestaurants().subscribe({
+    next: (data) => {
+      if (Array.isArray(data)) {
         this.restaurants = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Erro ao buscar restaurantes:', err);
-        this.isLoading = false;
-      },
-    });
-  }
+      } else {
+        console.error('Os dados recebidos não são um array:', data);
+        this.restaurants = [];
+      }
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Erro ao buscar restaurantes:', err);
+      this.isLoading = false;
+    },
+  });
+}
 }

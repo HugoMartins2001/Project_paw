@@ -5,7 +5,7 @@ const logAction = require("../utils/logger");
 
 let menusController = {};
 
-// Renderiza a página para criar um menu
+// jsoniza a página para criar um menu
 menusController.renderCreateMenu = async function (req, res, next) {
   try {
     let dishes;
@@ -16,7 +16,7 @@ menusController.renderCreateMenu = async function (req, res, next) {
       dishes = await mongoDish.find();
     }
 
-    res.render("menus/submitMenu", {
+    res.json("menus/submitMenu", {
       dishes,
       user: req.user, // Passa o usuário autenticado para o EJS
     });
@@ -115,8 +115,8 @@ menusController.showAll = async function (req, res, next) {
     const totalMenus = await mongoMenu.countDocuments(query);
     const totalPages = Math.ceil(totalMenus / limit);
 
-    // Renderizar a página com os menus filtrados e informações de paginação
-    res.render("menus/showMenus", {
+    // jsonizar a página com os menus filtrados e informações de paginação
+    res.json("menus/showMenus", {
       menus: filteredMenus,
       user: user,
       currentPage: parseInt(page),
@@ -165,7 +165,7 @@ menusController.showMenu = async function (req, res, next) {
     const menu = await mongoMenu.findById(menuId).populate("dishes");
 
     if (!menu) {
-      return res.status(404).render("errors/404", { message: "Menu not found." });
+      return res.status(404).json("errors/404", { message: "Menu not found." });
     }
 
     // Verificar permissões
@@ -173,7 +173,7 @@ menusController.showMenu = async function (req, res, next) {
       req.user.role !== "Admin" && // Apenas Admin pode acessar qualquer menu
       (!menu.managerId || menu.managerId.toString() !== req.user._id.toString()) // Gerente só pode acessar seus próprios menus
     ) {
-      return res.status(403).render("errors/403", { message: "Access denied." });
+      return res.status(403).json("errors/403", { message: "Access denied." });
     }
 
     // Buscar todos os restaurantes que contêm este menu
@@ -190,8 +190,8 @@ menusController.showMenu = async function (req, res, next) {
       name: restaurant.name,
     }));
 
-    // Renderizar a página com os dados do menu e dos restaurantes
-    res.render("menus/showMenu", {
+    // jsonizar a página com os dados do menu e dos restaurantes
+    res.json("menus/showMenu", {
       menu: menu.toObject(),
       restaurantList,
       user: req.user, // Passa o usuário logado para o header
@@ -242,7 +242,7 @@ menusController.renderEditMenu = async function (req, res, next) {
       .populate("restaurant");
 
     if (!menu) {
-      return res.status(404).render("errors/404", { message: "Menu not found." });
+      return res.status(404).json("errors/404", { message: "Menu not found." });
     }
 
     const user = req.user;
@@ -252,7 +252,7 @@ menusController.renderEditMenu = async function (req, res, next) {
       req.user.role !== "Admin" && // Admin pode acessar qualquer menu
       menu.managerId.toString() !== req.user._id.toString() // Apenas o gerente que criou o menu pode acessá-lo
     ) {
-      return res.status(403).render("errors/403", { message: "You do not have permission to edit this menu." });
+      return res.status(403).json("errors/403", { message: "You do not have permission to edit this menu." });
       }
 
     let allDishes;
@@ -264,7 +264,7 @@ menusController.renderEditMenu = async function (req, res, next) {
 
     const restaurants = await mongoRestaurant.find();
 
-    res.render("menus/editMenu", { menu, dishes: allDishes, restaurants, user });
+    res.json("menus/editMenu", { menu, dishes: allDishes, restaurants, user });
   } catch (err) {
     next(err);
   }

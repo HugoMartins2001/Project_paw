@@ -31,8 +31,8 @@ ordersController.getOrdersHistory = async function (req, res, next) {
     const totalOrders = await mongoOrder.countDocuments(filter); // Conta o total de pedidos que atendem ao filtro
     const totalPages = Math.ceil(totalOrders / ordersPerPage); // Calcula o total de páginas
 
-    // Renderizar a página com os dados
-    res.render("orders/ordersHistory", {
+    // jsonizar a página com os dados
+    res.json("orders/ordersHistory", {
       orders,
       user,
       filters: { restaurantName, startDate, endDate },
@@ -54,11 +54,11 @@ ordersController.getOrderDetails = async function (req, res, next) {
     const order = await mongoOrder.findById(orderId);
 
     if (!order) {
-      return res.status(404).render("errors/404", { message: "Order not found." }); // Retorna erro 404 se o pedido não for encontrado
+      return res.status(404).json("errors/404", { message: "Order not found." }); // Retorna erro 404 se o pedido não for encontrado
     }
 
-    // Renderizar a página com os detalhes do pedido
-    res.render("orders/orderDetails", { order });
+    // jsonizar a página com os detalhes do pedido
+    res.json("orders/orderDetails", { order });
   } catch (error) {
     console.error("Erro ao obter os detalhes da encomenda:", error);
     next(error); // Passa o erro para o middleware de tratamento de erros

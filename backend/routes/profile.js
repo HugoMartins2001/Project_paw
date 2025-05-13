@@ -10,7 +10,7 @@ router.use(authController.verifyLoginUser);
 
 // Rota para exibir o perfil do usuário
 router.get("/", profileController.showProfile, (req, res) => {
-  res.render("dashboard/profile", {
+  res.json("dashboard/profile", {
     user: req.user, // Dados do usuário autenticado
     totalRestaurants: 0, // Total de restaurantes (pode ser atualizado dinamicamente)
     approvedRestaurants: 0, // Total de restaurantes aprovados

@@ -38,7 +38,6 @@ export class LoginComponent {
   onSubmit() {
     this.errors = {};
 
-    // Verifica se o formulário é inválido
     if (this.loginForm.invalid) {
       const controls = this.loginForm.controls;
       if (controls['email'].invalid) {
@@ -58,17 +57,14 @@ export class LoginComponent {
 
     this.isLoading = true;
 
-    // Faz a requisição para a API de login
     this.http
       .post<any>('http://localhost:3000/api/auth/loginSubmitted', this.loginForm.value)
       .subscribe({
         next: (res) => {
-          // Salva o token e informações do usuário no localStorage
           localStorage.setItem('token', res.token);
           localStorage.setItem('userId', res.userId);
           localStorage.setItem('role', res.role);
 
-          // Exibe mensagem de sucesso
           Swal.fire({
             icon: 'success',
             title: 'Login efetuado!',
@@ -76,7 +72,6 @@ export class LoginComponent {
             showConfirmButton: false,
           });
 
-          // Redireciona com base no papel do usuário
           setTimeout(() => {
             if (res.role === 'cliente') {
               this.router.navigate(['/cliente/dashboard']);
@@ -94,7 +89,6 @@ export class LoginComponent {
           this.errors = err.error?.erros || {
             geral: 'Erro inesperado ao tentar login.',
           };
-          // Exibe mensagem de erro
           Swal.fire({
             icon: 'error',
             title: 'Erro no login',

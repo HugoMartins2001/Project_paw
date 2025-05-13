@@ -6,12 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class RestaurantService {
-  private baseUrl = 'http://localhost:3000/api'; // URL base do back-end
+  private apiUrl = 'http://localhost:3000/api/restaurants/showRestaurants';
 
   constructor(private http: HttpClient) {}
 
-  // Método para buscar os restaurantes
-  getRestaurants(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/restaurants/showRestaurants`);
+  getRestaurants(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl); // Certifique-se de que o retorno é um array
   }
 }

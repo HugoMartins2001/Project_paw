@@ -12,7 +12,7 @@
   <ul *ngIf="!isLoading && restaurants.length > 0">
     <li *ngFor="let restaurant of restaurants">
       <h2>{{ restaurant.name }}</h2>
-      <p><strong>Endereço:</strong> {{ restaurant.name }}</p>
+      <p><strong>Endereço:</strong> {{ restaurant.address }}</p>
     </li>
   </ul>
 </div>

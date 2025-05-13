@@ -129,7 +129,7 @@ dishesController.showAll = async function (req, res, next) {
     const totalPages = Math.ceil(totalDishes / limit);
 
     // Renderizar a página com os pratos filtrados e paginação
-    res.render("dishes/showDishes", {
+    res.json("dishes/showDishes", {
       dishes: filteredDishes,
       user: user,
       currentPage: parseInt(page),
@@ -248,8 +248,8 @@ dishesController.renderCreateDishes = async function (req, res, next) {
     // Combinar categorias predefinidas com as existentes, removendo duplicatas
     const categories = Array.from(new Set([...predefinedCategories]));
 
-    // Renderizar a página com as categorias
-    res.render("dishes/submitDishes", {
+    // jsonizar a página com as categorias
+    res.json("dishes/submitDishes", {
       user: req.user, // Passa o usuário logado para o EJS
       categories, // Passa as categorias combinadas para o EJS
     });
@@ -266,7 +266,7 @@ dishesController.showDish = async function (req, res, next) {
     // Buscar o prato pelo ID
     const dish = await mongoDish.findById(req.params.dishId);
     if (!dish) {
-      return res.status(404).render("errors/404", { message: "Dish not found." });
+      return res.status(404).json("errors/404", { message: "Dish not found." });
     }
 
     // Verificar permissões
@@ -274,7 +274,7 @@ dishesController.showDish = async function (req, res, next) {
       user.role !== "Admin" && // Apenas Admin pode acessar qualquer prato
       (!dish.managerId || dish.managerId.toString() !== user._id.toString()) // Gerente só pode acessar seus próprios pratos
     ) {
-      return res.status(403).render("errors/403", { message: "Access denied." });
+      return res.status(403).json("errors/403", { message: "Access denied." });
     }
 
     // Buscar todos os menus
@@ -311,8 +311,8 @@ dishesController.showDish = async function (req, res, next) {
       });
     }
 
-    // Renderizar a página com os detalhes do prato
-    res.render("dishes/showDish", {
+    // jsonizar a página com os detalhes do prato
+    res.json("dishes/showDish", {
       dish: {
         ...dish.toObject(),
         associatedMenus,
@@ -354,7 +354,7 @@ dishesController.renderEditDish = function (req, res, next) {
   mongoDish
     .findById(req.params.dishId)
     .then(async (dish) => {
-      if (!dish) return res.status(404).render("errors/404", { message: "Dish not found." });
+      if (!dish) return res.status(404).json("errors/404", { message: "Dish not found." });
 
       const user = req.user;
 
@@ -363,7 +363,7 @@ dishesController.renderEditDish = function (req, res, next) {
         user.role !== "Admin" &&
         (!dish.managerId || dish.managerId.toString() !== user._id.toString())
       ) {
-        return res.status(403).render("errors/403", { message: "Access denied." });
+        return res.status(403).json("errors/403", { message: "Access denied." });
       }
 
       // Buscar categorias existentes
@@ -374,8 +374,8 @@ dishesController.renderEditDish = function (req, res, next) {
     const categories = Array.from(new Set([...predefinedCategories]));
 
 
-      // Renderizar a página de edição com as categorias
-      res.render("dishes/editDish", { dish, user, categories });
+      // jsonizar a página de edição com as categorias
+      res.json("dishes/editDish", { dish, user, categories });
     })
     .catch(next);
 };

@@ -4,7 +4,7 @@ const authController = require("../controllers/auth");
 
 // Rota para exibir a página inicial
 router.get("/", function (req, res) {
-  res.render("home/home"); // Renderiza a página inicial (home)
+  res.json("home/home"); // Renderiza a página inicial (home)
 });
 
 // Rota para exibir a página de login

@@ -8,7 +8,7 @@ function onlyAdmins(req, res, next) {
   if (req.user.role === "Admin") {
     next(); // Se o usuário for Admin, continua para a próxima função
   } else {
-    res.status(403).send("Acesso negado"); // Retorna erro 403 se o usuário não for Admin
+    res.status(403).json({ message: "Acesso negado" }); // Retorna erro 403 se o usuário não for Admin
   }
 }
 

@@ -3,7 +3,7 @@ const mongoRestaurant = require("../models/restaurant");
 
 const profile = {};
 
-// Renderizar a página de perfil
+// jsonizar a página de perfil
 profile.showProfile = async function (req, res, next) {
   try {
     if (!req.user) return res.redirect("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
@@ -22,8 +22,8 @@ profile.showProfile = async function (req, res, next) {
       notApprovedRestaurants = totalRestaurants - approvedRestaurants;
     }
 
-    // Renderiza a página de perfil com os dados do usuário e os números dos restaurantes
-    res.render("dashboard/profile", {
+    // jsoniza a página de perfil com os dados do usuário e os números dos restaurantes
+    res.json("dashboard/profile", {
       user: req.user,
       totalRestaurants, // Passa o total de restaurantes
       approvedRestaurants, // Passa os restaurantes aprovados
@@ -35,11 +35,11 @@ profile.showProfile = async function (req, res, next) {
   }
 };
 
-// Renderizar a página de edição de perfil
+// jsonizar a página de edição de perfil
 profile.editProfile = function (req, res, next) {
   if (!req.user) return res.redirect("/auth/login"); // Redireciona para a página de login se o usuário não estiver autenticado
 
-  res.render("dashboard/editProfile", { user: req.user }); // Renderiza a página de edição de perfil com os dados do usuário
+  res.json("dashboard/editProfile", { user: req.user }); // jsoniza a página de edição de perfil com os dados do usuário
 };
 
 // Atualizar o perfil do usuário

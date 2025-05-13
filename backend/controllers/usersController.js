@@ -12,7 +12,7 @@ usersController.showUsers = async (req, res, next) => {
     const users = await mongoUser.find({}, { password: 0 });
 
     // Renderiza a página de exibição de usuários, passando os dados dos usuários e o usuário autenticado
-    res.render("users/showUsers", { users, user });
+    res.json("users/showUsers", { users, user });
   } catch (err) {
     next(err); // Passa o erro para o middleware de tratamento de erros
   }

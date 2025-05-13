@@ -139,8 +139,8 @@ restaurantsController.showAll = async function (req, res, next) {
       };
     });
 
-    // Renderizar a página com os restaurantes filtrados e informações de paginação
-    res.render("restaurants/showRestaurants", {
+    // jsonizar a página com os restaurantes filtrados e informações de paginação
+    res.json({
       restaurants: filteredRestaurants,
       restaurants: restaurantList,
       user: req.user,
@@ -167,7 +167,7 @@ restaurantsController.showDetails = function (req, res, next) {
     .then(function (restaurantDB) {
       if (!restaurantDB) {
         // Retorna 404 se o restaurante não for encontrado
-        return res.status(404).render("errors/404", { message: "Restaurant not found." });
+        return res.status(404).json("errors/404", { message: "Restaurant not found." });
       }
 
       // Verificar permissões
@@ -176,7 +176,7 @@ restaurantsController.showDetails = function (req, res, next) {
         (!restaurantDB.managerId || restaurantDB.managerId.toString() !== req.user._id.toString()) // Gerente só pode acessar seus próprios restaurantes
       ) {
         // Retorna 403 se o usuário não tiver permissão
-        return res.status(403).render("errors/403", { message: "Access denied." });
+        return res.status(403).json("errors/403", { message: "Access denied." });
       }
 
       // Filtrar menus para que apenas os que são criados pelo gerente autenticado sejam exibidos
@@ -198,7 +198,7 @@ restaurantsController.showDetails = function (req, res, next) {
         user: req.user,
       };
 
-      res.render("restaurants/showRestaurant", inputs);
+      res.json("restaurants/showRestaurant", inputs);
     })
     .catch(function (err) {
       console.error("Error fetching restaurant details:", err);
@@ -216,7 +216,7 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
       menus = await mongoMenu.find();
     }
 
-    res.render("restaurants/submitRestaurant", {
+    res.json("restaurants/submitRestaurant", {
       menus,
       user: req.user, // Passa o usuário logado para o EJS
     });
@@ -240,7 +240,7 @@ restaurantsController.createRestaurant = async function (req, res, next) {
 
     if (existingRestaurant) {
       // Retorna um erro se o email já estiver em uso por outro gerente
-      return res.status(400).render("errors/400", {
+      return res.status(400).json("errors/400", {
         message: "Este email já está em uso por outro gerente.",
       });
     }
@@ -394,7 +394,7 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
 
     if (!restaurant) {
       // Retorna 404 se o restaurante não for encontrado
-      return res.status(404).render("errors/404", { message: "Restaurant not found." });
+      return res.status(404).json("errors/404", { message: "Restaurant not found." });
     }
 
     const user = req.user;
@@ -405,7 +405,7 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
       (!restaurant.managerId || restaurant.managerId.toString() !== user._id.toString()) // Gerente só pode acessar seus próprios restaurantes
     ) {
       // Retorna 403 se o usuário não tiver permissão
-      return res.status(403).render("errors/403", { message: "Access denied." });
+      return res.status(403).json("errors/403", { message: "Access denied." });
     }
 
     // Buscar menus disponíveis para o gerente ou administrador
@@ -414,8 +414,8 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
         ? await mongoMenu.find({ managerId: user._id })
         : await mongoMenu.find();
 
-    // Renderizar a página de edição do restaurante
-    res.render("restaurants/editRestaurant", { restaurant, menus, user });
+    // jsonizar a página de edição do restaurante
+    res.json("restaurants/editRestaurant", { restaurant, menus, user });
   } catch (err) {
     console.error("Error trying to edit restaurant:", err);
     next(err);
@@ -439,7 +439,7 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
 
     if (existingRestaurant) {
       // Retorna um erro se o email já estiver em uso por outro gerente
-      return res.status(400).render("errors/400", {
+      return res.status(400).json("errors/400", {
         message: "Este email já está em uso por outro gerente.",
       });
     }
@@ -507,8 +507,8 @@ restaurantsController.showPendingRestaurants = async function (req, res, next) {
     const totalRestaurants = await mongoRestaurant.countDocuments({ isApproved: false });
     const totalPages = Math.ceil(totalRestaurants / limit);
 
-    // Renderizar a página com os restaurantes e informações de paginação
-    res.render("restaurants/pendingApproval", {
+    // jsonizar a página com os restaurantes e informações de paginação
+    res.json("restaurants/pendingApproval", {
       restaurants,
       currentPage: parseInt(page),
       totalPages,

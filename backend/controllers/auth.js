@@ -143,7 +143,7 @@ authController.submittedLogin = function (req, res, next) {
     const attempts = loginAttempts[loginKey];
 
     // Bloqueia o login após 5 tentativas falhadas
-    if (attempts.count >= 1) {
+    if (attempts.count >= 5) {
         // Bloqueia o usuário no banco de dados
         mongoUser.findOneAndUpdate({ email: emailInput }, { isBlocked: true }, { new: true }) // Retorna o documento atualizado
             .then((user) => {
@@ -280,7 +280,7 @@ authController.submittedLogin = function (req, res, next) {
                 console.error('Error blocking user:', err);
             });
 
-        return res.render('login/index', { errorMessage: 'Your account has been blocked. Please contact support.' });
+        return res.json('login/index', { errorMessage: 'Your account has been blocked. Please contact support.' });
     }
 
     mongoUser.findOne({ email: emailInput })
@@ -289,12 +289,12 @@ authController.submittedLogin = function (req, res, next) {
                 // Caso o email não seja encontrado
                 attempts.count++;
                 attempts.lastAttempt = Date.now();
-                return res.render('login/index', { errorMessage: 'Email not found!' });
+                return res.json('login/index', { errorMessage: 'Email not found!' });
             }
 
             // Verifica se o utilizador está bloqueado
             if (user.isBlocked) {
-                return res.render('login/index', { errorMessage: 'Your account has been blocked. Please contact support.' });
+                return res.json('login/index', { errorMessage: 'Your account has been blocked. Please contact support.' });
             }
 
             bcrypt.compare(passwordInput, user.password)
@@ -305,12 +305,12 @@ authController.submittedLogin = function (req, res, next) {
 
                         const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: '2h' }); // Token expira em 2 horas
                         res.cookie('auth-token', authToken, { maxAge: 2 * 60 * 60 * 1000 }); // Cookie expira em 2 horas (em milissegundos)
-                        res.render('login/index', { successMessage: 'Login successfully!' });
+                        res.json('login/index', { successMessage: 'Login successfully!' });
                     } else {
                         // Senha incorreta
                         attempts.count++;
                         attempts.lastAttempt = Date.now();
-                        res.render('login/index', { errorMessage: 'Password incorrect!' });
+                        res.json('login/index', { errorMessage: 'Password incorrect!' });
                     }
                 });
         })
@@ -319,9 +319,9 @@ authController.submittedLogin = function (req, res, next) {
         });
 };
 
-// Renderiza a página de login
+// jsoniza a página de login
 authController.login = function (req, res, next) {
-    res.render('login/index');
+    res.json('login/index');
 };
 
 // Controlador para logout
@@ -330,9 +330,9 @@ authController.logout = function (req, res, next) {
     res.redirect('/?logoutSuccess=true');
 };
 
-// Renderiza a página de criação de login
+// jsoniza a página de criação de login
 authController.createLogin = function (req, res, next) {
-    res.render('login/createUser');
+    res.json('login/createUser');
 };
 
 // Controlador para processar a criação de login
@@ -346,7 +346,7 @@ authController.createLoginSubmitted = function (req, res, next) {
 
     mongoUser.create(req.body)
         .then(function () {
-            res.render('login/createUser', { successMessage: 'Registration completed successfully!' });
+            res.json('login/createUser', { successMessage: 'Registration completed successfully!' });
         })
         .catch(function (err) {
             next(err);
