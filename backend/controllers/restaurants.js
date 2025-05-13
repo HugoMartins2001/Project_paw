@@ -1,6 +1,19 @@
+require('dotenv').config(); // Carrega as variáveis do .env
+
+
 const mongoRestaurant = require("../models/restaurant");
 const mongoMenu = require("../models/menu");
 const logAction = require("../utils/logger");
+const nodemailer = require('nodemailer');
+const mongoUser = require("../models/user");
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
 let restaurantsController = {};
 
@@ -249,6 +262,87 @@ restaurantsController.createRestaurant = async function (req, res, next) {
     });
 
     await newRestaurant.save();
+
+    // Buscar todos os administradores no banco de dados
+    const admins = await mongoUser.find({ role: "Admin" }); // Substitua "mongoUser" pelo modelo de usuários
+    const adminEmails = admins.map((admin) => admin.email); // Obter os e-mails dos administradores
+
+    // Enviar e-mail para todos os administradores
+    const mailOptions = {
+      from: process.env.EMAIL_USER, // E-mail configurado no nodemailer
+      to: adminEmails, // Lista de e-mails dos administradores
+      subject: '📋 Novo Restaurante Pendente de Aprovação',
+      html: `
+        <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 0 15px rgba(0, 0, 0, 0.08); background-color: #ffffff; border: 1px solid #e0e0e0;">
+
+          <!-- Header -->
+          <div style="background: #f39c12; padding: 30px 20px; text-align: center;">
+            <img src="https://i.imgur.com/v1irJwp.jpeg" alt="App Logo" width="60" height="60" style=" margin-bottom: 20px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: block; margin-left: auto; margin-right: auto;" />
+            <h1 style="color: #ffffff; font-size: 24px; margin: 0;">📋 Novo Restaurante Pendente</h1>
+            <p style="color: #f9f9f9; font-size: 16px; margin-top: 8px;">Aprovação necessária para o novo restaurante</p>
+          </div>
+
+          <!-- Body -->
+          <div style="padding: 25px 20px; color: #2c3e50; background-color: #f9f9f9;">
+            <p style="font-size: 16px; margin-bottom: 15px;">
+              Prezado(a) Administrador(a),
+            </p>
+            <p style="font-size: 14px; margin-bottom: 25px;">
+              Um novo restaurante foi criado e está a aguardar a sua aprovação. Abaixo estão os detalhes do restaurante:
+            </p>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; background-color: #ffffff; font-weight: bold;">Nome:</td>
+                <td style="padding: 10px; border: 1px solid #ddd; background-color: #ffffff;">${newRestaurant.name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; background-color: #ffffff; font-weight: bold;">Endereço:</td>
+                <td style="padding: 10px; border: 1px solid #ddd; background-color: #ffffff;">${newRestaurant.address}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; background-color: #ffffff; font-weight: bold;">Telefone:</td>
+                <td style="padding: 10px; border: 1px solid #ddd; background-color: #ffffff;">${newRestaurant.phone}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; background-color: #ffffff; font-weight: bold;">E-mail:</td>
+                <td style="padding: 10px; border: 1px solid #ddd; background-color: #ffffff;">${newRestaurant.restaurantEmail}</td>
+              </tr>
+            </table>
+
+            <p style="font-size: 14px; margin-bottom: 25px;">
+              Por favor, acesse o painel de administração para aprovar ou rejeitar este restaurante.
+            </p>
+
+            <div style="text-align: center; margin-bottom: 30px;">
+              <a href="http://localhost:3000/admin/restaurants" 
+                style="background: linear-gradient(to right, #f39c12, #e67e22); color: white; padding: 14px 30px; text-decoration: none; font-size: 15px; border-radius: 6px; font-weight: bold;">
+                📝 Aceder Painel de Administração
+              </a>
+            </div>
+
+            <p style="font-size: 13px; color: #7f8c8d;">
+              Se você tiver alguma dúvida ou precisar de ajuda, não hesite em nos contactar.
+            </p>
+          </div>
+
+          <!-- Footer -->
+          <div style="background-color: #ecf0f1; color: #95a5a6; text-align: center; font-size: 12px; padding: 15px;">
+            <p style="margin: 0;">Este é um e-mail automático do <strong>OrdEat</strong>. Por favor, não responda diretamente a este e-mail.</p>
+          </div>
+
+        </div>
+      `
+    };
+
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.error('Erro ao enviar e-mail aos administradores:', err);
+      } else {
+        console.log('E-mail enviado aos administradores:', info.response);
+      }
+    });
 
     logAction("Created Restaurant", req.user, {
       restaurantId: newRestaurant._id,

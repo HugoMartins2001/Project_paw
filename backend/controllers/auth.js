@@ -2,7 +2,6 @@ require('dotenv').config(); // Carrega as variáveis do .env
 
 const nodemailer = require('nodemailer');
 
-// Configuração do Nodemailer usando variáveis de ambiente
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -144,7 +143,7 @@ authController.submittedLogin = function (req, res, next) {
     const attempts = loginAttempts[loginKey];
 
     // Bloqueia o login após 5 tentativas falhadas
-    if (attempts.count >= 5) {
+    if (attempts.count >= 1) {
         // Bloqueia o usuário no banco de dados
         mongoUser.findOneAndUpdate({ email: emailInput }, { isBlocked: true }, { new: true }) // Retorna o documento atualizado
             .then((user) => {
