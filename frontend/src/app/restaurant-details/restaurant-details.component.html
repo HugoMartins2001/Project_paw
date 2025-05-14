@@ -1,0 +1,112 @@
+<div class="container mt-4">
+  <div *ngIf="!restaurant">
+    <div class="alert alert-warning text-center"><h3>Restaurant Not Found</h3></div>
+  </div>
+  <div *ngIf="restaurant">
+    <h1 class="text-center text-primary my-4 text-dark">{{ restaurant.name }}</h1>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div *ngIf="restaurant.restaurantPic; else noImage" class="text-center mb-3">
+          <img [src]="'/uploads/' + restaurant.restaurantPic" [alt]="restaurant.name" class="img-fluid rounded" style="max-height: 200px;" />
+        </div>
+        <ng-template #noImage>
+          <p class="text-center"><em>No image available for this restaurant.</em></p>
+        </ng-template>
+        <p><strong>Street:</strong> {{ restaurant.address }}</p>
+        <p><strong>Phone:</strong> {{ restaurant.phone }}</p>
+        <p><strong>Restaurant email:</strong> {{ restaurant.restaurantEmail }}</p>
+        <p><strong>Opening Hours:</strong></p>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let day of openingHoursKeys(restaurant.openingHours)">
+            <strong>{{ day }}:</strong>
+            <ng-container *ngIf="restaurant.openingHours[day].closed; else openHours">
+              Closed
+            </ng-container>
+            <ng-template #openHours>
+              {{ restaurant.openingHours[day].start }} - {{ restaurant.openingHours[day].end }}
+            </ng-template>
+          </li>
+        </ul>
+        <p><strong>Payment Methods:</strong></p>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let method of restaurant.paymentMethods">
+            {{ method }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <h5>Available Menus:</h5>
+    <div *ngIf="restaurant.menus && restaurant.menus.length > 0; else noMenus">
+      <ul class="list-group mb-4">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let menu of restaurant.menus">
+          {{ menu.name }}
+          <a [routerLink]="['/menus/showMenu', menu._id]" class="btn btn-outline-primary btn-sm">View Menu</a>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noMenus>
+      <p><em>This restaurant has no menus associated yet.</em></p>
+    </ng-template>
+
+    <div class="text-center">
+      <a routerLink="/restaurants/showRestaurants" class="btn btn-secondary">Back to Restaurant List</a>
+    </div>
+  </div>
+</div>
+<div class="container mt-4">
+  <div *ngIf="!restaurant">
+    <div class="alert alert-warning text-center"><h3>Restaurant Not Found</h3></div>
+  </div>
+  <div *ngIf="restaurant">
+    <h1 class="text-center text-primary my-4 text-dark">{{ restaurant.name }}</h1>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div *ngIf="restaurant.restaurantPic; else noImage" class="text-center mb-3">
+          <img [src]="'/uploads/' + restaurant.restaurantPic" [alt]="restaurant.name" class="img-fluid rounded" style="max-height: 200px;" />
+        </div>
+        <ng-template #noImage>
+          <p class="text-center"><em>No image available for this restaurant.</em></p>
+        </ng-template>
+        <p><strong>Street:</strong> {{ restaurant.address }}</p>
+        <p><strong>Phone:</strong> {{ restaurant.phone }}</p>
+        <p><strong>Restaurant email:</strong> {{ restaurant.restaurantEmail }}</p>
+        <p><strong>Opening Hours:</strong></p>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let day of openingHoursKeys(restaurant.openingHours)">
+            <strong>{{ day }}:</strong>
+            <ng-container *ngIf="restaurant.openingHours[day].closed; else openHours">
+              Closed
+            </ng-container>
+            <ng-template #openHours>
+              {{ restaurant.openingHours[day].start }} - {{ restaurant.openingHours[day].end }}
+            </ng-template>
+          </li>
+        </ul>
+        <p><strong>Payment Methods:</strong></p>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let method of restaurant.paymentMethods">
+            {{ method }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <h5>Available Menus:</h5>
+    <!--<div *ngIf="restaurant.menus && restaurant.menus.length > 0; else noMenus">
+      <ul class="list-group mb-4">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let menu of restaurant.menus">
+          {{ menu.name }}
+          <a [routerLink]="['/menus/showMenu', menu._id]" class="btn btn-outline-primary btn-sm">View Menu</a>
+        </li>
+      </ul>
+    </div>-->
+    <ng-template #noMenus>
+      <p><em>This restaurant has no menus associated yet.</em></p>
+    </ng-template>
+
+    <div class="text-center">
+      <a routerLink="/restaurants/showRestaurants" class="btn btn-secondary">Back to Restaurant List</a>
+    </div>
+  </div>
+</div>
