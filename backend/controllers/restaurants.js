@@ -69,9 +69,8 @@ restaurantsController.processUpdateRestaurant = function (req, res, next) {
 };
 
 // Controlador para exibir todos os restaurantes
+// Controlador para exibir todos os restaurantes
 restaurantsController.showAll = async function (req, res, next) {
-  if (!req.user) return res.redirect("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
-
   try {
     const { 
       page = 1, 
@@ -98,12 +97,12 @@ restaurantsController.showAll = async function (req, res, next) {
     }
 
     // Filtrar restaurantes com base no papel do usuário
-    if (req.user.role === "Manager") {
+    if (req.user?.role === "Manager") {
       query.managerId = req.user._id; // Gerentes só podem ver seus próprios restaurantes
-    } else if (req.user.role === "Client") {
+    } else if (req.user?.role === "Client") {
       query.isApproved = true; // Clientes só podem ver restaurantes aprovados
       query.isVisible = true; // Clientes só podem ver restaurantes visíveis
-    }else {
+    } else {
       // Visitantes (não autenticados) só podem ver restaurantes aprovados e visíveis
       query.isApproved = true;
       query.isVisible = true;
@@ -126,28 +125,9 @@ restaurantsController.showAll = async function (req, res, next) {
     const totalRestaurants = await mongoRestaurant.countDocuments(query);
     const totalPages = Math.ceil(totalRestaurants / limit);
 
-    const filteredRestaurants = restaurantList.map((restaurant) => {
-      const filteredMenus = restaurant.menus.filter((menu) => {
-        // Administradores podem ver todos os menus
-        if (req.user.role === "Admin") {
-          return true;
-        }
-
-        // Gerentes só podem ver menus que eles criaram
-        return menu.managerId.toString() === req.user._id.toString();
-      });
-
-      return {
-        ...restaurant.toObject(),
-        menus: filteredMenus,
-      };
-    });
-
-    // jsonizar a página com os restaurantes filtrados e informações de paginação
+    // Retornar os restaurantes como JSON
     res.json({
-      restaurants: filteredRestaurants,
-      //restaurants: restaurantList,
-      //user: req.user,
+      restaurants: restaurantList,
       currentPage: parseInt(page),
       totalPages,
       filters: { name, address, sortBy, order },

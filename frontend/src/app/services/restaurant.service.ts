@@ -10,7 +10,7 @@ export class RestaurantService {
 
   constructor(private http: HttpClient) {}
 
-  getRestaurants(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl); // Certifique-se de que o retorno é um array
+  getRestaurants(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
   }
 }

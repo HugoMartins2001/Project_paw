@@ -27,7 +27,7 @@ router.post("/submittedRestaurant", upload.single("restaurantPic"), authControll
 );
 
 // Rota para exibir todos os restaurantes
-router.get("/showRestaurants", authController.verifyLoginUser, function (req, res, next) {
+router.get("/showRestaurants", /*authController.verifyLoginUser*/ function (req, res, next) {
   restaurantsController.showAll(req, res, next);
 });
 

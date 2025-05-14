@@ -22,10 +22,10 @@ export class RestaurantsComponent implements OnInit {
  fetchRestaurants(): void {
   this.restaurantService.getRestaurants().subscribe({
     next: (data) => {
-      if (Array.isArray(data)) {
-        this.restaurants = data;
+      if (data && Array.isArray(data.restaurants)) {
+        this.restaurants = data.restaurants; // Acesse a propriedade 'restaurants'
       } else {
-        console.error('Os dados recebidos não são um array:', data);
+        console.error('Os dados recebidos não contêm um array de restaurantes:', data);
         this.restaurants = [];
       }
       this.isLoading = false;
@@ -36,4 +36,15 @@ export class RestaurantsComponent implements OnInit {
     },
   });
 }
+
+getOpeningHours(openingHours: any): { day: string; start?: string; end?: string; closed: boolean }[] {
+  const days = Object.keys(openingHours);
+  return days.map((day) => ({
+    day: day,
+    start: openingHours[day]?.start || '',
+    end: openingHours[day]?.end || '',
+    closed: openingHours[day]?.closed || false,
+  }));
 }
+}
+
