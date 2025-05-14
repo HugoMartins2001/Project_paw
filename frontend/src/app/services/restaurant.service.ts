@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpErrorResponse  } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root',
 })
 export class RestaurantService {
   private apiUrl = 'http://localhost:3000/api/restaurants/showRestaurants';
-  private apiUrlById = 'http://localhost:3000/api/restaurants/showRestaurant';
+  private apiUrlByName = 'http://localhost:3000/api/restaurants/showRestaurant';
 
   constructor(private http: HttpClient) {}
 
@@ -15,7 +17,16 @@ export class RestaurantService {
     return this.http.get<any>(this.apiUrl);
   }
 
-  getRestaurantById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrlById}/${id}`);
-  }
+  getRestaurantByName(name: string) {
+  return this.http.get<any>(`${this.apiUrlByName}/${name}`).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 404) {
+        // Pode lançar um erro customizado ou simplesmente repassar
+        return throwError(() => new Error('Restaurant not found'));
+      }
+      return throwError(() => error);
+    })
+  );
+}
+
 }

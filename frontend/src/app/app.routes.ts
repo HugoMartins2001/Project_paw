@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { RestaurantDetailsComponent } from './restaurant-details/restaurant-details.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,11 @@ export const routes: Routes = [
     path: 'restaurants',
     component: RestaurantsComponent,
     data: { title: 'Restaurant' }
+  },
+  {
+    path: 'restaurant-details/:name',
+    component: RestaurantDetailsComponent,
+    data: { title: 'Restaurant Details' }
   },
   {
     path: 'login',

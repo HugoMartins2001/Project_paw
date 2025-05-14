@@ -11,7 +11,7 @@ router.use((req, res, next) => {
 });
 
 // Rota para exibir os detalhes de um restaurante específico pelo nome
-router.get("/showRestaurant/:name", authController.verifyLoginUser, function (req, res, next) {
+router.get("/showRestaurant/:name", /*authController.verifyLoginUser, */function (req, res, next) {
   restaurantsController.showDetails(req, res, next);
 });
 

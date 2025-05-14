@@ -1,49 +1,51 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { RestaurantService } from '../services/restaurant.service';
 
 @Component({
   selector: 'app-restaurant-details',
-  imports: [],
   templateUrl: './restaurant-details.component.html',
-  styleUrl: './restaurant-details.component.css'
+  styleUrls: ['./restaurant-details.component.css'],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
 })
 export class RestaurantDetailsComponent implements OnInit {
 
-  restaurants: any[] = [];
+  restaurant: any = null;
   isLoading = true;
 
-  constructor(private restaurantService: RestaurantService) {}
+  constructor(
+    private restaurantService: RestaurantService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.fetchRestaurants();
+    const name = this.route.snapshot.paramMap.get('name');
+    if (name) {
+      this.fetchRestaurant(name);
+    }
   }
 
- fetchRestaurants(): void {
-  this.restaurantService.getRestaurantById('some-id').subscribe({
-    next: (data) => {
-      if (data && !Array.isArray(data.restaurants)) {
-        this.restaurants = [data.restaurants]; // Acesse a propriedade 'restaurants'
-      } else {
-        console.error('Os dados recebidos não contêm um array de restaurantes:', data);
-        this.restaurants = [];
-      }
-      this.isLoading = false;
-    },
-    error: (err) => {
-      console.error('Erro ao buscar restaurantes:', err);
-      this.isLoading = false;
-    },
-  });
-}
+  fetchRestaurant(name: string): void {
+    this.restaurantService.getRestaurantByName(name).subscribe({
+      next: (data) => {
+        if (data && data.restaurant) {
+          this.restaurant = data.restaurant;
+        } else {
+          this.restaurant = null;
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.restaurant = null;
+        this.isLoading = false;
+      },
+    });
+  }
 
-getOpeningHours(openingHours: any): { day: string; start?: string; end?: string; closed: boolean }[] {
-  const days = Object.keys(openingHours);
-  return days.map((day) => ({
-    day: day,
-    start: openingHours[day]?.start || '',
-    end: openingHours[day]?.end || '',
-    closed: openingHours[day]?.closed || false,
-  }));
-}
+  openingHoursKeys(openingHours: any): string[] {
+    return Object.keys(openingHours || {});
+  }
 }

@@ -140,10 +140,17 @@ restaurantsController.showAll = async function (req, res, next) {
 
 // Controlador para exibir os detalhes de um restaurante
 restaurantsController.showDetails = function (req, res, next) {
+  // --- AUTENTICAÇÃO/RESTRIÇÃO DE ACESSO ---
+  /*
   const query =
     req.user.role === "Manager"
       ? { name: req.params.name, managerId: req.user._id } // Gerente só pode acessar seus próprios restaurantes
       : { name: req.params.name }; // Admin pode acessar qualquer restaurante
+  */
+  // --- FIM AUTENTICAÇÃO/RESTRIÇÃO DE ACESSO ---
+
+  // Para testes sem autenticação, use apenas:
+  const query = { name: req.params.name };
 
   mongoRestaurant
     .findOne(query)
@@ -154,6 +161,8 @@ restaurantsController.showDetails = function (req, res, next) {
         return res.status(404).json("errors/404", { message: "Restaurant not found." });
       }
 
+      // --- AUTENTICAÇÃO/RESTRIÇÃO DE ACESSO ---
+      /*
       // Verificar permissões
       if (
         req.user.role !== "Admin" && // Apenas Admin pode acessar qualquer restaurante
@@ -162,27 +171,35 @@ restaurantsController.showDetails = function (req, res, next) {
         // Retorna 403 se o usuário não tiver permissão
         return res.status(403).json("errors/403", { message: "Access denied." });
       }
+      */
+      // --- FIM AUTENTICAÇÃO/RESTRIÇÃO DE ACESSO ---
 
+      // --- AUTENTICAÇÃO/RESTRIÇÃO DE MENUS ---
+      /*
       // Filtrar menus para que apenas os que são criados pelo gerente autenticado sejam exibidos
       const filteredMenus = restaurantDB.menus.filter((menu) => {
         // Administradores podem ver todos os menus
         if (req.user.role === "Admin") {
           return true;
         }
-
         // Gerentes só podem ver menus que eles criaram
         return menu.managerId.toString() === req.user._id.toString();
       });
+      */
+      // --- FIM AUTENTICAÇÃO/RESTRIÇÃO DE MENUS ---
+
+      // Para testes sem autenticação, mostre todos os menus:
+      const filteredMenus = restaurantDB.menus;
 
       const inputs = {
         restaurant: {
           ...restaurantDB.toObject(),
           menus: filteredMenus,
         },
-        user: req.user,
+        // user: req.user, // Comente para não enviar user ao front
       };
 
-      res.json("restaurants/showRestaurant", inputs);
+      res.json(inputs);
     })
     .catch(function (err) {
       console.error("Error fetching restaurant details:", err);
