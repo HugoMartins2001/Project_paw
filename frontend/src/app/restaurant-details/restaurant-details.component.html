@@ -40,8 +40,11 @@
         </ul>
         <p><strong>Menus:</strong></p>
         <ul class="list-group mb-3" *ngIf="restaurant.menus && restaurant.menus.length > 0; else noMenus">
-          <li class="list-group-item" *ngFor="let menu of restaurant.menus">
-            {{ menu.name }}
+          <li class="list-group-item">
+            - {{ restaurant.menus[0].name }}
+            <span class="text-muted" *ngIf="restaurant.menus.length > 1">
+              +{{ restaurant.menus.length - 1 }}
+            </span>
           </li>
         </ul>
         <ng-template #noMenus>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RestaurantService } from '../services/restaurant.service';
 import Swal from 'sweetalert2';
@@ -70,7 +70,7 @@ export class RestaurantUpdateComponent implements OnInit {
     this.sundayEndControl = this.restaurantForm.get('openingHours.Sunday.end') as FormControl;
     this.sundayClosedControl = this.restaurantForm.get('openingHours.Sunday.closed') as FormControl;
   }
-  
+
 
   ngOnInit(): void {
     this.restaurantId = this.route.snapshot.paramMap.get('id') || '';
@@ -84,22 +84,20 @@ export class RestaurantUpdateComponent implements OnInit {
     this.sundayEndControl = this.restaurantForm.get('openingHours.Sunday.end') as FormControl;
     this.sundayClosedControl = this.restaurantForm.get('openingHours.Sunday.closed') as FormControl;
 
-    // ...restante código do ngOnInit...
     this.restaurantService.getMenus().subscribe({
-      next: (res) => {
-        // Garante que menuOptions é sempre um array
-        this.menuOptions = Array.isArray(res) ? res : Object.values(res);
+      next: (res: any) => {
+        // Se res já é array, usa diretamente
+        this.menuOptions = Array.isArray(res) ? res : (res.menus || []);
+        console.log('Menus carregados:', this.menuOptions);
       },
       error: () =>
         Swal.fire('Erro', 'Erro ao carregar menus disponíveis!', 'error')
     });
 
-    // Buscar dados do restaurante
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe({
       next: (res) => {
         // Garante que menus é sempre um array de IDs
         const menuIds = (res.menus || []).map((m: any) => typeof m === 'string' ? m : m._id);
-
         this.restaurantForm.patchValue({
           name: res.name,
           address: res.address,
@@ -108,15 +106,7 @@ export class RestaurantUpdateComponent implements OnInit {
           openingHours: res.openingHours,
           menus: menuIds
         });
-
         this.paymentMethods = res.paymentMethods || [];
-
-        // Mostrar campos personalizados se sábado ou domingo estiverem alterados
-        const saturday = res.openingHours?.Saturday;
-        const sunday = res.openingHours?.Sunday;
-        if ((saturday?.start || sunday?.start) || (saturday?.closed || sunday?.closed)) {
-          this.showCustomHours = true;
-        }
       },
       error: () =>
         Swal.fire('Erro', 'Erro ao carregar dados do restaurante!', 'error')
@@ -157,53 +147,53 @@ export class RestaurantUpdateComponent implements OnInit {
   }
 
 
- onSubmit() {
-  if (this.restaurantForm.invalid) {
-    Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
-    return;
-  }
-
-  const formValue = this.restaurantForm.value;
-
-  // MONTE O OBJETO openingHours EXPLICITAMENTE
-  const openingHours = {
-    default: {
-      start: this.defaultStartControl.value,
-      end: this.defaultEndControl.value,
-      closed: false
-    },
-    Saturday: {
-      start: this.saturdayStartControl.value,
-      end: this.saturdayEndControl.value,
-      closed: this.saturdayClosedControl.value
-    },
-    Sunday: {
-      start: this.sundayStartControl.value,
-      end: this.sundayEndControl.value,
-      closed: this.sundayClosedControl.value
+  onSubmit() {
+    if (this.restaurantForm.invalid) {
+      Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
+      return;
     }
-  };
 
-  const formData = new FormData();
-  formData.append('name', formValue.name);
-  formData.append('address', formValue.address);
-  formData.append('phone', formValue.phone);
-  formData.append('restaurantEmail', formValue.restaurantEmail);
-  formData.append('openingHours', JSON.stringify(openingHours));
-  this.paymentMethods.forEach(pm => formData.append('paymentMethods', pm));
-  formValue.menus.forEach((menuId: string) => formData.append('menus', menuId));
-  if (this.restaurantPic) {
-    formData.append('restaurantPic', this.restaurantPic);
-  }
+    const formValue = this.restaurantForm.value;
 
-  this.restaurantService.updateRestaurantById(this.restaurantId, formData).subscribe({
-    next: () => {
-      Swal.fire('Sucesso', 'Restaurante atualizado com sucesso!', 'success');
-      setTimeout(() => this.router.navigate(['/restaurants']), 1500);
-    },
-    error: (err) => {
-      Swal.fire('Erro', err.error?.error || 'Erro ao atualizar restaurante!', 'error');
+    // MONTE O OBJETO openingHours EXPLICITAMENTE
+    const openingHours = {
+      default: {
+        start: this.defaultStartControl.value,
+        end: this.defaultEndControl.value,
+        closed: false
+      },
+      Saturday: {
+        start: this.saturdayStartControl.value,
+        end: this.saturdayEndControl.value,
+        closed: this.saturdayClosedControl.value
+      },
+      Sunday: {
+        start: this.sundayStartControl.value,
+        end: this.sundayEndControl.value,
+        closed: this.sundayClosedControl.value
+      }
+    };
+
+    const formData = new FormData();
+    formData.append('name', formValue.name);
+    formData.append('address', formValue.address);
+    formData.append('phone', formValue.phone);
+    formData.append('restaurantEmail', formValue.restaurantEmail);
+    formData.append('openingHours', JSON.stringify(openingHours));
+    this.paymentMethods.forEach(pm => formData.append('paymentMethods', pm));
+    formValue.menus.forEach((menuId: string) => formData.append('menus', menuId));
+    if (this.restaurantPic) {
+      formData.append('restaurantPic', this.restaurantPic);
     }
-  });
-}
+
+    this.restaurantService.updateRestaurantById(this.restaurantId, formData).subscribe({
+      next: () => {
+        Swal.fire('Sucesso', 'Restaurante atualizado com sucesso!', 'success');
+        setTimeout(() => this.router.navigate(['/restaurants']), 1500);
+      },
+      error: (err) => {
+        Swal.fire('Erro', err.error?.error || 'Erro ao atualizar restaurante!', 'error');
+      }
+    });
+  }
 }
