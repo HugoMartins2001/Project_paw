@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RestaurantDetailsComponent } from './restaurant-details/restaurant-details.component';
 import { RestaurantCreateComponent } from './restaurant-create/restaurant-create.component';
+import { RestaurantUpdateComponent } from './restaurant-update/restaurant-update.component';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,11 @@ export const routes: Routes = [
     path: 'restaurants/create',
     component: RestaurantCreateComponent,
     data: { title: 'Create Restaurant' }
+  },
+  {
+    path: 'restaurants/editRestaurant/:id',
+    component: RestaurantUpdateComponent,
+    data: { title: 'Edit Restaurant' }
   },
   {
     path: 'login',

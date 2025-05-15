@@ -1,0 +1,93 @@
+<form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" class="restaurant-form">
+    <div>
+        <label>Nome:</label>
+        <input type="text" formControlName="name" />
+    </div>
+
+    <div>
+        <label>Morada:</label>
+        <input type="text" formControlName="address" />
+    </div>
+
+    <div>
+        <label>Telefone:</label>
+        <input type="text" formControlName="phone" />
+    </div>
+
+    <div>
+        <label>Email:</label>
+        <input type="email" formControlName="restaurantEmail" />
+    </div>
+
+    <div>
+        <label>Foto do Restaurante:</label>
+        <input type="file" (change)="onFileChange($event)" />
+    </div>
+
+    <div>
+        <label>Horário Padrão:</label>
+        <div>
+            <label>Início:</label>
+            <input type="time" [formControl]="defaultStartControl" />
+        </div>
+        <div>
+            <label>Fim:</label>
+            <input type="time" [formControl]="defaultEndControl" />
+        </div>
+    </div>
+
+    <div>
+        <label>
+            <input type="checkbox" (change)="toggleCustomHours()" [checked]="showCustomHours" />
+            Definir horários personalizados para fim de semana
+        </label>
+    </div>
+
+    <div *ngIf="showCustomHours">
+        <fieldset>
+            <legend>Sábado</legend>
+            <label>Início:</label>
+            <input type="time" *ngIf="defaultStartControl" [formControl]="saturdayStartControl" />
+            <label>Fim:</label>
+            <input type="time" *ngIf="defaultEndControl" [formControl]="saturdayEndControl" />
+            <label>
+                <input type="checkbox" *ngIf="saturdayClosedControl" [formControl]="saturdayClosedControl" /> Closed
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Domingo</legend>
+            <label>Início:</label>
+            <input type="time" *ngIf="defaultStartControl" [formControl]="sundayStartControl" />
+            <label>Fim:</label>
+            <input type="time" *ngIf="defaultEndControl" [formControl]="sundayEndControl" />
+            <label>
+                <input type="checkbox" *ngIf="sundayClosedControl" [formControl]="sundayClosedControl" /> Closed
+            </label>
+        </fieldset>
+    </div>
+
+    <div>
+        <label>Métodos de Pagamento:</label>
+        <div *ngFor="let method of ['Dinheiro', 'MBWay', 'Visa', 'MasterCard']">
+            <label>
+                <input type="checkbox" [value]="method" [checked]="paymentMethods.includes(method)"
+                    (change)="onPaymentMethodChange($event)" />
+                {{ method }}
+            </label>
+        </div>
+    </div>
+
+    <div>
+        <label>Menus:</label>
+        <div *ngFor="let menu of menuOptions">
+            <label>
+                <input type="checkbox" [value]="menu._id" [checked]="restaurantForm.value.menus.includes(menu._id)"
+                    (change)="onMenuCheckboxChange($event, menu._id)" />
+                {{ menu.name }}
+            </label>
+        </div>
+    </div>
+
+    <button type="submit">Atualizar Restaurante</button>
+</form>

@@ -21,7 +21,7 @@ router.get("/submitRestaurant", authController.verifyLoginUser, function (req, r
 });
 
 // Rota para processar o formulário de criação de restaurantes, incluindo upload de imagem
-router.post("/submittedRestaurant", upload.single("restaurantPic"), authController.verifyLoginUser, restaurantsController.processCreateRestaurant, function (req, res, next) {
+router.post("/submittedRestaurant", upload.single("restaurantPic"), authController.verifyLoginUser, function (req, res, next) {
     restaurantsController.createRestaurant(req, res, next);
   }
 );
@@ -32,12 +32,12 @@ router.get("/showRestaurants", authController.verifyLoginUser, function (req, re
 });
 
 // Rota para deletar um restaurante específico pelo ID
-router.delete("/deleteRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
+router.post("/api/deleteRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
   restaurantsController.deleteRestaurant(req, res, next);
 });
 
 // Rota para exibir o formulário de edição de um restaurante específico pelo ID
-router.get("/editRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
+router.get("/editRestaurant/:id", authController.verifyLoginUser,  restaurantsController.getRestaurantById, function (req, res, next) {
   restaurantsController.renderEditRestaurant(req, res, next);
 });
 

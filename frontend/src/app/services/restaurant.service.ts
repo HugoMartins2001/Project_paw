@@ -54,21 +54,37 @@ export class RestaurantService {
   }
 
   deleteRestaurant(id: string): Observable<void> {
-    return this.http.delete<void>(`http://localhost:3000/api/deleteRestaurant/${id}`, {
+    return this.http.post<void>(`http://localhost:3000/api/deleteRestaurant/${id}`, {
       headers: this.getHeaders()
     });
   }
 
   createRestaurant(restaurant: FormData): Observable<Restaurant> {
-    return this.http.post<Restaurant>('http://localhost:3000/api/restaurants/submittedRestaurant', restaurant
+    return this.http.post<Restaurant>(
+      'http://localhost:3000/api/restaurants/submittedRestaurant',
+      restaurant,
+      { headers: this.getHeaders() } // <-- Adiciona aqui
     ).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => error))
     );
   }
 
-  getMenus(): Observable<any[]> { 
+  getMenus(): Observable<any[]> {
     return this.http.get<any[]>('http://localhost:3000/api/menus/showMenus', { headers: this.getHeaders() }).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
+
+  getRestaurantById(id: string): Observable<Restaurant> {
+    return this.http.get<Restaurant>(`http://localhost:3000/api/restaurants/editRestaurant/${id}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  updateRestaurantById(id: string, data: FormData): Observable<any> {
+    return this.http.post<any>(`http://localhost:3000/api/restaurants/editRestaurant/${id}`,
+      data,
+      { headers: this.getHeaders() }
     );
   }
 }

@@ -1,35 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RestaurantService } from '../services/restaurant.service';
 import Swal from 'sweetalert2';
 
-interface Menu {
-  _id: string;
-  name: string;
-}
-
 @Component({
-  selector: 'app-restaurant-form',
-  templateUrl: './restaurant-create.component.html',
-  styleUrls: ['./restaurant-create.component.css'],
+  selector: 'app-restaurant-create',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './restaurant-create.component.html',
+  styleUrls: ['./restaurant-create.component.css']
 })
-export class RestaurantCreateComponent implements OnInit {
-  restaurantForm!: FormGroup;
+export class RestaurantCreateComponent {
+  restaurantForm: FormGroup;
   showCustomHours = false;
-  menus: Menu[] = [];
-  selectedFile: File | null = null;
+  restaurantPic: File | null = null;
+  paymentMethods: string[] = [];
+  menus: string[] = [];
+  menuOptions: { _id: string; name: string }[] = [];
 
   constructor(
     private fb: FormBuilder,
     private restaurantService: RestaurantService,
     private router: Router
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.restaurantForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
@@ -37,8 +32,8 @@ export class RestaurantCreateComponent implements OnInit {
       restaurantEmail: ['', [Validators.required, Validators.email]],
       openingHours: this.fb.group({
         default: this.fb.group({
-          start: [''],
-          end: ['']
+          start: ['', Validators.required],
+          end: ['', Validators.required]
         }),
         Saturday: this.fb.group({
           start: [''],
@@ -51,77 +46,65 @@ export class RestaurantCreateComponent implements OnInit {
           closed: [false]
         })
       }),
-      paymentMethods: this.fb.array([]),
-      restaurantPic: [null],
       menus: [[]]
     });
-
-    // Carregar menus do backend se necessário
-    this.restaurantService.getMenus?.().subscribe({
-      next: (menus: Menu[]) => this.menus = menus,
-      error: () => this.menus = []
+  }
+  ngOnInit(): void {
+    this.restaurantService.getMenus().subscribe({
+      next: (res) => {
+        this.menuOptions = res;
+      },
+      error: (err) => {
+        Swal.fire('Erro', err.error?.error || 'Erro ao carregar menus!', 'error');
+      }
     });
+  }
+
+
+  onFileChange(event: any) {
+    this.restaurantPic = event.target.files[0];
   }
 
   onPaymentMethodChange(event: any) {
-    const paymentMethods = this.restaurantForm.get('paymentMethods') as FormArray;
+    const value = event.target.value;
     if (event.target.checked) {
-      paymentMethods.push(this.fb.control(event.target.value));
+      this.paymentMethods.push(value);
     } else {
-      const index = paymentMethods.controls.findIndex(x => x.value === event.target.value);
-      paymentMethods.removeAt(index);
+      this.paymentMethods = this.paymentMethods.filter(pm => pm !== value);
     }
-  }
-
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    this.selectedFile = file;
-    this.restaurantForm.patchValue({ restaurantPic: file });
   }
 
   toggleCustomHours() {
     this.showCustomHours = !this.showCustomHours;
   }
 
-  getDayGroup(day: string): FormGroup {
-    return (this.restaurantForm.get('openingHours') as FormGroup).get(day) as FormGroup;
-  }
-
-  onSubmit(): void {
-  if (this.restaurantForm.invalid) {
-    Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
-    return;
-  }
-
-  const formData = new FormData();
-  Object.entries(this.restaurantForm.value).forEach(([key, value]) => {
-    if (key === 'restaurantPic' && this.selectedFile) {
-      formData.append('restaurantPic', this.selectedFile);
-    } else if (key === 'menus') {
-      (value as string[]).forEach(menuId => formData.append('menus', menuId));
-    } else if (key === 'paymentMethods') {
-      (value as string[]).forEach(pm => formData.append('paymentMethods', pm));
-    } else if (key === 'openingHours') {
-      formData.append('openingHours', JSON.stringify(value));
-    } else if (value !== null && value !== undefined) {
-      formData.append(key, value as string);
+  onSubmit() {
+    if (this.restaurantForm.invalid) {
+      Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
+      return;
     }
-  });
 
-  // Debug: Mostra o conteúdo do FormData
-  for (const pair of formData.entries()) {
-    console.log(pair[0]+ ', ' + pair[1]);
-  }
-
-  this.restaurantService.createRestaurant(formData).subscribe({
-    next: () => {
-      Swal.fire('Sucesso', 'Restaurante criado com sucesso!', 'success');
-      this.router.navigate(['/restaurants']);
-    },
-    error: (err) => {
-      console.error('Erro no POST:', err);
-      Swal.fire('Erro', err.error?.error || 'Erro ao criar restaurante!', 'error');
+    const formValue = this.restaurantForm.value;
+    const formData = new FormData();
+    formData.append('name', formValue.name);
+    formData.append('address', formValue.address);
+    formData.append('phone', formValue.phone);
+    formData.append('restaurantEmail', formValue.restaurantEmail);
+    formData.append('openingHours', JSON.stringify(formValue.openingHours));
+    this.paymentMethods.forEach(pm => formData.append('paymentMethods', pm));
+    formValue.menus.forEach((menuId: string) => formData.append('menus', menuId));
+    if (this.restaurantPic) {
+      formData.append('restaurantPic', this.restaurantPic);
     }
-  });
+
+    this.restaurantService.createRestaurant(formData).subscribe({
+      next: () => {
+        Swal.fire('Sucesso', 'Restaurante criado com sucesso!', 'success');
+        setTimeout(() => this.router.navigate(['/restaurants']), 1500);
+      },
+      error: (err) => {
+        Swal.fire('Erro', err.error?.error || 'Erro ao criar restaurante!', 'error');
+      }
+    });
+  }
 }
-  }

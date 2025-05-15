@@ -59,7 +59,16 @@ restaurantsController.processCreateRestaurant = function (req, res, next) {
 restaurantsController.processUpdateRestaurant = function (req, res, next) {
   try {
     if (req.body.openingHours) {
-      req.body.openingHours = processOpeningHours(req.body.openingHours);
+      // Faz o parse se vier como string
+      let openingHours = req.body.openingHours;
+      if (typeof openingHours === 'string') {
+        try {
+          openingHours = JSON.parse(openingHours);
+        } catch (e) {
+          return res.status(400).json({ error: 'Formato de horários inválido.' });
+        }
+      }
+      req.body.openingHours = processOpeningHours(openingHours);
     }
     next();
   } catch (err) {
@@ -240,8 +249,8 @@ restaurantsController.createRestaurant = async function (req, res, next) {
 
     if (existingRestaurant) {
       // Retorna um erro se o email já estiver em uso por outro gerente
-      return res.status(400).json("errors/400", {
-        message: "Este email já está em uso por outro gerente.",
+      return res.status(400).json({
+        error: "Este email já está em uso por outro gerente."
       });
     }
 
@@ -320,7 +329,7 @@ restaurantsController.createRestaurant = async function (req, res, next) {
             </p>
 
             <div style="text-align: center; margin-bottom: 30px;">
-              <a href="http://localhost:3000/admin/restaurants" 
+              <a href="http://localhost:4200/restaurants/pendingApproval" 
                 style="background: linear-gradient(to right, #f39c12, #e67e22); color: white; padding: 14px 30px; text-decoration: none; font-size: 15px; border-radius: 6px; font-weight: bold;">
                 📝 Aceder Painel de Administração
               </a>
@@ -401,7 +410,7 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
 
     if (!restaurant) {
       // Retorna 404 se o restaurante não for encontrado
-      return res.status(404).json("errors/404", { message: "Restaurant not found." });
+      return res.status(404).json({ message: "Restaurant not found." });
     }
 
     const user = req.user;
@@ -412,7 +421,7 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
       (!restaurant.managerId || restaurant.managerId.toString() !== user._id.toString()) // Gerente só pode acessar seus próprios restaurantes
     ) {
       // Retorna 403 se o usuário não tiver permissão
-      return res.status(403).json("errors/403", { message: "Access denied." });
+      return res.status(403).json({ message: "Access denied." });
     }
 
     // Buscar menus disponíveis para o gerente ou administrador
@@ -422,7 +431,7 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
         : await mongoMenu.find();
 
     // jsonizar a página de edição do restaurante
-    res.json("restaurants/editRestaurant", { restaurant, menus, user });
+    res.json({ restaurant, menus, user });
   } catch (err) {
     console.error("Error trying to edit restaurant:", err);
     next(err);
@@ -446,8 +455,8 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
 
     if (existingRestaurant) {
       // Retorna um erro se o email já estiver em uso por outro gerente
-      return res.status(400).json("errors/400", {
-        message: "Este email já está em uso por outro gerente.",
+      return res.status(400).json({
+        error: "Este email já está em uso por outro gerente.",
       });
     }
 
@@ -485,7 +494,7 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
     if (!updatedRestaurant) {
       return res
         .status(404)
-        .send("Restaurant not found or you don't have permission to edit it.");
+        .json({ error: "Restaurant not found or you don't have permission to edit it." });
     }
 
     logAction("Updated Restaurant", req.user, {
@@ -493,15 +502,29 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
       name: updatedRestaurant.name,
     });
 
-    res.redirect("/restaurants/showRestaurants");
+    res.json({ message: "Restaurant updated successfully.", restaurant: updatedRestaurant });
   } catch (err) {
     console.error("Error updating restaurant:", err);
     next(err);
   }
 };
 
+restaurantsController.getRestaurantById = async function (req, res) {
+  try {
+    const restaurant = await mongoRestaurant.findById(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({ error: 'Restaurante não encontrado.' });
+    }
+    res.status(200).json(restaurant);
+  } catch (err) {
+    console.error("Erro ao obter restaurante:", err);
+    res.status(500).json({ error: 'Erro interno ao obter restaurante.' });
+  }
+};
+
+
 restaurantsController.showPendingRestaurants = async function (req, res, next) {
-  if (req.user.role !== "Admin") return res.status(403).send("Access denied.");
+  if (req.user.role !== "Admin") return res.status(403).json({ error: "Access denied." });
 
   try {
     const { page = 1, limit = 10 } = req.query; // Página atual e limite de itens por página
