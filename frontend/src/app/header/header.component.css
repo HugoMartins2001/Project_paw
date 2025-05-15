@@ -1,125 +1,92 @@
 .main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-  background: linear-gradient(135deg, #e0eafc, #cfdef3); /* Tons de azul e cinza */
-  color: #333;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
+  background: linear-gradient(90deg, #3498db 0%, #6dd5fa 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.logo img {
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
+.logo-img {
   border-radius: 50%;
-  border: 2px solid #6c63ff; /* Azul suave */
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
 }
 
-.logo h1 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin: 0;
-  color: #6c63ff; /* Azul suave */
+.logo-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
 }
 
-.navigation ul {
+.navigation .nav-list {
   list-style: none;
-  display: flex;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
+  gap: 1.5rem;
+  padding-left: 0;
 }
 
-.navigation a {
-  text-decoration: none;
-  color: #333;
-  font-size: 1rem;
+.navigation .nav-link {
+  color: #fff;
   font-weight: 500;
-  transition: color 0.3s, border-bottom 0.3s;
-  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 6px 10px;
+  border-radius: 6px;
 }
 
-.navigation a:hover,
-.navigation a.active {
-  color: #6c63ff; /* Azul suave */
-  border-bottom: 2px solid #6c63ff;
+.navigation .nav-link:hover,
+.navigation .nav-link.active {
+  background: rgba(255,255,255,0.15);
+  color: #212529;
 }
 
-.auth-buttons {
-  display: flex;
-  gap: 15px;
+.auth-buttons .btn,
+.user-info .btn {
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 6px 18px;
 }
 
-.login-button,
-.register-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: bold;
+.auth-buttons .register-button {
+  color: #fff;
+  background: linear-gradient(90deg, #3498db 0%, #6dd5fa 100%);
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
 }
 
-.login-button {
-  background-color: white;
-  color: #6c63ff; /* Azul suave */
-  border: 2px solid #6c63ff;
+.auth-buttons .register-button:hover {
+  background: linear-gradient(90deg, #217dbb 0%, #4bb7e6 100%);
 }
 
-.login-button:hover {
-  background-color: #6c63ff;
-  color: white;
-}
-
-.register-button {
-  background-color: #6c63ff; /* Azul suave */
-  color: white;
-}
-
-.register-button:hover {
-  background-color: #574b90; /* Azul mais escuro */
-}
-
-@media (max-width: 768px) {
-  .main-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .navigation ul {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .auth-buttons {
-    margin-top: 15px;
-  }
+.user-info span {
+  color: #fff;
 }
 
 .logout-button {
-  background: linear-gradient(90deg, #ff5858 0%, #f09819 100%);
-  color: #fff;
   border: none;
-  border-radius: 20px;
-  padding: 8px 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 8px rgba(255, 88, 88, 0.15);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  background: transparent;
+  color: #fff;
+  transition: color 0.2s;
 }
 
 .logout-button:hover {
-  background: linear-gradient(90deg, #f09819 0%, #ff5858 100%);
-  box-shadow: 0 4px 16px rgba(255, 88, 88, 0.25);
+  color: #e74c3c;
+  background: rgba(255,255,255,0.15);
+}
+
+@media (max-width: 900px) {
+  .header-content {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start !important;
+  }
+  .navigation .nav-list {
+    gap: 1rem;
+  }
 }

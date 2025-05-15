@@ -1,24 +1,26 @@
-<header class="main-header">
-  <div class="logo">
-    <img src="assets/images/logo.png" alt="Logo do Restaurante" />
-    <h1>OrdEat</h1>
-  </div>
-  <nav class="navigation">
-    <ul>
-      <li><a (click)="navigateToHome()">Início</a></li>
-      <li><a (click)="navigateToMenu()">Restaurantes</a></li>
-      <li><a routerLink="/products" routerLinkActive="active">Produtos</a></li>
-      <li><a href="#contato">Contato</a></li>
-    </ul>
-  </nav>
-  <div class="auth-buttons" *ngIf="!userName">
-    <button class="login-button" (click)="navigateToLogin()">Login</button>
-    <button class="register-button" (click)="navigateToRegister()">Registar</button>
-  </div>
-  <div class="user-info" *ngIf="userName">
-    <span>Olá, {{ userName }}</span>
-    <button class="logout-button" (click)="logout()">
-      <span class="material-icons" style="vertical-align: middle;">logout</span>
-    </button>
+<header class="main-header shadow-sm">
+  <div class="header-content container-fluid d-flex align-items-center justify-content-between py-2">
+    <div class="logo d-flex align-items-center">
+      <img src="assets/images/logo.png" alt="Logo do Restaurante" class="logo-img me-2" />
+      <span class="logo-title">OrdEat</span>
+    </div>
+    <nav class="navigation">
+      <ul class="nav-list d-flex mb-0">
+        <li><a (click)="navigateToHome()" class="nav-link">Início</a></li>
+        <li><a (click)="navigateToMenu()" class="nav-link">Restaurantes</a></li>
+        <li><a routerLink="/products" routerLinkActive="active" class="nav-link">Produtos</a></li>
+        <li><a href="#contato" class="nav-link">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="auth-buttons d-flex gap-2" *ngIf="!userName">
+      <button class="login-button btn btn-outline-primary" (click)="navigateToLogin()">Login</button>
+      <button class="register-button btn btn-primary" (click)="navigateToRegister()">Registar</button>
+    </div>
+    <div class="user-info d-flex align-items-center gap-2" *ngIf="userName">
+      <span class="fw-semibold">Olá, {{ userName }}</span>
+      <button class="logout-button btn btn-outline-danger btn-sm d-flex align-items-center" (click)="logout()">
+        <span class="material-icons" style="vertical-align: middle;">logout</span>
+      </button>
+    </div>
   </div>
 </header>

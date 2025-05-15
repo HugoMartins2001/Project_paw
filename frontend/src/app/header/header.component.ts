@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -32,9 +33,25 @@ export class HeaderComponent {
   navigateToRegister(): void { this.router.navigate(['/register']); }
 
   logout(): void {
-    localStorage.clear();
-    this.userName = null;
-    this.router.navigate(['/']);
-  }
+  Swal.fire({
+    title: 'Tem a certeza que quer sair?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, sair',
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.clear();
+      this.userName = null;
+      this.router.navigate(['/']);
+      Swal.fire({
+        icon: 'success',
+        title: 'Sessão terminada!',
+        timer: 1200,
+        showConfirmButton: false
+      });
+    }
+  });
 }
-
+}

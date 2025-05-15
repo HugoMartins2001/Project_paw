@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductComponent } from './product/product.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
-import { ProductAddComponent } from './product-add/product-add.component';
-import { ProductEditComponent } from './product-edit/product-edit.component';
 import { HomeComponent } from './home/home.component';
 import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { LoginComponent } from './login/login.component';
@@ -11,12 +7,18 @@ import { RegisterComponent } from './register/register.component';
 import { RestaurantDetailsComponent } from './restaurant-details/restaurant-details.component';
 import { RestaurantCreateComponent } from './restaurant-create/restaurant-create.component';
 import { RestaurantUpdateComponent } from './restaurant-update/restaurant-update.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
     data: { title: 'Home' }
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    data: { title: 'Dashboard' }
   },
   {
     path: 'restaurants',
@@ -47,26 +49,6 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     data: { title: 'Register' }
-  },
-  {
-    path: 'products',
-    component: ProductComponent,
-    data: { title: 'Product List' }
-  },
-  {
-    path: 'product-details/:id',
-    component: ProductDetailComponent,
-    data: { title: 'Product Details' }
-  },
-  {
-    path: 'product-add',
-    component: ProductAddComponent,
-    data: { title: 'Product Add' }
-  },
-  {
-    path: 'product-edit/:id',
-    component: ProductEditComponent,
-    data: { title: 'Product Edit' }
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];

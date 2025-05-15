@@ -75,11 +75,9 @@ export class LoginComponent {
 
           setTimeout(() => {
             if (res.role === 'cliente') {
-              this.router.navigate(['/cliente/dashboard']);
-            } else if (res.role === 'restaurante') {
-              this.router.navigate([`/restaurante/dashboard/${res.userId}`]);
-            } else if (res.role === 'admin') {
-              this.router.navigate(['/admin/dashboard']);
+              this.router.navigate(['/']);
+            } else if (res.role === 'Manager' || res.role === 'Admin') {
+              this.router.navigate(['/dashboard']);
             } else {
               this.router.navigate(['/']);
             }
