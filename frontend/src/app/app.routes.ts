@@ -8,6 +8,10 @@ import { RestaurantDetailsComponent } from './restaurant-details/restaurant-deta
 import { RestaurantCreateComponent } from './restaurant-create/restaurant-create.component';
 import { RestaurantUpdateComponent } from './restaurant-update/restaurant-update.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MenusComponent } from './menus/menus.component';
+import { MenuCreateComponent } from './menu-create/menu-create.component';
+import { MenuUpdateComponent } from './menu-update/menu-update.component';
+import { MenuDetailsComponent } from './menu-details/menu-details.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +43,26 @@ export const routes: Routes = [
     path: 'restaurants/editRestaurant/:id',
     component: RestaurantUpdateComponent,
     data: { title: 'Edit Restaurant' }
+  },
+  {
+    path: 'menus',
+    component: MenusComponent,
+    data: { title: 'Menus' }
+  },
+  {
+    path: 'menus/create',
+    component: MenuCreateComponent,
+    data: { title: 'Create Menu' }
+  },
+  {
+    path: 'menus/editMenu/:id',
+    component: MenuUpdateComponent,
+    data: { title: 'Edit Menu' }
+  },
+  {
+    path: 'menus/:id',
+    component: MenuDetailsComponent,
+    data: { title: 'Menu Details' }
   },
   {
     path: 'login',
