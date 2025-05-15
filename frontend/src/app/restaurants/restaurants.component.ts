@@ -27,16 +27,15 @@ export class RestaurantsComponent implements OnInit {
   fetchRestaurants(): void {
     this.restaurantService.getRestaurants().subscribe({
       next: (data) => {
-        if (data && Array.isArray(data.restaurants)) {
-          this.restaurants = data.restaurants; // Acesse a propriedade 'restaurants'
+        console.log('Resposta da API:', data);
+        if (Array.isArray(data)) {
+          this.restaurants = data;
         } else {
-          console.error('Os dados recebidos não contêm um array de restaurantes:', data);
           this.restaurants = [];
         }
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Erro ao buscar restaurantes:', err);
         this.isLoading = false;
       },
     });
@@ -52,16 +51,18 @@ export class RestaurantsComponent implements OnInit {
     }));
   }
 
-  deleteRestaurant(id: string) {
-    if (confirm('Tem a certeza que deseja eliminar este restaurante?')) {
+  deleteRestaurant(id: string): void {
+    const confirmar = confirm('Tens a certeza que queres apagar este restaurante?');
+    if (confirmar) {
       this.restaurantService.deleteRestaurant(id).subscribe({
-        next: () => this.fetchRestaurants(),
-        error: err => {
+        next: () => {
+          this.restaurants = this.restaurants.filter(r => r._id !== id);
+        },
+        error: (err) => {
           alert(err.error?.message || 'Erro ao eliminar restaurante!');
         }
       });
     }
   }
-
 }
 

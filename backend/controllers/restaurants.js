@@ -245,21 +245,26 @@ restaurantsController.createRestaurant = async function (req, res, next) {
       });
     }
 
-    // Criar o novo restaurante
+    /// Criar o novo restaurante
     const newRestaurant = new mongoRestaurant({
       name: req.body.name,
       address: req.body.address,
       phone: req.body.phone,
       restaurantEmail: req.body.restaurantEmail,
-      openingHours: req.body.openingHours,
+      openingHours: typeof req.body.openingHours === 'string'
+        ? JSON.parse(req.body.openingHours)
+        : req.body.openingHours,
       paymentMethods: Array.isArray(req.body.paymentMethods)
         ? req.body.paymentMethods
-        : [req.body.paymentMethods], // Garantir que seja um array
-      menus: req.body.menus || [],
+        : req.body.paymentMethods ? [req.body.paymentMethods] : [],
+      menus: Array.isArray(req.body.menus)
+        ? req.body.menus
+        : req.body.menus ? [req.body.menus] : [],
       managerId: managerId,
-      isApproved: false, // Restaurantes criados inicialmente não são aprovados
+      isApproved: false,
       restaurantPic: restaurantPic,
     });
+
 
     await newRestaurant.save();
 
@@ -349,10 +354,10 @@ restaurantsController.createRestaurant = async function (req, res, next) {
       name: newRestaurant.name,
     });
 
-    res.redirect("/restaurants/showRestaurants");
+    res.status(201).json({ message: "Restaurante criado com sucesso!", restaurant: newRestaurant });
   } catch (err) {
     console.error("Error creating restaurant:", err);
-    next(err);
+    res.status(500).json({ error: "Erro ao criar restaurante." });
   }
 };
 
@@ -360,12 +365,9 @@ restaurantsController.createRestaurant = async function (req, res, next) {
 restaurantsController.deleteRestaurant = function (req, res, next) {
   const query = { _id: req.params.id };
 
-  // Só adiciona managerId se req.user existir e for Manager
   if (req.user && req.user.role === "Manager") {
-    query.managerId = req.user._id; // Gerentes só podem deletar seus próprios restaurantes
+    query.managerId = req.user._id; // Managers só podem eliminar os seus próprios restaurantes
   }
-
-  console.log("Query usada para deletar restaurante:", query);
 
   mongoRestaurant
     .findOneAndDelete(query)
@@ -457,11 +459,16 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
       longitude: req.body.longitude,
       phone: req.body.phone,
       restaurantEmail: req.body.restaurantEmail,
-      openingHours: req.body.openingHours,
+      openingHours: typeof req.body.openingHours === 'string'
+        ? JSON.parse(req.body.openingHours)
+        : req.body.openingHours,
       paymentMethods: Array.isArray(req.body.paymentMethods)
         ? req.body.paymentMethods
-        : [req.body.paymentMethods], // Garantir que seja um array
-      menus: req.body.menus || [],
+        : req.body.paymentMethods ? [req.body.paymentMethods] : [],
+      menus: Array.isArray(req.body.menus)
+        ? req.body.menus
+        : req.body.menus ? [req.body.menus] : [],
+
     };
 
     if (req.file) {

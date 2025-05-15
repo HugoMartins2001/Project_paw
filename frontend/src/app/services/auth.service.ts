@@ -7,12 +7,12 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000/api/auth';
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  // Registro de usuário (com FormData para upload de foto)
-  register(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/registerSubmitted`, formData);
+  register(userData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/registerSubmitted`, userData);
   }
+
 
   // Logout
   logout(): void {

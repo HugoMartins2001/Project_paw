@@ -9,6 +9,7 @@ import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RestaurantDetailsComponent } from './restaurant-details/restaurant-details.component';
+import { RestaurantCreateComponent } from './restaurant-create/restaurant-create.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,11 @@ export const routes: Routes = [
     path: 'restaurant-details/:name',
     component: RestaurantDetailsComponent,
     data: { title: 'Restaurant Details' }
+  },
+  {
+    path: 'restaurants/create',
+    component: RestaurantCreateComponent,
+    data: { title: 'Create Restaurant' }
   },
   {
     path: 'login',

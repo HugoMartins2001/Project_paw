@@ -17,7 +17,7 @@ router.get('/logout', authController.logout);
 // Rota para exibir a página de registro
 router.get('/register', authController.createLogin);
 
-// Rota para processar o formulário de registro submetido, incluindo upload de imagem de perfil
+// Rota para processar o formulário de registro submetido
 router.post('/registerSubmitted', registerCheckEmail, authController.createLoginSubmitted);
 
 // Rota para exibir o formulário de login (exemplo de renderização direta)

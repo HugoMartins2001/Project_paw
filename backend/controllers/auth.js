@@ -195,7 +195,7 @@ authController.submittedLogin = function (req, res, next) {
                             </div>
                         `
                     };
-               
+
 
                     transporter.sendMail(userMailOptions, (error, info) => {
                         if (error) {
@@ -351,39 +351,45 @@ authController.createLoginSubmitted = function (req, res, next) {
             res.json({ successMessage: 'Registration completed successfully!' });
         })
         .catch(function (err) {
-            next(err);
+            if (err.code === 11000) {
+                return res.status(500).json({ error: 'Email already registered!' });
+            }
+            // Se for erro de validação do mongoose
+            if (err.name === 'ValidationError') {
+                return res.status(400).json({ error: err.message });
+            }
+            // Para outros erros, devolve sempre JSON
+            res.status(500).json({ error: 'Erro ao registar utilizador.' });
         });
 };
 
 // Middleware para verificar se o usuário está autenticado
 authController.verifyLoginUser = function (req, res, next) {
-    const authToken = req.cookies['auth-token'];
+    // Tenta pegar o token do cookie OU do header Authorization
+    const authToken = req.cookies['auth-token'] || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
     if (authToken) {
         jwt.verify(authToken, config.secret, function (err, decoded) {
             if (err) {
-                return res.redirect('/auth/login'); // Redireciona para a página de login em caso de erro
+                return res.status(401).json({ error: 'Invalid token' });
             }
             mongoUser.findOne({ email: decoded.email })
                 .then(function (user) {
                     if (!user) {
-                        return res.redirect('/auth/login'); // Redireciona se o usuário não for encontrado
+                        return res.status(401).json({ error: 'User not found' });
                     }
-
-                    // Verifica se o usuário está bloqueado
                     if (user.isBlocked) {
-                        res.clearCookie('auth-token'); // Remove o cookie de autenticação
-                        return res.redirect('/auth/login?error=blocked'); // Redireciona com mensagem de erro
+                        res.clearCookie('auth-token');
+                        return res.status(403).json({ error: 'User blocked' });
                     }
-
-                    req.user = user; // Adiciona o usuário à requisição
-                    next(); // Permite o acesso à próxima rota
+                    req.user = user;
+                    next();
                 })
                 .catch(function (err) {
-                    next(err); // Passa o erro para o middleware de tratamento de erros
+                    next(err);
                 });
         });
     } else {
-        res.redirect('/auth/login'); // Redireciona para a página de login se o token não estiver presente
+        res.status(401).json({ error: 'No token provided' });
     }
 };
 

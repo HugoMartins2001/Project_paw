@@ -116,7 +116,7 @@ menusController.showAll = async function (req, res, next) {
     const totalPages = Math.ceil(totalMenus / limit);
 
     // jsonizar a página com os menus filtrados e informações de paginação
-    res.json("menus/showMenus", {
+    res.json({
       menus: filteredMenus,
       user: user,
       currentPage: parseInt(page),

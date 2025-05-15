@@ -1,11 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators'
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
+export interface Restaurant {
+  _id: string;
+  name: string;
+  address: string;
+  phone?: string;
+  restaurantEmail?: string;
+  restaurantPic?: string;
+  openingHours?: any;
+  paymentMethods?: string[];
+  menus?: any[];
+  managerId?: string | { _id: string };
+  isApproved?: boolean;
+  isVisible?: boolean;
+}
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class RestaurantService {
   private apiUrl = 'http://localhost:3000/api/restaurants/showRestaurants';
@@ -13,15 +27,25 @@ export class RestaurantService {
 
   constructor(private http: HttpClient) { }
 
-  getRestaurants(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  private getHeaders(): HttpHeaders {
+    if (typeof window === 'undefined') return new HttpHeaders();
+    const token = localStorage.getItem('token');
+    return token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : new HttpHeaders();
   }
 
-  getRestaurantByName(name: string) {
-    return this.http.get<any>(`${this.apiUrlByName}/${name}?t=${Date.now()}`).pipe(
+  getRestaurants(): Observable<Restaurant[]> {
+    return this.http.get<{ restaurants: Restaurant[] }>(this.apiUrl, { headers: this.getHeaders() }).pipe(
+      map(res => res.restaurants),
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
+
+  getRestaurantByName(name: string): Observable<{ restaurant: Restaurant }> {
+    return this.http.get<{ restaurant: Restaurant }>(`${this.apiUrlByName}/${name}?t=${Date.now()}`, {
+      headers: this.getHeaders()
+    }).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
-          // Pode lançar um erro customizado ou simplesmente repassar
           return throwError(() => new Error('Restaurant not found'));
         }
         return throwError(() => error);
@@ -29,8 +53,22 @@ export class RestaurantService {
     );
   }
 
-  deleteRestaurant(id: string) {
-      return this.http.delete(`http://localhost:3000/api/deleteRestaurant/${id}`);
+  deleteRestaurant(id: string): Observable<void> {
+    return this.http.delete<void>(`http://localhost:3000/api/deleteRestaurant/${id}`, {
+      headers: this.getHeaders()
+    });
   }
 
+  createRestaurant(restaurant: FormData): Observable<Restaurant> {
+    return this.http.post<Restaurant>('http://localhost:3000/api/restaurants/submittedRestaurant', restaurant
+    ).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
+
+  getMenus(): Observable<any[]> { 
+    return this.http.get<any[]>('http://localhost:3000/api/menus/showMenus', { headers: this.getHeaders() }).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
 }

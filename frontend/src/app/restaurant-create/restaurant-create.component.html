@@ -1,0 +1,117 @@
+<div class="container">
+  <div class="card">
+    <h2>Create New Restaurant</h2>
+    <p class="text-muted">Please fill in the details below to create a new restaurant.</p>
+
+    <form *ngIf="restaurantForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="f_name">Restaurant Name</label>
+        <input type="text" id="f_name" formControlName="name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="f_address">Street</label>
+        <input type="text" id="f_address" formControlName="address" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="f_phone">Phone</label>
+        <input type="text" id="f_phone" formControlName="phone" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="f_email">Restaurant Email</label>
+        <input type="email" id="f_email" formControlName="restaurantEmail" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Opening Hours</label>
+        <div id="openingHoursContainer">
+          <div class="row mb-3 align-items-center">
+            <div class="col-md-3">
+              <label>Default Hours</label>
+            </div>
+            <div class="col-md-4">
+              <input type="time" formControlName="start" class="form-control"
+                *ngIf="restaurantForm.get('openingHours.default.start')" placeholder="Start Time" />
+            </div>
+            <div class="col-md-4">
+              <input type="time" formControlName="end" class="form-control"
+               *ngIf="restaurantForm.get('openingHours.default.end')" placeholder="End Time" />
+            </div>
+          </div>
+          <button type="button" class="btn btn-custom d-flex align-items-center" (click)="toggleCustomHours()">
+            <i class="bi bi-calendar3 me-2"></i> Customize Saturday and Sunday
+          </button>
+          <div id="customHours" [style.display]="showCustomHours ? 'block' : 'none'">
+            <div class="row mb-2 align-items-center" *ngFor="let day of ['Saturday', 'Sunday']">
+              <div class="col-md-3">
+                <label>{{ day }}</label>
+              </div>
+              <div class="col-md-3">
+                <input type="time" class="form-control"
+                 *ngIf="restaurantForm.get('openingHours.' + day + '.start')" placeholder="Start Time" />
+              </div>
+              <div class="col-md-3">
+                <input type="time" class="form-control"
+                 *ngIf="restaurantForm.get('openingHours.' + day + '.end')" placeholder="End Time" />
+              </div>
+              <div class="col-md-3 d-flex align-items-center">
+                <input type="checkbox"
+                  *ngIf="restaurantForm.get('openingHours.' + day + '.closed')" class="me-2" />
+                <label class="mb-0">Closed</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Payment Methods</label>
+        <div id="paymentMethodsContainer">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Cash"
+              (change)="onPaymentMethodChange($event)" id="paymentCash">
+            <label class="form-check-label" for="paymentCash">Cash</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Credit Card"
+              (change)="onPaymentMethodChange($event)" id="paymentCreditCard">
+            <label class="form-check-label" for="paymentCreditCard">Credit Card</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Debit Card"
+              (change)="onPaymentMethodChange($event)" id="paymentDebitCard">
+            <label class="form-check-label" for="paymentDebitCard">Debit Card</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Mobile Payment"
+              (change)="onPaymentMethodChange($event)" id="paymentMobile">
+            <label class="form-check-label" for="paymentMobile">Mobile Payment</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="restaurantPic" class="form-label">Restaurant Picture</label>
+        <input type="file" id="restaurantPic" (change)="onFileChange($event)" accept="image/*" class="form-control"/>
+      </div>
+      <div class="form-group form-full">
+        <label for="menus">Menus</label>
+        <ng-container *ngIf="menus.length > 0; else noMenus">
+          <select id="menus" formControlName="menus" multiple class="form-control">
+            <option *ngFor="let menu of menus" [value]="menu._id">{{ menu.name }}</option>
+          </select>
+          <small class="form-text text-muted">
+            Choose the menus associated with the restaurant.
+          </small>
+        </ng-container>
+        <ng-template #noMenus>
+          <div class="alert alert-warning" role="alert">
+            No menus available. Please <a href="/menus/submitMenu">create a menu</a> first.
+          </div>
+        </ng-template>
+      </div>
+      <div class="form-group form-full">
+        <button type="submit" class="btn btn-primary w-100">Create Restaurant</button>
+      </div>
+      <div class="form-group form-full">
+        <a routerLink="/dashboard" class="btn btn-secondary w-100">Go to Dashboard</a>
+      </div>
+    </form>
+  </div>
+</div>
