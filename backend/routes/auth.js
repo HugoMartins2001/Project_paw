@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const authController = require('../controllers/auth');
 const passport = require('passport');
-const upload = require('../middlewares/upload');
 const registerCheckEmail = require('../middlewares/registerCheckEmail');
 const jwt = require('jsonwebtoken');
 
@@ -19,7 +18,7 @@ router.get('/logout', authController.logout);
 router.get('/register', authController.createLogin);
 
 // Rota para processar o formulário de registro submetido, incluindo upload de imagem de perfil
-router.post('/registerSubmitted', upload.single('profilePic'), registerCheckEmail, authController.createLoginSubmitted);
+router.post('/registerSubmitted', registerCheckEmail, authController.createLoginSubmitted);
 
 // Rota para exibir o formulário de login (exemplo de renderização direta)
 router.get('/loginform', (req, res) => {

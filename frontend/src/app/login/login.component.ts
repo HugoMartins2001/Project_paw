@@ -64,6 +64,7 @@ export class LoginComponent {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userId', res.userId);
           localStorage.setItem('role', res.role);
+          localStorage.setItem('name', res.name);
 
           Swal.fire({
             icon: 'success',

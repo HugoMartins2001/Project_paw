@@ -11,7 +11,7 @@ router.use((req, res, next) => {
 });
 
 // Rota para exibir os detalhes de um restaurante específico pelo nome
-router.get("/showRestaurant/:name", /*authController.verifyLoginUser, */function (req, res, next) {
+router.get("/showRestaurant/:name", authController.verifyLoginUser, function (req, res, next) {
   restaurantsController.showDetails(req, res, next);
 });
 
@@ -27,12 +27,12 @@ router.post("/submittedRestaurant", upload.single("restaurantPic"), authControll
 );
 
 // Rota para exibir todos os restaurantes
-router.get("/showRestaurants", /*authController.verifyLoginUser*/ function (req, res, next) {
+router.get("/showRestaurants", authController.verifyLoginUser, function (req, res, next) {
   restaurantsController.showAll(req, res, next);
 });
 
 // Rota para deletar um restaurante específico pelo ID
-router.post("/deleteRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
+router.delete("/deleteRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
   restaurantsController.deleteRestaurant(req, res, next);
 });
 

@@ -15,18 +15,23 @@
         <p><strong>Street:</strong> {{ restaurant.address }}</p>
         <p><strong>Phone:</strong> {{ restaurant.phone }}</p>
         <p><strong>Restaurant email:</strong> {{ restaurant.restaurantEmail }}</p>
-        <p><strong>Opening Hours:</strong></p>
-        <ul class="list-group">
-          <li class="list-group-item" *ngFor="let day of openingHoursKeys(restaurant.openingHours)">
-            <strong>{{ day }}:</strong>
-            <ng-container *ngIf="restaurant.openingHours[day].closed; else openHours">
-              Closed
-            </ng-container>
-            <ng-template #openHours>
-              {{ restaurant.openingHours[day].start }} - {{ restaurant.openingHours[day].end }}
-            </ng-template>
-          </li>
-        </ul>
+       <p><strong>Opening Hours:</strong></p>
+        <div *ngIf="openingHoursKeys(restaurant.openingHours).length > 0; else noHours">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let day of openingHoursKeys(restaurant.openingHours)">
+              <strong>{{ day }}:</strong>
+              <ng-container *ngIf="restaurant.openingHours[day]?.closed; else openHours">
+                Closed
+              </ng-container>
+              <ng-template #openHours>
+                {{ restaurant.openingHours[day]?.start }} - {{ restaurant.openingHours[day]?.end }}
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <ng-template #noHours>
+          <p><em>No opening hours available</em></p>
+        </ng-template>
         <p><strong>Payment Methods:</strong></p>
         <ul class="list-group">
           <li class="list-group-item" *ngFor="let method of restaurant.paymentMethods">

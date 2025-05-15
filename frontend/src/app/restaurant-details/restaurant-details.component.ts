@@ -29,23 +29,24 @@ export class RestaurantDetailsComponent implements OnInit {
   }
 
   fetchRestaurant(name: string): void {
-    this.restaurantService.getRestaurantByName(name).subscribe({
-      next: (data) => {
-        if (data && data.restaurant) {
-          this.restaurant = data.restaurant;
-        } else {
-          this.restaurant = null;
-        }
-        this.isLoading = false;
-      },
-      error: (err) => {
+  this.restaurantService.getRestaurantByName(name).subscribe({
+    next: (data) => {
+      if (data && data.restaurant) {
+        this.restaurant = data.restaurant;
+      } else {
         this.restaurant = null;
-        this.isLoading = false;
-      },
-    });
-  }
+      }
+      this.isLoading = false;
+    },
+    error: (err) => {
+      this.restaurant = null;
+      this.isLoading = false;
+    },
+  });
+}
 
   openingHoursKeys(openingHours: any): string[] {
-    return Object.keys(openingHours || {});
-  }
+  return openingHours ? Object.keys(openingHours) : [];
+}
+
 }

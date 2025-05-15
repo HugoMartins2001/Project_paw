@@ -11,8 +11,15 @@
       <li><a href="#contato">Contato</a></li>
     </ul>
   </nav>
-  <div class="auth-buttons">
+  <div class="auth-buttons" *ngIf="!userName">
     <button class="login-button" (click)="navigateToLogin()">Login</button>
     <button class="register-button" (click)="navigateToRegister()">Registar</button>
+  </div>
+  <div class="user-info" *ngIf="userName">
+    <span>Olá, {{ userName }}</span>
+    
+    <button class="logout-button" (click)="logout()">
+      <span class="material-icons" style="vertical-align: middle;">logout</span>
+    </button>
   </div>
 </header>

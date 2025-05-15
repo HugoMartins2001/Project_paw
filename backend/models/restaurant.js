@@ -17,7 +17,7 @@ const RestaurantSchema = new mongoose.Schema({
     message: "O email deve ser válido",
   },
   openingHours: {
-    type: Map,
+    type: Object,
     of: {
       start: { type: String },
       end: { type: String },   

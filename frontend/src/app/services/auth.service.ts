@@ -1,22 +1,32 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, tap } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000/api'; // URL base do back-end
+  private apiUrl = 'http://localhost:3000/api/auth';
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: HttpClient) {}
 
-  // Método para registar um usuário
-  register(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/registerSubmitted`, userData);
+  // Registro de usuário (com FormData para upload de foto)
+  register(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/registerSubmitted`, formData);
   }
 
-  // Método para autenticar o usuário
-  login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/loginSubmitted`, credentials);
+  // Logout
+  logout(): void {
+    localStorage.removeItem('token');
+    this.isLoggedInSubject.next(false);
+  }
+
+  // Observable para status de login
+  get isLoggedIn$() {
+    return this.isLoggedInSubject.asObservable();
+  }
+
+  // Checa se há token salvo
+  private hasToken(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

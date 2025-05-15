@@ -1,28 +1,40 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  imports: [CommonModule]
 })
 export class HeaderComponent {
-  constructor(private router: Router) {}
+  userName: string | null = null;
 
-  navigateToHome(): void {
-    this.router.navigate(['/home']);
+  constructor(private router: Router) {
+    // Atualiza userName sempre que a navegação termina
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.userName = localStorage.getItem('name');
+      }
+    });
   }
 
-  navigateToMenu(): void {
-    this.router.navigate(['/restaurants']);
+  ngOnInit() {
+    this.userName = localStorage.getItem('name');
   }
 
-  navigateToLogin(): void {
-    this.router.navigate(['/login']); // Substitua pela rota de login
-  }
+  navigateToHome(): void { this.router.navigate(['/home']); }
+  navigateToMenu(): void { this.router.navigate(['/restaurants']); }
+  navigateToLogin(): void { this.router.navigate(['/login']); }
+  navigateToRegister(): void { this.router.navigate(['/register']); }
 
-  navigateToRegister(): void {
-    this.router.navigate(['/register']); // Substitua pela rota de registro
+  logout(): void {
+    localStorage.clear();
+    this.userName = null;
+    this.router.navigate(['/']);
   }
 }
+

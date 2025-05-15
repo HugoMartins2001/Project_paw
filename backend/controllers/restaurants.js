@@ -8,11 +8,11 @@ const nodemailer = require('nodemailer');
 const mongoUser = require("../models/user");
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
 });
 
 let restaurantsController = {};
@@ -69,16 +69,17 @@ restaurantsController.processUpdateRestaurant = function (req, res, next) {
 };
 
 // Controlador para exibir todos os restaurantes
-// Controlador para exibir todos os restaurantes
 restaurantsController.showAll = async function (req, res, next) {
+  if (!req.user) return res.redirect("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
+
   try {
-    const { 
-      page = 1, 
-      limit = 6, 
-      name, 
-      address, 
-      sortBy = "name", 
-      order = "asc" 
+    const {
+      page = 1,
+      limit = 6,
+      name,
+      address,
+      sortBy = "name",
+      order = "asc"
     } = req.query; // Parâmetros de filtro e ordenação
 
     const skip = (page - 1) * limit;
@@ -102,10 +103,6 @@ restaurantsController.showAll = async function (req, res, next) {
     } else if (req.user?.role === "Client") {
       query.isApproved = true; // Clientes só podem ver restaurantes aprovados
       query.isVisible = true; // Clientes só podem ver restaurantes visíveis
-    } else {
-      // Visitantes (não autenticados) só podem ver restaurantes aprovados e visíveis
-      query.isApproved = true;
-      query.isVisible = true;
     }
 
     // Ordenação
@@ -125,13 +122,32 @@ restaurantsController.showAll = async function (req, res, next) {
     const totalRestaurants = await mongoRestaurant.countDocuments(query);
     const totalPages = Math.ceil(totalRestaurants / limit);
 
+    const filteredRestaurants = restaurantList.map((restaurant) => {
+      const filteredMenus = restaurant.menus.filter((menu) => {
+        // Administradores podem ver todos os menus
+        if (req.user.role === "Admin") {
+          return true;
+        }
+
+        // Gerentes só podem ver menus que eles criaram
+        return menu.managerId.toString() === req.user._id.toString();
+      });
+
+      return {
+        ...restaurant.toObject(),
+        menus: filteredMenus,
+      };
+    });
+
     // Retornar os restaurantes como JSON
     res.json({
-      restaurants: restaurantList,
+      restaurants: filteredRestaurants,
+      user: req.user,
       currentPage: parseInt(page),
       totalPages,
       filters: { name, address, sortBy, order },
     });
+
   } catch (err) {
     console.error("Error fetching restaurants:", err);
     next(err);
@@ -140,17 +156,11 @@ restaurantsController.showAll = async function (req, res, next) {
 
 // Controlador para exibir os detalhes de um restaurante
 restaurantsController.showDetails = function (req, res, next) {
-  // --- AUTENTICAÇÃO/RESTRIÇÃO DE ACESSO ---
-  /*
+
   const query =
     req.user.role === "Manager"
       ? { name: req.params.name, managerId: req.user._id } // Gerente só pode acessar seus próprios restaurantes
       : { name: req.params.name }; // Admin pode acessar qualquer restaurante
-  */
-  // --- FIM AUTENTICAÇÃO/RESTRIÇÃO DE ACESSO ---
-
-  // Para testes sem autenticação, use apenas:
-  const query = { name: req.params.name };
 
   mongoRestaurant
     .findOne(query)
@@ -161,8 +171,7 @@ restaurantsController.showDetails = function (req, res, next) {
         return res.status(404).json("errors/404", { message: "Restaurant not found." });
       }
 
-      // --- AUTENTICAÇÃO/RESTRIÇÃO DE ACESSO ---
-      /*
+
       // Verificar permissões
       if (
         req.user.role !== "Admin" && // Apenas Admin pode acessar qualquer restaurante
@@ -171,11 +180,7 @@ restaurantsController.showDetails = function (req, res, next) {
         // Retorna 403 se o usuário não tiver permissão
         return res.status(403).json("errors/403", { message: "Access denied." });
       }
-      */
-      // --- FIM AUTENTICAÇÃO/RESTRIÇÃO DE ACESSO ---
 
-      // --- AUTENTICAÇÃO/RESTRIÇÃO DE MENUS ---
-      /*
       // Filtrar menus para que apenas os que são criados pelo gerente autenticado sejam exibidos
       const filteredMenus = restaurantDB.menus.filter((menu) => {
         // Administradores podem ver todos os menus
@@ -185,20 +190,14 @@ restaurantsController.showDetails = function (req, res, next) {
         // Gerentes só podem ver menus que eles criaram
         return menu.managerId.toString() === req.user._id.toString();
       });
-      */
-      // --- FIM AUTENTICAÇÃO/RESTRIÇÃO DE MENUS ---
-
-      // Para testes sem autenticação, mostre todos os menus:
-      const filteredMenus = restaurantDB.menus;
 
       const inputs = {
         restaurant: {
           ...restaurantDB.toObject(),
           menus: filteredMenus,
         },
-        // user: req.user, // Comente para não enviar user ao front
+        user: req.user, // Comente para não enviar user ao front
       };
-
       res.json(inputs);
     })
     .catch(function (err) {
@@ -359,29 +358,34 @@ restaurantsController.createRestaurant = async function (req, res, next) {
 
 // Controlador para deletar um restaurante
 restaurantsController.deleteRestaurant = function (req, res, next) {
-  const query = { _id: req.params.id }; 
+  const query = { _id: req.params.id };
 
-  if (req.user.role === "Manager") {
+  // Só adiciona managerId se req.user existir e for Manager
+  if (req.user && req.user.role === "Manager") {
     query.managerId = req.user._id; // Gerentes só podem deletar seus próprios restaurantes
   }
+
+  console.log("Query usada para deletar restaurante:", query);
 
   mongoRestaurant
     .findOneAndDelete(query)
     .then(function (deletedRestaurant) {
       if (!deletedRestaurant) {
-        return res
-          .status(404)
-          .send(
-            "You don´t have permission to delete the restaurant or the restaurant was not found."
-          );
+        return res.status(404).json({
+          success: false,
+          message: "You don't have permission to delete the restaurant or the restaurant was not found."
+        });
       }
 
-      logAction("Deleted Restaurant", req.user, {
-        restaurantId: deletedRestaurant._id,
-        name: deletedRestaurant.name,
-      });
+      if (req.user) {
+        logAction("Deleted Restaurant", req.user, {
+          restaurantId: deletedRestaurant._id,
+          name: deletedRestaurant.name,
+        });
+      }
 
-      res.redirect("/restaurants/showRestaurants");
+      // Resposta adequada para API
+      res.json({ success: true, message: "Restaurant deleted successfully." });
     })
     .catch(function (err) {
       next(err);

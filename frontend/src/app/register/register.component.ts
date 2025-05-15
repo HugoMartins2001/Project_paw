@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../services/auth.service'; // Certifique-se de que o caminho está correto
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -12,40 +12,52 @@ import { AuthService } from '../services/auth.service'; // Certifique-se de que 
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  name: string = '';
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  role: string = '';
-  clienteTelemovel: string = '';
-  clienteNif: string = '';
-  managerTelemovel: string = '';
-  address: string = '';
-  profilePic: File | null = null; // Variável para armazenar o arquivo de foto de perfil
+  name = '';
+  email = '';
+  password = '';
+  confirmPassword = '';
+  role = '';
+  clienteTelemovel = '';
+  clienteNif = '';
+  address = '';
+  managerTelemovel = '';
 
-  constructor(private router: Router, private authService: AuthService) {}
+  errorMsg = '';
+  successMsg = '';
 
-  navigateToLogin(): void {
-    this.router.navigate(['/login']); 
-  }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  onRoleChange(): void {
-    this.clienteTelemovel = '';
-    this.clienteNif = '';
-    this.address = '';
-  }
-
-  
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.profilePic = file;
+  onRoleChange() {
+    if (this.role === 'Client') {
+      this.managerTelemovel = '';
+    } else if (this.role === 'Manager') {
+      this.clienteTelemovel = '';
+      this.clienteNif = '';
+      this.address = '';
     }
   }
 
-  onSubmit(): void {
+  onSubmit() {
+    this.errorMsg = '';
+    this.successMsg = '';
+
+    if (!this.name || !this.email || !this.password || !this.confirmPassword || !this.role) {
+      this.errorMsg = 'Preencha todos os campos obrigatórios!';
+      return;
+    }
     if (this.password !== this.confirmPassword) {
-      alert('As senhas não coincidem!');
+      this.errorMsg = 'As senhas não coincidem!';
+      return;
+    }
+    if (this.role === 'Client' && (!this.clienteTelemovel || !this.clienteNif || !this.address)) {
+      this.errorMsg = 'Preencha todos os campos de cliente!';
+      return;
+    }
+    if (this.role === 'Manager' && !this.managerTelemovel) {
+      this.errorMsg = 'Preencha o número de telemóvel do gerente!';
       return;
     }
 
@@ -55,26 +67,26 @@ export class RegisterComponent {
     formData.append('password', this.password);
     formData.append('role', this.role);
     if (this.role === 'Client') {
-      formData.append('clienteNif', this.clienteNif);
       formData.append('clienteTelemovel', this.clienteTelemovel);
+      formData.append('clienteNif', this.clienteNif);
       formData.append('address', this.address);
-    } else if (this.role === 'Manager') {
+    }
+    if (this.role === 'Manager') {
       formData.append('managerTelemovel', this.managerTelemovel);
     }
-    if (this.profilePic) {
-      formData.append('profilePic', this.profilePic); // Adiciona o arquivo ao FormData
-    }
 
-    this.authService.register(formData).subscribe(
-      (response) => {
-        console.log('Registro bem-sucedido:', response);
-        alert('Registro realizado com sucesso!');
-        this.router.navigate(['/login']); // Redirecione para a página de login
+    this.authService.register(formData).subscribe({
+      next: () => {
+        this.successMsg = 'Registo realizado com sucesso!';
+        setTimeout(() => this.router.navigate(['/login']), 1500);
       },
-      (error) => {
-        console.error('Erro ao registrar:', error);
-        alert('Ocorreu um erro ao realizar o registro.');
+      error: (err) => {
+        this.errorMsg = err.error?.message || 'Erro ao registar!';
       }
-    );
+    });
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }
