@@ -27,6 +27,7 @@ export class RestaurantDetailsComponent implements OnInit {
       this.fetchRestaurant(name);
     }
   }
+  
 
   fetchRestaurant(name: string): void {
   this.restaurantService.getRestaurantByName(name).subscribe({

@@ -90,11 +90,26 @@ export class LoginComponent {
           this.errors = err.error?.erros || {
             geral: 'Erro inesperado ao tentar login.',
           };
-          Swal.fire({
-            icon: 'error',
-            title: 'Erro no login',
-            text: this.errors.geral || 'Verifica os dados introduzidos.',
-          });
+
+          if (this.errors.email) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Email não encontrado',
+              text: this.errors.email,
+            });
+          } else if (this.errors.password) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Password incorreta',
+              text: this.errors.password,
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro no login',
+              text: this.errors.geral || 'Verifica os dados introduzidos.',
+            });
+          }
         },
       });
   }

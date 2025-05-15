@@ -1,93 +1,113 @@
-<form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" class="restaurant-form">
-    <div>
-        <label>Nome:</label>
-        <input type="text" formControlName="name" />
-    </div>
+<form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" class="container mt-4 p-4 rounded shadow bg-white">
+  <h2 class="mb-4 text-center text-primary">Atualizar Restaurante</h2>
 
-    <div>
-        <label>Morada:</label>
-        <input type="text" formControlName="address" />
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label class="form-label">Nome:</label>
+      <input type="text" formControlName="name" class="form-control" />
     </div>
-
-    <div>
-        <label>Telefone:</label>
-        <input type="text" formControlName="phone" />
+    <div class="col-md-6">
+      <label class="form-label">Morada:</label>
+      <input type="text" formControlName="address" class="form-control" />
     </div>
+  </div>
 
-    <div>
-        <label>Email:</label>
-        <input type="email" formControlName="restaurantEmail" />
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label class="form-label">Telefone:</label>
+      <input type="text" formControlName="phone" class="form-control" />
     </div>
-
-    <div>
-        <label>Foto do Restaurante:</label>
-        <input type="file" (change)="onFileChange($event)" />
+    <div class="col-md-6">
+      <label class="form-label">Email:</label>
+      <input type="email" formControlName="restaurantEmail" class="form-control" />
     </div>
+  </div>
 
-    <div>
-        <label>Horário Padrão:</label>
-        <div>
-            <label>Início:</label>
-            <input type="time" [formControl]="defaultStartControl" />
-        </div>
-        <div>
-            <label>Fim:</label>
-            <input type="time" [formControl]="defaultEndControl" />
-        </div>
+  <div class="mb-3">
+    <label class="form-label">Foto do Restaurante:</label>
+    <input type="file" (change)="onFileChange($event)" class="form-control" />
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label class="form-label">Horário Padrão:</label>
+      <div class="input-group mb-2">
+        <span class="input-group-text">Início</span>
+        <input type="time" [formControl]="defaultStartControl" class="form-control" />
+        <span class="input-group-text">Fim</span>
+        <input type="time" [formControl]="defaultEndControl" class="form-control" />
+      </div>
     </div>
-
-    <div>
-        <label>
-            <input type="checkbox" (change)="toggleCustomHours()" [checked]="showCustomHours" />
-            Definir horários personalizados para fim de semana
+    <div class="col-md-6 d-flex align-items-end">
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" (change)="toggleCustomHours()" [checked]="showCustomHours" id="customHoursCheck" />
+        <label class="form-check-label" for="customHoursCheck">
+          Definir horários personalizados para fim de semana
         </label>
+      </div>
     </div>
+  </div>
 
-    <div *ngIf="showCustomHours">
-        <fieldset>
-            <legend>Sábado</legend>
-            <label>Início:</label>
-            <input type="time" *ngIf="defaultStartControl" [formControl]="saturdayStartControl" />
-            <label>Fim:</label>
-            <input type="time" *ngIf="defaultEndControl" [formControl]="saturdayEndControl" />
-            <label>
-                <input type="checkbox" *ngIf="saturdayClosedControl" [formControl]="saturdayClosedControl" /> Closed
-            </label>
-        </fieldset>
-
-        <fieldset>
-            <legend>Domingo</legend>
-            <label>Início:</label>
-            <input type="time" *ngIf="defaultStartControl" [formControl]="sundayStartControl" />
-            <label>Fim:</label>
-            <input type="time" *ngIf="defaultEndControl" [formControl]="sundayEndControl" />
-            <label>
-                <input type="checkbox" *ngIf="sundayClosedControl" [formControl]="sundayClosedControl" /> Closed
-            </label>
-        </fieldset>
-    </div>
-
-    <div>
-        <label>Métodos de Pagamento:</label>
-        <div *ngFor="let method of ['Dinheiro', 'MBWay', 'Visa', 'MasterCard']">
-            <label>
-                <input type="checkbox" [value]="method" [checked]="paymentMethods.includes(method)"
-                    (change)="onPaymentMethodChange($event)" />
-                {{ method }}
-            </label>
+  <div *ngIf="showCustomHours" class="row mb-3">
+    <div class="col-md-6">
+      <fieldset class="border rounded p-3">
+        <legend class="w-auto px-2">Sábado</legend>
+        <div class="input-group mb-2">
+          <span class="input-group-text">Início</span>
+          <input type="time" [formControl]="saturdayStartControl" class="form-control" />
+          <span class="input-group-text">Fim</span>
+          <input type="time" [formControl]="saturdayEndControl" class="form-control" />
         </div>
-    </div>
-
-    <div>
-        <label>Menus:</label>
-        <div *ngFor="let menu of menuOptions">
-            <label>
-                <input type="checkbox" [value]="menu._id" [checked]="restaurantForm.value.menus.includes(menu._id)"
-                    (change)="onMenuCheckboxChange($event, menu._id)" />
-                {{ menu.name }}
-            </label>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" [formControl]="saturdayClosedControl" id="saturdayClosed" />
+          <label class="form-check-label" for="saturdayClosed">Fechado</label>
         </div>
+      </fieldset>
     </div>
+    <div class="col-md-6">
+      <fieldset class="border rounded p-3">
+        <legend class="w-auto px-2">Domingo</legend>
+        <div class="input-group mb-2">
+          <span class="input-group-text">Início</span>
+          <input type="time" [formControl]="sundayStartControl" class="form-control" />
+          <span class="input-group-text">Fim</span>
+          <input type="time" [formControl]="sundayEndControl" class="form-control" />
+        </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" [formControl]="sundayClosedControl" id="sundayClosed" />
+          <label class="form-check-label" for="sundayClosed">Fechado</label>
+        </div>
+      </fieldset>
+    </div>
+  </div>
 
-    <button type="submit">Atualizar Restaurante</button>
+  <div class="mb-3">
+    <label class="form-label">Métodos de Pagamento:</label>
+    <div class="row">
+      <div class="col-auto" *ngFor="let method of ['Cash', 'Credit Card', 'Debit Card', 'Mobile Payment']">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" [value]="method" [checked]="paymentMethods.includes(method)"
+            (change)="onPaymentMethodChange($event)" [id]="method" />
+          <label class="form-check-label" [for]="method">{{ method }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Menus:</label>
+    <div class="row">
+      <div class="col-auto" *ngFor="let menu of menuOptions">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" [value]="menu._id" [checked]="restaurantForm.value.menus.includes(menu._id)"
+            (change)="onMenuCheckboxChange($event, menu._id)" [id]="'menu-' + menu._id" />
+          <label class="form-check-label" [for]="'menu-' + menu._id">{{ menu.name }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-grid">
+    <button type="submit" class="btn btn-primary btn-lg">Atualizar Restaurante</button>
+  </div>
 </form>

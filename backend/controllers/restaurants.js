@@ -25,7 +25,8 @@ function processOpeningHours(openingHours) {
   for (const day in openingHours) {
     if (day === "default") continue;
 
-    if (openingHours[day].closed === "true") {
+    // Aceita booleano ou string
+    if (openingHours[day].closed === true || openingHours[day].closed === "true") {
       processedOpeningHours[day] = { closed: true };
     } else {
       processedOpeningHours[day] = {
@@ -36,9 +37,7 @@ function processOpeningHours(openingHours) {
     }
   }
 
-  // Adicionar os horários padrão ao objeto processado
   processedOpeningHours.default = defaultHours;
-
   return processedOpeningHours;
 }
 
@@ -496,6 +495,8 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
         .status(404)
         .json({ error: "Restaurant not found or you don't have permission to edit it." });
     }
+
+    console.log("Restaurant updated:", updatedRestaurant);
 
     logAction("Updated Restaurant", req.user, {
       restaurantId: updatedRestaurant._id,

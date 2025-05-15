@@ -1,51 +1,46 @@
-<div class="login-container">
-  <h2>Login</h2>
-
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <!-- Campo Email -->
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        formControlName="email"
-        class="form-control"
-        [class.is-invalid]="errors.email"
-      />
-      <div *ngIf="errors.email" class="invalid-feedback">
-        {{ errors.email }}
+<div class="login-bg d-flex align-items-center justify-content-center min-vh-100">
+  <div class="login-card shadow-lg p-4 rounded bg-white">
+    <div class="text-center mb-4">
+      <!-- <img src="assets/logo.png" alt="OrdEat" width="80" class="mb-2" *ngIf="logoExists"> -->
+      <h2 class="mb-0 text-primary">Entrar na sua conta</h2>
+      <p class="text-muted mb-0">Bem-vindo de volta!</p>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Campo Email -->
+      <div class="form-group mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" formControlName="email" class="form-control" [class.is-invalid]="errors.email" autocomplete="username" />
+        <div *ngIf="errors.email" class="invalid-feedback">
+          {{ errors.email }}
+        </div>
       </div>
-    </div>
 
-    <!-- Campo Password -->
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        formControlName="password"
-        class="form-control"
-        [class.is-invalid]="errors.password"
-      />
-      <div *ngIf="errors.password" class="invalid-feedback">
-        {{ errors.password }}
+      <!-- Campo Password -->
+      <div class="form-group mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" formControlName="password" class="form-control" [class.is-invalid]="errors.password" autocomplete="current-password" />
+        <div *ngIf="errors.password" class="invalid-feedback">
+          {{ errors.password }}
+        </div>
       </div>
-    </div>
 
-    <!-- Erro Geral -->
-    <div *ngIf="errors.geral" class="alert alert-danger mt-2">
-      {{ errors.geral }}
-    </div>
+      <!-- Erro Geral -->
+      <div *ngIf="errors.geral" class="alert alert-danger text-center py-2">
+        {{ errors.geral }}
+      </div>
 
-    <!-- Botão Submeter -->
-    <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-      {{ isLoading ? "A entrar..." : "Entrar" }}
-    </button>
+      <!-- Botão Submeter -->
+      <div class="d-grid mb-2">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="isLoading">
+          {{ isLoading ? "A entrar..." : "Entrar" }}
+        </button>
+      </div>
 
-    <!-- Link para Registo -->
-    <p class="mt-3">
-      Ainda não tens conta?
-      <a  (click)="navigateToRegister()">Registar</a>
-    </p>
-  </form>
+      <!-- Link para Registo -->
+      <div class="text-center mt-2">
+        <span class="text-muted">Ainda não tens conta?</span>
+        <a (click)="navigateToRegister()" class="ms-1 text-decoration-underline" style="cursor:pointer;">Registar</a>
+      </div>
+    </form>
+  </div>
 </div>

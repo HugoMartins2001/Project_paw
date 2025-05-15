@@ -38,6 +38,15 @@
             {{ method }}
           </li>
         </ul>
+        <p><strong>Menus:</strong></p>
+        <ul class="list-group mb-3" *ngIf="restaurant.menus && restaurant.menus.length > 0; else noMenus">
+          <li class="list-group-item" *ngFor="let menu of restaurant.menus">
+            {{ menu.name }}
+          </li>
+        </ul>
+        <ng-template #noMenus>
+          <p class="text-muted"><em>No menus associated with this restaurant.</em></p>
+        </ng-template>
       </div>
     </div>
   </div>

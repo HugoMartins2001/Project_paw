@@ -86,7 +86,10 @@ export class RestaurantUpdateComponent implements OnInit {
 
     // ...restante código do ngOnInit...
     this.restaurantService.getMenus().subscribe({
-      next: (res) => (this.menuOptions = res),
+      next: (res) => {
+        // Garante que menuOptions é sempre um array
+        this.menuOptions = Array.isArray(res) ? res : Object.values(res);
+      },
       error: () =>
         Swal.fire('Erro', 'Erro ao carregar menus disponíveis!', 'error')
     });
@@ -151,33 +154,53 @@ export class RestaurantUpdateComponent implements OnInit {
   }
 
 
-  onSubmit() {
-    if (this.restaurantForm.invalid) {
-      Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
-      return;
-    }
-
-    const formValue = this.restaurantForm.value;
-    const formData = new FormData();
-    formData.append('name', formValue.name);
-    formData.append('address', formValue.address);
-    formData.append('phone', formValue.phone);
-    formData.append('restaurantEmail', formValue.restaurantEmail);
-    formData.append('openingHours', JSON.stringify(formValue.openingHours));
-    this.paymentMethods.forEach(pm => formData.append('paymentMethods', pm));
-    formValue.menus.forEach((menuId: string) => formData.append('menus', menuId));
-    if (this.restaurantPic) {
-      formData.append('restaurantPic', this.restaurantPic);
-    }
-
-    this.restaurantService.updateRestaurantById(this.restaurantId, formData).subscribe({
-      next: () => {
-        Swal.fire('Sucesso', 'Restaurante atualizado com sucesso!', 'success');
-        setTimeout(() => this.router.navigate(['/restaurants']), 1500);
-      },
-      error: (err) => {
-        Swal.fire('Erro', err.error?.error || 'Erro ao atualizar restaurante!', 'error');
-      }
-    });
+ onSubmit() {
+  if (this.restaurantForm.invalid) {
+    Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
+    return;
   }
+
+  const formValue = this.restaurantForm.value;
+
+  // MONTE O OBJETO openingHours EXPLICITAMENTE
+  const openingHours = {
+    default: {
+      start: this.defaultStartControl.value,
+      end: this.defaultEndControl.value,
+      closed: false
+    },
+    Saturday: {
+      start: this.saturdayStartControl.value,
+      end: this.saturdayEndControl.value,
+      closed: this.saturdayClosedControl.value
+    },
+    Sunday: {
+      start: this.sundayStartControl.value,
+      end: this.sundayEndControl.value,
+      closed: this.sundayClosedControl.value
+    }
+  };
+
+  const formData = new FormData();
+  formData.append('name', formValue.name);
+  formData.append('address', formValue.address);
+  formData.append('phone', formValue.phone);
+  formData.append('restaurantEmail', formValue.restaurantEmail);
+  formData.append('openingHours', JSON.stringify(openingHours));
+  this.paymentMethods.forEach(pm => formData.append('paymentMethods', pm));
+  formValue.menus.forEach((menuId: string) => formData.append('menus', menuId));
+  if (this.restaurantPic) {
+    formData.append('restaurantPic', this.restaurantPic);
+  }
+
+  this.restaurantService.updateRestaurantById(this.restaurantId, formData).subscribe({
+    next: () => {
+      Swal.fire('Sucesso', 'Restaurante atualizado com sucesso!', 'success');
+      setTimeout(() => this.router.navigate(['/restaurants']), 1500);
+    },
+    error: (err) => {
+      Swal.fire('Erro', err.error?.error || 'Erro ao atualizar restaurante!', 'error');
+    }
+  });
+}
 }

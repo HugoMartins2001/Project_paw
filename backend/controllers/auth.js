@@ -289,7 +289,7 @@ authController.submittedLogin = function (req, res, next) {
                 // Caso o email não seja encontrado
                 attempts.count++;
                 attempts.lastAttempt = Date.now();
-                return res.json({ errorMessage: 'Email not found!' });
+                return res.status(401).json({ erros: { email: "Email não encontrado." } });
             }
 
             // Verifica se o utilizador está bloqueado
@@ -316,8 +316,7 @@ authController.submittedLogin = function (req, res, next) {
                         // Senha incorreta
                         attempts.count++;
                         attempts.lastAttempt = Date.now();
-                        res.status(401).json({ error: 'Password incorrect!' });
-                    }
+                        return res.status(401).json({ erros: { password: "Password incorreta." } });                    }
                 });
         })
         .catch(function (err) {
