@@ -97,13 +97,16 @@ export class RestaurantUpdateComponent implements OnInit {
     // Buscar dados do restaurante
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe({
       next: (res) => {
+        // Garante que menus é sempre um array de IDs
+        const menuIds = (res.menus || []).map((m: any) => typeof m === 'string' ? m : m._id);
+
         this.restaurantForm.patchValue({
           name: res.name,
           address: res.address,
           phone: res.phone,
           restaurantEmail: res.restaurantEmail,
           openingHours: res.openingHours,
-          menus: res.menus || []
+          menus: menuIds
         });
 
         this.paymentMethods = res.paymentMethods || [];

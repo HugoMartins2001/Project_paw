@@ -99,8 +99,11 @@
     <div class="row">
       <div class="col-auto" *ngFor="let menu of menuOptions">
         <div class="form-check">
-          <input type="checkbox" class="form-check-input" [value]="menu._id" [checked]="restaurantForm.value.menus.includes(menu._id)"
-            (change)="onMenuCheckboxChange($event, menu._id)" [id]="'menu-' + menu._id" />
+          <input type="checkbox" class="form-check-input"
+            [value]="menu._id"
+            [checked]="restaurantForm.value.menus.includes(menu._id)"
+            (change)="onMenuCheckboxChange($event, menu._id)"
+            [id]="'menu-' + menu._id" />
           <label class="form-check-label" [for]="'menu-' + menu._id">{{ menu.name }}</label>
         </div>
       </div>

@@ -13,24 +13,29 @@ import Swal from 'sweetalert2';
 })
 export class HeaderComponent {
   userName: string | null = null;
+  userRole: string | null = null;
 
   constructor(private router: Router) {
-    // Atualiza userName sempre que a navegação termina
+    // Atualiza userName e userRole sempre que a navegação termina
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.userName = localStorage.getItem('name');
+        this.userRole = localStorage.getItem('role');
       }
     });
   }
 
   ngOnInit() {
     this.userName = localStorage.getItem('name');
+    this.userRole = localStorage.getItem('role');
   }
 
   navigateToHome(): void { this.router.navigate(['/home']); }
   navigateToMenu(): void { this.router.navigate(['/restaurants']); }
   navigateToLogin(): void { this.router.navigate(['/login']); }
   navigateToRegister(): void { this.router.navigate(['/register']); }
+  navigateToMenus(): void { this.router.navigate(['/menus']); }
+  navigateToDishes(): void { this.router.navigate(['/dishes']); }
 
   logout(): void {
   Swal.fire({
