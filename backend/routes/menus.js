@@ -25,7 +25,7 @@ router.post("/submittedMenu", authController.verifyLoginUser, upload.single('men
 });
 
 // Rota para deletar um menu específico pelo ID
-router.post("/deleteMenu/:menuId", authController.verifyLoginUser, function (req, res, next) {
+router.delete("/deleteMenu/:menuId", authController.verifyLoginUser, function (req, res, next) {
     menusController.deleteMenu(req, res, next);
 });
 

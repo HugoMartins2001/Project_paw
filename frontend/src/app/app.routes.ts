@@ -19,7 +19,6 @@ import { DishUpdateComponent } from './dish-update/dish-update.component';
 import { DishDetailsComponent } from './dish-details/dish-details.component';
 import { LogsComponent } from './logs/logs.component';
 import { UsersComponent } from './users/users.component';
-import { AuthGuard } from './auth.guard';
 import { AuthGuardService } from './auth-guard.service';
 
 export const routes: Routes = [
@@ -102,11 +101,13 @@ export const routes: Routes = [
   {
     path: 'logs',
     component: LogsComponent,
+    canActivate: [AuthGuardService],
     data: { title: 'Logs' }
   },
   {
     path: 'users',
     component: UsersComponent,
+    canActivate: [AuthGuardService],
     data: { title: 'Users' }
   },
   {

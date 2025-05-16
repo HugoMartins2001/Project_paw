@@ -42,4 +42,9 @@ export class MenuDetailsComponent implements OnInit {
       this.isLoading = false;
     }
   }
+
+  getMenuImageUrl(menuPic: string): string {
+    return `http://localhost:3000/uploads/${menuPic}`;
+  }
+
 }

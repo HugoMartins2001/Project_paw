@@ -6,7 +6,7 @@
       <div class="row g-4 align-items-center">
         <div class="col-md-5 text-center">
           <div class="restaurant-img-container mb-3" *ngIf="menu.menuPic; else noImage">
-            <img [src]="'/uploads/' + menu.menuPic" [alt]="menu.name" class="img-fluid rounded" style="max-height:220px;object-fit:cover;box-shadow:0 2px 8px #0001;">
+              <img *ngIf="menu.menuPic" [src]="getMenuImageUrl(menu.menuPic)" alt="Foto do Menu" class=" img-fluid rounded" style="max-height: 220px; object-fit: cover;">
           </div>
           <ng-template #noImage>
             <div class="d-flex align-items-center justify-content-center bg-light rounded" style="height:220px;">

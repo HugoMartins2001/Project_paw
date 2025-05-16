@@ -95,6 +95,7 @@ export class RestaurantCreateComponent {
     formValue.menus.forEach((menuId: string) => formData.append('menus', menuId));
     if (this.restaurantPic) {
       formData.append('restaurantPic', this.restaurantPic);
+      console.log('Imagem adicionada ao FormData:', this.restaurantPic);
     }
 
     this.restaurantService.createRestaurant(formData).subscribe({

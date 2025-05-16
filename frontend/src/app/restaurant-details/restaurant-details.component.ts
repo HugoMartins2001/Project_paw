@@ -50,4 +50,8 @@ export class RestaurantDetailsComponent implements OnInit {
   return openingHours ? Object.keys(openingHours) : [];
 }
 
+getRestaurantImageUrl(restaurantPic: string): string {
+    return `http://localhost:3000/uploads/${restaurantPic}`;
+  }
+
 }

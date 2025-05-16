@@ -54,9 +54,15 @@ export class RestaurantService {
   }
 
   deleteRestaurant(id: string): Observable<void> {
-    return this.http.post<void>(`http://localhost:3000/api/deleteRestaurant/${id}`, {
+    const url = `http://localhost:3000/api/restaurants/deleteRestaurant/${id}`;
+    return this.http.delete<void>(url, {
       headers: this.getHeaders()
-    });
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erro ao apagar restaurante:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   createRestaurant(restaurant: FormData): Observable<Restaurant> {

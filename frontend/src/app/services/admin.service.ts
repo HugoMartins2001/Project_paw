@@ -8,23 +8,28 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
+  private getHeaders() {
+    return {
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    };
+  }
 
   getLogs(filters: any = {}, page: number = 1): Observable<any> {
     let params = new HttpParams().set('page', page);
     Object.keys(filters).forEach(key => {
       if (filters[key]) params = params.set(key, filters[key]);
     });
-    const headers = {
-      Authorization: 'Bearer ' + localStorage.getItem('token') // ou onde guardas o token
-    };
+    const headers = this.getHeaders();
     return this.http.get<any>(`${this.apiUrl}/logs`, { params, headers });
   }
 
   deleteLog(logId: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/logs/${logId}/delete`, { withCredentials: true });
+    const headers = this.getHeaders();
+    return this.http.delete<any>(`${this.apiUrl}/logs/${logId}/delete`, { headers });
   }
 
   deleteAllLogs(): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/logs/deleteAll`, { withCredentials: true });
+    const headers = this.getHeaders();
+    return this.http.delete<any>(`${this.apiUrl}/logs/deleteAll`, { headers });
   }
 }

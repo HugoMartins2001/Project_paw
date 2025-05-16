@@ -25,15 +25,25 @@ export class UserService {
   }
 
   getUsers(): Observable<User[]> {
+    console.log('A fazer pedido GET para:', this.apiUrl);
+    console.log('Headers:', this.getHeaders());
+
     return this.http.get<{ users: User[] }>(this.apiUrl, { headers: this.getHeaders() })
       .pipe(
-        map(res => res.users ?? []), // <-- extrai o array users
-        catchError((error: HttpErrorResponse) => throwError(() => error))
+        map(res => {
+          console.log('Resposta recebida do backend:', res);
+          return res.users ?? [];
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Erro ao buscar utilizadores:', error);
+          return throwError(() => error);
+        })
       );
   }
 
   blockUser(id: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/block/${id}`, {}, { headers: this.getHeaders() }).pipe(
+    const url = `http://localhost:3000/api/users/block/${id}`;
+    return this.http.post<any>(url, {}, { headers: this.getHeaders() }).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => error))
     );
   }

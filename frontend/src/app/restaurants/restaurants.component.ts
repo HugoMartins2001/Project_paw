@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestaurantService } from '../services/restaurant.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-restaurants',
@@ -52,17 +53,41 @@ export class RestaurantsComponent implements OnInit {
   }
 
   deleteRestaurant(id: string): void {
-    const confirmar = confirm('Tens a certeza que queres apagar este restaurante?');
-    if (confirmar) {
-      this.restaurantService.deleteRestaurant(id).subscribe({
-        next: () => {
-          this.restaurants = this.restaurants.filter(r => r._id !== id);
-        },
-        error: (err) => {
-          alert(err.error?.message || 'Erro ao eliminar restaurante!');
-        }
-      });
-    }
+    Swal.fire({
+      title: 'Tens a certeza?',
+      text: 'Esta ação não pode ser revertida!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sim, apagar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.restaurantService.deleteRestaurant(id).subscribe({
+          next: () => {
+            this.restaurants = this.restaurants.filter(r => r._id !== id);
+            Swal.fire({
+              icon: 'success',
+              title: 'Restaurante apagado!',
+              showConfirmButton: false,
+              timer: 1200
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro ao eliminar restaurante!',
+              text: err.error?.message || 'Ocorreu um erro inesperado.'
+            });
+          }
+        });
+      }
+    });
+  }
+
+  getRestaurantImageUrl(restaurantPic: string): string {
+    return `http://localhost:3000/uploads/${restaurantPic}`;
   }
 }
 

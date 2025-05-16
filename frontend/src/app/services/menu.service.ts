@@ -54,9 +54,14 @@ export class MenuService {
     }
 
     deleteMenu(id: string): Observable<void> {
-        return this.http.post<void>(`http://localhost:3000/api/menus/deleteMenu/${id}`,
-            {},
-            { headers: this.getHeaders() }
+        const url = `http://localhost:3000/api/menus/deleteMenu/${id}`;
+        return this.http.delete<void>(url, {
+            headers: this.getHeaders()
+        }).pipe(
+            catchError((error: HttpErrorResponse) => {
+                console.error('Erro ao apagar menu:', error);
+                return throwError(() => error);
+            })
         );
     }
 }

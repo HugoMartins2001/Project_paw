@@ -4,7 +4,7 @@ const User = require("../models/user");
 
 module.exports = async function verifyJWT(req, res, next) {
   // Obtém o token de autenticação dos cookies
-  const token = req.cookies["auth-token"];
+  const token = req.headers['authorization']?.split(' ')[1] || req.cookies["auth-token"];
   if (!token) return res.json({ redirect: "/auth/login" }); // Redireciona para login se o token não estiver presente 
 
   try {

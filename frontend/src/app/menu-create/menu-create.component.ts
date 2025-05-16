@@ -44,9 +44,8 @@ export class MenuCreateComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
     }
   }
 

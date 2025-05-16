@@ -38,8 +38,13 @@ export class DishService {
 
   deleteDish(id: string): Observable<void> {
     const url = `http://localhost:3000/api/dishes/deleteDish/${id}`;
-    return this.http.post<void>(url, {}, { headers: this.getHeaders() }).pipe(
-      catchError((error: HttpErrorResponse) => throwError(() => error))
+    return this.http.delete<void>(url, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erro ao apagar prato:', error);
+        return throwError(() => error);
+      })
     );
   }
 

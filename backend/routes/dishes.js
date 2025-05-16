@@ -25,7 +25,7 @@ router.post("/submittedDish", upload.single("dishPic"), authController.verifyLog
 });
 
 // Rota para deletar um prato específico pelo ID
-router.post("/deleteDish/:dishId", authController.verifyLoginUser, function (req, res, next) {
+router.delete("/deleteDish/:dishId", authController.verifyLoginUser, function (req, res, next) {
     dishesController.deleteDish(req, res, next);
 });
 

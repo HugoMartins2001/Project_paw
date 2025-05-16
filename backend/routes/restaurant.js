@@ -32,7 +32,7 @@ router.get("/showRestaurants", authController.verifyLoginUser, function (req, re
 });
 
 // Rota para deletar um restaurante específico pelo ID
-router.post("/api/deleteRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
+router.delete("/deleteRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
   restaurantsController.deleteRestaurant(req, res, next);
 });
 

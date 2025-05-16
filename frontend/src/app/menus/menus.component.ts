@@ -57,4 +57,9 @@ export class MenusComponent implements OnInit {
       }
     });
   }
+
+  // Exemplo no componente Angular
+  getMenuImageUrl(menuPic: string): string {
+    return `http://localhost:3000/uploads/${menuPic}`;
+  }
 }

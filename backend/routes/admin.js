@@ -17,9 +17,9 @@ router.use(authController.verifyLoginUser, (req, res, next) => {
 router.get("/logs", adminController.viewLogs);
 
 // Rota para eleminar todos os logs
-router.post("/logs/deleteAll", adminController.deleteAllLogs);
+router.delete("/logs/deleteAll", adminController.deleteAllLogs);
 
 // Rota para eleminar um log específico pelo ID
-router.post("/logs/:logId/delete", adminController.deleteLog);
+router.delete("/logs/:logId/delete", adminController.deleteLog);
 
 module.exports = router; // Exporta o router para ser usado em outros arquivos

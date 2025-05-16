@@ -9,6 +9,12 @@
         <input id="name" type="text" class="form-control" formControlName="name" placeholder="Nome do menu" required>
       </div>
 
+      <!-- Imagem do Menu -->
+      <div class="form-group mb-4">
+        <label for="menuPic" class="form-label fw-semibold">Foto do Menu</label>
+        <input type="file" id="menuPic" (change)="onFileChange($event)" accept="image/*" name="menuPic" class="form-control" />
+      </div>
+
       <!-- Selecionar Pratos -->
       <div class="form-group mb-4">
         <label class="form-label fw-semibold">Pratos</label>
@@ -20,12 +26,6 @@
         <ng-template #noDishes>
           <div class="alert alert-warning">Nenhum prato disponível. <a routerLink="/dishes/create">Criar prato</a></div>
         </ng-template>
-      </div>
-
-      <!-- Imagem do Menu -->
-      <div class="form-group mb-4">
-        <label for="menuPic" class="form-label fw-semibold">Foto do Menu</label>
-        <input type="file" id="menuPic" (change)="onFileChange($event)" accept="image/*" class="form-control" />
       </div>
 
       <!-- Botão Submeter -->
