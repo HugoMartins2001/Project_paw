@@ -1,1 +1,46 @@
-<p>menu-update works!</p>
+<div class="container py-4">
+  <div class="card p-4 shadow-sm">
+    <form [formGroup]="menuForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" autocomplete="off">
+      <h2 class="mb-4 text-center text-primary fw-bold">Editar Menu</h2>
+
+      <!-- Nome do Menu -->
+      <div class="form-group mb-4">
+        <label for="name" class="form-label fw-semibold">Nome do Menu</label>
+        <input id="name" type="text" class="form-control" formControlName="name" placeholder="Nome do menu" required>
+      </div>
+
+      <!-- Selecionar Pratos -->
+      <div class="form-group mb-4">
+        <label class="form-label fw-semibold">Pratos</label>
+        <ng-container *ngIf="dishOptions.length > 0; else noDishes">
+          <select class="form-control" formControlName="dishes" multiple>
+            <option *ngFor="let dish of dishOptions" [value]="dish._id">{{ dish.name }}</option>
+          </select>
+        </ng-container>
+        <ng-template #noDishes>
+          <div class="alert alert-warning">Nenhum prato disponível. <a routerLink="/dishes/create">Criar prato</a></div>
+        </ng-template>
+      </div>
+
+      <!-- Imagem do Menu -->
+      <div class="form-group mb-4">
+        <label for="menuPic" class="form-label fw-semibold">Foto do Menu</label>
+        <input type="file" id="menuPic" (change)="onFileChange($event)" accept="image/*" class="form-control" />
+        <div *ngIf="currentPic" class="mt-2">
+          <img [src]="'/uploads/' + currentPic" alt="Menu atual" style="max-width: 120px; max-height: 120px;" class="rounded shadow-sm border">
+          <div class="text-muted" style="font-size:0.9em;">Imagem atual</div>
+        </div>
+      </div>
+
+      <!-- Botão Submeter -->
+      <div class="form-group mb-3">
+        <button type="submit" class="btn btn-primary w-100 fw-bold" [disabled]="menuForm.invalid">
+          Guardar Alterações
+        </button>
+      </div>
+    </form>
+    <div class="form-group mt-2">
+      <a routerLink="/menus" class="btn btn-secondary w-100">Voltar aos Menus</a>
+    </div>
+  </div>
+</div>

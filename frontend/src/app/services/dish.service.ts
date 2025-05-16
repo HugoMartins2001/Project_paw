@@ -6,7 +6,10 @@ import { catchError, map } from 'rxjs/operators';
 export interface Dish {
   _id: string;
   name: string;
-  // Adiciona outros campos se necessário (ex: price, description, etc)
+  description?: string;
+  dishPic?: string; // <--- adiciona esta linha
+  ingredients?: string[];
+  // outros campos se necessário
 }
 
 @Injectable({
@@ -25,6 +28,34 @@ export class DishService {
   getDishes(): Observable<Dish[]> {
     return this.http.get<{ dishes: Dish[] }>(this.apiUrl, { headers: this.getHeaders() }).pipe(
       map(res => res.dishes),
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
+
+  deleteDish(id: string): Observable<void> {
+    const url = `http://localhost:3000/api/dishes/deleteDish/${id}`;
+    return this.http.post<void>(url, {}, { headers: this.getHeaders() }).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
+
+  createDish(dishData: FormData): Observable<Dish> {
+    const url = 'http://localhost:3000/api/dishes/submittedDish';
+    return this.http.post<Dish>(url, dishData, { headers: this.getHeaders() }).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
+
+  updateDish(id: string, dishData: FormData): Observable<Dish> {
+    const url = `http://localhost:3000/api/dishes/editDish/${id}`;
+    return this.http.post<Dish>(url, dishData, { headers: this.getHeaders() }).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
+
+  getDishById(id: string): Observable<Dish> {
+    const url = `http://localhost:3000/api/dishes/showDish/${id}`;
+    return this.http.get<Dish>(url, { headers: this.getHeaders() }).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => error))
     );
   }

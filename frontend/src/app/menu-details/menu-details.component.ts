@@ -24,7 +24,6 @@ export class MenuDetailsComponent implements OnInit {
     if (menuId) {
       this.menuService.getMenuById(menuId).subscribe({
         next: (menu) => {
-          // Garante que dishes é sempre um array de objetos válidos
           if (menu && Array.isArray(menu.dishes)) {
             menu.dishes = menu.dishes.filter(d => !!d && typeof d === 'object');
           } else {

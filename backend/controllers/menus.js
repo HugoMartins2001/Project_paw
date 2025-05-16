@@ -192,9 +192,7 @@ menusController.showMenu = async function (req, res, next) {
 
     // jsonizar a página com os dados do menu e dos restaurantes
     res.json({
-      menu: menu.toObject(),
-      restaurantList,
-      user: req.user, // Passa o usuário logado para o header
+      menu: menu.toObject()
     });
   } catch (err) {
     console.error("Error fetching menu details:", err);

@@ -1,5 +1,5 @@
 <div *ngIf="isLoading" class="alert alert-info text-center my-5">A carregar menu...</div>
-<div *ngIf="!isLoading && menu; else notFound">
+<div *ngIf="!isLoading && menu">
   <div class="container py-4">
     <div class="card p-4 shadow-sm" style="max-width: 700px; margin: 0 auto;">
       <h2 class="mb-4 text-center text-primary fw-bold">{{ menu.name }}</h2>
@@ -31,6 +31,3 @@
     </div>
   </div>
 </div>
-<ng-template #notFound>
-  <div class="alert alert-danger text-center my-5">Menu não encontrado.</div>
-</ng-template>

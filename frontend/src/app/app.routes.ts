@@ -13,6 +13,10 @@ import { MenuCreateComponent } from './menu-create/menu-create.component';
 import { MenuUpdateComponent } from './menu-update/menu-update.component';
 import { MenuDetailsComponent } from './menu-details/menu-details.component';
 import { RestaurantApprovalComponent } from './restaurantApprove/restaurantApprove.component';
+import { DishesComponent } from './dishes/dishes.component';
+import { DishCreateComponent } from './dish-create/dish-create.component';
+import { DishUpdateComponent } from './dish-update/dish-update.component';
+import { DishDetailsComponent } from './dish-details/dish-details.component';
 
 export const routes: Routes = [
   {
@@ -69,6 +73,26 @@ export const routes: Routes = [
     path: 'menu-details/:id',
     component: MenuDetailsComponent,
     data: { title: 'Menu Details' }
+  },
+  {
+    path: 'dishes',
+    component: DishesComponent,
+    data: { title: 'Dishes' }
+  },
+  {
+    path: 'dishes/create',
+    component: DishCreateComponent,
+    data: { title: 'Create Dish' }
+  },
+  {
+    path: 'dishes/editDish/:id',
+    component: DishUpdateComponent,
+    data: { title: 'Edit Dish' }
+  },
+  {
+    path: 'dish-details/:id',
+    component: DishDetailsComponent,
+    data: { title: 'Dish Details' }
   },
   {
     path: 'login',
