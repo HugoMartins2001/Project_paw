@@ -5,11 +5,24 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  overflow-x: auto;
 }
 
 .header-content {
-  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: max-content; /* <-- força a manter tudo numa linha */
+  max-width: 100%;
   margin: 0 auto;
+  padding: 10px 20px;
+  gap: 20px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .logo-img {
@@ -17,6 +30,7 @@
   height: 40px;
   width: 40px;
   object-fit: contain;
+  margin-right: 10px;
 }
 
 .logo-title {
@@ -24,20 +38,30 @@
   font-weight: 700;
   letter-spacing: 1px;
   color: #fff;
+  white-space: nowrap;
+}
+
+.navigation {
+  flex-grow: 1;
+  overflow-x: auto;
 }
 
 .navigation .nav-list {
+  display: flex;
+  flex-wrap: nowrap;
   list-style: none;
-  gap: 1.5rem;
   padding-left: 0;
+  margin: 0;
+  gap: 1rem;
+  white-space: nowrap;
 }
 
 .navigation .nav-link {
   color: #fff;
   font-weight: 500;
   text-decoration: none;
-  transition: color 0.2s;
-  padding: 6px 10px;
+  transition: color 0.2s, background 0.2s;
+  padding: 6px 14px;
   border-radius: 6px;
 }
 
@@ -47,25 +71,17 @@
   color: #212529;
 }
 
-.auth-buttons .btn,
-.user-info .btn {
-  border-radius: 6px;
-  font-weight: 500;
-  padding: 6px 18px;
-}
-
-.auth-buttons .register-button {
-  color: #fff;
-  background: linear-gradient(90deg, #3498db 0%, #6dd5fa 100%);
-  border: none;
-}
-
-.auth-buttons .register-button:hover {
-  background: linear-gradient(90deg, #217dbb 0%, #4bb7e6 100%);
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .user-info span {
   color: #fff;
+  font-weight: 500;
 }
 
 .logout-button {
@@ -73,6 +89,8 @@
   background: transparent;
   color: #fff;
   transition: color 0.2s;
+  padding: 6px 10px;
+  border-radius: 6px;
 }
 
 .logout-button:hover {
@@ -80,13 +98,14 @@
   background: rgba(255,255,255,0.15);
 }
 
+/* Responsivo */
 @media (max-width: 900px) {
   .header-content {
-    flex-direction: column;
+    padding: 10px;
     gap: 10px;
-    align-items: flex-start !important;
   }
+
   .navigation .nav-list {
-    gap: 1rem;
+    gap: 0.5rem;
   }
 }

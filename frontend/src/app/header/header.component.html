@@ -7,33 +7,35 @@
     <nav class="navigation">
       <ul class="nav-list d-flex mb-0">
         <ng-container *ngIf="!userRole">
-          <li><a (click)="navigateToHome()" class="nav-link">Home</a></li>
-          <li><a (click)="navigateToMenu()" class="nav-link">Restaurant</a></li>
+          <li><a (click)="navigateToHome()" class="nav-link" style="cursor:pointer;">Home</a></li>
+          <li><a (click)="navigateToMenu()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
         </ng-container>
         <ng-container *ngIf="userRole === 'Client'">
-          <li><a (click)="navigateToHome()" class="nav-link">Home</a></li>
-          <li><a (click)="navigateToMenu()" class="nav-link">Restaurant</a></li>
-          <li><a (click)="navigateToMenus()" class="nav-link">Menus</a></li>
-          <li><a (click)="navigateToDishes()" class="nav-link">Dishes</a></li>
-          <li><a (click)="navigateToOrders()" class="nav-link">Orders</a></li>
+          <li><a (click)="navigateToHome()" class="nav-link" style="cursor:pointer;">Home</a></li>
+          <li><a (click)="navigateToMenu()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
+          <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
+          <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
+          <li><a (click)="navigateToOrders()" class="nav-link" style="cursor:pointer;">Orders</a></li>
           <!--<li><a (click)="navigateToFavorites()" class="nav-link">Favorites</a></li>-->
           <!--<li><a (click)="navigateToProfile()" class="nav-link">Profile</a></li>-->
         </ng-container>
         <ng-container *ngIf="userRole === 'Admin'">
-          <li><a (click)="navigateToDashboard()" class="nav-link">Dashboard</a></li>
-          <li><a (click)="navigateToMenu()" class="nav-link">Restaurant</a></li>
-          <li><a (click)="navigateToMenus()" class="nav-link">Menus</a></li>
-          <li><a (click)="navigateToDishes()" class="nav-link">Dishes</a></li>
-          <li><a (click)="navigateToRestaurantApproval()" class="nav-link">Approve Restaurantes</a></li>
-          <li><a (click)="navigateToLogs()" class="nav-link">Logs &amp; Statistics</a></li>
-          <li><a (click)="navigateToUsers()" class="nav-link">Users</a></li>
+          <li><a (click)="navigateToDashboard()" class="nav-link" style="cursor:pointer;">Dashboard</a></li>
+          <li><a (click)="navigateToMenu()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
+          <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
+          <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
+          <li><a (click)="navigateToRestaurantApproval()" class="nav-link" style="cursor:pointer;">Approve Restaurantes</a></li>
+          <li><a (click)="navigateToLogs()" class="nav-link" style="cursor:pointer;">Logs &amp; Statistics</a></li>
+          <li><a (click)="navigateToUsers()" class="nav-link" style="cursor:pointer;">Users</a></li>
+          <li><a (click)="navigateToProfile()" class="nav-link" style="cursor:pointer;">Profile</a></li>
         </ng-container>
         <ng-container *ngIf="userRole === 'Manager'">
-          <li><a (click)="navigateToDashboard()" class="nav-link">Dashboard</a></li>
-          <li><a (click)="navigateToMenu()" class="nav-link">Restaurant</a></li>
-          <li><a (click)="navigateToMenus()" class="nav-link">Menus</a></li>
-          <li><a (click)="navigateToDishes()" class="nav-link">Dishes</a></li>
-          <li><a (click)="navigateToOrders()" class="nav-link">Orders</a></li>
+          <li><a (click)="navigateToDashboard()" class="nav-link" style="cursor:pointer;">Dashboard</a></li>
+          <li><a (click)="navigateToMenu()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
+          <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
+          <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
+          <li><a (click)="navigateToOrders()" class="nav-link" style="cursor:pointer;">Orders</a></li>
+          <li><a (click)="navigateToProfile()" class="nav-link" style="cursor:pointer;">Profile</a></li>
         </ng-container>
 
 

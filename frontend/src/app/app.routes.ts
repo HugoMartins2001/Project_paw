@@ -22,6 +22,8 @@ import { UsersComponent } from './users/users.component';
 import { AuthGuardService } from './auth-guard.service';
 import { ForgotPaswwordComponent } from './forgot-paswword/forgot-paswword.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 
 export const routes: Routes = [
   {
@@ -121,6 +123,18 @@ export const routes: Routes = [
     path: 'reset-password/:token',
     component: ResetPasswordComponent,
     data: { title: 'Reset Password' }
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Profile' }
+  },
+  {
+    path: 'profile/edit',
+    component: ProfileEditComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Edit Profile' }
   },
   {
     path: 'login',
