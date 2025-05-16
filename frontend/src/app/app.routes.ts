@@ -21,6 +21,7 @@ import { LogsComponent } from './logs/logs.component';
 import { UsersComponent } from './users/users.component';
 import { AuthGuardService } from './auth-guard.service';
 import { ForgotPaswwordComponent } from './forgot-paswword/forgot-paswword.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
   {
@@ -115,6 +116,11 @@ export const routes: Routes = [
     path: 'forgot-password',
     component: ForgotPaswwordComponent,
     data: { title: 'Forgot Password' }
+  },
+  {
+    path: 'reset-password/:token',
+    component: ResetPasswordComponent,
+    data: { title: 'Reset Password' }
   },
   {
     path: 'login',

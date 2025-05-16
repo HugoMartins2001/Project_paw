@@ -38,8 +38,7 @@ authController.forgotPassword = async function (req, res) {
         user.resetPasswordExpires = Date.now() + 3600000; // 1 hora
         await user.save();
 
-        const resetUrl = `http://localhost:3000/auth/reset-password/${resetToken}`;
-        const mailOptions = {
+        const resetUrl = `http://localhost:4200/reset-password/${resetToken}`; const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
             subject: '🔐 Password Reset Request',
@@ -101,15 +100,22 @@ authController.resetPassword = async function (req, res) {
     const { token } = req.params;
     const { password } = req.body;
 
+    console.log('RESET PASSWORD - Token recebido:', token);
+    console.log('RESET PASSWORD - Novo password recebido:', password);
+
     try {
         const resetTokenHash = crypto.createHash('sha256').update(token).digest('hex');
+        console.log('RESET PASSWORD - Token hash:', resetTokenHash);
 
         const user = await mongoUser.findOne({
             resetPasswordToken: resetTokenHash,
             resetPasswordExpires: { $gt: Date.now() },
         });
 
+        console.log('RESET PASSWORD - Utilizador encontrado:', user);
+
         if (!user) {
+            console.log('RESET PASSWORD - Token inválido ou expirado!');
             return res.status(400).json({ success: false, message: 'Invalid or expired token!' });
         }
 
@@ -118,6 +124,8 @@ authController.resetPassword = async function (req, res) {
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
         await user.save();
+
+        console.log('RESET PASSWORD - Password alterada com sucesso para o utilizador:', user.email);
 
         res.status(200).json({ success: true, message: 'Password reset successfully!' });
     } catch (error) {
@@ -316,7 +324,8 @@ authController.submittedLogin = function (req, res, next) {
                         // Senha incorreta
                         attempts.count++;
                         attempts.lastAttempt = Date.now();
-                        return res.status(401).json({ erros: { password: "Password incorreta." } });                    }
+                        return res.status(401).json({ erros: { password: "Password incorreta." } });
+                    }
                 });
         })
         .catch(function (err) {
