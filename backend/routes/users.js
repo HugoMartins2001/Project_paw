@@ -5,9 +5,11 @@ const verifyJWT = require("../middlewares/verifyJWT");
 
 // Middleware para permitir acesso apenas a administradores
 function onlyAdmins(req, res, next) {
-  if (req.user.role === "Admin") {
-    next(); // Se o usuário for Admin, continua para a próxima função
+  console.log('onlyAdmins:', req.user); // <-- LOG
+  if (req.user && req.user.role === "Admin") {
+    next();
   } else {
+    console.log('Acesso negado: não é admin');
     res.status(403).json({ message: "Acesso negado" }); // Retorna erro 403 se o usuário não for Admin
   }
 }

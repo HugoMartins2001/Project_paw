@@ -5,7 +5,7 @@ const User = require("../models/user");
 module.exports = async function verifyJWT(req, res, next) {
   // Obtém o token de autenticação dos cookies
   const token = req.cookies["auth-token"];
-  if (!token) return res.redirect("/auth/login"); // Redireciona para login se o token não estiver presente
+  if (!token) return res.json({ redirect: "/auth/login" }); // Redireciona para login se o token não estiver presente 
 
   try {
     // Verifica e decodifica o token JWT usando a chave secreta
@@ -16,7 +16,7 @@ module.exports = async function verifyJWT(req, res, next) {
 
     if (!user) {
       // Se o usuário não for encontrado, redireciona para a página de login
-      return res.redirect("/auth/login");
+      return res.json({ redirect: "/auth/login" });
     }
 
     // Adiciona o usuário autenticado ao objeto `req` para uso posterior
@@ -25,6 +25,6 @@ module.exports = async function verifyJWT(req, res, next) {
   } catch (err) {
     // Lida com erros na verificação do token JWT
     console.error("Error veryfing JWT:", err);
-    return res.redirect("/auth/login"); // Redireciona para login em caso de erro
+    return res.json({ redirect: "/auth/login" });
   }
 };

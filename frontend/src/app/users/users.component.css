@@ -1,0 +1,180 @@
+body {
+  background-color: #f4f7fc;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #ffffff;
+  padding: 16px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header h3 {
+  margin: 0;
+  font-weight: 600;
+  color: #333;
+  font-size: 22px;
+}
+
+.header .logout-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 8px 12px;
+}
+
+.header .logout-btn:hover {
+  color: #6c63ff;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.table {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.table th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: 500;
+  padding: 12px 15px;
+}
+
+.table td {
+  color: #555;
+  padding: 12px 15px;
+}
+
+.custom-secondary-btn {
+  display: inline-block;
+  background-color: #717171;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
+}
+
+.custom-secondary-btn:hover {
+  background-color: #454545;
+  color: #fffefe;
+}
+
+/* mobile responsiveness */
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header h3 {
+    font-size: 20px;
+  }
+
+  .container {
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+
+  .card {
+    padding: 25px;
+    border-radius: 10px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .custom-secondary-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+/* small Phones (480px) */
+@media (max-width: 480px) {
+  .header {
+    padding: 12px 15px;
+  }
+
+  .header h3 {
+    font-size: 18px;
+  }
+
+  .container {
+    margin: 15px auto;
+  }
+
+  .card {
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .custom-secondary-btn {
+    padding: 8px 12px;
+    display: block;
+    margin: 5px 0;
+  }
+}

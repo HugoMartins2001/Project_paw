@@ -11,8 +11,10 @@ usersController.showUsers = async (req, res, next) => {
     // Busca todos os usuários no banco de dados, excluindo o campo "password" por segurança
     const users = await mongoUser.find({}, { password: 0 });
 
+    console.log('USERS ENCONTRADOS:', users); // <-- LOG AQUI
+
     // Renderiza a página de exibição de usuários, passando os dados dos usuários e o usuário autenticado
-    res.json("users/showUsers", { users, user });
+    res.json({ users, user });
   } catch (err) {
     next(err); // Passa o erro para o middleware de tratamento de erros
   }

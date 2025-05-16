@@ -18,6 +18,7 @@ import { DishCreateComponent } from './dish-create/dish-create.component';
 import { DishUpdateComponent } from './dish-update/dish-update.component';
 import { DishDetailsComponent } from './dish-details/dish-details.component';
 import { LogsComponent } from './logs/logs.component';
+import { UsersComponent } from './users/users.component';
 
 export const routes: Routes = [
   {
@@ -99,6 +100,11 @@ export const routes: Routes = [
     path: 'logs',
     component: LogsComponent,
     data: { title: 'Logs' }
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    data: { title: 'Users' }
   },
   {
     path: 'login',

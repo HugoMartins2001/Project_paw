@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="card">
+    <h1>Registered Users</h1>
+
+    <div *ngIf="users?.length === 0" class="alert alert-warning text-center">
+      <h3>No users found.</h3>
+    </div>
+    <table *ngIf="!!users && users.length > 0" class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn"
+              [ngClass]="user.isBlocked ? 'btn-success' : 'btn-danger'"
+              (click)="confirmBlock(user)"
+            >
+              {{ user.isBlocked ? 'Unblock' : 'Block' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+      <button class="custom-secondary-btn" (click)="goToDashboard()">Back to Dashboard</button>
+    </div>
+  </div>
+</div>
