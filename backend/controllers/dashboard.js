@@ -14,11 +14,11 @@ dashboardController.renderDashboard = async function (req, res, next) {
 
     // Valida se o usuário está autenticado
     if (!user) {
-      return res.status(401).send("Usuário não autenticado."); // Retorna erro 401 se o usuário não estiver autenticado
+      return res.status(401).json({ error: "Utilizador não autenticado." }); // Retorna erro 401 se o usuário não estiver autenticado  
     }
 
     // jsoniza a página do dashboard
-    res.json("dashboard/dashboard", { user });
+    res.json({ user });
   } catch (err) {
     console.error("Error rendering dashboard:", err); // Loga o erro no console para depuração
     next(err); // Passa o erro para o middleware de tratamento de erros
@@ -28,10 +28,6 @@ dashboardController.renderDashboard = async function (req, res, next) {
 // Controlador para fornecer os dados do dashboard
 dashboardController.getDashboardData = async function (req, res, next) {
   try {
-    // Verifica se o usuário é administrador
-    if (req.user.role !== "Admin") {
-      return res.status(403).send("Acesso negado. Apenas administradores podem visualizar esses dados.");
-    }
 
     // Agrupar restaurantes criados por mês
     const restaurantsByMonth = await mongoRestaurant.aggregate([
@@ -135,7 +131,7 @@ dashboardController.getDashboardData = async function (req, res, next) {
     res.json({ months, restaurantData, userData, menuData, dishData, orderData });
   } catch (err) {
     console.error("Error fetching dashboard data:", err);
-    res.status(500).send("Error fetching dashboard data");
+    res.status(500).json({ error: "Error fetching dashboard data" }); 
   }
 };
 

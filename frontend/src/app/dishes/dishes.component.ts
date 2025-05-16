@@ -14,10 +14,12 @@ import { CommonModule } from '@angular/common';
 export class DishesComponent implements OnInit {
   dishes: Dish[] = [];
   isLoading = true;
+  userRole: string | null = null;
 
   constructor(private dishService: DishService) {}
 
   ngOnInit(): void {
+    this.userRole = localStorage.getItem('role');
     this.loadDishes();
   }
 

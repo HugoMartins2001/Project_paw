@@ -59,7 +59,7 @@ adminController.viewLogs = async function (req, res, next) {
     }
 
     // Renderizar a página de logs com os dados obtidos
-    res.render("admin/logs", {
+    res.json({
       logs,
       stats,
       user: req.user,
@@ -82,7 +82,7 @@ adminController.viewLogs = async function (req, res, next) {
 adminController.deleteAllLogs = async function (req, res, next) {
   try {
     await Log.deleteMany({}); // Excluir todos os documentos da coleção de logs
-    res.redirect("/admin/logs"); // Redirecionar para a página de logs
+    res.json({ message: "All logs deleted successfully" }); // Redirecionar para a página de logs
   } catch (error) {
     console.error("Error deleting all logs:", error); // Logar o erro no console
     next(error); // Passar o erro para o middleware de tratamento de erros
@@ -92,12 +92,12 @@ adminController.deleteAllLogs = async function (req, res, next) {
 // Controlador para excluir um log específico
 adminController.deleteLog = async function (req, res, next) {
   try {
-    const logId = req.params.logId; // Obter o ID do log a ser excluído
-    await Log.findByIdAndDelete(logId); // Excluir o log pelo ID
-    res.redirect("/admin/logs"); // Redirecionar para a página de logs
+    const logId = req.params.logId; 
+    await Log.findByIdAndDelete(logId);
+    res.json({ message: "Log deleted successfully" }); 
   } catch (error) {
-    console.error("Error deleting log:", error); // Logar o erro no console
-    next(error); // Passar o erro para o middleware de tratamento de erros
+    console.error("Error deleting log:", error); 
+    next(error); 
   }
 };
 

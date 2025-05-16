@@ -1,7 +1,10 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="fw-bold text-primary">Pratos</h2>
-    <a routerLink="/dishes/create" class="btn btn-success">Adicionar Prato</a>
+    <h2 class="fw-bold text-primary">Available dishes</h2>
+    
+  </div>
+  <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
+   <a routerLink="/dishes/create" class="btn btn-success">Add Dish</a>
   </div>
   <div class="row g-4" *ngIf="!isLoading && dishes.length > 0; else noDishes">
     <div class="col-md-6 col-lg-4" *ngFor="let dish of dishes">

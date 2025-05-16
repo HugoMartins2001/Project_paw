@@ -1,23 +1,40 @@
-<div class="home-container">
-  <header class="home-header">
-    <h1>Bem-vindo, {{ user.name }}!</h1>
-    <p class="text-muted">O seu perfil: <strong>{{ user.role }}</strong></p>
-    <p>Descubra sabores incríveis e experiências únicas.</p>
-  </header>
-
-  <section class="home-highlight">
-    <h2>Nosso Destaque</h2>
-    <p>Experimente o prato especial do chef, feito com os ingredientes mais frescos e selecionados.</p>
-    <img src="assets/images/featured-dish.jpg" alt="Prato Especial" class="highlight-image" />
-  </section>
-
-  <section class="home-gallery">
-    <h2>Galeria de Pratos</h2>
-    <div class="gallery">
-      <img src="assets/images/dish1.jpg" alt="Prato 1" />
-      <img src="assets/images/dish2.jpg" alt="Prato 2" />
-      <img src="assets/images/dish3.jpg" alt="Prato 3" />
-      <img src="assets/images/dish4.jpg" alt="Prato 4" />
+<div class="dashboard-main-wrapper">
+  <div class="dashboard-flex">
+    <div class="dashboard-graphs">
+      <div class="chart-container big-chart">
+        <h2 class="chart-title" >General Overview</h2>
+        <canvas id="generalGraph"></canvas>
+      </div>
+      <div class="chart-container big-chart">
+        <h2 class="chart-title">Registered Users</h2>
+        <canvas id="clientsGraph"></canvas>
+      </div>
     </div>
-  </section>
+    <div class="manager-menu big-menu">
+      <h2>{{ role }} menu</h2>
+      <div class="menu-buttons">
+        <a *ngIf="role === 'Manager' || role === 'Admin' || role === 'Client'" (click)="navigateToRestaurants()" class="menu-btn">
+          <i class="fas fa-store"></i> Show restaurants
+        </a>
+        <a *ngIf="role === 'Admin'" (click)="navigateToRestaurantApproval()" class="menu-btn">
+          <i class="fas fa-check-circle"></i> Approve restaurants
+        </a>
+        <a *ngIf="role === 'Manager' || role === 'Admin'" (click)="navigateToMenu()" class="menu-btn">
+          <i class="fas fa-book-open"></i> Show menus
+        </a>
+        <a *ngIf="role === 'Manager' || role === 'Admin'" (click)="navigateToDishes()" class="menu-btn">
+          <i class="fas fa-list-ol"></i> Show Dishes
+        </a>
+        <a *ngIf="role === 'Admin'" (click)="navigateToUsers()" class="menu-btn">
+          <i class="fas fa-users"></i> Show users
+        </a>
+        <a *ngIf="role === 'Admin'" (click)="navigateToLogs()" class="menu-btn">
+          <i class="fas fa-chart-line"></i> View Logs & Statistics
+        </a>
+        <a *ngIf="role === 'Admin'" (click)="navigateToOrders()" class="menu-btn">
+          <i class="fas fa-shopping-cart"></i> Orders history
+        </a>
+      </div>
+    </div>
+  </div>
 </div>

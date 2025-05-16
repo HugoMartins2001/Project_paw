@@ -1,0 +1,99 @@
+<div class="admin-stats" *ngIf="user?.role === 'Admin' && stats">
+  <h2 class="stats-title">Admin Statistics</h2>
+  <div class="stats-container row mb-4">
+    <div class="stat-item col" *ngFor="let stat of [
+      {icon: 'fa-store', label: 'Restaurants', value: stats.restaurantsCount},
+      {icon: 'fa-users', label: 'Users', value: stats.usersCount},
+      {icon: 'fa-book-open', label: 'Menus', value: stats.menusCount},
+      {icon: 'fa-list-ol', label: 'Dishes', value: stats.dishesCount}
+    ]">
+      <div class="stat-icon">
+        <i class="fas" [ngClass]="stat.icon"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ stat.label }}</h3>
+        <p>{{ stat.value }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Logs -->
+<div class="logs-section">
+  <h2>Logs</h2>
+
+  <!-- Filtros -->
+  <form class="filters-form row g-2 mb-3" (ngSubmit)="applyFilters()">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Search by User" [(ngModel)]="filters.userName" name="userName">
+    </div>
+    <div class="col">
+      <select class="form-select" [(ngModel)]="filters.action" name="action">
+        <option value="">All Actions</option>
+        <option *ngFor="let a of actions" [value]="a">{{ a }}</option>
+      </select>
+    </div>
+    <div class="col">
+      <input type="date" class="form-control" [(ngModel)]="filters.startDate" name="startDate">
+    </div>
+    <div class="col">
+      <input type="date" class="form-control" [(ngModel)]="filters.endDate" name="endDate">
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-primary filter-button">Apply</button>
+    </div>
+  </form>
+
+  <div *ngIf="logs.length === 0" class="no-logs-message">
+    No logs available at the moment.
+  </div>
+  <div *ngIf="logs.length > 0">
+    <button class="btn btn-danger mb-2" (click)="confirmDeleteAllLogs()">Delete All Logs</button>
+    <table class="table table-striped logs-table">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>User</th>
+          <th>Role</th>
+          <th>Details</th>
+          <th>Timestamp</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of logs">
+          <td>{{ log.action }}</td>
+          <td>{{ log.userName }}</td>
+          <td>{{ log.role || 'Unknown Role' }}</td>
+          <td>
+            <ng-container *ngIf="log.details; else noDetails">
+              <div *ngFor="let key of objectKeys(log.details)">
+                <strong>{{ key }}:</strong> {{ log.details[key] }}<br>
+              </div>
+            </ng-container>
+            <ng-template #noDetails>No details available</ng-template>
+          </td>
+          <td>{{ log.timestamp | date:'short' }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="confirmDeleteLog(log._id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginação -->
+  <nav class="pagination mt-3" *ngIf="totalPages > 1">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" (click)="goToPage(currentPage - 1)" *ngIf="currentPage > 1">Previous</a>
+      </li>
+      <li class="page-item" *ngFor="let i of [].constructor(totalPages); let idx = index" [class.active]="currentPage === idx + 1">
+        <a class="page-link" (click)="goToPage(idx + 1)">{{ idx + 1 }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" (click)="goToPage(currentPage + 1)" *ngIf="currentPage < totalPages">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

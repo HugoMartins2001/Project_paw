@@ -182,7 +182,7 @@ dishesController.createDish = async function (req, res, next) {
       nutritionData = nutritionRes.data;
     } catch (error) {
       console.error("Error fetching nutrition data:", error.message);
-      // Valores padrão em caso de falha
+      // Se a API falhar, usa os valores do formulário
       nutritionData = {
         calories: { value: parseFloat(calories) || 0 },
         fat: { value: parseFloat(fat) || 0 },
@@ -383,42 +383,29 @@ dishesController.renderEditDish = function (req, res, next) {
 
 dishesController.updateDish = function (req, res, next) {
   const dishId = req.params.dishId;
-  const {
-    name,
-    description,
-    category,
-    ingredients,
-    calories,
-    fat,
-    protein,
-    carbs,
-    nutriScore,
-    allergens,
-  } = req.body;
 
-  const prices = {
-    pequena: parseFloat(req.body.price_pequena) || 0,
-    media: parseFloat(req.body.price_media) || 0,
-    grande: parseFloat(req.body.price_grande) || 0,
-  };
+  // Parse prices e nutrition
+  if (req.body.prices && typeof req.body.prices === 'string') {
+    try { req.body.prices = JSON.parse(req.body.prices); } catch { req.body.prices = { pequena: 0, media: 0, grande: 0 }; }
+  }
+  if (req.body.nutrition && typeof req.body.nutrition === 'string') {
+    try { req.body.nutrition = JSON.parse(req.body.nutrition); } catch { req.body.nutrition = { calories: 0, fat: 0, protein: 0, carbs: 0 }; }
+  }
+
+  const {
+    name, description, category, ingredients, nutriScore, allergens
+  } = req.body;
+  const prices = req.body.prices || { pequena: 0, media: 0, grande: 0 };
+  const nutrition = req.body.nutrition || { calories: 0, fat: 0, protein: 0, carbs: 0 };
 
   mongoDish
     .findById(dishId)
     .then((dish) => {
-      if (!dish) {
-        return res.status(404).json({ message: "Dish not found." });
-      }
-
+      if (!dish) return res.status(404).json({ message: "Dish not found." });
       const user = req.user;
-
-      // Verificar permissões
-      if (
-        user.role !== "Admin" &&
-        (!dish.managerId || dish.managerId.toString() !== user._id.toString())
-      ) {
+      if (user.role !== "Admin" && (!dish.managerId || dish.managerId.toString() !== user._id.toString())) {
         return res.status(403).json({ message: "You do not have permission to edit this dish." });
       }
-
       const updatedDishData = {
         name,
         description,
@@ -429,12 +416,7 @@ dishesController.updateDish = function (req, res, next) {
           ? ingredients.split(",").map((el) => el.trim())
           : dish.ingredients || [],
         prices,
-        nutrition: {
-          calories: parseFloat(calories) || dish.nutrition.calories,
-          fat: parseFloat(fat) || dish.nutrition.fat,
-          protein: parseFloat(protein) || dish.nutrition.protein,
-          carbs: parseFloat(carbs) || dish.nutrition.carbs,
-        },
+        nutrition,
         nutriScore: nutriScore || dish.nutriScore || "N/A",
         allergens: Array.isArray(allergens)
           ? allergens
@@ -442,17 +424,11 @@ dishesController.updateDish = function (req, res, next) {
           ? allergens.split(",").map((el) => el.trim())
           : dish.allergens || [],
       };
-
-      if (req.file) {
-        updatedDishData.dishPic = req.file.filename;
-      }
-
+      if (req.file) updatedDishData.dishPic = req.file.filename;
       return mongoDish.findByIdAndUpdate(dishId, updatedDishData, { new: true });
     })
     .then((updatedDish) => {
-      // Registrar log
       logAction("Updated Dish", req.user, { dishId: updatedDish._id, name: updatedDish.name });
-
       res.json({ message: "Dish updated successfully", dishId: updatedDish._id });
     })
     .catch(next);

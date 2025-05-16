@@ -17,6 +17,7 @@ import { DishesComponent } from './dishes/dishes.component';
 import { DishCreateComponent } from './dish-create/dish-create.component';
 import { DishUpdateComponent } from './dish-update/dish-update.component';
 import { DishDetailsComponent } from './dish-details/dish-details.component';
+import { LogsComponent } from './logs/logs.component';
 
 export const routes: Routes = [
   {
@@ -93,6 +94,11 @@ export const routes: Routes = [
     path: 'dish-details/:id',
     component: DishDetailsComponent,
     data: { title: 'Dish Details' }
+  },
+  {
+    path: 'logs',
+    component: LogsComponent,
+    data: { title: 'Logs' }
   },
   {
     path: 'login',
