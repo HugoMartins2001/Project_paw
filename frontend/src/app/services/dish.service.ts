@@ -7,9 +7,13 @@ export interface Dish {
   _id: string;
   name: string;
   description?: string;
-  dishPic?: string; // <--- adiciona esta linha
+  dishPic?: string;
   ingredients?: string[];
-  // outros campos se necessário
+  prices?: any;
+  nutrition?: any;
+  nutriScore?: string;
+  allergens?: string[];
+  category?: string; 
 }
 
 @Injectable({
@@ -54,9 +58,10 @@ export class DishService {
   }
 
   getDishById(id: string): Observable<Dish> {
-    const url = `http://localhost:3000/api/dishes/showDish/${id}`;
-    return this.http.get<Dish>(url, { headers: this.getHeaders() }).pipe(
-      catchError((error: HttpErrorResponse) => throwError(() => error))
-    );
-  }
+  const url = `http://localhost:3000/api/dishes/showDish/${id}`;
+  return this.http.get<{ dish: Dish }>(url, { headers: this.getHeaders() }).pipe(
+    map(res => res.dish),
+    catchError((error: HttpErrorResponse) => throwError(() => error))
+  );
+}
 }

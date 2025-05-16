@@ -406,7 +406,7 @@ dishesController.updateDish = function (req, res, next) {
     .findById(dishId)
     .then((dish) => {
       if (!dish) {
-        return res.status(404).send("Dish not found.");
+        return res.status(404).json({ message: "Dish not found." });
       }
 
       const user = req.user;
@@ -416,9 +416,7 @@ dishesController.updateDish = function (req, res, next) {
         user.role !== "Admin" &&
         (!dish.managerId || dish.managerId.toString() !== user._id.toString())
       ) {
-        return res
-          .status(403)
-          .send("You do not have permission to edit this dish.");
+        return res.status(403).json({ message: "You do not have permission to edit this dish." });
       }
 
       const updatedDishData = {
@@ -467,13 +465,13 @@ dishesController.toggleVisibility = async function (req, res, next) {
 
     // Verificar se o usuário está autenticado
     if (!user) {
-      return res.status(401).send("You must be logged in to perform this action.");
+      return res.status(401).json({ message: "You must be logged in to perform this action." });
     }
 
     // Buscar o prato pelo ID
     const dish = await mongoDish.findById(dishId);
     if (!dish) {
-      return res.status(404).send("Dish not found.");
+      return res.status(404).json({ message: "Dish not found." });
     }
 
     // Verificar permissões
@@ -481,7 +479,7 @@ dishesController.toggleVisibility = async function (req, res, next) {
       user.role !== "Admin" &&
       (!dish.managerId || dish.managerId.toString() !== user._id.toString())
     ) {
-      return res.status(403).send("You do not have permission to modify this dish.");
+      return res.status(403).json({ message: "You do not have permission to modify this dish." });
     }
 
     // Alternar visibilidade usando updateOne para evitar validação completa
@@ -504,20 +502,20 @@ dishesController.addCategory = async function (req, res, next) {
     const { category } = req.body;
 
     if (!category || category.trim() === "") {
-      return res.status(400).send("Category name cannot be empty.");
+      return res.status(400).json({ message: "Category name cannot be empty." });
     }
 
     // Verificar se a categoria já existe
     const existingCategories = await mongoDish.distinct("category");
     if (existingCategories.includes(category)) {
-      return res.status(400).send("Category already exists.");
+      return res.status(400).json({ message: "Category already exists." });
     }
 
     // Adicionar a nova categoria (não diretamente no banco, mas como referência)
-    res.status(200).send({ success: true, message: "Category added successfully." });
+    res.status(200).json({ success: true, message: "Category added successfully." });
   } catch (error) {
     console.error("Error adding category:", error);
-    res.status(500).send("Internal server error.");
+    res.status(500).json({ message: "Internal server error." });
   }
 };
 

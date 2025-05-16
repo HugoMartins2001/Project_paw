@@ -1,1 +1,65 @@
-<p>dish-details works!</p>
+<div *ngIf="isLoading" class="alert alert-info text-center my-5">A carregar prato...</div>
+<div *ngIf="!isLoading && dish">
+  <div class="container py-4">
+    <div class="card p-4 shadow-sm" style="max-width: 600px; margin: 0 auto;">
+      <h2 class="mb-4 text-center text-primary fw-bold">{{ dish.name }}</h2>
+      <div class="text-center mb-3" *ngIf="dish.dishPic; else noImage">
+        <img [src]="'/uploads/' + dish.dishPic" [alt]="dish.name" class="img-fluid rounded" style="max-height:220px;object-fit:cover;box-shadow:0 2px 8px #0001;">
+      </div>
+      <ng-template #noImage>
+        <div class="d-flex align-items-center justify-content-center bg-light rounded mb-3" style="height:220px;">
+          <span class="text-muted"><em>Sem imagem disponível</em></span>
+        </div>
+      </ng-template>
+
+      <p class="mb-2" *ngIf="dish.description"><strong>Descrição:</strong> {{ dish.description }}</p>
+      <p class="mb-2" *ngIf="dish.category"><strong>Categoria:</strong> {{ dish.category }}</p>
+
+      <div *ngIf="dish.prices">
+        <strong>Preços:</strong>
+        <ul class="list-group mb-2">
+          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.pequena">Pequena: {{ dish.prices.pequena }}€</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.media">Média: {{ dish.prices.media }}€</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.grande">Grande: {{ dish.prices.grande }}€</li>
+        </ul>
+      </div>
+
+      <div *ngIf="dish.ingredients && dish.ingredients.length > 0">
+        <strong>Ingredientes:</strong>
+        <ul class="list-group mb-2">
+          <li class="list-group-item py-1 px-2" *ngFor="let ing of dish.ingredients">
+            {{ ing }}
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="dish.nutrition">
+        <strong>Nutrição:</strong>
+        <ul class="list-group mb-2">
+          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.calories">Calorias: {{ dish.nutrition.calories }}</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.fat">Gordura: {{ dish.nutrition.fat }}g</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.protein">Proteína: {{ dish.nutrition.protein }}g</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.carbs">Hidratos: {{ dish.nutrition.carbs }}g</li>
+        </ul>
+      </div>
+
+      <div *ngIf="dish.nutriScore">
+        <strong>NutriScore:</strong> {{ dish.nutriScore }}
+      </div>
+
+      <div *ngIf="dish.allergens && dish.allergens.length > 0">
+        <strong>Alergénios:</strong>
+        <ul class="list-group mb-2">
+          <li class="list-group-item py-1 px-2" *ngFor="let al of dish.allergens">
+            {{ al }}
+          </li>
+        </ul>
+      </div>
+
+      <a routerLink="/dishes" class="btn btn-secondary w-100 mt-3">Voltar aos Pratos</a>
+    </div>
+  </div>
+</div>
+<div *ngIf="!isLoading && !dish" class="alert alert-danger text-center my-5">
+  Prato não encontrado.
+</div>
