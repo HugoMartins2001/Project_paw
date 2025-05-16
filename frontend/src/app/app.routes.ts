@@ -12,6 +12,7 @@ import { MenusComponent } from './menus/menus.component';
 import { MenuCreateComponent } from './menu-create/menu-create.component';
 import { MenuUpdateComponent } from './menu-update/menu-update.component';
 import { MenuDetailsComponent } from './menu-details/menu-details.component';
+import { RestaurantApprovalComponent } from './restaurantApprove/restaurantApprove.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +46,11 @@ export const routes: Routes = [
     data: { title: 'Edit Restaurant' }
   },
   {
+    path: 'restaurantApprove',
+    component: RestaurantApprovalComponent,
+    data: { title: 'Restaurant Approval' }
+  },
+  {
     path: 'menus',
     component: MenusComponent,
     data: { title: 'Menus' }
@@ -60,7 +66,7 @@ export const routes: Routes = [
     data: { title: 'Edit Menu' }
   },
   {
-    path: 'menus/:id',
+    path: 'menu-details/:id',
     component: MenuDetailsComponent,
     data: { title: 'Menu Details' }
   },

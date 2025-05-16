@@ -51,8 +51,8 @@ export class RestaurantCreateComponent {
   }
   ngOnInit(): void {
     this.restaurantService.getMenus().subscribe({
-      next: (res) => {
-        this.menuOptions = res;
+      next: (res: any) => {
+        this.menuOptions = Array.isArray(res) ? res : res.menus; 
       },
       error: (err) => {
         Swal.fire('Erro', err.error?.error || 'Erro ao carregar menus!', 'error');

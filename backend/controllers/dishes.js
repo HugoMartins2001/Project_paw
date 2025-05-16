@@ -129,7 +129,7 @@ dishesController.showAll = async function (req, res, next) {
     const totalPages = Math.ceil(totalDishes / limit);
 
     // Renderizar a página com os pratos filtrados e paginação
-    res.json("dishes/showDishes", {
+    res.json({
       dishes: filteredDishes,
       user: user,
       currentPage: parseInt(page),
@@ -233,7 +233,7 @@ dishesController.createDish = async function (req, res, next) {
 
     logAction("Created Dish", user, { dishId: newDish._id, name });
 
-    res.redirect("/dishes/showDishes");
+    res.json({ message: "Dish created successfully", dishId: newDish._id });
   } catch (error) {
     console.error(error);
     next(error);
@@ -249,7 +249,7 @@ dishesController.renderCreateDishes = async function (req, res, next) {
     const categories = Array.from(new Set([...predefinedCategories]));
 
     // jsonizar a página com as categorias
-    res.json("dishes/submitDishes", {
+    res.json({
       user: req.user, // Passa o usuário logado para o EJS
       categories, // Passa as categorias combinadas para o EJS
     });
@@ -312,7 +312,7 @@ dishesController.showDish = async function (req, res, next) {
     }
 
     // jsonizar a página com os detalhes do prato
-    res.json("dishes/showDish", {
+    res.json({
       dish: {
         ...dish.toObject(),
         associatedMenus,
@@ -346,7 +346,7 @@ dishesController.deleteDish = function (req, res, next) {
         logAction("Deleted Dish", user, { dishId: dish._id, name: dish.name });
       });
     })
-    .then(() => res.redirect("/dishes/showDishes"))
+    .then(() => res.json({ message: "Dish deleted successfully" }))
     .catch(next);
 };
 
@@ -375,7 +375,7 @@ dishesController.renderEditDish = function (req, res, next) {
 
 
       // jsonizar a página de edição com as categorias
-      res.json("dishes/editDish", { dish, user, categories });
+      res.json({ dish, user, categories });
     })
     .catch(next);
 };
@@ -455,7 +455,7 @@ dishesController.updateDish = function (req, res, next) {
       // Registrar log
       logAction("Updated Dish", req.user, { dishId: updatedDish._id, name: updatedDish.name });
 
-      res.redirect("/dishes/showDishes");
+      res.json({ message: "Dish updated successfully", dishId: updatedDish._id });
     })
     .catch(next);
 };
@@ -491,7 +491,7 @@ dishesController.toggleVisibility = async function (req, res, next) {
     logAction(dish.isVisible ? "Dish Shown" : "Dish Hidden", user, { dishId: dish._id, name: dish.name });
 
     // Redirecionar para a página de pratos
-    res.redirect("/dishes/showDishes");
+    res.json({ message: "Dish visibility toggled successfully" });
   } catch (error) {
     console.error(error);
     next(error);

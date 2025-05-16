@@ -1,0 +1,56 @@
+<div class="container mt-5">
+  <h3 class="mb-4 text-center text-primary">Restaurantes Pendentes de Aprovação</h3>
+
+  <div *ngIf="restaurants.length === 0" class="alert alert-info text-center">
+    <i class="bi bi-info-circle"></i> Nenhum restaurante pendente de aprovação.
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="restaurants.length > 0">
+    <div class="col" *ngFor="let restaurant of restaurants">
+      <div class="card shadow-sm h-100 border-primary">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title text-primary mb-2">{{ restaurant.name }}</h5>
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item"><strong>Morada:</strong> {{ restaurant.address }}</li>
+            <li class="list-group-item"><strong>Email:</strong> {{ restaurant.restaurantEmail }}</li>
+            <li class="list-group-item"><strong>Telefone:</strong> {{ restaurant.phone }}</li>
+          </ul>
+          <button (click)="approveRestaurant(restaurant._id)"
+                  class="btn btn-success mt-auto w-100 fw-bold shadow-sm">
+            <i class="bi bi-check-circle"></i> Aprovar Restaurante
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginação -->
+  <div class="d-flex justify-content-center align-items-center mt-5 gap-2">
+    <button
+      *ngIf="currentPage > 1"
+      (click)="changePage(currentPage - 1)"
+      class="btn btn-outline-primary"
+    >
+      <i class="bi bi-chevron-left"></i> Anterior
+    </button>
+
+    <ng-container *ngFor="let i of [].constructor(totalPages); let idx = index">
+      <button
+        (click)="changePage(idx + 1)"
+        [class.btn-primary]="currentPage === idx + 1"
+        [class.btn-outline-primary]="currentPage !== idx + 1"
+        class="btn"
+      >
+        {{ idx + 1 }}
+      </button>
+    </ng-container>
+
+    <button
+      *ngIf="currentPage < totalPages"
+      (click)="changePage(currentPage + 1)"
+      class="btn btn-outline-primary"
+    >
+      Seguinte <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+</div>

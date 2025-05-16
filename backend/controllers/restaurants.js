@@ -544,7 +544,7 @@ restaurantsController.showPendingRestaurants = async function (req, res, next) {
     const totalPages = Math.ceil(totalRestaurants / limit);
 
     // jsonizar a página com os restaurantes e informações de paginação
-    res.json("restaurants/pendingApproval", {
+    res.json({
       restaurants,
       currentPage: parseInt(page),
       totalPages,
@@ -562,7 +562,7 @@ restaurantsController.approveRestaurant = function (req, res, next) {
   mongoRestaurant
     .findByIdAndUpdate(req.params.id, { isApproved: true }, { new: true })
     .then(() => {
-      res.redirect("/restaurants/pendingApproval");
+      res.json({ message: "Restaurant approved successfully." });
     })
     .catch((err) => next(err));
 };

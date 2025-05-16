@@ -1,1 +1,36 @@
-<p>menu-details works!</p>
+<div *ngIf="isLoading" class="alert alert-info text-center my-5">A carregar menu...</div>
+<div *ngIf="!isLoading && menu; else notFound">
+  <div class="container py-4">
+    <div class="card p-4 shadow-sm" style="max-width: 700px; margin: 0 auto;">
+      <h2 class="mb-4 text-center text-primary fw-bold">{{ menu.name }}</h2>
+      <div class="row g-4 align-items-center">
+        <div class="col-md-5 text-center">
+          <div class="restaurant-img-container mb-3" *ngIf="menu.menuPic; else noImage">
+            <img [src]="'/uploads/' + menu.menuPic" [alt]="menu.name" class="img-fluid rounded" style="max-height:220px;object-fit:cover;box-shadow:0 2px 8px #0001;">
+          </div>
+          <ng-template #noImage>
+            <div class="d-flex align-items-center justify-content-center bg-light rounded" style="height:220px;">
+              <span class="text-muted"><em>Sem imagem disponível</em></span>
+            </div>
+          </ng-template>
+        </div>
+        <div class="col-md-7">
+          <h5 class="fw-semibold mb-2">Pratos incluídos:</h5>
+          <ul class="list-group mb-3" *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">
+            <li class="list-group-item py-2 px-3" *ngFor="let dish of menu.dishes">
+              <span class="fw-bold">{{ dish.name }}</span>
+              <span *ngIf="dish.description" class="text-muted d-block" style="font-size:0.95em;">{{ dish.description }}</span>
+            </li>
+          </ul>
+          <ng-template #noDishes>
+            <p class="text-muted">Nenhum prato associado a este menu.</p>
+          </ng-template>
+          <a routerLink="/menus" class="btn btn-secondary mt-3 w-100">Voltar aos Menus</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #notFound>
+  <div class="alert alert-danger text-center my-5">Menu não encontrado.</div>
+</ng-template>

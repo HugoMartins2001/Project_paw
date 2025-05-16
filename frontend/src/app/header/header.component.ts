@@ -32,6 +32,9 @@ export class HeaderComponent {
 
   navigateToHome(): void { this.router.navigate(['/home']); }
   navigateToMenu(): void { this.router.navigate(['/restaurants']); }
+  navigateToRestaurantApproval(): void { this.router.navigate(['/restaurantApprove']); }
+  navigateToLogs(): void { this.router.navigate(['/logs']); }
+  navigateToUsers(): void { this.router.navigate(['/users']); }
   navigateToLogin(): void { this.router.navigate(['/login']); }
   navigateToRegister(): void { this.router.navigate(['/register']); }
   navigateToMenus(): void { this.router.navigate(['/menus']); }

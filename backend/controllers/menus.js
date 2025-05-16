@@ -141,7 +141,7 @@ menusController.createMenu = async function (req, res, next) {
       name,
       dishes: dishesArray,
       restaurant,
-      managerId: req.user._id, // Associa o menu ao gerente logado
+      managerId: req.user._id,
       menuPic,
     });
 
@@ -149,7 +149,7 @@ menusController.createMenu = async function (req, res, next) {
 
     logAction("Created Menu", req.user, { menuId: newMenu._id, name });
 
-    res.redirect("/menus/showMenus");
+    res.json({ message: "Menu created successfully", menuId: newMenu._id });
   } catch (error) {
     console.error(error);
     next(error);
@@ -191,7 +191,7 @@ menusController.showMenu = async function (req, res, next) {
     }));
 
     // jsonizar a página com os dados do menu e dos restaurantes
-    res.json("menus/showMenu", {
+    res.json({
       menu: menu.toObject(),
       restaurantList,
       user: req.user, // Passa o usuário logado para o header
@@ -227,7 +227,7 @@ menusController.deleteMenu = function (req, res, next) {
       });
     })
     .then(function () {
-      res.redirect("/menus/showMenus");
+      res.json({ message: "Menu deleted successfully." });
     })
     .catch(function (err) {
       next(err);
@@ -264,7 +264,7 @@ menusController.renderEditMenu = async function (req, res, next) {
 
     const restaurants = await mongoRestaurant.find();
 
-    res.json("menus/editMenu", { menu, dishes: allDishes, restaurants, user });
+    res.json({ menu, dishes: allDishes, restaurants, user });
   } catch (err) {
     next(err);
   }
@@ -278,7 +278,7 @@ menusController.updateMenu = async function (req, res, next) {
     const menu = await mongoMenu.findById(menuId);
 
     if (!menu) {
-      return res.status(404).send("Menu not found.");
+      return res.status(404).json({ message: "Menu not found." });	  
     }
 
     // Verificar permissões
@@ -286,7 +286,7 @@ menusController.updateMenu = async function (req, res, next) {
       req.user.role !== "Admin" && // Admin pode editar qualquer menu
       menu.managerId.toString() !== req.user._id.toString() // Apenas o gerente que criou o menu pode editá-lo
     ) {
-      return res.status(403).send("Access denied.");
+      return res.status(403).json({ message: "Access denied." });
     }
 
     // Atualizar os dados do menu
@@ -310,7 +310,7 @@ menusController.updateMenu = async function (req, res, next) {
 
     logAction("Updated Menu", req.user, { menuId: updatedMenu._id, name: updatedMenu.name });
 
-    res.redirect("/menus/showMenus");
+    res.json({ message: "Menu updated successfully", menuId: updatedMenu._id });
   } catch (err) {
     next(err);
   }

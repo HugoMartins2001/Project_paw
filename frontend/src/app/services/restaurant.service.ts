@@ -87,4 +87,14 @@ export class RestaurantService {
       { headers: this.getHeaders() }
     );
   }
+
+  approveRestaurant(id: string): Observable<any> {
+    return this.http.post<any>(`http://localhost:3000/api/restaurants/approveRestaurant/${id}`, {}, { headers: this.getHeaders() });
+  }
+
+  getPendingRestaurants(page: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:3000/api/restaurants/pendingApproval?page=${page}`, { headers: this.getHeaders() }).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
 }

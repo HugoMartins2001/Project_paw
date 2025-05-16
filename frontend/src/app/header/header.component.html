@@ -11,9 +11,9 @@
           <li><a (click)="navigateToMenus()" class="nav-link">Menus</a></li>
           <li><a (click)="navigateToDishes()" class="nav-link">Dishes</a></li>
         <ng-container *ngIf="userRole === 'Admin'">
-          <li><a routerLink="/dashboard/approve-restaurants" class="nav-link">Approve Restaurantes</a></li>
-          <li><a routerLink="/dashboard/logs" class="nav-link">Logs &amp; Statistics</a></li>
-          <li><a routerLink="/dashboard/users" class="nav-link">Users</a></li>
+          <li><a (click)="navigateToRestaurantApproval()" class="nav-link">Approve Restaurantes</a></li>
+          <li><a (click)="navigateToLogs()" class="nav-link">Logs &amp; Statistics</a></li>
+          <li><a (click)="navigateToUsers()" class="nav-link">Users</a></li>
         </ng-container>
       </ul>
     </nav>

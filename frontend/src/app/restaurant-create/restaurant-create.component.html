@@ -81,13 +81,14 @@
       <!-- Menus -->
       <div class="form-group">
         <label for="menus">Menus</label>
-        <ng-container *ngIf="menus.length > 0; else noMenus">
+        <ng-container *ngIf="menuOptions.length > 0; else noMenus">
           <select id="menus" formControlName="menus" multiple class="form-control">
-            <option *ngFor="let menuId of menus" [value]="menuId">{{ menuId }}</option>
+            <option *ngFor="let menu of menuOptions" [value]="menu._id">{{ menu.name }}</option>
           </select>
         </ng-container>
         <ng-template #noMenus>
-          <div class="alert alert-warning">No menus available. Please <a routerLink="/menus/submitMenu">create one</a>.
+          <div class="alert alert-warning">
+            No menus available. Please <a routerLink="/menus/submitMenu">create one</a>.
           </div>
         </ng-template>
       </div>

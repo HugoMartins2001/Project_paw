@@ -1,11 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { MenuService } from '../services/menu.service';
+import { DishService } from '../services/dish.service';
+import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-menu-create',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './menu-create.component.html',
-  styleUrl: './menu-create.component.css'
+  styleUrls: ['./menu-create.component.css']
 })
-export class MenuCreateComponent {
+export class MenuCreateComponent implements OnInit {
+  menuForm: FormGroup;
+  selectedFile: File | null = null;
+  dishOptions: { _id: string, name: string }[] = [];
 
+  constructor(
+    private fb: FormBuilder,
+    private menuService: MenuService,
+    private dishService: DishService,
+    private router: Router
+  ) {
+    this.menuForm = this.fb.group({
+      name: ['', Validators.required],
+      dishes: [[], Validators.required],
+      menuPic: [null]
+    });
+  }
+
+  ngOnInit(): void {
+    interface Dish {
+      _id: string;
+      name: string;
+    }
+
+    this.dishService.getDishes().subscribe({
+      next: (dishes: Dish[]) => this.dishOptions = dishes,
+      error: () => this.dishOptions = []
+    });
+  }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
+  onSubmit() {
+    if (this.menuForm.invalid) return;
+
+    const formData = new FormData();
+    formData.append('name', this.menuForm.value.name);
+    for (const dishId of this.menuForm.value.dishes) {
+      formData.append('dishes', dishId);
+    }
+    if (this.selectedFile) {
+      formData.append('menuPic', this.selectedFile);
+    }
+
+    this.menuService.createMenu(formData).subscribe({
+      next: () => {
+        Swal.fire('Sucesso', 'Menu criado com sucesso!', 'success').then(() => {
+          this.router.navigate(['/menus']);
+        });
+      },
+      error: () => Swal.fire('Erro', 'Erro ao criar menu!', 'error')
+    });
+  }
 }
