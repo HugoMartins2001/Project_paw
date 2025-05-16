@@ -6,18 +6,22 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, FormsModule],
 })
 export class LoginComponent {
   loginForm: FormGroup;
   errors: any = {};
   isLoading = false;
+  forgotFormVisible = false;
+  forgotEmail = '';
+  forgotLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +37,9 @@ export class LoginComponent {
 
   navigateToRegister(): void {
     this.router.navigate(['/register']);
+  }
+  navigateToForgotPassword(): void {
+    this.router.navigate(['/forgot-password']);
   }
 
   onSubmit() {
@@ -109,6 +116,35 @@ export class LoginComponent {
             });
           }
         },
+      });
+  }
+
+  showForgotForm() {
+    this.forgotFormVisible = true;
+    this.forgotEmail = '';
+  }
+
+  hideForgotForm() {
+    this.forgotFormVisible = false;
+  }
+
+  onForgotSubmit() {
+    if (!this.forgotEmail) {
+      Swal.fire('Erro', 'Por favor insira o seu email.', 'error');
+      return;
+    }
+    this.forgotLoading = true;
+    this.http.post<any>('http://localhost:3000/api/auth/forgot-password', { email: this.forgotEmail })
+      .subscribe({
+        next: () => {
+          this.forgotLoading = false;
+          Swal.fire('Sucesso', 'Se o email existir, receberá instruções para recuperar a password.', 'success');
+          this.hideForgotForm();
+        },
+        error: () => {
+          this.forgotLoading = false;
+          Swal.fire('Erro', 'Ocorreu um erro ao tentar recuperar a password.', 'error');
+        }
       });
   }
 }

@@ -20,6 +20,7 @@ import { DishDetailsComponent } from './dish-details/dish-details.component';
 import { LogsComponent } from './logs/logs.component';
 import { UsersComponent } from './users/users.component';
 import { AuthGuardService } from './auth-guard.service';
+import { ForgotPaswwordComponent } from './forgot-paswword/forgot-paswword.component';
 
 export const routes: Routes = [
   {
@@ -109,6 +110,11 @@ export const routes: Routes = [
     component: UsersComponent,
     canActivate: [AuthGuardService],
     data: { title: 'Users' }
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPaswwordComponent,
+    data: { title: 'Forgot Password' }
   },
   {
     path: 'login',

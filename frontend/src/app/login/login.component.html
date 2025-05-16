@@ -42,5 +42,17 @@
         <a (click)="navigateToRegister()" class="ms-1 text-decoration-underline" style="cursor:pointer;">Registar</a>
       </div>
     </form>
+
+    <!-- Link para mostrar o formulário -->
+    <a (click)="navigateToForgotPassword()" class="ms-1 text-decoration-underline" *ngIf="!forgotFormVisible" style="cursor:pointer;">Esqueceu-se da password?</a>
+
+    <!-- Formulário de recuperação -->
+    <div *ngIf="forgotFormVisible" class="mt-3">
+      <input type="email" [(ngModel)]="forgotEmail" placeholder="O seu email" class="form-control mb-2" [disabled]="forgotLoading">
+      <button class="btn btn-primary" (click)="onForgotSubmit()" [disabled]="forgotLoading">
+        Recuperar Password
+      </button>
+      <button class="btn btn-link" (click)="hideForgotForm()" [disabled]="forgotLoading">Cancelar</button>
+    </div>
   </div>
 </div>
