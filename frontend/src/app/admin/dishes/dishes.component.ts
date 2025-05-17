@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DishService, Dish } from '../services/dish.service';
+import { CartService } from '../services/cart.service';
 import Swal from 'sweetalert2';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -25,7 +26,7 @@ export class DishesComponent implements OnInit {
   categories: string[] = [];
   allergensList: string[] = [];
 
-  constructor(private dishService: DishService) { }
+  constructor(private dishService: DishService, private cartService: CartService) { }
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
@@ -120,5 +121,9 @@ export class DishesComponent implements OnInit {
         });
       }
     });
+  }
+
+  addToCart(dish: Dish) {
+    this.cartService.addToCart(dish);
   }
 }

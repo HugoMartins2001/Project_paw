@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ProfileService, ProfileResponse } from '../admin/services/profile.service';
+import { CartService } from '../admin/services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    public cartService: CartService
   ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -61,6 +63,7 @@ export class HeaderComponent implements OnInit {
   navigateToProfile(): void { this.router.navigate(['/profile']); }
   navigateToAbout(): void { this.router.navigate(['/about']); }
   navigateToContact(): void { this.router.navigate(['/contacts']); }
+  navigateToCart(): void { this.router.navigate(['/cart']); }
 
   logout(): void {
     Swal.fire({

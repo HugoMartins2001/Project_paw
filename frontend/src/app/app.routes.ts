@@ -44,6 +44,7 @@ import { ContactsComponent } from './home/contacts/contacts.component';
 
 //Client
 import { ClientHomeComponent } from './client/client-home/client-home.component';
+import { CartComponent } from './client/cart/cart.component';
 
 //Security
 import { AuthGuardService } from './auth-guard.service';
@@ -184,6 +185,12 @@ export const routes: Routes = [
     path: 'contacts',
     component: ContactsComponent,
     data: { title: 'Contact Us' }
+  },
+  {
+    path: 'cart',
+    component: CartComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Cart' }
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];

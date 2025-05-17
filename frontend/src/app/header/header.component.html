@@ -45,15 +45,30 @@
 
       </ul>
     </nav>
-    <div class="auth-buttons d-flex gap-2" *ngIf="!userName">
-      <button class="login-button btn btn-outline-primary" (click)="navigateToLogin()">Login</button>
-      <button class="register-button btn btn-primary" (click)="navigateToRegister()">Register</button>
-    </div>
-    <div class="user-info d-flex align-items-center gap-2" *ngIf="userName">
-      <span class="fw-semibold">Olá, {{ userName }}</span>
-      <button class="logout-button btn btn-outline-danger btn-sm d-flex align-items-center" (click)="logout()">
-        <span class="material-icons" style="vertical-align: middle;">logout</span>
-      </button>
+    <div class="d-flex align-items-center gap-3">
+      <!-- Carrinho no header -->
+      <a *ngIf="cartService.getCart().length > 0"
+         (click)="navigateToCart()"
+         class="btn btn-outline-primary position-relative d-flex align-items-center"
+         style="font-weight: 500; font-size: 1.1rem;">
+        <i class="bi bi-cart3" style="font-size: 1.5rem;"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style="font-size: 0.9rem;">
+          {{ cartService.getCart().length }}
+        </span>
+        <span class="ms-2 d-none d-md-inline">Carrinho</span>
+      </a>
+      <!-- Botões de autenticação ou user info -->
+      <div class="auth-buttons d-flex gap-2" *ngIf="!userName">
+        <button class="login-button btn btn-outline-primary" (click)="navigateToLogin()">Login</button>
+        <button class="register-button btn btn-primary" (click)="navigateToRegister()">Register</button>
+      </div>
+      <div class="user-info d-flex align-items-center gap-2" *ngIf="userName">
+        <span class="fw-semibold">Olá, {{ userName }}</span>
+        <button class="logout-button btn btn-outline-danger btn-sm d-flex align-items-center" (click)="logout()">
+          <span class="material-icons" style="vertical-align: middle;">logout</span>
+        </button>
+      </div>
     </div>
   </div>
 </header>
