@@ -106,15 +106,21 @@ restaurantsController.showAll = async function (req, res, next) {
     }
 
     // Filtrar restaurantes com base no papel do usuário
-    if (req.user?.role === "Manager") {
-      query.managerId = req.user._id;
-    } else if (req.user?.role === "Client") {
-      query.isApproved = true;
+    const user = req.user; // pode ser undefined
+
+    if (user && user.role === "Manager") {
+      // Só restaurantes/menus/pratos do manager autenticado
+      query.managerId = user._id;
+    } else if (user && user.role === "Client") {
+      // Só públicos
       query.isVisible = true;
-    } else if (!req.user) {
       query.isApproved = true;
+    } else if (!user) {
+      // Não autenticado: só públicos
       query.isVisible = true;
+      query.isApproved = true;
     }
+    // Admin não precisa de filtro extra
 
     // Ordenação
     const sortOrder = order === "desc" ? -1 : 1; // Ordem ascendente ou descendente
@@ -124,34 +130,24 @@ restaurantsController.showAll = async function (req, res, next) {
     // Buscar restaurantes com base no filtro e aplicar paginação e ordenação
     const restaurantList = await mongoRestaurant
       .find(query)
-      .populate("menus") // Popula os menus associados ao restaurante
+      .populate({
+        path: "menus",
+        match: req.user && req.user.role === "Manager"
+          ? { managerId: req.user._id }
+          : {},
+      })
       .sort(sortOptions)
       .skip(skip)
       .limit(parseInt(limit));
 
+    const filteredRestaurants = restaurantList.map((restaurant) => ({
+      ...restaurant.toObject(),
+      menus: restaurant.menus,
+    }));
+
     // Total de restaurantes para paginação
     const totalRestaurants = await mongoRestaurant.countDocuments(query);
     const totalPages = Math.ceil(totalRestaurants / limit);
-
-    const filteredRestaurants = restaurantList.map((restaurant) => {
-      const filteredMenus = restaurant.menus.filter((menu) => {
-        // Se não houver utilizador autenticado, mostra todos os menus públicos
-        if (!req.user) {
-          return menu.isVisible !== false;
-        }
-        // Administradores podem ver todos os menus
-        if (req.user.role === "Admin") {
-          return true;
-        }
-        // Gerentes só podem ver menus que eles criaram
-        return menu.managerId.toString() === req.user._id.toString();
-      });
-
-      return {
-        ...restaurant.toObject(),
-        menus: filteredMenus,
-      };
-    });
 
     // Retornar os restaurantes como JSON
     res.json({

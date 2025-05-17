@@ -54,7 +54,7 @@
             </ng-template>
           </div>
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <a *ngIf="userRole" [routerLink]="['/menu-details', menu._id]" class="btn btn-primary btn-sm">Detalhes</a>
+            <a *ngIf="userRole" [routerLink]="['/menu-details', menu._id]" class="btn btn-sm btn-outline-primary">View</a>
             <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver detalhes</button>
             <ng-container *ngIf="(userRole === 'Manager' && isMenuManager(menu, userId)) || userRole === 'Admin'">
               <a [routerLink]="['/menus/editMenu', menu._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>

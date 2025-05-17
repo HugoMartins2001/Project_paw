@@ -373,7 +373,6 @@ authController.createLoginSubmitted = function (req, res, next) {
 
 // Middleware para verificar se o usuário está autenticado
 authController.verifyLoginUser = function (req, res, next) {
-    // Tenta pegar o token do cookie OU do header Authorization
     const authToken = req.cookies['auth-token'] || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
     if (authToken) {
         jwt.verify(authToken, config.secret, function (err, decoded) {
@@ -398,6 +397,27 @@ authController.verifyLoginUser = function (req, res, next) {
         });
     } else {
         res.status(401).json({ error: 'No token provided' });
+    }
+};
+
+// Middleware para anexar o usuário ao request se existir
+authController.attachUserIfExists = function (req, res, next) {
+    const authToken = req.cookies['auth-token'] || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+    if (authToken) {
+        jwt.verify(authToken, config.secret, function (err, decoded) {
+            if (!err && decoded) {
+                mongoUser.findOne({ email: decoded.email })
+                    .then(function (user) {
+                        if (user) req.user = user;
+                        next();
+                    })
+                    .catch(() => next());
+            } else {
+                next();
+            }
+        });
+    } else {
+        next();
     }
 };
 

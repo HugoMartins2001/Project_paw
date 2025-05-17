@@ -5,7 +5,7 @@ const authController = require("../controllers/auth");
 const upload = require("../middlewares/upload");
 
 // Rota para exibir todos os menus
-router.get("/showMenus", function (req, res, next) {
+router.get("/showMenus", authController.attachUserIfExists, function (req, res, next) {
     menusController.showAll(req, res, next);
 });
 

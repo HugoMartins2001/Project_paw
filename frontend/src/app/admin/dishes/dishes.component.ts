@@ -29,7 +29,7 @@ export class DishesComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.userId = localStorage.getItem('id'); // <-- E esta linha
+    this.userId = localStorage.getItem('userId'); // <-- Corrigido!
     this.loadDishes();
   }
 

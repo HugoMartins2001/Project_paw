@@ -5,7 +5,7 @@ const authController = require("../controllers/auth");
 const upload = require("../middlewares/upload");
 
 // Rota para exibir todos os pratos
-router.get("/showDishes", function (req, res, next) {
+router.get("/showDishes", authController.attachUserIfExists, function (req, res, next) {   
     dishesController.showAll(req, res, next);
 });
 

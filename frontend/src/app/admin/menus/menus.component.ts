@@ -29,7 +29,7 @@ export class MenusComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.userId = localStorage.getItem('id');
+    this.userId = localStorage.getItem('userId'); // <-- Corrigido aqui!
     this.loadRestaurants();
     this.loadMenus();
   }
