@@ -32,14 +32,8 @@ export class MenuCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    interface Dish {
-      _id: string;
-      name: string;
-    }
-
-    this.dishService.getDishes().subscribe({
-      next: (dishes: Dish[]) => this.dishOptions = dishes,
-      error: () => this.dishOptions = []
+    this.dishService.getDishes().subscribe(res => {
+      this.dishOptions = res.dishes; // ou res, conforme a resposta do backend
     });
   }
 

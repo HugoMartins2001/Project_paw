@@ -45,7 +45,7 @@ export class MenuUpdateComponent implements OnInit {
 
     // Carregar pratos disponíveis
     this.dishService.getDishes().subscribe({
-      next: (dishes) => this.dishOptions = dishes,
+      next: (dishes) => this.dishOptions = dishes.dishes,
       error: () => this.dishOptions = []
     });
 
