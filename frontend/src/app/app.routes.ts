@@ -15,6 +15,8 @@ import { RegisterComponent } from './login/register/register.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { ProfileComponent } from './admin/dashboard/profile/profile.component';
 import { ProfileEditComponent } from './admin/dashboard/profile-edit/profile-edit.component';
+import { LogsComponent } from './admin/logs/logs.component';
+import { UsersComponent } from './admin/users/users.component';
 
 //Restaurants
 import { RestaurantsComponent } from './admin/restaurants/restaurants.component';
@@ -36,8 +38,9 @@ import { DishUpdateComponent } from './admin/dishes/dish-update/dish-update.comp
 import { DishDetailsComponent } from './admin/dishes/dish-details/dish-details.component';
 
 //Overall
-import { LogsComponent } from './admin/logs/logs.component';
-import { UsersComponent } from './admin/users/users.component';
+import { AboutComponent } from './home/about/about.component';
+import { ContactsComponent } from './home/contacts/contacts.component';
+
 
 //Client
 import { ClientHomeComponent } from './client/client-home/client-home.component';
@@ -171,6 +174,16 @@ export const routes: Routes = [
     component: ClientHomeComponent,
     canActivate: [AuthGuardService],
     data: { title: 'Client Home' }
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+    data: { title: 'About Us' }
+  },
+  {
+    path: 'contacts',
+    component: ContactsComponent,
+    data: { title: 'Contact Us' }
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];

@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit {
   navigateToOrders(): void { this.router.navigate(['/orders']); }
   navigateToProfile(): void { this.router.navigate(['/profile']); }
   navigateToAbout(): void { this.router.navigate(['/about']); }
-  navigateToContact(): void { this.router.navigate(['/contact']); }
+  navigateToContact(): void { this.router.navigate(['/contacts']); }
 
   logout(): void {
     Swal.fire({
