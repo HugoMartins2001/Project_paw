@@ -1,29 +1,37 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { RestaurantsComponent } from './restaurants/restaurants.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { RestaurantDetailsComponent } from './restaurant-details/restaurant-details.component';
-import { RestaurantCreateComponent } from './restaurant-create/restaurant-create.component';
-import { RestaurantUpdateComponent } from './restaurant-update/restaurant-update.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { MenusComponent } from './menus/menus.component';
-import { MenuCreateComponent } from './menu-create/menu-create.component';
-import { MenuUpdateComponent } from './menu-update/menu-update.component';
-import { MenuDetailsComponent } from './menu-details/menu-details.component';
-import { RestaurantApprovalComponent } from './restaurantApprove/restaurantApprove.component';
-import { DishesComponent } from './dishes/dishes.component';
-import { DishCreateComponent } from './dish-create/dish-create.component';
-import { DishUpdateComponent } from './dish-update/dish-update.component';
-import { DishDetailsComponent } from './dish-details/dish-details.component';
-import { LogsComponent } from './logs/logs.component';
-import { UsersComponent } from './users/users.component';
+import { HomeComponent } from './admin/home/home.component';
+import { LoginComponent } from './admin/login/login.component';
+import { RegisterComponent } from './admin/login/register/register.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+
+//Restaurants
+import { RestaurantsComponent } from './admin/restaurants/restaurants.component';
+import { RestaurantDetailsComponent } from './admin/restaurants/restaurant-details/restaurant-details.component';
+import { RestaurantCreateComponent } from './admin/restaurants/restaurant-create/restaurant-create.component';
+import { RestaurantUpdateComponent } from './admin/restaurants/restaurant-update/restaurant-update.component';
+import { RestaurantApprovalComponent } from './admin/restaurants/restaurantApprove/restaurantApprove.component';
+
+//Menus
+import { MenusComponent } from './admin/menus/menus.component';
+import { MenuCreateComponent } from './admin/menus/menu-create/menu-create.component';
+import { MenuUpdateComponent } from './admin/menus/menu-update/menu-update.component';
+import { MenuDetailsComponent } from './admin/menus/menu-details/menu-details.component';
+
+//Dishes
+import { DishesComponent } from './admin/dishes/dishes.component';
+import { DishCreateComponent } from './admin/dishes/dish-create/dish-create.component';
+import { DishUpdateComponent } from './admin/dishes/dish-update/dish-update.component';
+import { DishDetailsComponent } from './admin/dishes/dish-details/dish-details.component';
+
+//Overall
+import { LogsComponent } from './admin/logs/logs.component';
+import { UsersComponent } from './admin/users/users.component';
 import { AuthGuardService } from './auth-guard.service';
-import { ForgotPaswwordComponent } from './forgot-paswword/forgot-paswword.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { ProfileComponent } from './profile/profile.component';
-import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import { ForgotPaswwordComponent } from './admin/login/forgot-paswword/forgot-paswword.component';
+import { ResetPasswordComponent } from './admin/login/reset-password/reset-password.component';
+import { ProfileComponent } from './admin/dashboard/profile/profile.component';
+import { ProfileEditComponent } from './admin/dashboard/profile-edit/profile-edit.component';
 
 export const routes: Routes = [
   {

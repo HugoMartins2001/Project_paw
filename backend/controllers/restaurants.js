@@ -248,8 +248,8 @@ restaurantsController.createRestaurant = async function (req, res, next) {
 
     if (existingRestaurant) {
       // Retorna um erro se o email já estiver em uso por outro gerente
-      return res.status(400).json({
-        error: "Este email já está em uso por outro gerente."
+      return res.status(400).json({//ingles
+        error: "This email is already in use by another manager."
       });
     }
 
@@ -455,7 +455,7 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
     if (existingRestaurant) {
       // Retorna um erro se o email já estiver em uso por outro gerente
       return res.status(400).json({
-        error: "Este email já está em uso por outro gerente.",
+        error: "This email is already in use by another manager.",
       });
     }
 
@@ -514,12 +514,12 @@ restaurantsController.getRestaurantById = async function (req, res) {
   try {
     const restaurant = await mongoRestaurant.findById(req.params.id);
     if (!restaurant) {
-      return res.status(404).json({ error: 'Restaurante não encontrado.' });
+      return res.status(404).json({ error: 'Restaurant not found.' });
     }
     res.status(200).json(restaurant);
   } catch (err) {
-    console.error("Erro ao obter restaurante:", err);
-    res.status(500).json({ error: 'Erro interno ao obter restaurante.' });
+    console.error("Error fetching restaurant:", err);
+    res.status(500).json({ error: 'Internal server error while fetching restaurant.' });
   }
 };
 

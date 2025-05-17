@@ -1,0 +1,116 @@
+<div class="container">
+  <div class="card">
+    <h2>Create New Restaurant</h2>
+    <p class="text-muted">Please fill in the details below to create a new restaurant.</p>
+
+    <form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <!-- Nome -->
+      <div class="form-group">
+        <label for="f_name">Restaurant Name</label>
+        <input type="text" id="f_name" formControlName="name" class="form-control" required />
+      </div>
+
+      <!-- Morada -->
+      <div class="form-group">
+        <label for="f_address">Street</label>
+        <input type="text" id="f_address" formControlName="address" class="form-control" required />
+      </div>
+
+      <!-- Telefone -->
+      <div class="form-group">
+        <label for="f_phone">Phone</label>
+        <input type="text" id="f_phone" formControlName="phone" class="form-control" required />
+        <div *ngIf="restaurantForm.get('phone')?.invalid && restaurantForm.get('phone')?.touched"
+          class="text-danger mt-1">
+          The phone number must be exactly 9 digits.
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="f_email">Restaurant Email</label>
+        <input type="email" id="f_email" formControlName="restaurantEmail" class="form-control" required />
+      </div>
+
+      <!-- Horário de funcionamento -->
+      <div formGroupName="openingHours">
+        <label>Opening Hours</label>
+        <div formGroupName="default" class="row mb-3">
+          <div class="col-md-4">
+            <input type="time" formControlName="start" class="form-control" />
+          </div>
+          <div class="col-md-4">
+            <input type="time" formControlName="end" class="form-control" />
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary" (click)="toggleCustomHours()">
+          Customize Saturday and Sunday
+        </button>
+
+        <div *ngIf="showCustomHours">
+          <div class="row mb-2" *ngFor="let day of ['Saturday', 'Sunday']" [formGroupName]="day">
+            <div class="col-md-3">
+              <label>{{ day }}</label>
+            </div>
+            <div class="col-md-3">
+              <input type="time" formControlName="start" class="form-control" />
+            </div>
+            <div class="col-md-3">
+              <input type="time" formControlName="end" class="form-control" />
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <input type="checkbox" formControlName="closed" class="me-2" />
+              <label class="mb-0">Closed</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métodos de pagamento -->
+      <div class="form-group">
+        <label>Payment Methods</label>
+        <div class="form-check" *ngFor="let method of ['Cash', 'Credit Card', 'Debit Card', 'Mobile Payment']">
+          <input class="form-check-input" type="checkbox" [value]="method" (change)="onPaymentMethodChange($event)">
+          <label class="form-check-label">{{ method }}</label>
+        </div>
+      </div>
+
+      <!-- Imagem -->
+      <div class="form-group">
+        <label for="f_pic">Restaurant Photo</label>
+        <input type="file" id="f_pic" name="restaurantPic" (change)="onFileChange($event)" accept="image/*"
+          class="form-control" />
+      </div>
+
+      <!-- Menus -->
+      <div class="form-group">
+        <label for="menus">Menus</label>
+        <ng-container *ngIf="menuOptions.length > 0; else noMenus">
+          <select id="menus" formControlName="menus" multiple class="form-control">
+            <option *ngFor="let menu of menuOptions" [value]="menu._id">{{ menu.name }}</option>
+          </select>
+          <div *ngIf="restaurantForm.get('menus')?.invalid && restaurantForm.get('menus')?.touched"
+            class="text-danger mt-1">
+            You must select at least one menu.
+          </div>
+        </ng-container>
+        <ng-template #noMenus>
+          <div class="alert alert-warning">No menus available. Please <a (click)="navigateToCreateMenu()"
+              style="cursor: pointer;">create one</a>.
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Botão Submeter -->
+      <div class="form-group form-full">
+        <button type="submit" class="btn btn-primary w-100" [disabled]="restaurantForm.invalid">Create
+          Restaurant</button>
+      </div>
+    </form>
+
+    <div class="form-group form-full">
+      <a routerLink="/dashboard" class="btn btn-secondary w-100">Go to Dashboard</a>
+    </div>
+  </div>
+</div>

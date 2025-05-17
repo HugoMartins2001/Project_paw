@@ -1,0 +1,50 @@
+<div class="container mt-4">
+  <h1>Available Menus</h1>
+
+  <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
+    <a [routerLink]="['/menus/create']" class="btn btn-success">
+      <span class="material-icons" style="vertical-align: middle;"></span>
+      Criar Menu
+    </a>
+  </div>
+
+  <div *ngIf="isLoading" class="alert alert-info text-center">Loading...</div>
+  <div *ngIf="!isLoading && menus.length === 0" class="alert alert-warning text-center">
+    <h3>No menus found.</h3>
+  </div>
+
+  <div class="row g-4" *ngIf="!isLoading && menus.length > 0">
+    <div class="col-md-6 col-lg-4" *ngFor="let menu of menus">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <div>
+            <div class="text-center mb-3 restaurant-img-container" *ngIf="menu.menuPic; else noImage">
+              <img *ngIf="menu.menuPic" [src]="getMenuImageUrl(menu.menuPic)" alt="Foto do Menu" class="restaurant-img">
+              <div class="overlay-text">{{ menu.name }}</div>
+            </div>
+            <ng-template #noImage>
+              <div class="restaurant-img-container text-center mb-3" style="height:200px;display:flex;align-items:center;justify-content:center;background:#f4f7fc;">
+                <span class="text-muted"><em>No image available for this menu.</em></span>
+              </div>
+            </ng-template>
+            <h5 class="card-title">{{ menu.name }}</h5>
+            <p class="mb-2"><strong>Dishes:</strong></p>
+            <ul class="list-group mb-2" *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">
+              <li class="list-group-item py-1 px-2" *ngFor="let dish of menu.dishes">
+                - {{ dish.name }}
+              </li>
+            </ul>
+            <ng-template #noDishes>
+              <p class="text-muted">No dishes associated with this menu.</p>
+            </ng-template>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <a [routerLink]="['/menu-details', menu._id]" class="btn btn-sm btn-outline-primary">View</a>
+            <a [routerLink]="['/menus/editMenu', menu._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
+            <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteMenu(menu._id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

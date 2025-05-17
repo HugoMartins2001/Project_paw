@@ -115,7 +115,7 @@ dishesController.showAll = async function (req, res, next) {
         dish.associatedMenus = dish.associatedMenus.filter((menu) => {
           // Filtrar menus que pertencem ao manager
           menu.restaurants = menu.restaurants.filter((restaurant) => {
-            return restaurant.managerId.toString() === user._id.toString();
+            return restaurant.managerId && restaurant.managerId.toString() === user._id.toString();
           });
 
           // Retornar apenas menus que ainda têm restaurantes associados
@@ -328,7 +328,7 @@ dishesController.showDish = async function (req, res, next) {
     if (user.role === "Manager") {
       associatedMenus.forEach((menu) => {
         menu.restaurants = menu.restaurants.filter((restaurant) => {
-          return restaurant.managerId.toString() === user._id.toString();
+          return restaurant.managerId && restaurant.managerId.toString() === user._id.toString();
         });
       });
     }

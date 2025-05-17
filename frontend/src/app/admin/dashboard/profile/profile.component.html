@@ -1,0 +1,65 @@
+<div class="container">
+  <h1>{{ user?.role }} Profile</h1>
+
+  <div class="profile-card">
+    <!-- Botão de editar perfil -->
+    <a [routerLink]="['/profile/edit']" class="edit-icon" title="Edit Profile">
+      <i class="fas fa-pen"></i> Edit
+    </a>
+    <div class="profile-name">{{ user?.name }}</div>
+    <div class="profile-email">{{ user?.email }}</div>
+
+    <div class="info-box">
+      <h3>Personal informations</h3>
+      <div class="info-item">
+        <i class="fas fa-user-tag"></i>
+        Role: {{ user?.role === 'Client' ? 'Client' : user?.role === 'Admin' ? 'Admin' : 'Manager' }}
+      </div>
+
+      <ng-container *ngIf="user?.role === 'Client'">
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          Phone: {{ user?.clienteTelemovel || 'Mobile phone not provided' }}
+        </div>
+        <div class="info-item">
+          <i class="fas fa-id-card"></i>
+          NIF: {{ user?.clienteNif || 'Nif not provided' }}
+        </div>
+        <div class="info-item">
+          <i class="fas fa-home"></i>
+          Address: {{ user?.address || 'Address not provided' }}
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="user?.role === 'Manager'">
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          Phone: {{ user?.managerTelemovel || 'Mobile phone not provided' }}
+        </div>
+        <div class="info-item">
+          <i class="fas fa-store"></i>
+          Total Restaurants: {{ totalRestaurants || 0 }}
+        </div>
+        <div class="info-item">
+          <i class="fas fa-check-circle"></i>
+          Approved Restaurants: {{ approvedRestaurants || 0 }}
+        </div>
+        <div class="info-item">
+          <i class="fas fa-times-circle"></i>
+          Not Approved Restaurants: {{ notApprovedRestaurants || 0 }}
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="user?.role === 'Admin'">
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          {{ user?.managerTelemovel || 'Mobile phone not provided' }}
+        </div>
+        <div class="info-item">
+          <i class="fas fa-home"></i>
+          {{ user?.address || 'Address not provided' }}
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
