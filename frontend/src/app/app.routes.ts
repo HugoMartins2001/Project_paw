@@ -1,9 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './admin/home/home.component';
-import { LoginComponent } from './admin/login/login.component';
-import { RegisterComponent } from './admin/login/register/register.component';
+
+//Login
+import { LoginComponent } from './login/login.component';
+import { ForgotPaswwordComponent } from './login/forgot-paswword/forgot-paswword.component';
+import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
+
+//Register
+import { RegisterComponent } from './login/register/register.component';
+
+//Dashboard
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { ProfileComponent } from './admin/dashboard/profile/profile.component';
+import { ProfileEditComponent } from './admin/dashboard/profile-edit/profile-edit.component';
 
 //Restaurants
 import { RestaurantsComponent } from './admin/restaurants/restaurants.component';
@@ -27,11 +37,9 @@ import { DishDetailsComponent } from './admin/dishes/dish-details/dish-details.c
 //Overall
 import { LogsComponent } from './admin/logs/logs.component';
 import { UsersComponent } from './admin/users/users.component';
+
+//Security
 import { AuthGuardService } from './auth-guard.service';
-import { ForgotPaswwordComponent } from './admin/login/forgot-paswword/forgot-paswword.component';
-import { ResetPasswordComponent } from './admin/login/reset-password/reset-password.component';
-import { ProfileComponent } from './admin/dashboard/profile/profile.component';
-import { ProfileEditComponent } from './admin/dashboard/profile-edit/profile-edit.component';
 
 export const routes: Routes = [
   {
