@@ -337,13 +337,13 @@ menusController.toggleVisibility = async function (req, res, next) {
     );
 
     if (!menu) {
-      return res.status(404).send('Menu not found.');
+      return res.status(404).json({ message: 'Menu not found.' });  
     }
 
-    res.status(200).send('Visibility updated successfully.');
+    res.status(200).json({ message: 'Visibility updated successfully.', menu });
   } catch (err) {
     console.error('Error toggling visibility:', err);
-    res.status(500).send('An error occurred while updating visibility.');
+    res.status(500).json({ message: 'An error occurred while updating visibility.' });
   }
 };
 

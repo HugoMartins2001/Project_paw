@@ -15,7 +15,8 @@ export class DishesComponent implements OnInit {
   dishes: Dish[] = [];
   isLoading = true;
   userRole: string | null = null;
-  userId: string | null = null; // <-- Adiciona esta linha
+  userId: string | null = null;
+  
 
   constructor(private dishService: DishService) {}
 
@@ -66,5 +67,35 @@ export class DishesComponent implements OnInit {
 
   getDishImageUrl(dishPic: string): string {
     return `http://localhost:3000/uploads/${dishPic}`;
+  }
+
+  isDishManager(dish: Dish, userId: string | null): boolean {
+    if (!dish.managerId || !userId) return false;
+    if (typeof dish.managerId === 'string') {
+      return dish.managerId === userId;
+    }
+    return dish.managerId._id === userId;
+  }
+
+  toggleVisibility(dish: Dish): void {
+    const novoEstado = !dish.isVisible;
+    this.dishService.toggleVisibility(dish._id, novoEstado).subscribe({
+      next: () => {
+        dish.isVisible = novoEstado;
+        Swal.fire({
+          icon: 'success',
+          title: `Dish ${novoEstado ? 'visible' : 'hidden'} successfully!`,
+          showConfirmButton: false,
+          timer: 1200
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error updating visibility!',
+          text: err.error?.message || 'An unexpected error occurred.'
+        });
+      }
+    });
   }
 }

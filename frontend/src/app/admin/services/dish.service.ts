@@ -25,6 +25,8 @@ export interface Dish {
   allergens?: string[];
   menu?: { name?: string } | string;
   restaurant?: { name?: string } | string;
+  managerId?: string | { _id: string };
+  isVisible: boolean;
 }
 
 @Injectable({
@@ -77,6 +79,15 @@ export class DishService {
   const url = `http://localhost:3000/api/dishes/showDish/${id}`;
   return this.http.get<{ dish: Dish }>(url, { headers: this.getHeaders() }).pipe(
     map(res => res.dish),
+    catchError((error: HttpErrorResponse) => throwError(() => error))
+  );
+}
+
+toggleVisibility(id: string, isVisible: boolean): Observable<any> {
+  return this.http.post<any>(`http://localhost:3000/api/dishes/toggleVisibility/${id}`,
+    { isVisible },
+    { headers: this.getHeaders() }
+  ).pipe(
     catchError((error: HttpErrorResponse) => throwError(() => error))
   );
 }

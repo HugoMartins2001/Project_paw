@@ -3,11 +3,15 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+// Exemplo de interface Menu (ajusta conforme o teu projeto)
 export interface Menu {
     _id: string;
     name: string;
-    dishes: any[]; // Podes tipar melhor se tiveres interface Dish
+    // ... outros campos ...
+    managerId?: string | { _id: string }; // <-- Adiciona esta linha!
+    dishes?: any[];
     menuPic?: string;
+    isVisible?: boolean;
 }
 
 @Injectable({
@@ -62,6 +66,13 @@ export class MenuService {
                 console.error('Erro ao apagar menu:', error);
                 return throwError(() => error);
             })
+        );
+    }
+
+    toggleVisibility(id: string, isVisible: boolean): Observable<any> {
+        return this.http.post<any>(`http://localhost:3000/api/menus/toggleVisibility/${id}`,
+            { isVisible },
+            { headers: this.getHeaders() }
         );
     }
 }

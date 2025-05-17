@@ -22,7 +22,8 @@
           <div class="card-body d-flex flex-column justify-content-between">
             <div>
               <div class="text-center mb-3 restaurant-img-container" *ngIf="restaurant.restaurantPic; else noImage">
-                <img *ngIf="restaurant.restaurantPic" [src]="getRestaurantImageUrl(restaurant.restaurantPic)" [alt]="restaurant.name" class="restaurant-img" />
+                <img *ngIf="restaurant.restaurantPic" [src]="getRestaurantImageUrl(restaurant.restaurantPic)"
+                  [alt]="restaurant.name" class="restaurant-img" />
                 <div class="overlay-text">{{ restaurant.name }}</div>
               </div>
               <ng-template #noImage>
@@ -44,9 +45,17 @@
             </div>
             <div class="d-flex justify-content-between align-items-center mt-3">
               <a [routerLink]="['/restaurant-details', restaurant.name]" class="btn btn-sm btn-outline-primary">View</a>
-              <ng-container *ngIf="(userRole === 'Manager' && (restaurant.managerId?._id === userId || restaurant.managerId === userId)) || userRole === 'Admin'">
-                <a [routerLink]="['/restaurants/editRestaurant', restaurant._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
-                <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteRestaurant(restaurant._id)">Delete</button>
+              <ng-container
+                *ngIf="(userRole === 'Manager' && (restaurant.managerId?._id === userId || restaurant.managerId === userId)) || userRole === 'Admin'">
+                <a [routerLink]="['/restaurants/editRestaurant', restaurant._id]"
+                  class="btn btn-sm btn-outline-warning ms-2">Edit</a>
+                <button class="btn btn-sm btn-outline-danger ms-2"
+                  (click)="deleteRestaurant(restaurant._id)">Delete</button>
+                <button class="btn btn-sm"
+                  [ngClass]="restaurant.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
+                  (click)="toggleVisibility(restaurant)">
+                  {{ restaurant.isVisible ? 'Hide' : 'Show' }}
+                </button>
               </ng-container>
             </div>
           </div>

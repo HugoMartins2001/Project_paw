@@ -582,13 +582,13 @@ restaurantsController.toggleVisibility = async function (req, res, next) {
     );
 
     if (!restaurant) {
-      return res.status(404).send('Restaurant not found.');
+      return res.status(404).json({ error: 'Restaurant not found.' });  
     }
 
-    res.status(200).send('Visibility updated successfully.');
+    res.status(200).json({ message: 'Visibility updated successfully.' });
   } catch (err) {
     console.error('Error toggling visibility:', err);
-    res.status(500).send('An error occurred while updating visibility.');
+    res.status(500).json({ error: 'An error occurred while updating visibility.' });
   }
 };
 

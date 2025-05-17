@@ -54,7 +54,7 @@ export class MenuUpdateComponent implements OnInit {
       next: (menu: Menu) => {
         this.menuForm.patchValue({
           name: menu.name,
-          dishes: menu.dishes.map((d: any) => d._id ? d._id : d),
+          dishes: menu.dishes ? menu.dishes.map((d: any) => d._id ? d._id : d) : [],
         });
         this.currentPic = menu.menuPic || null;
         this.isLoading = false;

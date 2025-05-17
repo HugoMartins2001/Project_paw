@@ -89,5 +89,27 @@ export class RestaurantsComponent implements OnInit {
   getRestaurantImageUrl(restaurantPic: string): string {
     return `http://localhost:3000/uploads/${restaurantPic}`;
   }
+
+  toggleVisibility(restaurant: any): void {
+    const novoEstado = !restaurant.isVisible;
+    this.restaurantService.toggleVisibility(restaurant._id, novoEstado).subscribe({
+      next: () => {
+        restaurant.isVisible = novoEstado;
+        Swal.fire({
+          icon: 'success',
+          title: `Restaurant ${novoEstado ? 'visible' : 'hidden'} successfully!`,
+          showConfirmButton: false,
+          timer: 1200
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error updating visibility!',
+          text: err.error?.message || 'An unexpected error occurred.'
+        });
+      }
+    });
+  }
 }
 

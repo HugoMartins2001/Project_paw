@@ -64,4 +64,35 @@ export class MenusComponent implements OnInit {
   getMenuImageUrl(menuPic: string): string {
     return `http://localhost:3000/uploads/${menuPic}`;
   }
+
+  isMenuManager(menu: Menu, userId: string | null): boolean {
+    if (!menu.managerId || !userId) return false;
+    if (typeof menu.managerId === 'string') {
+      return menu.managerId === userId;
+    }
+    // Se for objeto
+    return menu.managerId._id === userId;
+  }
+
+  toggleVisibility(menu: Menu): void {
+    const novoEstado = !menu.isVisible;
+    this.menuService.toggleVisibility(menu._id, novoEstado).subscribe({
+      next: () => {
+        menu.isVisible = novoEstado;
+        Swal.fire({
+          icon: 'success',
+          title: `Menu ${novoEstado ? 'visible' : 'hidden'} successfully!`,
+          showConfirmButton: false,
+          timer: 1200
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error updating visibility!',
+          text: err.error?.message || 'An unexpected error occurred.'
+        });
+      }
+    });
+  }
 }

@@ -103,4 +103,12 @@ export class RestaurantService {
       catchError((error: HttpErrorResponse) => throwError(() => error))
     );
   }
+
+  toggleVisibility(id: string, isVisible: boolean): Observable<any> {
+    return this.http.post<any>(`http://localhost:3000/api/restaurants/toggleVisibility/${id}`, { isVisible },
+      { headers: this.getHeaders() }
+    ).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
 }
