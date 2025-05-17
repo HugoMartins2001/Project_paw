@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router'; // <-- Adiciona isto
+import { RouterModule } from '@angular/router'; 
 import { MenuService, Menu } from '../services/menu.service';
-import { RestaurantService } from '../services/restaurant.service'; // <-- Importa o serviço de restaurante
+import { RestaurantService } from '../services/restaurant.service'; 
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 
@@ -11,14 +11,14 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   templateUrl: './menus.component.html',
   styleUrls: ['./menus.component.css'],
-  imports: [CommonModule, RouterModule, FormsModule] // <-- Adiciona FormsModule aqui
+  imports: [CommonModule, RouterModule, FormsModule]
 })
 export class MenusComponent implements OnInit {
   menus: Menu[] = [];
-  restaurants: any[] = []; // <-- Adiciona isto
+  restaurants: any[] = []; 
   isLoading = true;
-  userRole: string | null = null; // <-- Adiciona isto
-  userId: string | null = null; // <-- Adiciona isto
+  userRole: string | null = null;
+  userId: string | null = null; 
 
   filterName: string | null = null;
   filterRestaurant: string | null = null;
@@ -28,9 +28,9 @@ export class MenusComponent implements OnInit {
   constructor(private menuService: MenuService, private restaurantService: RestaurantService) { } // <-- Injeta o serviço de restaurante
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem('role'); // <-- E isto
-    this.userId = localStorage.getItem('id'); // <-- E isto
-    this.loadRestaurants(); // <-- Carrega restaurantes
+    this.userRole = localStorage.getItem('role');
+    this.userId = localStorage.getItem('id');
+    this.loadRestaurants();
     this.loadMenus();
   }
 
@@ -59,11 +59,9 @@ export class MenusComponent implements OnInit {
 
     this.menuService.getMenus(params).subscribe({
       next: (data) => {
-        // Se o backend devolve { menus: [...] }
         if (data && Array.isArray(data.menus)) {
           this.menus = data.menus;
         } else if (Array.isArray(data)) {
-          // Se devolve diretamente um array
           this.menus = data;
         } else {
           this.menus = [];
@@ -77,7 +75,7 @@ export class MenusComponent implements OnInit {
     });
   }
 
-  deleteMenu(id: string): void {//ingles
+  deleteMenu(id: string): void {
     Swal.fire({
       title: 'Are you sure?',
       text: 'This action cannot be undone!',
@@ -90,7 +88,6 @@ export class MenusComponent implements OnInit {
         this.menuService.deleteMenu(id).subscribe({
           next: () => {
             Swal.fire('Deleted!', 'The menu has been deleted.', 'success');
-            // Reload the menu list
             this.loadMenus();
           },
           error: () => {

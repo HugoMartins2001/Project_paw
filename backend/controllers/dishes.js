@@ -9,38 +9,43 @@ let dishesController = {};
 // Controlador para exibir todos os pratos
 dishesController.showAll = async function (req, res, next) {
   try {
-    const user = req.user;
-    const { page = 1, limit = 6, name, minPrice, maxPrice, category, allergens } = req.query; // Parâmetros de filtro
+    const user = req.user; // pode ser undefined
+    const { page = 1, limit = 6, name, minPrice, maxPrice, category, allergens } = req.query;
     const skip = (page - 1) * limit;
 
-    // Construir o filtro de busca
-    let query = { isVisible: true }; // Apenas pratos visíveis por padrão
+    // Apenas pratos visíveis por padrão
+    let query = { isVisible: true };
 
     // Admin pode ver todos os pratos, incluindo os ocultos
-    if (user.role === "Admin") {
-      delete query.isVisible; // Remove o filtro de visibilidade para Admin
+    if (user && user.role === "Admin") {
+      delete query.isVisible;
+    }
+
+    // Manager só vê os seus pratos
+    if (user && user.role === "Manager") {
+      query.managerId = user._id;
     }
 
     // Filtrar por nome do prato
     if (name) {
-      query.name = { $regex: name, $options: "i" }; // Busca por nome (case insensitive)
+      query.name = { $regex: name, $options: "i" };
     }
 
     // Filtrar por faixa de preço
     if (minPrice || maxPrice) {
-      query["prices.media"] = {}; // Considerando o preço médio como base
-      if (minPrice) query["prices.media"].$gte = parseFloat(minPrice); // Preço mínimo
-      if (maxPrice) query["prices.media"].$lte = parseFloat(maxPrice); // Preço máximo
+      query["prices.media"] = {};
+      if (minPrice) query["prices.media"].$gte = parseFloat(minPrice);
+      if (maxPrice) query["prices.media"].$lte = parseFloat(maxPrice);
     }
 
     // Filtrar por categoria
     if (category) {
-      query.category = { $regex: category, $options: "i" }; // Busca por categoria (case insensitive)
+      query.category = { $regex: category, $options: "i" };
     }
 
     // Filtrar por alérgenos
     if (allergens) {
-      query.allergens = { $regex: allergens, $options: "i" }; // Busca por alérgenos (case insensitive)
+      query.allergens = { $regex: allergens, $options: "i" };
     }
 
     // Buscar todos os pratos com paginação e aplicar os filtros
@@ -54,11 +59,9 @@ dishesController.showAll = async function (req, res, next) {
 
     // Associar menus e restaurantes aos pratos
     const dishesWithAssociations = dishList.map((dish) => {
-      // Encontrar menus que incluem o prato
       const associatedMenus = menuList
         .filter((menu) => menu.dishes.some((menuDish) => menuDish.equals(dish._id)))
         .map((menu) => {
-          // Encontrar restaurantes associados ao menu
           const associatedRestaurants = allRestaurants
             .filter((restaurant) => restaurant.menus.some((menuId) => menuId.equals(menu._id)))
             .map((restaurant) => ({
@@ -69,13 +72,13 @@ dishesController.showAll = async function (req, res, next) {
           return {
             _id: menu._id,
             menuName: menu.name,
-            restaurants: associatedRestaurants.length > 0 ? associatedRestaurants : [], // Garante que seja um array vazio se não houver restaurantes
+            restaurants: associatedRestaurants.length > 0 ? associatedRestaurants : [],
           };
         });
 
       return {
         ...dish.toObject(),
-        associatedMenus: associatedMenus.length > 0 ? associatedMenus : [], // Garante que seja um array vazio se não houver menus
+        associatedMenus: associatedMenus.length > 0 ? associatedMenus : [],
       };
     });
 
@@ -90,35 +93,23 @@ dishesController.showAll = async function (req, res, next) {
 
     // Filtrar pratos com base no papel do usuário
     const filteredDishes = dishesWithAssociations.filter((dish) => {
-      if (user.role === "Admin") {
-        // Admin pode ver todos os pratos
-        return true;
-      }
-
-      if (user.role === "Manager") {
-        // Manager só pode ver os pratos que ele criou
-        return dish.managerId && dish.managerId.toString() === user._id.toString();
-      }
-
-      if (user.role === "Client") {
-        // Client pode ver apenas pratos visíveis
+      if (!user) {
+        // Não autenticado: só vê pratos visíveis
         return dish.isVisible;
       }
-
-      // Outros papéis (se houver) não podem ver pratos
+      if (user.role === "Admin") return true;
+      if (user.role === "Manager") return dish.managerId && dish.managerId.toString() === user._id.toString();
+      if (user.role === "Client") return dish.isVisible;
       return false;
     });
 
     // Filtrar menus e restaurantes associados para managers
-    if (user.role === "Manager") {
+    if (user && user.role === "Manager") {
       filteredDishes.forEach((dish) => {
         dish.associatedMenus = dish.associatedMenus.filter((menu) => {
-          // Filtrar menus que pertencem ao manager
           menu.restaurants = menu.restaurants.filter((restaurant) => {
             return restaurant.managerId && restaurant.managerId.toString() === user._id.toString();
           });
-
-          // Retornar apenas menus que ainda têm restaurantes associados
           return menu.restaurants.length > 0;
         });
       });
@@ -128,10 +119,9 @@ dishesController.showAll = async function (req, res, next) {
     const totalDishes = await mongoDish.countDocuments(query);
     const totalPages = Math.ceil(totalDishes / limit);
 
-    // Renderizar a página com os pratos filtrados e paginação
     res.json({
       dishes: filteredDishes,
-      user: user,
+      user: user || null,
       currentPage: parseInt(page),
       totalPages,
       filters: { name, minPrice, maxPrice, category, allergens },

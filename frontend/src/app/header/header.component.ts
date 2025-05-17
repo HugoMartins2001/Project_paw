@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
 
   navigateToHome(): void { this.router.navigate(['/home']); }
   navigateToClientHome(): void { this.router.navigate(['/clientHome']); }
-  navigateToMenu(): void { this.router.navigate(['/restaurants']); }
+  navigateToRestaurant(): void { this.router.navigate(['/restaurants']); }
   navigateToRestaurantApproval(): void { this.router.navigate(['/restaurantApprove']); }
   navigateToDashboard(): void { this.router.navigate(['/dashboard']); }
   navigateToLogs(): void { this.router.navigate(['/logs']); }
@@ -59,6 +59,8 @@ export class HeaderComponent implements OnInit {
   navigateToDishes(): void { this.router.navigate(['/dishes']); }
   navigateToOrders(): void { this.router.navigate(['/orders']); }
   navigateToProfile(): void { this.router.navigate(['/profile']); }
+  navigateToAbout(): void { this.router.navigate(['/about']); }
+  navigateToContact(): void { this.router.navigate(['/contact']); }
 
   logout(): void {
     Swal.fire({

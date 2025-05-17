@@ -30,26 +30,25 @@ menusController.renderCreateMenu = async function (req, res, next) {
 // Controlador para exibir todos os menus
 menusController.showAll = async function (req, res, next) {
   try {
-    const user = req.user;
-    const { page = 1, limit = 6, name, restaurant, minPrice, maxPrice, sortBy = "name", order = "asc" } = req.query; // Parâmetros de filtro e ordenação
+    const user = req.user; // pode ser undefined
+    const { page = 1, limit = 6, name, restaurant, minPrice, maxPrice, sortBy = "name", order = "asc" } = req.query;
     const skip = (page - 1) * limit;
 
-    // Construir o filtro de busca
     let query = {};
 
-    // Filtrar por nome do menu
     if (name) {
-      query.name = { $regex: name, $options: "i" }; // Busca por nome (case insensitive)
+      query.name = { $regex: name, $options: "i" };
     }
 
-    // Filtrar menus com base no papel do usuário
-    if (user.role === "Manager") {
-      query.managerId = user._id; // Gerentes só podem ver menus que eles criaram
-    } else if (req.user.role === "Client") {
-      query.isVisible = true; // Clientes só podem ver menus visíveis
+    // Se não autenticado, só mostra menus visíveis
+    if (!user) {
+      query.isVisible = true;
+    } else if (user.role === "Manager") {
+      query.managerId = user._id;
+    } else if (user.role === "Client") {
+      query.isVisible = true;
     }
 
-    // Filtrar por preço mínimo e máximo
     if (minPrice) {
       query.price = { ...query.price, $gte: Number(minPrice) };
     }
@@ -57,77 +56,59 @@ menusController.showAll = async function (req, res, next) {
       query.price = { ...query.price, $lte: Number(maxPrice) };
     }
 
-    // Ordenação
-    const sortOrder = order === "desc" ? -1 : 1; // Ordem ascendente ou descendente
+    const sortOrder = order === "desc" ? -1 : 1;
     const sortOptions = {};
     sortOptions[sortBy] = sortOrder;
 
-    // Buscar menus com base no filtro e aplicar paginação e ordenação
     const menuList = await mongoMenu
       .find(query)
-      .populate("dishes") // Popula os pratos associados ao menu
-      .populate("restaurant") // Popula os restaurantes associados ao menu
+      .populate("dishes")
+      .populate("restaurant")
       .sort(sortOptions)
       .skip(skip)
       .limit(parseInt(limit));
 
-    // Buscar todos os restaurantes
     const allRestaurants = await mongoRestaurant.find();
 
-    // Associar manualmente os restaurantes aos menus
     const menusWithRestaurants = menuList.map((menu) => {
       const associatedRestaurants = allRestaurants
         .filter((restaurant) => {
-          // Administradores podem ver todos os restaurantes
-          if (user.role === "Admin") {
+          if (user && user.role === "Admin") {
             return restaurant.menus.includes(menu._id);
           }
-          // Gerentes só podem ver restaurantes que eles criaram
-          return (
-            restaurant.menus.includes(menu._id) &&
-            restaurant.managerId.toString() === user._id.toString()
-          );
+          if (user && user.role === "Manager") {
+            return (
+              restaurant.menus.includes(menu._id) &&
+              restaurant.managerId.toString() === user._id.toString()
+            );
+          }
+          // Para não autenticados e clientes, só mostra restaurantes visíveis
+          return restaurant.menus.includes(menu._id);
         })
         .map((restaurant) => restaurant.name);
 
       return {
         ...menu.toObject(),
-        restaurantNames: associatedRestaurants, // Adiciona os nomes dos restaurantes associados
+        restaurantNames: associatedRestaurants,
       };
     });
 
     // Filtrar menus com base no papel do usuário
     const filteredMenus = menusWithRestaurants.filter((menu) => {
-      if (!menu.managerId) {
-        return false; // Ignora menus sem um gerente associado
-      }
-
-      if (user.role === "Admin") {
-        return true; // Admin pode ver todos os menus
-      }
-
-      if (user.role === "Client" && menu.isVisible) {
-        return true; // Clientes só podem ver menus visíveis
-      }
-
-      if (
-        user.role === "Manager" &&
-        menu.managerId.toString() === user._id.toString()
-      ) {
-        return true; // Gerentes só podem ver menus que eles criaram
-      }
-
+      if (!menu.managerId) return false;
+      if (!user) return menu.isVisible === true;
+      if (user.role === "Admin") return true;
+      if (user.role === "Client" && menu.isVisible) return true;
+      if (user.role === "Manager" && menu.managerId.toString() === user._id.toString()) return true;
       return false;
     });
 
-    // Total de menus para paginação
     const totalMenus = await mongoMenu.countDocuments(query);
     const totalPages = Math.ceil(totalMenus / limit);
 
-    // jsonizar a página com os menus filtrados e informações de paginação
     res.json({
       menus: filteredMenus,
-      user: user,
+      user: user || null,
       currentPage: parseInt(page),
       totalPages,
       filters: { name, sortBy, order },

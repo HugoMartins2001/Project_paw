@@ -69,7 +69,8 @@
             </p>
           </div>
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <a [routerLink]="['/dish-details', dish._id]" class="btn btn-sm btn-outline-primary">View</a>
+            <a *ngIf="userRole" [routerLink]="['/dish-details', dish._id]" class="btn btn-sm btn-outline-primary">View</a>
+            <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver detalhes</button>
             <ng-container *ngIf="(userRole === 'Manager' && isDishManager(dish, userId)) || userRole === 'Admin'">
               <a [routerLink]="['/dishes/editDish', dish._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
               <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteDish(dish._id)">Delete</button>
