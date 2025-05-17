@@ -45,11 +45,11 @@ export class HeaderComponent {
 
   logout(): void {
   Swal.fire({
-    title: 'Tem a certeza que quer sair?',
+    title: 'Are you sure you want to log out?',
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonText: 'Sim, sair',
-    cancelButtonText: 'Cancelar',
+    confirmButtonText: 'Yes, log out',
+    cancelButtonText: 'Cancel',
     reverseButtons: true
   }).then((result) => {
     if (result.isConfirmed) {
@@ -58,7 +58,7 @@ export class HeaderComponent {
       this.router.navigate(['/']);
       Swal.fire({
         icon: 'success',
-        title: 'Sessão terminada!',
+        title: 'Session ended!',
         timer: 1200,
         showConfirmButton: false
       });

@@ -1,1 +1,60 @@
-<p>profile-edit works!</p>
+<div class="container">
+  <h1>Edit Profile</h1>
+
+  <div class="profile-card" *ngIf="profileForm">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <div class="profile-email">
+        <p>Email: {{ user?.email }}</p>
+      </div>
+
+      <div class="info-box">
+        <h3>Personal informations</h3>
+        <div class="info-item">
+          <label for="name">Name:</label>
+          <input type="text" id="name" formControlName="name" required />
+        </div>
+
+        <ng-container *ngIf="user?.role === 'Client'">
+          <div class="info-item">
+            <label for="clienteTelemovel">Telemóvel:</label>
+            <input type="text" id="clienteTelemovel" formControlName="clienteTelemovel" />
+          </div>
+          <div class="info-item">
+            <label for="clienteNif">NIF:</label>
+            <input type="text" id="clienteNif" formControlName="clienteNif" />
+          </div>
+          <div class="info-item">
+            <label for="address">Endereço:</label>
+            <input type="text" id="address" formControlName="address" />
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="user?.role === 'Manager'">
+          <div class="info-item">
+            <label for="managerTelemovel">Telemóvel:</label>
+            <input type="text" id="managerTelemovel" formControlName="managerTelemovel" />
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="user?.role === 'Admin'">
+          <div class="info-item">
+            <label for="managerTelemovel">Telemóvel:</label>
+            <input type="text" id="managerTelemovel" formControlName="managerTelemovel" />
+          </div>
+          <div class="info-item">
+            <label for="address">Endereço:</label>
+            <input type="text" id="address" formControlName="address" />
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="btn-primary" [disabled]="profileForm.invalid || loading">
+          {{ loading ? 'Saving...' : 'Save Changes' }}
+        </button>
+        <button type="button" class="btn-secondary" (click)="goBack()">Back</button>
+      </div>
+    </form>
+    <div *ngIf="errorMsg" class="text-danger mt-2">{{ errorMsg }}</div>
+  </div>
+</div>

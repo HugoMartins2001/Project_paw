@@ -12,7 +12,7 @@
         <div class="card-body d-flex flex-column justify-content-between">
           <div>
             <div class="text-center mb-3 restaurant-img-container" *ngIf="dish.dishPic; else noImage">
-              <img [src]="'/uploads/' + dish.dishPic" [alt]="dish.name" class="restaurant-img" />
+              <img [src]="getDishImageUrl(dish.dishPic)" alt="Dish Image" class="restaurant-img" />
               <div class="overlay-text">{{ dish.name }}</div>
             </div>
             <ng-template #noImage>
@@ -22,11 +22,25 @@
             </ng-template>
             <h5 class="card-title">{{ dish.name }}</h5>
             <p class="mb-2 text-muted" *ngIf="dish.description">{{ dish.description }}</p>
-            <ul class="list-group mb-2" *ngIf="dish.ingredients && dish.ingredients.length > 0">
-              <li class="list-group-item py-1 px-2" *ngFor="let ing of dish.ingredients">
-                <small>- {{ ing }}</small>
-              </li>
-            </ul>
+            <p class="mb-1" *ngIf="dish.menu">
+              <strong>Menu:</strong>
+              <ng-container *ngIf="isObject(dish.menu); else menuString">
+                {{ dish.menu.name }}
+              </ng-container>
+              <ng-template #menuString>
+                {{ dish.menu }}
+              </ng-template>
+            </p>
+
+            <p class="mb-1" *ngIf="dish.restaurant">
+              <strong>Restaurante:</strong>
+              <ng-container *ngIf="isObject(dish.restaurant); else restaurantString">
+                {{ dish.restaurant.name }}
+              </ng-container>
+              <ng-template #restaurantString>
+                {{ dish.restaurant }}
+              </ng-template>
+            </p>
           </div>
           <div class="d-flex justify-content-between align-items-center mt-3">
             <a [routerLink]="['/dish-details', dish._id]" class="btn btn-sm btn-outline-primary">View</a>

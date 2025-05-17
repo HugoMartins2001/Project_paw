@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuService, Menu } from '../services/menu.service';
+import { RestaurantService } from '../services/restaurant.service';
 
 @Component({
   selector: 'app-menu-details',
@@ -13,6 +14,7 @@ import { MenuService, Menu } from '../services/menu.service';
 export class MenuDetailsComponent implements OnInit {
   menu: Menu | null = null;
   isLoading = true;
+  restaurantList: any[] = []; // <-- Adiciona esta linha
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +32,8 @@ export class MenuDetailsComponent implements OnInit {
             menu.dishes = [];
           }
           this.menu = menu;
+          // Preenche restaurantList se vier do backend:
+          this.restaurantList = (menu as any).restaurants || [];
           this.isLoading = false;
         },
         error: () => {

@@ -85,3 +85,14 @@ h2 {
   background-color: #6c63ff;
   color: white;
 }
+
+.dish-img {
+  max-width: 220px;
+  max-height: 220px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+  margin-bottom: 12px;
+}

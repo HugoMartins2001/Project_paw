@@ -63,11 +63,11 @@ export class MenuCreateComponent implements OnInit {
 
     this.menuService.createMenu(formData).subscribe({
       next: () => {
-        Swal.fire('Sucesso', 'Menu criado com sucesso!', 'success').then(() => {
+        Swal.fire('Success', 'Menu created successfully!', 'success').then(() => {
           this.router.navigate(['/menus']);
         });
       },
-      error: () => Swal.fire('Erro', 'Erro ao criar menu!', 'error')
+      error: () => Swal.fire('Error', 'Error creating menu!', 'error')
     });
   }
 }

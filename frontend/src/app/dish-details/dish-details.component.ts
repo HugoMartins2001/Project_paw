@@ -38,4 +38,8 @@ export class DishDetailsComponent implements OnInit {
       this.isLoading = false;
     }
   }
+
+  getDishImageUrl(dishPic: string): string {
+    return `http://localhost:3000/uploads/${dishPic}`;
+  }
 }

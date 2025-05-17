@@ -45,7 +45,7 @@ export class DishUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.dishId = this.route.snapshot.paramMap.get('id');
     if (!this.dishId) {
-      Swal.fire('Erro', 'ID do prato não encontrado.', 'error');
+      Swal.fire('Error', 'Dish ID not found.', 'error');
       this.router.navigate(['/dishes']);
       return;
     }
@@ -71,7 +71,7 @@ export class DishUpdateComponent implements OnInit {
         this.isLoading = false;
       },
       error: () => {
-        Swal.fire('Erro', 'Prato não encontrado.', 'error');
+        Swal.fire('Error', 'Dish not found.', 'error');
         this.router.navigate(['/dishes']);
       }
     });
@@ -121,13 +121,13 @@ export class DishUpdateComponent implements OnInit {
       formData.append('dishPic', this.selectedFile);
     }
 
-    this.dishService.updateDish(this.dishId, formData).subscribe({
+    this.dishService.updateDish(this.dishId, formData).subscribe({  
       next: () => {
-        Swal.fire('Sucesso', 'Prato atualizado com sucesso!', 'success').then(() => {
+        Swal.fire('Success', 'Dish updated successfully!', 'success').then(() => {
           this.router.navigate(['/dishes']);
         });
       },
-      error: () => Swal.fire('Erro', 'Erro ao atualizar prato!', 'error')
+      error: () => Swal.fire('Error', 'Error updating dish!', 'error')
     });
   }
 }

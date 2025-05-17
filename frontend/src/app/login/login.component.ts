@@ -49,14 +49,14 @@ export class LoginComponent {
       const controls = this.loginForm.controls;
       if (controls['email'].invalid) {
         if (controls['email'].errors?.['required']) {
-          this.errors.email = 'O email é obrigatório.';
+          this.errors.email = 'Email is required  .';
         } else if (controls['email'].errors?.['email']) {
-          this.errors.email = 'Formato de email inválido.';
+          this.errors.email = 'Invalid email format.';
         }
       }
 
       if (controls['password'].errors?.['required']) {
-        this.errors.password = 'A password é obrigatória.';
+        this.errors.password = 'Password is required.';
       }
 
       return;
@@ -92,27 +92,27 @@ export class LoginComponent {
         },
         error: (err) => {
           this.isLoading = false;
-          this.errors = err.error?.erros || {
-            geral: 'Erro inesperado ao tentar login.',
+          this.errors = err.error?.errors || {
+            geral: 'An unexpected error occurred while trying to log in.',
           };
 
           if (this.errors.email) {
             Swal.fire({
               icon: 'error',
-              title: 'Email não encontrado',
+              title: 'Email not found',
               text: this.errors.email,
             });
           } else if (this.errors.password) {
             Swal.fire({
               icon: 'error',
-              title: 'Password incorreta',
+              title: 'Incorrect password',
               text: this.errors.password,
             });
           } else {
             Swal.fire({
               icon: 'error',
-              title: 'Erro no login',
-              text: this.errors.geral || 'Verifica os dados introduzidos.',
+              title: 'Login error',
+              text: this.errors.geral || 'Check the entered data.',
             });
           }
         },
@@ -130,7 +130,7 @@ export class LoginComponent {
 
   onForgotSubmit() {
     if (!this.forgotEmail) {
-      Swal.fire('Erro', 'Por favor insira o seu email.', 'error');
+      Swal.fire('Error', 'Please enter your email.', 'error');
       return;
     }
     this.forgotLoading = true;
@@ -138,12 +138,12 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.forgotLoading = false;
-          Swal.fire('Sucesso', 'Se o email existir, receberá instruções para recuperar a password.', 'success');
+          Swal.fire('Success', 'If the email exists, you will receive instructions to recover your password.', 'success');
           this.hideForgotForm();
         },
         error: () => {
           this.forgotLoading = false;
-          Swal.fire('Erro', 'Ocorreu um erro ao tentar recuperar a password.', 'error');
+          Swal.fire('Error', 'An error occurred while trying to recover the password.', 'error');
         }
       });
   }

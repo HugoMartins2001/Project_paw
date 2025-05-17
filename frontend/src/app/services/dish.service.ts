@@ -7,13 +7,24 @@ export interface Dish {
   _id: string;
   name: string;
   description?: string;
+  category?: string;
   dishPic?: string;
+  prices?: {
+    pequena?: number;
+    media?: number;
+    grande?: number;
+  };
   ingredients?: string[];
-  prices?: any;
-  nutrition?: any;
+  nutrition?: {
+    calories?: number;
+    fat?: number;
+    protein?: number;
+    carbs?: number;
+  };
   nutriScore?: string;
   allergens?: string[];
-  category?: string; 
+  menu?: { name?: string } | string;
+  restaurant?: { name?: string } | string;
 }
 
 @Injectable({

@@ -145,15 +145,24 @@ dishesController.showAll = async function (req, res, next) {
 // Controlador para criar um prato
 dishesController.createDish = async function (req, res, next) {
   try {
-    const { name, description, category, ingredients, allergens, calories, fat, protein, carbs, nutriScore } = req.body;
+
+    if (req.body.prices && typeof req.body.prices === 'string') {
+      try { req.body.prices = JSON.parse(req.body.prices); } catch { req.body.prices = { pequena: 0, media: 0, grande: 0 }; }
+    }
+    if (req.body.nutrition && typeof req.body.nutrition === 'string') {
+      try { req.body.nutrition = JSON.parse(req.body.nutrition); } catch { req.body.nutrition = { calories: 0, fat: 0, protein: 0, carbs: 0 }; }
+    }
+
+    const { name, description, category, ingredients, allergens, nutriScore } = req.body;
+    const nutrition = req.body.nutrition || {};
+    const calories = nutrition.calories;
+    const fat = nutrition.fat;
+    const protein = nutrition.protein;
+    const carbs = nutrition.carbs;
 
     const dishPic = req.file ? req.file.filename : null;
-
-    const prices = {
-      pequena: parseFloat(req.body.price_pequena) || 0,
-      media: parseFloat(req.body.price_media) || 0,
-      grande: parseFloat(req.body.price_grande) || 0,
-    };
+    const prices = req.body.prices || { pequena: 0, media: 0, grande: 0 };
+    const nutrition1 = req.body.nutrition || { calories: 0, fat: 0, protein: 0, carbs: 0 };
 
     const user = req.user;
 
@@ -168,21 +177,33 @@ dishesController.createDish = async function (req, res, next) {
 
     // Chamada à API externa para obter informações nutricionais
     let nutritionData = {};
-    try {
-      const nutritionRes = await axios.get(
-        "https://api.spoonacular.com/recipes/guessNutrition",
-        {
-          params: {
-            title: name,
-            apiKey: process.env.SPOONACULAR_API_KEY,
-          },
-          timeout: 5000, // Timeout para evitar problemas com a API
-        }
-      );
-      nutritionData = nutritionRes.data;
-    } catch (error) {
-      console.error("Error fetching nutrition data:", error.message);
-      // Se a API falhar, usa os valores do formulário
+    if (
+      !calories || !fat || !protein || !carbs // se todos vierem vazios
+    ) {
+      try {
+        const nutritionRes = await axios.get(
+          "https://api.spoonacular.com/recipes/guessNutrition",
+          {
+            params: {
+              title: name,
+              apiKey: process.env.SPOONACULAR_API_KEY,
+            },
+            timeout: 5000,
+          }
+        );
+        nutritionData = nutritionRes.data;
+      } catch (error) {
+        console.error("Error fetching nutrition data:", error.message);
+        nutritionData = {
+          calories: { value: 0 },
+          fat: { value: 0 },
+          protein: { value: 0 },
+          carbs: { value: 0 },
+          nutritionGrade: nutriScore || "N/A",
+        };
+      }
+    } else {
+      // Usa os valores do formulário
       nutritionData = {
         calories: { value: parseFloat(calories) || 0 },
         fat: { value: parseFloat(fat) || 0 },
@@ -192,24 +213,24 @@ dishesController.createDish = async function (req, res, next) {
       };
     }
 
-    const finalCalories = nutritionData?.calories?.value || parseFloat(calories) || 0;
-    const finalFat = nutritionData?.fat?.value || parseFloat(fat) || 0;
-    const finalProtein = nutritionData?.protein?.value || parseFloat(protein) || 0;
-    const finalCarbs = nutritionData?.carbs?.value || parseFloat(carbs) || 0;
+    const finalCalories = nutritionData?.calories?.value || 0;
+    const finalFat = nutritionData?.fat?.value || 0;
+    const finalProtein = nutritionData?.protein?.value || 0;
+    const finalCarbs = nutritionData?.carbs?.value || 0;
     const finalNutriScore = nutritionData?.nutritionGrade || nutriScore || "N/A";
 
     // Verificar se ingredients é uma string antes de usar .split()
     const ingredientsList = Array.isArray(ingredients)
       ? ingredients
       : ingredients
-      ? ingredients.split(",").map((el) => el.trim())
-      : [];
+        ? ingredients.split(",").map((el) => el.trim())
+        : [];
 
     const allergensList = Array.isArray(allergens)
       ? allergens
       : allergens
-      ? allergens.split(",").map((el) => el.trim())
-      : [];
+        ? allergens.split(",").map((el) => el.trim())
+        : [];
 
     const dishData = {
       name,
@@ -223,6 +244,7 @@ dishesController.createDish = async function (req, res, next) {
         protein: finalProtein,
         carbs: finalCarbs,
       },
+      nutrition1,
       nutriScore: finalNutriScore,
       allergens: allergensList,
       managerId: user._id,
@@ -367,11 +389,11 @@ dishesController.renderEditDish = function (req, res, next) {
       }
 
       // Buscar categorias existentes
-       // Categorias predefinidas
-    const predefinedCategories = ['Meat', 'Vegetarian', 'Vegan', 'Dessert'];
+      // Categorias predefinidas
+      const predefinedCategories = ['Meat', 'Vegetarian', 'Vegan', 'Dessert'];
 
-    // Combinar categorias predefinidas com as existentes, removendo duplicatas
-    const categories = Array.from(new Set([...predefinedCategories]));
+      // Combinar categorias predefinidas com as existentes, removendo duplicatas
+      const categories = Array.from(new Set([...predefinedCategories]));
 
 
       // jsonizar a página de edição com as categorias
@@ -413,16 +435,16 @@ dishesController.updateDish = function (req, res, next) {
         ingredients: Array.isArray(ingredients)
           ? ingredients
           : ingredients
-          ? ingredients.split(",").map((el) => el.trim())
-          : dish.ingredients || [],
+            ? ingredients.split(",").map((el) => el.trim())
+            : dish.ingredients || [],
         prices,
         nutrition,
         nutriScore: nutriScore || dish.nutriScore || "N/A",
         allergens: Array.isArray(allergens)
           ? allergens
           : allergens
-          ? allergens.split(",").map((el) => el.trim())
-          : dish.allergens || [],
+            ? allergens.split(",").map((el) => el.trim())
+            : dish.allergens || [],
       };
       if (req.file) updatedDishData.dishPic = req.file.filename;
       return mongoDish.findByIdAndUpdate(dishId, updatedDishData, { new: true });

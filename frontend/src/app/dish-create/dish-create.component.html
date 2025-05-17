@@ -1,1 +1,105 @@
-<p>dish-create works!</p>
+<div class="container">
+  <div class="card">
+    <h2>New Dish</h2>
+
+    <form [formGroup]="dishForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" autocomplete="off">
+      <div class="form-group">
+        <label for="name">Dish Name</label>
+        <input type="text" id="name" formControlName="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" formControlName="category" required>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+        <button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="showNewCategory = true">
+          <i class="bi bi-plus-circle"></i> Add New Category
+        </button>
+      </div>
+
+      <div id="newCategoryForm" *ngIf="showNewCategory" class="mb-2">
+        <label for="newCategory">New Category</label>
+        <input type="text" id="newCategory" formControlName="newCategory" placeholder="Enter new category" class="form-control" />
+        <button type="button" class="btn btn-primary mt-2" (click)="addCategory()">Save Category</button>
+      </div>
+
+      <div class="form-group form-full">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" rows="3" required></textarea>
+      </div>
+
+      <div class="form-group form-full">
+        <label for="ingredients">Ingredients (comma-separated)</label>
+        <input type="text" id="ingredients" formControlName="ingredients" required />
+      </div>
+
+      <div class="form-group">
+        <label for="prices_pequena">Small Portion Price</label>
+        <input type="number" step="0.01" id="prices_pequena" formControlName="precoPequena" required />
+      </div>
+
+      <div class="form-group">
+        <label for="prices_media">Medium Portion Price</label>
+        <input type="number" step="0.01" id="prices_media" formControlName="precoMedia" required />
+      </div>
+
+      <div class="form-group">
+        <label for="prices_grande">Large Portion Price</label>
+        <input type="number" step="0.01" id="prices_grande" formControlName="precoGrande" required />
+      </div>
+
+      <div class="form-group">
+        <label for="dishPic" class="form-label">Dish Picture</label>
+        <input type="file" id="dishPic" (change)="onFileChange($event)" class="form-control" accept="image/*"/>
+        <div *ngIf="dishPicPreview" class="mt-2">
+          <img [src]="dishPicPreview" alt="Preview" style="max-width:120px;max-height:120px;border-radius:8px;">
+        </div>
+      </div>
+
+      <div class="form-group form-full">
+        <label for="allergens">Allergens (comma-separated)</label>
+        <input type="text" id="allergens" formControlName="allergens" />
+      </div>
+
+      <div class="form-group">
+        <label for="calories">Calories</label>
+        <input type="number" step="0.01" id="calories" formControlName="calories" placeholder="Enter calories"  />
+      </div>
+
+      <div class="form-group">
+        <label for="fat">Fat (g)</label>
+        <input type="number" step="0.01" id="fat" formControlName="fat" placeholder="Enter fat content"  />
+      </div>
+
+      <div class="form-group">
+        <label for="protein">Protein (g)</label>
+        <input type="number" step="0.01" id="protein" formControlName="protein" placeholder="Enter protein content"  />
+      </div>
+
+      <div class="form-group">
+        <label for="carbs">Carbohydrates (g)</label>
+        <input type="number" step="0.01" id="carbs" formControlName="carbs" placeholder="Enter carbohydrate content"  />
+      </div>
+
+      <div class="form-group">
+        <label for="nutriScore">Nutri-Score</label>
+        <select id="nutriScore" formControlName="nutriScore">
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+          <option value="N/A">N/A</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="dishForm.invalid || isLoading">
+          {{ isLoading ? 'Creating...' : 'Create Dish' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
+      </div>
+    </form>
+  </div>
+</div>

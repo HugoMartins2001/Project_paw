@@ -1,33 +1,46 @@
 <div *ngIf="isLoading" class="alert alert-info text-center my-5">A carregar menu...</div>
 <div *ngIf="!isLoading && menu">
   <div class="container py-4">
-    <div class="card p-4 shadow-sm" style="max-width: 700px; margin: 0 auto;">
-      <h2 class="mb-4 text-center text-primary fw-bold">{{ menu.name }}</h2>
-      <div class="row g-4 align-items-center">
-        <div class="col-md-5 text-center">
-          <div class="restaurant-img-container mb-3" *ngIf="menu.menuPic; else noImage">
-              <img *ngIf="menu.menuPic" [src]="getMenuImageUrl(menu.menuPic)" alt="Foto do Menu" class=" img-fluid rounded" style="max-height: 220px; object-fit: cover;">
-          </div>
-          <ng-template #noImage>
-            <div class="d-flex align-items-center justify-content-center bg-light rounded" style="height:220px;">
-              <span class="text-muted"><em>Sem imagem disponível</em></span>
-            </div>
-          </ng-template>
-        </div>
-        <div class="col-md-7">
-          <h5 class="fw-semibold mb-2">Pratos incluídos:</h5>
-          <ul class="list-group mb-3" *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">
-            <li class="list-group-item py-2 px-3" *ngFor="let dish of menu.dishes">
-              <span class="fw-bold">{{ dish.name }}</span>
-              <span *ngIf="dish.description" class="text-muted d-block" style="font-size:0.95em;">{{ dish.description }}</span>
+    <h1 class="text-center text-primary my-3 text-dark">{{ menu.name }}</h1>
+
+    <div class="text-center mb-3">
+      <ng-container *ngIf="menu.menuPic; else noImage">
+        <img [src]="getMenuImageUrl(menu.menuPic)" alt="{{ menu.name }}" class="img-fluid rounded" style="max-height: 200px;" />
+      </ng-container>
+      <ng-template #noImage>
+        <p class="text-center"><em>No image available for this menu.</em></p>
+      </ng-template>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Dishes:</h5>
+        <ng-container *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let dish of menu.dishes">
+              <span>
+                <strong>{{ dish.name }}</strong><br />
+                <ng-container *ngIf="dish.prices">
+                  Small: €{{ dish.prices.pequena?.toFixed(2) || 'N/A' }},
+                  Medium: €{{ dish.prices.media?.toFixed(2) || 'N/A' }},
+                  Large: €{{ dish.prices.grande?.toFixed(2) || 'N/A' }}
+                </ng-container>
+                <ng-container *ngIf="!dish.prices">
+                  <span>Price not available</span>
+                </ng-container>
+              </span>
+              <a [routerLink]="['/dish-details', dish._id]" class="btn btn-outline-primary btn-sm">View Dish</a>
             </li>
           </ul>
-          <ng-template #noDishes>
-            <p class="text-muted">Nenhum prato associado a este menu.</p>
-          </ng-template>
-          <a routerLink="/menus" class="btn btn-secondary mt-3 w-100">Voltar aos Menus</a>
-        </div>
+        </ng-container>
+        <ng-template #noDishes>
+          <p class="text-muted">This menu has no dishes associated yet.</p>
+        </ng-template>
       </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a routerLink="/menus" class="btn btn-secondary">Back to Menu List</a>
     </div>
   </div>
 </div>

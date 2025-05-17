@@ -45,7 +45,6 @@ export class ResetPasswordComponent {
               icon: 'success',
               title: 'Password Reset',
               text: 'Your password has been reset successfully!',
-              confirmButtonText: 'OK',
             }).then(() => {
               this.router.navigate(['/login']);
             });
@@ -54,7 +53,6 @@ export class ResetPasswordComponent {
               icon: 'error',
               title: 'Error',
               text: data.message || 'An error occurred. Please try again.',
-              confirmButtonText: 'OK',
             });
           }
         },
@@ -64,7 +62,6 @@ export class ResetPasswordComponent {
             icon: 'error',
             title: 'Error',
             text: 'An error occurred. Please try again later.',
-            confirmButtonText: 'OK',
           });
         }
       });

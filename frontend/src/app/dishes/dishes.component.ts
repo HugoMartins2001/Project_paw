@@ -37,24 +37,32 @@ export class DishesComponent implements OnInit {
     });
   }
 
-  deleteDish(id: string) {
+  deleteDish(id: string) {//ingles
     Swal.fire({
-      title: 'Tem a certeza?',
-      text: 'Esta ação não pode ser desfeita!',
+      title: 'Are you sure?',
+      text: 'This action cannot be undone!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sim, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Yes, delete',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         this.dishService.deleteDish(id).subscribe({
           next: () => {
-            Swal.fire('Eliminado!', 'O prato foi eliminado.', 'success');
+            Swal.fire('Deleted!', 'The dish has been deleted.', 'success');
             this.loadDishes();
           },
-          error: () => Swal.fire('Erro', 'Erro ao eliminar prato.', 'error')
+          error: () => Swal.fire('Error', 'Error deleting dish.', 'error')
         });
       }
     });
+  }
+
+  isObject(value: any): value is { name?: string } {
+    return value && typeof value === 'object';
+  }
+
+  getDishImageUrl(dishPic: string): string {
+    return `http://localhost:3000/uploads/${dishPic}`;
   }
 }

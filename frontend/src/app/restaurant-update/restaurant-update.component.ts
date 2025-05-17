@@ -16,6 +16,7 @@ export class RestaurantUpdateComponent implements OnInit {
   restaurantForm: FormGroup;
   showCustomHours = false;
   restaurantPic: File | null = null;
+  currentPic: string | null = null;
   paymentMethods: string[] = [];
   menuOptions: { _id: string; name: string }[] = [];
   restaurantId: string = '';
@@ -188,11 +189,11 @@ export class RestaurantUpdateComponent implements OnInit {
 
     this.restaurantService.updateRestaurantById(this.restaurantId, formData).subscribe({
       next: () => {
-        Swal.fire('Sucesso', 'Restaurante atualizado com sucesso!', 'success');
+        Swal.fire('Success', 'Restaurant updated successfully!', 'success');
         setTimeout(() => this.router.navigate(['/restaurants']), 1500);
       },
       error: (err) => {
-        Swal.fire('Erro', err.error?.error || 'Erro ao atualizar restaurante!', 'error');
+        Swal.fire('Error', err.error?.error || 'Error updating restaurant!', 'error');
       }
     });
   }

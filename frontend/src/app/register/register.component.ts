@@ -43,34 +43,34 @@ export class RegisterComponent {
 
   onSubmit() {
     if (!this.name || !this.email || !this.password || !this.confirmPassword || !this.role) {
-      Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
+      Swal.fire('Attention', 'Fill in all required fields!', 'warning');
       return;
     }
     if (this.password !== this.confirmPassword) {
-      Swal.fire('Atenção', 'As senhas não coincidem!', 'warning');
+      Swal.fire('Attention', 'Passwords do not match!', 'warning');
       return;
     }
     if (this.role === 'Client') {
       if (!this.clienteTelemovel || !this.clienteNif || !this.address) {
-        Swal.fire('Atenção', 'Preencha todos os campos de cliente!', 'warning');
+        Swal.fire('Attention', 'Fill in all client fields!', 'warning');
         return;
       }
       if (!/^\d{9}$/.test(this.clienteTelemovel)) {
-        Swal.fire('Atenção', 'O número de telemóvel deve ter 9 dígitos!', 'warning');
+        Swal.fire('Attention', 'Mobile number must be 9 digits long!', 'warning');
         return;
       }
       if (!/^\d{9}$/.test(this.clienteNif)) {
-        Swal.fire('Atenção', 'O NIF deve ter 9 dígitos!', 'warning');
+        Swal.fire('Attention', 'NIF must be 9 digits long!', 'warning');
         return;
       }
     }
     if (this.role === 'Manager') {
       if (!this.managerTelemovel) {
-        Swal.fire('Atenção', 'Preencha o número de telemóvel do gerente!', 'warning');
+        Swal.fire('Attention', 'Fill in the manager mobile number!', 'warning');
         return;
       }
       if (!/^\d{9}$/.test(this.managerTelemovel)) {
-        Swal.fire('Atenção', 'O número de telemóvel do gerente deve ter 9 dígitos!', 'warning');
+        Swal.fire('Attention', 'Manager mobile number must be 9 digits long!', 'warning');
         return;
       }
     }
@@ -92,14 +92,14 @@ export class RegisterComponent {
 
     this.authService.register(userData).subscribe({
       next: (res) => {
-        Swal.fire('Sucesso', 'Registo realizado com sucesso!', 'success');
+        Swal.fire('Success', 'Registration successful!', 'success');
         setTimeout(() => this.router.navigate(['/login']), 1500);
       },
       error: (err) => {
-        let msg = err.error?.error || 'Erro ao registar!';
+        let msg = err.error?.error || 'Error registering!';
         if (msg === 'Email already registered!') {
         }
-        Swal.fire('Erro', msg, 'error');
+        Swal.fire('Error', msg, 'error');
       }
     });
   }

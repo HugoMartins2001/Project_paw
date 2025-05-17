@@ -6,7 +6,7 @@ const profile = {};
 // jsonizar a página de perfil
 profile.showProfile = async function (req, res, next) {
   try {
-    if (!req.user) return res.redirect("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
+    if (!req.user) return res.json("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
 
     let totalRestaurants = 0;
     let approvedRestaurants = 0;
@@ -23,7 +23,7 @@ profile.showProfile = async function (req, res, next) {
     }
 
     // jsoniza a página de perfil com os dados do usuário e os números dos restaurantes
-    res.json("dashboard/profile", {
+    res.json({
       user: req.user,
       totalRestaurants, // Passa o total de restaurantes
       approvedRestaurants, // Passa os restaurantes aprovados
@@ -37,9 +37,9 @@ profile.showProfile = async function (req, res, next) {
 
 // jsonizar a página de edição de perfil
 profile.editProfile = function (req, res, next) {
-  if (!req.user) return res.redirect("/auth/login"); // Redireciona para a página de login se o usuário não estiver autenticado
+  if (!req.user) return res.json("/auth/login"); // Redireciona para a página de login se o usuário não estiver autenticado
 
-  res.json("dashboard/editProfile", { user: req.user }); // jsoniza a página de edição de perfil com os dados do usuário
+  res.json({ user: req.user }); // jsoniza a página de edição de perfil com os dados do usuário
 };
 
 // Atualizar o perfil do usuário
@@ -77,9 +77,9 @@ profile.updateProfile = function (req, res, next) {
       .findByIdAndUpdate(userId, updatedUserData, { new: true, runValidators: true }) // Atualiza o usuário e retorna o documento atualizado
       .then((updatedUser) => {
         if (!updatedUser) {
-          return res.status(404).send("User not found."); // Retorna erro 404 se o usuário não for encontrado
+          return res.status(404).json("User not found."); // Retorna erro 404 se o usuário não for encontrado
         }
-        res.redirect("/profile"); // Redireciona para a página de perfil após a atualização
+        res.json({ message: "Profile updated successfully." }); // Retorna sucesso
       })
       .catch((err) => {
         console.error("Error updating profile:", err); // Loga o erro no console

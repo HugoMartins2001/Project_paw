@@ -55,7 +55,7 @@ export class RestaurantCreateComponent {
         this.menuOptions = Array.isArray(res) ? res : res.menus; 
       },
       error: (err) => {
-        Swal.fire('Erro', err.error?.error || 'Erro ao carregar menus!', 'error');
+        Swal.fire('Erro', err.error?.error || 'Error loading menus!', 'error');
       }
     });
   }
@@ -80,7 +80,7 @@ export class RestaurantCreateComponent {
 
   onSubmit() {
     if (this.restaurantForm.invalid) {
-      Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
+      Swal.fire('Atenção', 'Fill in all required fields!', 'warning');
       return;
     }
 
@@ -95,16 +95,16 @@ export class RestaurantCreateComponent {
     formValue.menus.forEach((menuId: string) => formData.append('menus', menuId));
     if (this.restaurantPic) {
       formData.append('restaurantPic', this.restaurantPic);
-      console.log('Imagem adicionada ao FormData:', this.restaurantPic);
+      console.log('Image added to FormData:', this.restaurantPic);
     }
 
     this.restaurantService.createRestaurant(formData).subscribe({
       next: () => {
-        Swal.fire('Sucesso', 'Restaurante criado com sucesso!', 'success');
+        Swal.fire('Success', 'Restaurant created successfully!', 'success');
         setTimeout(() => this.router.navigate(['/restaurants']), 1500);
       },
       error: (err) => {
-        Swal.fire('Erro', err.error?.error || 'Erro ao criar restaurante!', 'error');
+        Swal.fire('Error', err.error?.error || 'Error creating restaurant!', 'error');
       }
     });
   }

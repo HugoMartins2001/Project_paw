@@ -32,26 +32,26 @@ export class MenusComponent implements OnInit {
     });
   }
 
-  deleteMenu(id: string): void {
+  deleteMenu(id: string): void {//ingles
     Swal.fire({
-      title: 'Tem a certeza?',
-      text: 'Esta ação não pode ser desfeita!',
+      title: 'Are you sure?',
+      text: 'This action cannot be undone!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sim, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Yes, delete',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         this.menuService.deleteMenu(id).subscribe({
           next: () => {
-            Swal.fire('Eliminado!', 'O menu foi eliminado.', 'success');
-            // Recarrega a lista de menus
+            Swal.fire('Deleted!', 'The menu has been deleted.', 'success');
+            // Reload the menu list
             this.menuService.getMenus().subscribe({
               next: (menus) => this.menus = menus
             });
           },
           error: () => {
-            Swal.fire('Erro', 'Não foi possível eliminar o menu.', 'error');
+            Swal.fire('Error', 'Error deleting menu.', 'error');
           }
         });
       }

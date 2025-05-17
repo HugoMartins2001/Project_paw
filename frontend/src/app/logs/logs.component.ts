@@ -57,31 +57,31 @@ export class LogsComponent implements OnInit {
     this.fetchLogs();
   }
 
-  confirmDeleteLog(id: string) {
+  confirmDeleteLog(id: string) {  
     Swal.fire({
-      title: 'Tens a certeza?',
-      text: 'Esta ação não pode ser revertida!',
+      title: 'Are you sure?',
+      text: 'This action cannot be undone!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Sim, apagar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Yes, delete',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         this.adminService.deleteLog(id).subscribe(() => {
           this.logs = this.logs.filter(log => log._id !== id);
           Swal.fire({
             icon: 'success',
-            title: 'Log apagado!',
+            title: 'Log deleted!',
             showConfirmButton: false,
             timer: 1200
           });
         }, () => {
           Swal.fire({
             icon: 'error',
-            title: 'Erro ao apagar log!',
-            text: 'Ocorreu um erro inesperado.'
+            title: 'Error deleting log!',
+            text: 'An unexpected error occurred.'
           });
         });
       }
@@ -90,29 +90,29 @@ export class LogsComponent implements OnInit {
 
   confirmDeleteAllLogs() {
     Swal.fire({
-      title: 'Tens a certeza?',
-      text: 'Isto vai apagar TODOS os logs!',
+      title: 'Are you sure?',
+      text: 'This will delete ALL logs!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Sim, apagar tudo',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Yes, delete all',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         this.adminService.deleteAllLogs().subscribe(() => {
           this.logs = [];
           Swal.fire({
             icon: 'success',
-            title: 'Todos os logs apagados!',
+            title: 'All logs deleted!',
             showConfirmButton: false,
             timer: 1200
           });
         }, () => {
           Swal.fire({
             icon: 'error',
-            title: 'Erro ao apagar logs!',
-            text: 'Ocorreu um erro inesperado.'
+            title: 'Error deleting logs!',
+            text: 'An unexpected error occurred.'
           });
         });
       }

@@ -38,7 +38,7 @@ export class MenuUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.menuId = this.route.snapshot.paramMap.get('id');
     if (!this.menuId) {
-      Swal.fire('Erro', 'ID do menu não encontrado.', 'error');
+      Swal.fire('Error', 'Menu ID not found.', 'error');
       this.router.navigate(['/menus']);
       return;
     }
@@ -60,7 +60,7 @@ export class MenuUpdateComponent implements OnInit {
         this.isLoading = false;
       },
       error: () => {
-        Swal.fire('Erro', 'Menu não encontrado.', 'error');
+        Swal.fire('Error', 'Menu not found.', 'error');
         this.router.navigate(['/menus']);
       }
     });
@@ -87,11 +87,11 @@ export class MenuUpdateComponent implements OnInit {
 
     this.menuService.updateMenuById(this.menuId, formData).subscribe({
       next: () => {
-        Swal.fire('Sucesso', 'Menu atualizado com sucesso!', 'success').then(() => {
+        Swal.fire('Success', 'Menu updated successfully!', 'success').then(() => {
           this.router.navigate(['/menus']);
         });
       },
-      error: () => Swal.fire('Erro', 'Erro ao atualizar menu!', 'error')
+      error: () => Swal.fire('Error', 'Error updating menu!', 'error')
     });
   }
 }
