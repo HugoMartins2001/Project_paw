@@ -1,22 +1,51 @@
-<div class="home-container">
-  <header class="home-header">
-    <h1>Bem-vindo ao Restaurante Gourmet!</h1>
-    <p>Descubra sabores incríveis e experiências únicas.</p>
-  </header>
+<div class="home-container py-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary mb-3">Bem-vindo ao OrdEat!</h1>
+    <p class="lead text-muted mb-4">
+      Descobre menus, pratos e restaurantes incríveis.<br />
+      Uma experiência gastronómica inovadora, simples e rápida.
+    </p>
+    <a (click)="navigateToMenus()" class="btn btn-lg btn-primary shadow-sm me-2" style="cursor: pointer;">Ver Menus</a>
+    <a (click)="navigateToRestaurants()" class="btn btn-lg btn-outline-primary shadow-sm" style="cursor: pointer;">Restaurantes</a>
+    <a (click)="navigateToDishes()" class="btn btn-lg btn-outline-primary shadow-sm" style="cursor: pointer;">Pratos</a>
+  </div>
 
-  <section class="home-highlight">
-    <h2>Nosso Destaque</h2>
-    <p>Experimente o prato especial do chef, feito com os ingredientes mais frescos e selecionados.</p>
-    <img src="assets/images/featured-dish.jpg" alt="Prato Especial" class="highlight-image" />
-  </section>
-
-  <section class="home-gallery">
-    <h2>Galeria de Pratos</h2>
-    <div class="gallery">
-      <img src="assets/images/dish1.jpg" alt="Prato 1" />
-      <img src="assets/images/dish2.jpg" alt="Prato 2" />
-      <img src="assets/images/dish3.jpg" alt="Prato 3" />
-      <img src="assets/images/dish4.jpg" alt="Prato 4" />
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold text-primary mb-2">
+            <i class="bi bi-egg-fried"></i> Pratos Únicos
+          </h5>
+          <p class="card-text text-muted">Descobre uma seleção de pratos deliciosos preparados pelos melhores chefs.</p>
+        </div>
+      </div>
     </div>
-  </section>
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold text-primary mb-2">
+            <i class="bi bi-geo-alt"></i> Restaurantes Perto de Ti
+          </h5>
+          <p class="card-text text-muted">Encontra restaurantes de qualidade na tua zona e faz o teu pedido em poucos cliques.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold text-primary mb-2">
+            <i class="bi bi-star"></i> Experiência Premium
+          </h5>
+          <p class="card-text text-muted">Aproveita uma plataforma intuitiva, rápida e com suporte dedicado ao cliente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <h4 class="fw-bold mb-2">Junta-te à comunidade OrdEat!</h4>
+    <p class="text-muted mb-3">Regista-te e começa já a explorar os melhores sabores.</p>
+    <a (click)="navigateToRegister()" class="btn btn-success btn-lg" style="cursor: pointer;">Criar Conta</a>
+  </div>
 </div>
