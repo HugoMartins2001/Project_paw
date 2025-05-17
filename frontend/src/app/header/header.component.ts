@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { ProfileService, ProfileResponse } from '../services/profile.service';
+import { ProfileService, ProfileResponse } from '../admin/services/profile.service';
 
 @Component({
   selector: 'app-header',
