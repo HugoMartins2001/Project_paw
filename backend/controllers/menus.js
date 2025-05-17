@@ -2,6 +2,7 @@ const mongoMenu = require("../models/menu");
 const mongoDish = require("../models/dish");
 const mongoRestaurant = require("../models/restaurant");
 const logAction = require("../utils/logger");
+const mongoose = require('mongoose');
 
 let menusController = {};
 
@@ -46,6 +47,14 @@ menusController.showAll = async function (req, res, next) {
       query.managerId = user._id; // Gerentes só podem ver menus que eles criaram
     } else if (req.user.role === "Client") {
       query.isVisible = true; // Clientes só podem ver menus visíveis
+    }
+
+    // Filtrar por preço mínimo e máximo
+    if (minPrice) {
+      query.price = { ...query.price, $gte: Number(minPrice) };
+    }
+    if (maxPrice) {
+      query.price = { ...query.price, $lte: Number(maxPrice) };
     }
 
     // Ordenação
@@ -262,7 +271,7 @@ menusController.renderEditMenu = async function (req, res, next) {
       menu.managerId.toString() !== req.user._id.toString() // Apenas o gerente que criou o menu pode acessá-lo
     ) {
       return res.status(403).json("errors/403", { message: "You do not have permission to edit this menu." });
-      }
+    }
 
     let allDishes;
     if (req.user.role === "Manager") {
@@ -287,7 +296,7 @@ menusController.updateMenu = async function (req, res, next) {
     const menu = await mongoMenu.findById(menuId);
 
     if (!menu) {
-      return res.status(404).json({ message: "Menu not found." });	  
+      return res.status(404).json({ message: "Menu not found." });
     }
 
     // Verificar permissões
@@ -337,7 +346,7 @@ menusController.toggleVisibility = async function (req, res, next) {
     );
 
     if (!menu) {
-      return res.status(404).json({ message: 'Menu not found.' });  
+      return res.status(404).json({ message: 'Menu not found.' });
     }
 
     res.status(200).json({ message: 'Visibility updated successfully.', menu });

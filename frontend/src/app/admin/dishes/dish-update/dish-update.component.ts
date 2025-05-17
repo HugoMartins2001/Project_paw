@@ -18,6 +18,10 @@ export class DishUpdateComponent implements OnInit {
   selectedFile: File | null = null;
   dishId: string | null = null;
   isLoading = true;
+  categories: string[] = [];
+  nutriScores: string[] = ['A', 'B', 'C', 'D', 'E'];
+  showNewCategory = false;
+  showNewNutriScore = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +32,8 @@ export class DishUpdateComponent implements OnInit {
     this.dishForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
-      category: [''],
+      category: ['', Validators.required],
+      newCategory: [''],
       precoPequena: [''],
       precoMedia: [''],
       precoGrande: [''],
@@ -37,7 +42,8 @@ export class DishUpdateComponent implements OnInit {
       fat: [''],
       protein: [''],
       carbs: [''],
-      nutriScore: [''],
+      nutriScore: [this.nutriScores.length ? this.nutriScores[0] : '', Validators.required],
+      newNutriScore: [''],
       allergens: ['']
     });
   }
@@ -75,6 +81,21 @@ export class DishUpdateComponent implements OnInit {
         this.router.navigate(['/dishes']);
       }
     });
+
+    this.loadCategoriesAndNutriScores();
+  }
+
+  loadCategoriesAndNutriScores() {
+    this.dishService.getDishes().subscribe({
+      next: (data: any) => {
+        const dishes = data.dishes || [];
+        const defaultCategories = ['Meat', 'Fish', 'Vegetarian', 'Dessert'];
+        const dynamicCategories = dishes.map((d: any) => d.category).filter(Boolean);
+        this.categories = Array.from(new Set([...defaultCategories, ...dynamicCategories]));
+        const dynamicScores = Array.from(new Set(dishes.map((d: any) => d.nutriScore).filter(Boolean)));
+        this.nutriScores = Array.from(new Set(['A', 'B', 'C', 'D', 'E', ...dynamicScores as string[]]));
+      }
+    });
   }
 
   onFileChange(event: any) {
@@ -84,13 +105,41 @@ export class DishUpdateComponent implements OnInit {
     }
   }
 
+  addCategory() {
+    const cat = this.dishForm.value.newCategory?.trim();
+    if (cat && !this.categories.includes(cat)) {
+      this.categories.push(cat);
+      this.dishForm.patchValue({ category: cat });
+      this.showNewCategory = false;
+      this.dishForm.patchValue({ newCategory: '' });
+      Swal.fire('Success', 'Category added!', 'success');
+    }
+  }
+
+  addNutriScore() {
+    const score = this.dishForm.value.newNutriScore?.trim();
+    if (score && !this.nutriScores.includes(score)) {
+      this.nutriScores.push(score);
+      this.dishForm.patchValue({ nutriScore: score });
+      this.showNewNutriScore = false;
+      this.dishForm.patchValue({ newNutriScore: '' });
+      Swal.fire('Success', 'NutriScore added!', 'success');
+    }
+  }
+
   onSubmit() {
     if (this.dishForm.invalid || !this.dishId) return;
 
     const formData = new FormData();
     formData.append('name', this.dishForm.value.name);
     formData.append('description', this.dishForm.value.description || '');
-    formData.append('category', this.dishForm.value.category || '');
+
+    // Categoria
+    let categoryToSend = this.dishForm.value.category;
+    if (categoryToSend === 'Outra') {
+      categoryToSend = this.dishForm.value.newCategory;
+    }
+    formData.append('category', categoryToSend || '');
 
     // Preços
     formData.append('prices[pequena]', this.dishForm.value.precoPequena || '');
@@ -109,7 +158,12 @@ export class DishUpdateComponent implements OnInit {
     formData.append('nutrition[protein]', this.dishForm.value.protein || '');
     formData.append('nutrition[carbs]', this.dishForm.value.carbs || '');
 
-    formData.append('nutriScore', this.dishForm.value.nutriScore || '');
+    // NutriScore
+    let nutriScoreToSend = this.dishForm.value.nutriScore;
+    if (nutriScoreToSend === 'Outro') {
+      nutriScoreToSend = this.dishForm.value.newNutriScore;
+    }
+    formData.append('nutriScore', nutriScoreToSend || '');
 
     // Alergénios
     const allergensArr = this.dishForm.value.allergens
@@ -121,7 +175,7 @@ export class DishUpdateComponent implements OnInit {
       formData.append('dishPic', this.selectedFile);
     }
 
-    this.dishService.updateDish(this.dishId, formData).subscribe({  
+    this.dishService.updateDish(this.dishId, formData).subscribe({
       next: () => {
         Swal.fire('Success', 'Dish updated successfully!', 'success').then(() => {
           this.router.navigate(['/dishes']);
@@ -130,4 +184,18 @@ export class DishUpdateComponent implements OnInit {
       error: () => Swal.fire('Error', 'Error updating dish!', 'error')
     });
   }
+
+  // Para mostrar input extra se escolher "Outra"
+  get isOtherCategory() {
+    return this.dishForm.get('category')?.value === 'Outra';
+  }
+  get isOtherNutriScore() {
+    return this.dishForm.get('nutriScore')?.value === 'Outro';
+  }
+
+
+  getDishImageUrl(dishPic: string): string {
+    return `http://localhost:3000/uploads/${dishPic}`;
+  }
+
 }

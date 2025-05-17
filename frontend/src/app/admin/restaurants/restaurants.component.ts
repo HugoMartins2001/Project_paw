@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestaurantService } from '../services/restaurant.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,15 +10,16 @@ import Swal from 'sweetalert2';
   templateUrl: './restaurants.component.html',
   styleUrls: ['./restaurants.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
 })
 export class RestaurantsComponent implements OnInit {
   restaurants: any[] = [];
   isLoading = true;
+  filterName: string = '';
+  filterAddress: string = '';
 
   constructor(private restaurantService: RestaurantService) { }
 
-  // No seu restaurants.component.ts
   userRole = localStorage.getItem('role');
   userId = localStorage.getItem('userId');
 
@@ -26,10 +28,15 @@ export class RestaurantsComponent implements OnInit {
   }
 
   fetchRestaurants(): void {
-    this.restaurantService.getRestaurants().subscribe({
-      next: (data) => {
-        console.log('Resposta da API:', data);
-        if (Array.isArray(data)) {
+    const params: any = {};
+    if (this.filterName) params.name = this.filterName;
+    if (this.filterAddress) params.address = this.filterAddress;
+
+    this.restaurantService.getRestaurants(params).subscribe({
+      next: (data: any) => {
+        if (data && Array.isArray(data.restaurants)) {
+          this.restaurants = data.restaurants;
+        } else if (Array.isArray(data)) {
           this.restaurants = data;
         } else {
           this.restaurants = [];

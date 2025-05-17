@@ -1,10 +1,35 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="fw-bold text-primary">Available dishes</h2>
-    
+
   </div>
   <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
-   <a routerLink="/dishes/create" class="btn btn-success">Add Dish</a>
+    <a routerLink="/dishes/create" class="btn btn-success">Add Dish</a>
+  </div>
+  <div class="row g-2 mt-4">
+    <div class="col-md-6 col-lg-4">
+      <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Nome do prato" class="form-control" />
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <select [(ngModel)]="filterCategory" (change)="loadDishes()" class="form-control">
+        <option [ngValue]="''">Todas as categorias</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <select [(ngModel)]="filterAllergens" (change)="loadDishes()" class="form-control">
+        <option [ngValue]="''">Todos os alergénios</option>
+        <option *ngFor="let allergen of allergensList" [value]="allergen">{{ allergen }}</option>
+      </select>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Preço mínimo"
+        class="form-control" />
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Preço máximo"
+        class="form-control" />
+    </div>
   </div>
   <div class="row g-4" *ngIf="!isLoading && dishes.length > 0; else noDishes">
     <div class="col-md-6 col-lg-4" *ngFor="let dish of dishes">
@@ -16,7 +41,8 @@
               <div class="overlay-text">{{ dish.name }}</div>
             </div>
             <ng-template #noImage>
-              <div class="restaurant-img-container text-center mb-3" style="height:200px;display:flex;align-items:center;justify-content:center;background:#f4f7fc;">
+              <div class="restaurant-img-container text-center mb-3"
+                style="height:200px;display:flex;align-items:center;justify-content:center;background:#f4f7fc;">
                 <span class="text-muted"><em>No image available for this dish.</em></span>
               </div>
             </ng-template>
@@ -47,11 +73,10 @@
             <ng-container *ngIf="(userRole === 'Manager' && isDishManager(dish, userId)) || userRole === 'Admin'">
               <a [routerLink]="['/dishes/editDish', dish._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
               <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteDish(dish._id)">Delete</button>
-                          <button class="btn btn-sm"
-                    [ngClass]="dish.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
-                    (click)="toggleVisibility(dish)">
-              {{ dish.isVisible ? 'Hide' : 'Show' }}
-            </button>
+              <button class="btn btn-sm" [ngClass]="dish.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
+                (click)="toggleVisibility(dish)">
+                {{ dish.isVisible ? 'Hide' : 'Show' }}
+              </button>
             </ng-container>
           </div>
         </div>

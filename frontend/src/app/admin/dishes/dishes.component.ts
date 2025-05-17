@@ -3,22 +3,29 @@ import { DishService, Dish } from '../services/dish.service';
 import Swal from 'sweetalert2';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dishes',
   templateUrl: './dishes.component.html',
   styleUrls: ['./dishes.component.css'],
   standalone: true,
-  imports: [RouterModule, CommonModule]
+  imports: [RouterModule, CommonModule, FormsModule]
 })
 export class DishesComponent implements OnInit {
   dishes: Dish[] = [];
   isLoading = true;
   userRole: string | null = null;
   userId: string | null = null;
-  
+  filterName: string = '';
+  filterMinPrice: number | null = null;
+  filterMaxPrice: number | null = null;
+  filterCategory: string = '';
+  filterAllergens: string = '';
+  categories: string[] = [];
+  allergensList: string[] = [];
 
-  constructor(private dishService: DishService) {}
+  constructor(private dishService: DishService) { }
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
@@ -26,15 +33,31 @@ export class DishesComponent implements OnInit {
     this.loadDishes();
   }
 
-  loadDishes() {
-    this.isLoading = true;
-    this.dishService.getDishes().subscribe({
-      next: (dishes) => {
-        this.dishes = dishes;
+  loadDishes(): void {
+    const params: any = {};
+    if (this.filterName) params.name = this.filterName;
+    if (this.filterCategory) params.category = this.filterCategory;
+    if (this.filterAllergens) params.allergens = this.filterAllergens;
+    if (this.filterMinPrice !== null) params.minPrice = this.filterMinPrice;
+    if (this.filterMaxPrice !== null) params.maxPrice = this.filterMaxPrice;
+
+    this.dishService.getDishes(params).subscribe({
+      next: (data: any) => {
+        this.dishes = data.dishes || [];
+        // Categorias únicas
+        this.categories = Array.from(new Set(this.dishes.map((d: any) => d.category).filter(Boolean)));
+        // Alergénios únicos (achatando arrays)
+        this.allergensList = Array.from(
+          new Set(
+            this.dishes.flatMap((d: any) => Array.isArray(d.allergens) ? d.allergens : []).filter(Boolean)
+          )
+        );
         this.isLoading = false;
       },
       error: () => {
         this.dishes = [];
+        this.categories = [];
+        this.allergensList = [];
         this.isLoading = false;
       }
     });

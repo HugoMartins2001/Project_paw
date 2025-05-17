@@ -29,11 +29,11 @@ export class MenuService {
         return token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : new HttpHeaders();
     }
 
-    getMenus(): Observable<Menu[]> {
-        return this.http.get<{ menus: Menu[] }>(this.apiUrl, { headers: this.getHeaders() }).pipe(
-            map(res => res.menus),
-            catchError((error: HttpErrorResponse) => throwError(() => error))
-        );
+    getMenus(params: any = {}): Observable<any> {
+        return this.http.get<any>('http://localhost:3000/api/menus/showMenus', {
+            params,
+            headers: this.getHeaders()
+        });
     }
 
     getMenuById(id: string): Observable<Menu> {

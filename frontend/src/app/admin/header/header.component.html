@@ -11,7 +11,7 @@
           <li><a (click)="navigateToMenu()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
         </ng-container>
         <ng-container *ngIf="userRole === 'Client'">
-          <li><a (click)="navigateToHome()" class="nav-link" style="cursor:pointer;">Home</a></li>
+          <li><a (click)="navigateToClientHome()" class="nav-link" style="cursor:pointer;">Home</a></li>
           <li><a (click)="navigateToMenu()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
           <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
           <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>

@@ -8,6 +8,20 @@
     </a>
   </div>
 
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <input [(ngModel)]="filterName" (input)="loadMenus()" placeholder="Nome do menu" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <input [(ngModel)]="filterMinPrice" (input)="loadMenus()" type="number" placeholder="Preço mínimo"
+        class="form-control">
+    </div>
+    <div class="col-md-3">
+      <input [(ngModel)]="filterMaxPrice" (input)="loadMenus()" type="number" placeholder="Preço máximo"
+        class="form-control">
+    </div>
+  </div>
+
   <div *ngIf="isLoading" class="alert alert-info text-center">Loading...</div>
   <div *ngIf="!isLoading && menus.length === 0" class="alert alert-warning text-center">
     <h3>No menus found.</h3>
@@ -23,7 +37,8 @@
               <div class="overlay-text">{{ menu.name }}</div>
             </div>
             <ng-template #noImage>
-              <div class="restaurant-img-container text-center mb-3" style="height:200px;display:flex;align-items:center;justify-content:center;background:#f4f7fc;">
+              <div class="restaurant-img-container text-center mb-3"
+                style="height:200px;display:flex;align-items:center;justify-content:center;background:#f4f7fc;">
                 <span class="text-muted"><em>No image available for this menu.</em></span>
               </div>
             </ng-template>
@@ -43,11 +58,10 @@
             <ng-container *ngIf="(userRole === 'Manager' && isMenuManager(menu, userId)) || userRole === 'Admin'">
               <a [routerLink]="['/menus/editMenu', menu._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
               <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteMenu(menu._id)">Delete</button>
-              <button class="btn btn-sm"
-                    [ngClass]="menu.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
-                    (click)="toggleVisibility(menu)">
-              {{ menu.isVisible ? 'Hide' : 'Show' }}
-            </button>
+              <button class="btn btn-sm" [ngClass]="menu.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
+                (click)="toggleVisibility(menu)">
+                {{ menu.isVisible ? 'Hide' : 'Show' }}
+              </button>
             </ng-container>
           </div>
         </div>

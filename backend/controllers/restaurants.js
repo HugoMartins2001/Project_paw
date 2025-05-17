@@ -78,7 +78,7 @@ restaurantsController.processUpdateRestaurant = function (req, res, next) {
 
 // Controlador para exibir todos os restaurantes
 restaurantsController.showAll = async function (req, res, next) {
-  if (!req.user) return res.redirect("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
+  //if (!req.user) return res.json("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
 
   try {
     const {
@@ -107,10 +107,13 @@ restaurantsController.showAll = async function (req, res, next) {
 
     // Filtrar restaurantes com base no papel do usuário
     if (req.user?.role === "Manager") {
-      query.managerId = req.user._id; // Gerentes só podem ver seus próprios restaurantes
+      query.managerId = req.user._id;
     } else if (req.user?.role === "Client") {
-      query.isApproved = true; // Clientes só podem ver restaurantes aprovados
-      query.isVisible = true; // Clientes só podem ver restaurantes visíveis
+      query.isApproved = true;
+      query.isVisible = true;
+    } else if (!req.user) {
+      query.isApproved = true;
+      query.isVisible = true;
     }
 
     // Ordenação
@@ -132,11 +135,14 @@ restaurantsController.showAll = async function (req, res, next) {
 
     const filteredRestaurants = restaurantList.map((restaurant) => {
       const filteredMenus = restaurant.menus.filter((menu) => {
+        // Se não houver utilizador autenticado, mostra todos os menus públicos
+        if (!req.user) {
+          return menu.isVisible !== false;
+        }
         // Administradores podem ver todos os menus
         if (req.user.role === "Admin") {
           return true;
         }
-
         // Gerentes só podem ver menus que eles criaram
         return menu.managerId.toString() === req.user._id.toString();
       });
@@ -582,7 +588,7 @@ restaurantsController.toggleVisibility = async function (req, res, next) {
     );
 
     if (!restaurant) {
-      return res.status(404).json({ error: 'Restaurant not found.' });  
+      return res.status(404).json({ error: 'Restaurant not found.' });
     }
 
     res.status(200).json({ message: 'Visibility updated successfully.' });

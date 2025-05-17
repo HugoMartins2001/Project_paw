@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './client/home/home.component';
+import { HomeComponent } from './home/home.component';
 
 //Login
 import { LoginComponent } from './login/login.component';
@@ -167,7 +167,7 @@ export const routes: Routes = [
     data: { title: 'Register' }
   },
   {
-    path: 'client',
+    path: 'clientHome',
     component: ClientHomeComponent,
     canActivate: [AuthGuardService],
     data: { title: 'Client Home' }

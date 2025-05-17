@@ -18,7 +18,19 @@
       <!-- Categoria -->
       <div class="form-group mb-3">
         <label for="category" class="form-label fw-semibold">Categoria</label>
-        <input id="category" type="text" class="form-control" formControlName="category">
+        <div class="input-group">
+          <select id="category" class="form-control" formControlName="category" required>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            <option value="Outra">Outra...</option>
+          </select>
+          <button type="button" class="btn btn-outline-primary btn-sm" (click)="showNewCategory = !showNewCategory">
+            <i class="bi bi-plus-circle"></i> Nova Categoria
+          </button>
+        </div>
+        <div *ngIf="isOtherCategory || showNewCategory" class="input-group mt-2">
+          <input type="text" class="form-control" placeholder="Nova categoria" formControlName="newCategory">
+          <button type="button" class="btn btn-success" (click)="addCategory()">Adicionar</button>
+        </div>
       </div>
 
       <!-- Preços -->
@@ -65,7 +77,19 @@
       <!-- NutriScore -->
       <div class="form-group mb-3">
         <label for="nutriScore" class="form-label fw-semibold">NutriScore</label>
-        <input id="nutriScore" type="text" class="form-control" formControlName="nutriScore">
+        <div class="input-group">
+          <select id="nutriScore" class="form-control" formControlName="nutriScore" required>
+            <option *ngFor="let score of nutriScores" [value]="score">{{ score }}</option>
+            <option value="Outro">Outro...</option>
+          </select>
+          <button type="button" class="btn btn-outline-primary btn-sm" (click)="showNewNutriScore = !showNewNutriScore">
+            <i class="bi bi-plus-circle"></i> Novo NutriScore
+          </button>
+        </div>
+        <div *ngIf="isOtherNutriScore || showNewNutriScore" class="input-group mt-2">
+          <input type="text" class="form-control" placeholder="Novo NutriScore" formControlName="newNutriScore">
+          <button type="button" class="btn btn-success" (click)="addNutriScore()">Adicionar</button>
+        </div>
       </div>
 
       <!-- Alergénios -->
@@ -79,7 +103,8 @@
         <label for="dishPic" class="form-label fw-semibold">Foto do Prato</label>
         <input type="file" id="dishPic" (change)="onFileChange($event)" accept="image/*" class="form-control" />
         <div *ngIf="currentPic" class="mt-2">
-          <img [src]="'/uploads/' + currentPic" alt="Prato atual" style="max-width: 120px; max-height: 120px;" class="rounded shadow-sm border">
+          <img [src]="getDishImageUrl(currentPic)" alt="Prato atual" style="max-width: 120px; max-height: 120px;"
+            class="rounded shadow-sm border">
           <div class="text-muted" style="font-size:0.9em;">Imagem atual</div>
         </div>
       </div>

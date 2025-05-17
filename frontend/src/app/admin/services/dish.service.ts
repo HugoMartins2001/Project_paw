@@ -35,18 +35,18 @@ export interface Dish {
 export class DishService {
   private apiUrl = 'http://localhost:3000/api/dishes/showDishes';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
     return token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : new HttpHeaders();
   }
 
-  getDishes(): Observable<Dish[]> {
-    return this.http.get<{ dishes: Dish[] }>(this.apiUrl, { headers: this.getHeaders() }).pipe(
-      map(res => res.dishes),
-      catchError((error: HttpErrorResponse) => throwError(() => error))
-    );
+  getDishes(params: any = {}): Observable<any> {
+    return this.http.get<any>('http://localhost:3000/api/dishes/showDishes', {
+      params,
+      headers: this.getHeaders()
+    });
   }
 
   deleteDish(id: string): Observable<void> {
@@ -76,19 +76,19 @@ export class DishService {
   }
 
   getDishById(id: string): Observable<Dish> {
-  const url = `http://localhost:3000/api/dishes/showDish/${id}`;
-  return this.http.get<{ dish: Dish }>(url, { headers: this.getHeaders() }).pipe(
-    map(res => res.dish),
-    catchError((error: HttpErrorResponse) => throwError(() => error))
-  );
-}
+    const url = `http://localhost:3000/api/dishes/showDish/${id}`;
+    return this.http.get<{ dish: Dish }>(url, { headers: this.getHeaders() }).pipe(
+      map(res => res.dish),
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
 
-toggleVisibility(id: string, isVisible: boolean): Observable<any> {
-  return this.http.post<any>(`http://localhost:3000/api/dishes/toggleVisibility/${id}`,
-    { isVisible },
-    { headers: this.getHeaders() }
-  ).pipe(
-    catchError((error: HttpErrorResponse) => throwError(() => error))
-  );
-}
+  toggleVisibility(id: string, isVisible: boolean): Observable<any> {
+    return this.http.post<any>(`http://localhost:3000/api/dishes/toggleVisibility/${id}`,
+      { isVisible },
+      { headers: this.getHeaders() }
+    ).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => error))
+    );
+  }
 }

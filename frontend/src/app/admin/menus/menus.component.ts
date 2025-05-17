@@ -2,29 +2,72 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; // <-- Adiciona isto
 import { MenuService, Menu } from '../services/menu.service';
+import { RestaurantService } from '../services/restaurant.service'; // <-- Importa o serviço de restaurante
 import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-menus',
   standalone: true,
   templateUrl: './menus.component.html',
   styleUrls: ['./menus.component.css'],
-  imports: [CommonModule, RouterModule] // <-- Adiciona RouterModule aqui
+  imports: [CommonModule, RouterModule, FormsModule] // <-- Adiciona FormsModule aqui
 })
 export class MenusComponent implements OnInit {
   menus: Menu[] = [];
+  restaurants: any[] = []; // <-- Adiciona isto
   isLoading = true;
   userRole: string | null = null; // <-- Adiciona isto
   userId: string | null = null; // <-- Adiciona isto
 
-  constructor(private menuService: MenuService) {}
+  filterName: string | null = null;
+  filterRestaurant: string | null = null;
+  filterMinPrice: number | null = null;
+  filterMaxPrice: number | null = null;
+
+  constructor(private menuService: MenuService, private restaurantService: RestaurantService) { } // <-- Injeta o serviço de restaurante
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role'); // <-- E isto
     this.userId = localStorage.getItem('id'); // <-- E isto
-    this.menuService.getMenus().subscribe({
-      next: (menus) => {
-        this.menus = menus;
+    this.loadRestaurants(); // <-- Carrega restaurantes
+    this.loadMenus();
+  }
+
+  loadRestaurants(): void {
+    this.restaurantService.getRestaurants().subscribe({
+      next: (data: any) => {
+        if (data && Array.isArray(data.restaurants)) {
+          this.restaurants = data.restaurants;
+        } else if (Array.isArray(data)) {
+          this.restaurants = data;
+        } else {
+          this.restaurants = [];
+        }
+      },
+      error: () => {
+        this.restaurants = [];
+      }
+    });
+  }
+
+  loadMenus(): void {
+    const params: any = {};
+    if (this.filterName) params.name = this.filterName;
+    if (this.filterMinPrice) params.minPrice = this.filterMinPrice;
+    if (this.filterMaxPrice) params.maxPrice = this.filterMaxPrice;
+
+    this.menuService.getMenus(params).subscribe({
+      next: (data) => {
+        // Se o backend devolve { menus: [...] }
+        if (data && Array.isArray(data.menus)) {
+          this.menus = data.menus;
+        } else if (Array.isArray(data)) {
+          // Se devolve diretamente um array
+          this.menus = data;
+        } else {
+          this.menus = [];
+        }
         this.isLoading = false;
       },
       error: () => {
@@ -48,9 +91,7 @@ export class MenusComponent implements OnInit {
           next: () => {
             Swal.fire('Deleted!', 'The menu has been deleted.', 'success');
             // Reload the menu list
-            this.menuService.getMenus().subscribe({
-              next: (menus) => this.menus = menus
-            });
+            this.loadMenus();
           },
           error: () => {
             Swal.fire('Error', 'Error deleting menu.', 'error');

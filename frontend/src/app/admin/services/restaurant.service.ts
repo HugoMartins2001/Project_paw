@@ -33,11 +33,11 @@ export class RestaurantService {
     return token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : new HttpHeaders();
   }
 
-  getRestaurants(): Observable<Restaurant[]> {
-    return this.http.get<{ restaurants: Restaurant[] }>(this.apiUrl, { headers: this.getHeaders() }).pipe(
-      map(res => res.restaurants),
-      catchError((error: HttpErrorResponse) => throwError(() => error))
-    );
+  getRestaurants(params: any = {}): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:3000/api/restaurants/showRestaurants', {
+      params,
+      headers: this.getHeaders()
+    });
   }
 
   getRestaurantByName(name: string): Observable<{ restaurant: Restaurant }> {

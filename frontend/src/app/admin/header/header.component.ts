@@ -47,6 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToHome(): void { this.router.navigate(['/home']); }
+  navigateToClientHome(): void { this.router.navigate(['/clientHome']); }
   navigateToMenu(): void { this.router.navigate(['/restaurants']); }
   navigateToRestaurantApproval(): void { this.router.navigate(['/restaurantApprove']); }
   navigateToDashboard(): void { this.router.navigate(['/dashboard']); }
