@@ -15,11 +15,13 @@ export class MenusComponent implements OnInit {
   menus: Menu[] = [];
   isLoading = true;
   userRole: string | null = null; // <-- Adiciona isto
+  userId: string | null = null; // <-- Adiciona isto
 
   constructor(private menuService: MenuService) {}
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role'); // <-- E isto
+    this.userId = localStorage.getItem('id'); // <-- E isto
     this.menuService.getMenus().subscribe({
       next: (menus) => {
         this.menus = menus;

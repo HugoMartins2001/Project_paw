@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './admin/home/home.component';
+import { HomeComponent } from './client/home/home.component';
 
 //Login
 import { LoginComponent } from './login/login.component';
@@ -10,6 +10,7 @@ import { ResetPasswordComponent } from './login/reset-password/reset-password.co
 //Register
 import { RegisterComponent } from './login/register/register.component';
 
+//Admin & manager
 //Dashboard
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { ProfileComponent } from './admin/dashboard/profile/profile.component';
@@ -37,6 +38,9 @@ import { DishDetailsComponent } from './admin/dishes/dish-details/dish-details.c
 //Overall
 import { LogsComponent } from './admin/logs/logs.component';
 import { UsersComponent } from './admin/users/users.component';
+
+//Client
+import { ClientHomeComponent } from './client/client-home/client-home.component';
 
 //Security
 import { AuthGuardService } from './auth-guard.service';
@@ -161,6 +165,12 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     data: { title: 'Register' }
+  },
+  {
+    path: 'client',
+    component: ClientHomeComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Client Home' }
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];

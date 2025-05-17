@@ -288,15 +288,24 @@ dishesController.showDish = async function (req, res, next) {
     // Buscar o prato pelo ID
     const dish = await mongoDish.findById(req.params.dishId);
     if (!dish) {
-      return res.status(404).json("errors/404", { message: "Dish not found." });
+      return res.status(404).json({ message: "Dish not found." });
     }
 
-    // Verificar permissões
+    // Permissões:
+    // - Admin pode ver tudo
+    // - Manager só vê os seus
+    // - Client só vê pratos visíveis
     if (
-      user.role !== "Admin" && // Apenas Admin pode acessar qualquer prato
-      (!dish.managerId || dish.managerId.toString() !== user._id.toString()) // Gerente só pode acessar seus próprios pratos
+      user.role === "Manager" &&
+      (!dish.managerId || dish.managerId.toString() !== user._id.toString())
     ) {
-      return res.status(403).json("errors/403", { message: "Access denied." });
+      return res.status(403).json({ message: "Access denied." });
+    }
+    if (
+      user.role === "Client" &&
+      dish.isVisible !== true
+    ) {
+      return res.status(403).json({ message: "Access denied." });
     }
 
     // Buscar todos os menus
@@ -320,7 +329,7 @@ dishesController.showDish = async function (req, res, next) {
         return {
           _id: menu._id,
           menuName: menu.name,
-          restaurants: associatedRestaurants.length > 0 ? associatedRestaurants : [], // Garante que seja um array vazio se não houver restaurantes
+          restaurants: associatedRestaurants.length > 0 ? associatedRestaurants : [],
         };
       });
 

@@ -44,8 +44,10 @@
           </div>
           <div class="d-flex justify-content-between align-items-center mt-3">
             <a [routerLink]="['/dish-details', dish._id]" class="btn btn-sm btn-outline-primary">View</a>
-            <a [routerLink]="['/dishes/editDish', dish._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
-            <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteDish(dish._id)">Delete</button>
+            <ng-container *ngIf="(userRole === 'Manager' && (dish.managerId?._id === userId || dish.managerId === userId)) || userRole === 'Admin'">
+              <a [routerLink]="['/dishes/editDish', dish._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
+              <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteDish(dish._id)">Delete</button>
+            </ng-container>
           </div>
         </div>
       </div>

@@ -164,47 +164,50 @@ restaurantsController.showAll = async function (req, res, next) {
 
 // Controlador para exibir os detalhes de um restaurante
 restaurantsController.showDetails = function (req, res, next) {
-
   const query =
     req.user.role === "Manager"
-      ? { name: req.params.name, managerId: req.user._id } // Gerente só pode acessar seus próprios restaurantes
-      : { name: req.params.name }; // Admin pode acessar qualquer restaurante
+      ? { name: req.params.name, managerId: req.user._id }
+      : { name: req.params.name };
 
   mongoRestaurant
     .findOne(query)
-    .populate("menus") // Popula os menus associados ao restaurante
+    .populate("menus")
     .then(function (restaurantDB) {
       if (!restaurantDB) {
-        // Retorna 404 se o restaurante não for encontrado
-        return res.status(404).json("errors/404", { message: "Restaurant not found." });
+        return res.status(404).json({ message: "Restaurant not found." });
       }
 
-
-      // Verificar permissões
+      // Permissões:
+      // - Admin pode ver tudo
+      // - Manager só vê os seus
+      // - Client só vê restaurantes aprovados e visíveis
       if (
-        req.user.role !== "Admin" && // Apenas Admin pode acessar qualquer restaurante
-        (!restaurantDB.managerId || restaurantDB.managerId.toString() !== req.user._id.toString()) // Gerente só pode acessar seus próprios restaurantes
+        req.user.role === "Manager" &&
+        (!restaurantDB.managerId || restaurantDB.managerId.toString() !== req.user._id.toString())
       ) {
-        // Retorna 403 se o usuário não tiver permissão
-        return res.status(403).json("errors/403", { message: "Access denied." });
+        return res.status(403).json({ message: "Access denied." });
+      }
+      if (
+        req.user.role === "Client" &&
+        (!restaurantDB.isApproved || restaurantDB.isVisible === false)
+      ) {
+        return res.status(403).json({ message: "Access denied." });
       }
 
-      // Filtrar menus para que apenas os que são criados pelo gerente autenticado sejam exibidos
-      const filteredMenus = restaurantDB.menus.filter((menu) => {
-        // Administradores podem ver todos os menus
-        if (req.user.role === "Admin") {
-          return true;
-        }
-        // Gerentes só podem ver menus que eles criaram
-        return menu.managerId.toString() === req.user._id.toString();
-      });
+      // Filtrar menus conforme o papel
+      let filteredMenus = restaurantDB.menus;
+      if (req.user.role === "Manager") {
+        filteredMenus = restaurantDB.menus.filter(
+          (menu) => menu.managerId.toString() === req.user._id.toString()
+        );
+      }
 
       const inputs = {
         restaurant: {
           ...restaurantDB.toObject(),
           menus: filteredMenus,
         },
-        user: req.user, // Comente para não enviar user ao front
+        user: req.user,
       };
       res.json(inputs);
     })

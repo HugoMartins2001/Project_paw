@@ -18,10 +18,16 @@
           <div class="info-item">
             <label for="clienteTelemovel">Telemóvel:</label>
             <input type="text" id="clienteTelemovel" formControlName="clienteTelemovel" />
+            <div *ngIf="profileForm.get('clienteTelemovel')?.invalid && profileForm.get('clienteTelemovel')?.touched" class="text-danger">
+              O número de telemóvel deve ter 9 dígitos.
+            </div>
           </div>
           <div class="info-item">
             <label for="clienteNif">NIF:</label>
             <input type="text" id="clienteNif" formControlName="clienteNif" />
+            <div *ngIf="profileForm.get('clienteNif')?.invalid && profileForm.get('clienteNif')?.touched" class="text-danger">
+              O NIF deve ter 9 dígitos.
+            </div>
           </div>
           <div class="info-item">
             <label for="address">Endereço:</label>

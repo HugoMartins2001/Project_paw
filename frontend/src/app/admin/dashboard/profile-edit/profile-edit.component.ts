@@ -30,10 +30,19 @@ export class ProfileEditComponent implements OnInit {
         this.user = profile.user;
         this.profileForm = this.fb.group({
           name: [this.user?.name || '', Validators.required],
-          clienteTelemovel: [this.user?.clienteTelemovel || ''],
-          clienteNif: [this.user?.clienteNif || ''],
+          clienteTelemovel: [
+            this.user?.clienteTelemovel || '',
+            [Validators.pattern(/^\d{9}$/)]
+          ],
+          clienteNif: [
+            this.user?.clienteNif || '',
+            [Validators.pattern(/^\d{9}$/)]
+          ],
           address: [this.user?.address || ''],
-          managerTelemovel: [this.user?.managerTelemovel || '']
+          managerTelemovel: [
+            this.user?.managerTelemovel || '',
+            [Validators.pattern(/^\d{9}$/)]
+          ]
         });
       },
       error: () => {
@@ -43,7 +52,19 @@ export class ProfileEditComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.profileForm.invalid) return;
+    if (this.profileForm.invalid) {
+      if (
+        this.profileForm.get('clienteTelemovel')?.invalid ||
+        this.profileForm.get('managerTelemovel')?.invalid
+      ) {//ingles
+        Swal.fire('warning', 'O número de telemóvel deve ter exatamente 9 dígitos.', 'warning');
+      }
+      if (this.profileForm.get('clienteNif')?.invalid) {
+        Swal.fire('warning', 'O NIF deve ter exatamente 9 dígitos.', 'warning');
+      }
+      this.profileForm.markAllAsTouched();
+      return;
+    }
     this.loading = true;
     this.profileService.updateProfile(this.profileForm.getRawValue()).subscribe({
       next: () => {

@@ -75,14 +75,14 @@ export class LoginComponent {
 
           Swal.fire({
             icon: 'success',
-            title: 'Login efetuado!',
+            title: 'Login successful!',
             timer: 1500,
             showConfirmButton: false,
           });
 
           setTimeout(() => {
-            if (res.role === 'cliente') {
-              this.router.navigate(['/']);
+            if (res.role === 'Client') {
+              this.router.navigate(['/client']);
             } else if (res.role === 'Manager' || res.role === 'Admin') {
               this.router.navigate(['/dashboard']);
             } else {

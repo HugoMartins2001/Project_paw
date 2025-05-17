@@ -15,11 +15,13 @@ export class DishesComponent implements OnInit {
   dishes: Dish[] = [];
   isLoading = true;
   userRole: string | null = null;
+  userId: string | null = null; // <-- Adiciona esta linha
 
   constructor(private dishService: DishService) {}
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
+    this.userId = localStorage.getItem('id'); // <-- E esta linha
     this.loadDishes();
   }
 

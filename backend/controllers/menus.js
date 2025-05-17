@@ -165,15 +165,24 @@ menusController.showMenu = async function (req, res, next) {
     const menu = await mongoMenu.findById(menuId).populate("dishes");
 
     if (!menu) {
-      return res.status(404).json("errors/404", { message: "Menu not found." });
+      return res.status(404).json({ message: "Menu not found." });
     }
 
-    // Verificar permissões
+    // Permissões:
+    // - Admin pode ver tudo
+    // - Manager só vê os seus
+    // - Client só vê menus visíveis
     if (
-      req.user.role !== "Admin" && // Apenas Admin pode acessar qualquer menu
-      (!menu.managerId || menu.managerId.toString() !== req.user._id.toString()) // Gerente só pode acessar seus próprios menus
+      req.user.role === "Manager" &&
+      (!menu.managerId || menu.managerId.toString() !== req.user._id.toString())
     ) {
-      return res.status(403).json("errors/403", { message: "Access denied." });
+      return res.status(403).json({ message: "Access denied." });
+    }
+    if (
+      req.user.role === "Client" &&
+      menu.isVisible !== true
+    ) {
+      return res.status(403).json({ message: "Access denied." });
     }
 
     // Buscar todos os restaurantes que contêm este menu
