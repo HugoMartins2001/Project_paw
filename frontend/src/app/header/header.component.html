@@ -47,17 +47,30 @@
     </nav>
     <div class="d-flex align-items-center gap-3">
       <!-- Carrinho no header -->
-      <a *ngIf="cartService.getCart().length > 0"
-         (click)="navigateToCart()"
-         class="btn btn-outline-primary position-relative d-flex align-items-center"
-         style="font-weight: 500; font-size: 1.1rem;">
-        <i class="bi bi-cart3" style="font-size: 1.5rem;"></i>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              style="font-size: 0.9rem;">
+      <div *ngIf="cartService.getCart().length > 0"
+           (click)="navigateToCart()"
+           class="cart-summary d-flex align-items-center ms-2 px-3 py-1 shadow-sm"
+           style="border-radius: 24px; cursor:pointer; transition: box-shadow 0.2s; border: 1px solid #e3e6ea;">
+        <i class="bi bi-cart3 text-primary" style="font-size: 1.5rem;"></i>
+        <span class="badge bg-danger ms-n2 mb-3" style="font-size: 0.8rem; position:relative; top:-10px; left:-10px;">
           {{ cartService.getCart().length }}
         </span>
-        <span class="ms-2 d-none d-md-inline">Carrinho</span>
-      </a>
+        <span class="fw-semibold ms-2" style="font-size: 1.1rem;">
+          {{ cartService.getCartTotal() | number:'1.2-2' }} €
+        </span>
+        <span class="text-muted small ms-3 d-flex align-items-center" style="font-size: 1rem;">
+          <i class="bi bi-clock-history me-1"></i>
+          {{ minutes }}:{{ seconds < 10 ? '0' + seconds : seconds }}
+        </span>
+        <!-- Botão para limpar o carrinho -->
+        <button (click)="clearCart($event)"
+                class="btn btn-link p-0 ms-3"
+                style="color: #dc3545; font-size: 1.3rem;"
+                title="Limpar carrinho">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+
       <!-- Botões de autenticação ou user info -->
       <div class="auth-buttons d-flex gap-2" *ngIf="!userName">
         <button class="login-button btn btn-outline-primary" (click)="navigateToLogin()">Login</button>

@@ -4,14 +4,25 @@ import { Dish } from './dish.service';
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private cart: Dish[] = [];
+  private cartStartTime: number | null = null;
 
   constructor() {
     const saved = localStorage.getItem('cart');
     this.cart = saved ? JSON.parse(saved) : [];
+    const savedTime = localStorage.getItem('cartStartTime');
+    this.cartStartTime = savedTime ? Number(savedTime) : null;
   }
 
   private saveCart() {
     localStorage.setItem('cart', JSON.stringify(this.cart));
+    if (this.cart.length > 0 && !this.cartStartTime) {
+      this.cartStartTime = Date.now();
+      localStorage.setItem('cartStartTime', this.cartStartTime.toString());
+    }
+    if (this.cart.length === 0) {
+      this.cartStartTime = null;
+      localStorage.removeItem('cartStartTime');
+    }
   }
 
   getCart() {
@@ -34,6 +45,12 @@ export class CartService {
 
   clearCart() {
     this.cart = [];
+    this.cartStartTime = null;
+    localStorage.removeItem('cartStartTime');
     this.saveCart();
+  }
+
+  getCartStartTime() {
+    return this.cartStartTime;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -12,9 +12,11 @@ import { CartService } from '../admin/services/cart.service';
   styleUrls: ['./header.component.css'],
   imports: [CommonModule]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   userName: string | null = null;
   userRole: string | null = null;
+  timeLeft: number = 600; // 10 minutos em segundos
+  interval: any;
 
   constructor(
     private router: Router,
@@ -30,6 +32,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.loadUserData();
+    this.startTimer();
+  }
+
+  ngOnDestroy() {
+    if (this.interval) clearInterval(this.interval);
   }
 
   loadUserData() {
@@ -46,6 +53,33 @@ export class HeaderComponent implements OnInit {
         this.userRole = null;
       }
     });
+  }
+
+  startTimer() {
+    const start = this.cartService.getCartStartTime();
+    if (start) {
+      const elapsed = Math.floor((Date.now() - start) / 1000);
+      this.timeLeft = Math.max(600 - elapsed, 0);
+    } else {
+      this.timeLeft = 600;
+    }
+    if (this.interval) clearInterval(this.interval);
+    this.interval = setInterval(() => {
+      this.timeLeft--;
+      if (this.timeLeft <= 0) {
+        this.cartService.clearCart();
+        clearInterval(this.interval);
+        // Opcional: alerta
+        // alert('Tempo esgotado! O carrinho foi limpo.');
+      }
+    }, 1000);
+  }
+
+  get minutes() {
+    return Math.floor(this.timeLeft / 60);
+  }
+  get seconds() {
+    return this.timeLeft % 60;
   }
 
   navigateToHome(): void { this.router.navigate(['/home']); }
@@ -86,5 +120,10 @@ export class HeaderComponent implements OnInit {
         });
       }
     });
+  }
+
+  clearCart(event: Event) {
+    event.stopPropagation();
+    this.cartService.clearCart();
   }
 }
