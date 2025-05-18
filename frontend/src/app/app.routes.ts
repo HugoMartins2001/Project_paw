@@ -37,17 +37,26 @@ import { DishCreateComponent } from './admin/dishes/dish-create/dish-create.comp
 import { DishUpdateComponent } from './admin/dishes/dish-update/dish-update.component';
 import { DishDetailsComponent } from './admin/dishes/dish-details/dish-details.component';
 
-//Overall
-import { AboutComponent } from './home/about/about.component';
-import { ContactsComponent } from './home/contacts/contacts.component';
+//user
+import { AboutComponent } from './user/about/about.component';
+import { ContactsComponent } from './user/contacts/contacts.component';
+import { RestaurantUserComponent } from './user/restaurant-user/restaurant-user.component';
+import { MenusUserComponent } from './user/menus-user/menus-user.component';
+import { DishesUserComponent } from './user/dishes-user/dishes-user.component';
 
 
 //Client
-import { ClientHomeComponent } from './client/client-home/client-home.component';
+import { ClientHomeComponent } from './client/home/client-home/client-home.component';
 import { CartComponent } from './client/cart/cart.component';
+import { DishesClientComponent } from './client/dishes/dishes-client/dishes-client.component';
+import { MenusClientComponent } from './client/menus/menus-client/menus-client.component';
+import { RestaurantClientComponent } from './client/restaurants/restaurant-client/restaurant-client.component';
+import { ProfileClientComponent } from './client/profile/profile-client/profile-client.component';
+import { ProfileEditClientComponent } from './client/profile/profile-edit-client/profile-edit-client.component';
 
 //Security
 import { AuthGuardService } from './auth-guard.service';
+import { AdminManagerGuard } from './adminManagerGuard.service';
 
 export const routes: Routes = [
   {
@@ -58,12 +67,13 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService, AdminManagerGuard],
     data: { title: 'Dashboard' }
   },
   {
     path: 'restaurants',
     component: RestaurantsComponent,
+    canActivate: [AuthGuardService, AdminManagerGuard],
     data: { title: 'Restaurant' }
   },
   {
@@ -89,6 +99,7 @@ export const routes: Routes = [
   {
     path: 'menus',
     component: MenusComponent,
+    canActivate: [AuthGuardService, AdminManagerGuard],
     data: { title: 'Menus' }
   },
   {
@@ -109,6 +120,7 @@ export const routes: Routes = [
   {
     path: 'dishes',
     component: DishesComponent,
+    canActivate: [AuthGuardService, AdminManagerGuard],
     data: { title: 'Dishes' }
   },
   {
@@ -129,13 +141,13 @@ export const routes: Routes = [
   {
     path: 'logs',
     component: LogsComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService, AdminManagerGuard],
     data: { title: 'Logs' }
   },
   {
     path: 'users',
     component: UsersComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService, AdminManagerGuard],
     data: { title: 'Users' }
   },
   {
@@ -151,13 +163,13 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService, AdminManagerGuard],
     data: { title: 'Profile' }
   },
   {
     path: 'profile/edit',
     component: ProfileEditComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService, AdminManagerGuard],
     data: { title: 'Edit Profile' }
   },
   {
@@ -192,7 +204,56 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
     data: { title: 'Cart' }
   },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }
+  {
+    path: 'client/dishes',
+    component: DishesClientComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Client Dishes' }
+  },
+  {
+    path: 'client/menus',
+    component: MenusClientComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Client Menus' }
+  },
+  {
+    path: 'client/restaurant',
+    component: RestaurantClientComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Client Restaurant' }
+  },
+  {
+    path: 'client/profile',
+    component: ProfileClientComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Client Profile' }
+  },
+  {
+    path: 'client/profile/edit',
+    component: ProfileEditClientComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Edit Client Profile' }
+  },
+  {
+    path: 'restaurant/user',
+    component: RestaurantUserComponent,
+    data: { title: 'Restaurant User' }
+  },
+  {
+    path: 'menus/user',
+    component: MenusUserComponent,
+    data: { title: 'Menus User' }
+  },
+  {
+    path: 'dishes/user',
+    component: DishesUserComponent,
+    data: { title: 'Dishes User' }
+  },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({

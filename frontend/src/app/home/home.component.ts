@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  navigateToMenus() {this.router.navigate(['/menus']);}
-  navigateToRestaurants() {this.router.navigate(['/restaurants']);}
-  navigateToRegister() {this.router.navigate(['/register']);}
-  navigateToDishes() {this.router.navigate(['/dishes']);}
-  
+  navigateToMenus() { this.router.navigate(['/menus']); }
+  navigateToRestaurants() { this.router.navigate(['/restaurants']); }
+  navigateToRegister() { this.router.navigate(['/register']); }
+  navigateToDishes() { this.router.navigate(['/dishes']); }
+
 }

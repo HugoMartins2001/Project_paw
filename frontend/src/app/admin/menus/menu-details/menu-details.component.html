@@ -5,7 +5,8 @@
 
     <div class="text-center mb-3">
       <ng-container *ngIf="menu.menuPic; else noImage">
-        <img [src]="getMenuImageUrl(menu.menuPic)" alt="{{ menu.name }}" class="img-fluid rounded" style="max-height: 200px;" />
+        <img [src]="getMenuImageUrl(menu.menuPic)" alt="{{ menu.name }}" class="img-fluid rounded"
+          style="max-height: 200px;" />
       </ng-container>
       <ng-template #noImage>
         <p class="text-center"><em>No image available for this menu.</em></p>
@@ -17,7 +18,8 @@
         <h5 class="card-title">Dishes:</h5>
         <ng-container *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">
           <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let dish of menu.dishes">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let dish of menu.dishes">
               <span>
                 <strong>{{ dish.name }}</strong><br />
                 <ng-container *ngIf="dish.prices">
@@ -40,7 +42,7 @@
     </div>
 
     <div class="text-center mt-4">
-      <a routerLink="/menus" class="btn btn-secondary">Back to Menu List</a>
+      <button class="btn btn-secondary" (click)="goBackToMenus()">Back to Menu List</button>
     </div>
   </div>
 </div>

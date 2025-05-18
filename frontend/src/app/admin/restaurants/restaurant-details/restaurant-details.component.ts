@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { RestaurantService } from '../../services/restaurant.service';
 
 @Component({
@@ -18,8 +18,9 @@ export class RestaurantDetailsComponent implements OnInit {
 
   constructor(
     private restaurantService: RestaurantService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const name = this.route.snapshot.paramMap.get('name');
@@ -27,31 +28,39 @@ export class RestaurantDetailsComponent implements OnInit {
       this.fetchRestaurant(name);
     }
   }
-  
+
 
   fetchRestaurant(name: string): void {
-  this.restaurantService.getRestaurantByName(name).subscribe({
-    next: (data) => {
-      if (data && data.restaurant) {
-        this.restaurant = data.restaurant;
-      } else {
+    this.restaurantService.getRestaurantByName(name).subscribe({
+      next: (data) => {
+        if (data && data.restaurant) {
+          this.restaurant = data.restaurant;
+        } else {
+          this.restaurant = null;
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
         this.restaurant = null;
-      }
-      this.isLoading = false;
-    },
-    error: (err) => {
-      this.restaurant = null;
-      this.isLoading = false;
-    },
-  });
-}
+        this.isLoading = false;
+      },
+    });
+  }
 
   openingHoursKeys(openingHours: any): string[] {
-  return openingHours ? Object.keys(openingHours) : [];
-}
+    return openingHours ? Object.keys(openingHours) : [];
+  }
 
-getRestaurantImageUrl(restaurantPic: string): string {
+  getRestaurantImageUrl(restaurantPic: string): string {
     return `http://localhost:3000/uploads/${restaurantPic}`;
   }
 
+  goBackToRestaurants() {
+    const role = localStorage.getItem('role');
+    if (role === 'Client') {
+      this.router.navigate(['/client/restaurant']);
+    } else {
+      this.router.navigate(['/restaurants']);
+    }
+  }
 }

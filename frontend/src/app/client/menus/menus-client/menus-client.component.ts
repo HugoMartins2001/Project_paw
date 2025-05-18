@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MenuService, Menu } from '../services/menu.service';
-import { RestaurantService } from '../services/restaurant.service';
+import { MenuService, Menu } from '../../../admin/services/menu.service';
+import { RestaurantService } from '../../../admin/services/restaurant.service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-menus',
+  selector: 'app-menus-client',
   standalone: true,
-  templateUrl: './menus.component.html',
-  styleUrls: ['./menus.component.css'],
-  imports: [CommonModule, RouterModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './menus-client.component.html',
+  styleUrls: ['./menus-client.component.css']
 })
-export class MenusComponent implements OnInit {
+export class MenusClientComponent implements OnInit {
   menus: Menu[] = [];
   restaurants: any[] = [];
   isLoading = true;
@@ -25,7 +25,7 @@ export class MenusComponent implements OnInit {
   filterMinPrice: number | null = null;
   filterMaxPrice: number | null = null;
 
-  constructor(private menuService: MenuService, private restaurantService: RestaurantService) { }
+  constructor(private menuService: MenuService, private restaurantService: RestaurantService) { } // <-- Injeta o serviço de restaurante
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');

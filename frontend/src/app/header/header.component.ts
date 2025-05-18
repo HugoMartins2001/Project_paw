@@ -94,22 +94,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.timeLeft % 60;
   }
 
-  navigateToHome(): void { this.router.navigate(['/home']); }
-  navigateToClientHome(): void { this.router.navigate(['/clientHome']); }
-  navigateToRestaurant(): void { this.router.navigate(['/restaurants']); }
-  navigateToRestaurantApproval(): void { this.router.navigate(['/restaurantApprove']); }
-  navigateToDashboard(): void { this.router.navigate(['/dashboard']); }
-  navigateToLogs(): void { this.router.navigate(['/logs']); }
-  navigateToUsers(): void { this.router.navigate(['/users']); }
+  //Overall
   navigateToLogin(): void { this.router.navigate(['/login']); }
   navigateToRegister(): void { this.router.navigate(['/register']); }
+  navigateToDashboard(): void { this.router.navigate(['/dashboard']); }
+  navigateToHome(): void { this.router.navigate(['/home']); }
+
+  //admin e manager
   navigateToMenus(): void { this.router.navigate(['/menus']); }
   navigateToDishes(): void { this.router.navigate(['/dishes']); }
+  navigateToRestaurant(): void { this.router.navigate(['/restaurants']); }
   navigateToOrders(): void { this.router.navigate(['/orders']); }
-  navigateToProfile(): void { this.router.navigate(['/profile']); }
+  navigateToRestaurantApproval(): void { this.router.navigate(['/restaurantApprove']); }
+  navigateToLogs(): void { this.router.navigate(['/logs']); }
+  navigateToUsers(): void { this.router.navigate(['/users']); }
+
+  //client
+  navigateToClientHome(): void { this.router.navigate(['/clientHome']); }
+  navigateToClientDishes(): void { this.router.navigate(['/client/dishes']); }
+  navigateToClientMenus(): void { this.router.navigate(['/client/menus']); }
+  navigateToClientRestaurant(): void { this.router.navigate(['/client/restaurant']); }
+  navigateToClientProfile(): void { this.router.navigate(['/client/profile']); }
   navigateToAbout(): void { this.router.navigate(['/about']); }
   navigateToContact(): void { this.router.navigate(['/contacts']); }
   navigateToCart(): void { this.router.navigate(['/cart']); }
+  navigateToProfile(): void { this.router.navigate(['/profile']); }
+
+  //user
+  navigateToMenusUser(): void { this.router.navigate(['menus/user']); }
+  navigateToDishesUser(): void { this.router.navigate(['dishes/user']); }
+  navigateToRestaurantUser(): void { this.router.navigate(['restaurant/user']); }
+
 
   logout(): void {
     Swal.fire({

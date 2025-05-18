@@ -53,11 +53,11 @@
       <ng-container *ngIf="user?.role === 'Admin'">
         <div class="info-item">
           <i class="fas fa-phone"></i>
-          {{ user?.managerTelemovel || 'Mobile phone not provided' }}
+          Phone: {{ user?.managerTelemovel || 'Mobile phone not provided' }}
         </div>
         <div class="info-item">
           <i class="fas fa-home"></i>
-          {{ user?.address || 'Address not provided' }}
+          Address: {{ user?.address || 'Address not provided' }}
         </div>
       </ng-container>
     </div>

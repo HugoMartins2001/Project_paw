@@ -56,7 +56,8 @@
               </ng-template>
             </div>
             <div class="d-flex justify-content-between align-items-center mt-3">
-                <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver detalhes</button>
+              <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver
+                detalhes</button>
               <ng-container *ngIf="userRole === 'Client' || userRole === 'Manager' || userRole === 'Admin'">
                 <a [routerLink]="['/restaurant-details', restaurant.name]"
                   class="btn btn-sm btn-outline-primary">View</a>

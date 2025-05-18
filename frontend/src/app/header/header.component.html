@@ -8,27 +8,30 @@
       <ul class="nav-list d-flex mb-0">
         <ng-container *ngIf="!userRole">
           <li><a (click)="navigateToHome()" class="nav-link" style="cursor:pointer;">Home</a></li>
-          <li><a (click)="navigateToRestaurant()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
-          <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
-          <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
+          <li><a (click)="navigateToRestaurantUser()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
+          <li><a (click)="navigateToMenusUser()" class="nav-link" style="cursor:pointer;">Menus</a></li>
+          <li><a (click)="navigateToDishesUser()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
           <li><a (click)="navigateToAbout()" class="nav-link" style="cursor:pointer;">Sobre Nós</a></li>
           <li><a (click)="navigateToContact()" class="nav-link" style="cursor:pointer;">Contacte-nos</a></li>
         </ng-container>
         <ng-container *ngIf="userRole === 'Client'">
           <li><a (click)="navigateToClientHome()" class="nav-link" style="cursor:pointer;">Home</a></li>
-          <li><a (click)="navigateToRestaurant()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
-          <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
-          <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
+          <li><a (click)="navigateToClientRestaurant()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
+          <li><a (click)="navigateToClientMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
+          <li><a (click)="navigateToClientDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
           <li><a (click)="navigateToOrders()" class="nav-link" style="cursor:pointer;">Orders</a></li>
+          <li><a (click)="navigateToAbout()" class="nav-link" style="cursor:pointer;">Sobre Nós</a></li>
+          <li><a (click)="navigateToContact()" class="nav-link" style="cursor:pointer;">Contacte-nos</a></li>
           <!--<li><a (click)="navigateToFavorites()" class="nav-link">Favorites</a></li>-->
-          <li><a (click)="navigateToProfile()" class="nav-link">Profile</a></li>
+          <li><a (click)="navigateToClientProfile()" class="nav-link" style="cursor:pointer;">Profile</a></li>
         </ng-container>
         <ng-container *ngIf="userRole === 'Admin'">
           <li><a (click)="navigateToDashboard()" class="nav-link" style="cursor:pointer;">Dashboard</a></li>
           <li><a (click)="navigateToRestaurant()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
           <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
           <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
-          <li><a (click)="navigateToRestaurantApproval()" class="nav-link" style="cursor:pointer;">Approve Restaurantes</a></li>
+          <li><a (click)="navigateToRestaurantApproval()" class="nav-link" style="cursor:pointer;">Approve
+              Restaurantes</a></li>
           <li><a (click)="navigateToLogs()" class="nav-link" style="cursor:pointer;">Logs &amp; Statistics</a></li>
           <li><a (click)="navigateToUsers()" class="nav-link" style="cursor:pointer;">Users</a></li>
           <li><a (click)="navigateToProfile()" class="nav-link" style="cursor:pointer;">Profile</a></li>
@@ -45,33 +48,29 @@
 
       </ul>
     </nav>
-    <div class="d-flex align-items-center gap-3">
-      <!-- Carrinho no header -->
-      <div *ngIf="cartService.getCart().length > 0"
-           (click)="navigateToCart()"
-           class="cart-summary d-flex align-items-center ms-2 px-3 py-1 shadow-sm"
-           style="border-radius: 24px; cursor:pointer; transition: box-shadow 0.2s; border: 1px solid #e3e6ea;">
-        <i class="bi bi-cart3 text-primary" style="font-size: 1.5rem;"></i>
-        <span class="badge bg-danger ms-n2 mb-3" style="font-size: 0.8rem; position:relative; top:-10px; left:-10px;">
-          {{ cartService.getCart().length }}
-        </span>
-        <span class="fw-semibold ms-2" style="font-size: 1.1rem;">
-          {{ cartService.getCartTotal() | number:'1.2-2' }} €
-        </span>
-        <span class="text-muted small ms-3 d-flex align-items-center" style="font-size: 1rem;">
-          <i class="bi bi-clock-history me-1"></i>
-          {{ minutes }}:{{ seconds < 10 ? '0' + seconds : seconds }}
-        </span>
-        <!-- Botão para limpar o carrinho -->
-        <button (click)="clearCart($event)"
-                class="btn btn-link p-0 ms-3"
-                style="color: #dc3545; font-size: 1.3rem;"
-                title="Limpar carrinho">
-          <i class="bi bi-trash"></i>
-        </button>
-      </div>
-
-      <!-- Botões de autenticação ou user info -->
+    <div *ngIf=" userRole === 'Client'" class="d-flex align-items-center gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div *ngIf="cartService.getCart().length >= 0" (click)="navigateToCart()"
+          class="cart-summary d-flex align-items-center ms-2 px-3 py-1 shadow-sm"
+          style="border-radius: 24px; cursor:pointer; transition: box-shadow 0.2s; border: 1px solid #e3e6ea;">
+          <i class="bi bi-cart3 text-primary" style="font-size: 1.5rem;"></i>
+          <span class="badge bg-danger ms-n2 mb-3" style="font-size: 0.8rem; position:relative; top:-10px; left:-10px;">
+            {{ cartService.getCart().length }}
+          </span>
+          <span class="fw-semibold ms-2" style="font-size: 1.1rem;">
+            {{ cartService.getCartTotal() | number:'1.2-2' }} €
+          </span>
+          <span class="text-muted small ms-3 d-flex align-items-center" *ngIf="cartService.getCart().length > 0"
+            style="font-size: 1rem;">
+            <i class="bi bi-clock-history me-1"></i>
+            {{ minutes }}:{{ seconds < 10 ? '0' + seconds : seconds }} </span>
+              <button (click)="clearCart($event)" class="btn btn-link p-0 ms-3"
+                style="color: #dc3545; font-size: 1.3rem;" title="Limpar carrinho">
+                <i class="bi bi-trash"></i>
+              </button>
+        </div>
+    </div>
+    </div>
       <div class="auth-buttons d-flex gap-2" *ngIf="!userName">
         <button class="login-button btn btn-outline-primary" (click)="navigateToLogin()">Login</button>
         <button class="register-button btn btn-primary" (click)="navigateToRegister()">Register</button>
@@ -82,6 +81,5 @@
           <span class="material-icons" style="vertical-align: middle;">logout</span>
         </button>
       </div>
-    </div>
   </div>
 </header>

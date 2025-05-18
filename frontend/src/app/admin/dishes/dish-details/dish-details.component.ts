@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DishService, Dish } from '../../services/dish.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dish-details',
@@ -16,8 +17,9 @@ export class DishDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dishService: DishService
-  ) {}
+    private dishService: DishService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const dishId = this.route.snapshot.paramMap.get('id');
@@ -41,5 +43,14 @@ export class DishDetailsComponent implements OnInit {
 
   getDishImageUrl(dishPic: string): string {
     return `http://localhost:3000/uploads/${dishPic}`;
+  }
+
+  goBackToDishes() {
+    const role = localStorage.getItem('role');
+    if (role === 'Client') {
+      this.router.navigate(['/client/dishes']);
+    } else {
+      this.router.navigate(['/dishes']);
+    }
   }
 }

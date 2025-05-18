@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuService, Menu } from '../../services/menu.service';
 
@@ -18,8 +18,9 @@ export class MenuDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private menuService: MenuService
-  ) {}
+    private menuService: MenuService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const menuId = this.route.snapshot.paramMap.get('id');
@@ -51,4 +52,12 @@ export class MenuDetailsComponent implements OnInit {
     return `http://localhost:3000/uploads/${menuPic}`;
   }
 
+  goBackToMenus() {
+    const role = localStorage.getItem('role');
+    if (role === 'Client') {
+      this.router.navigate(['/client/menus']);
+    } else {
+      this.router.navigate(['/menus']);
+    }
+  }
 }

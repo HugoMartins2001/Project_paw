@@ -1,5 +1,3 @@
-
-
 body {
   background-color: #f4f7fc;
   font-family: 'Inter', sans-serif;
@@ -150,7 +148,8 @@ h1 {
 /* Botão "Create New Restaurant" no canto superior direito */
 .create-restaurant-btn {
   position: absolute;
-  top: 150px; /* Ajuste conforme necessário para alinhar com o botão de logout */
+  top: 150px;
+  /* Ajuste conforme necessário para alinhar com o botão de logout */
   right: 20px;
   z-index: 1000;
 }
@@ -174,23 +173,31 @@ h1 {
 /* Responsividade para telas menores */
 @media (max-width: 768px) {
   .create-restaurant-btn {
-    position: static; /* Remove a posição absoluta */
-    margin: 10px auto; /* Centraliza o botão */
-    text-align: center; /* Centraliza o conteúdo */
+    position: static;
+    /* Remove a posição absoluta */
+    margin: 10px auto;
+    /* Centraliza o botão */
+    text-align: center;
+    /* Centraliza o conteúdo */
   }
 
   .create-restaurant-btn .btn {
-    width: 100%; /* O botão ocupa toda a largura */
-    font-size: 0.9rem; /* Reduz o tamanho da fonte */
-    padding: 8px 15px; /* Ajusta o espaçamento interno */
+    width: 100%;
+    /* O botão ocupa toda a largura */
+    font-size: 0.9rem;
+    /* Reduz o tamanho da fonte */
+    padding: 8px 15px;
+    /* Ajusta o espaçamento interno */
   }
 }
 
 /* Responsividade para telas muito pequenas */
 @media (max-width: 480px) {
   .create-restaurant-btn .btn {
-    font-size: 0.8rem; /* Reduz ainda mais o tamanho da fonte */
-    padding: 6px 10px; /* Ajusta o espaçamento interno */
+    font-size: 0.8rem;
+    /* Reduz ainda mais o tamanho da fonte */
+    padding: 6px 10px;
+    /* Ajusta o espaçamento interno */
   }
 }
 
@@ -228,26 +235,35 @@ h1 {
 /* Estilo aprimorado para as imagens dos restaurantes */
 .restaurant-img-container {
   position: relative;
-  overflow: hidden; /* Garante que o zoom não ultrapasse os limites */
-  border-radius: 12px; /* Bordas arredondadas mais suaves */
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra mais elegante */
+  overflow: hidden;
+  /* Garante que o zoom não ultrapasse os limites */
+  border-radius: 12px;
+  /* Bordas arredondadas mais suaves */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  /* Sombra mais elegante */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .restaurant-img-container:hover {
-  transform: translateY(-5px); /* Leve elevação ao passar o mouse */
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3); /* Sombra mais intensa no hover */
+  transform: translateY(-5px);
+  /* Leve elevação ao passar o mouse */
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+  /* Sombra mais intensa no hover */
 }
 
 .restaurant-img {
   width: 100%;
-  height: 200px; /* Altura consistente para todas as imagens */
-  object-fit: cover; /* Garante que a imagem se ajuste sem distorção */
-  transition: transform 0.4s ease; /* Transição suave para o zoom */
+  height: 200px;
+  /* Altura consistente para todas as imagens */
+  object-fit: cover;
+  /* Garante que a imagem se ajuste sem distorção */
+  transition: transform 0.4s ease;
+  /* Transição suave para o zoom */
 }
 
 .restaurant-img-container:hover .restaurant-img {
-  transform: scale(1.1); /* Leve zoom ao passar o mouse */
+  transform: scale(1.1);
+  /* Leve zoom ao passar o mouse */
 }
 
 /* Adiciona um gradiente de fundo para destacar a imagem */
@@ -262,11 +278,13 @@ h1 {
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 1;
-  border-radius: 12px; /* Segue o formato da borda */
+  border-radius: 12px;
+  /* Segue o formato da borda */
 }
 
 .restaurant-img-container:hover::before {
-  opacity: 1; /* Gradiente aparece no hover */
+  opacity: 1;
+  /* Gradiente aparece no hover */
 }
 
 /* Texto sobreposto na imagem (opcional) */
@@ -278,5 +296,6 @@ h1 {
   font-size: 14px;
   font-weight: bold;
   z-index: 2;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); /* Texto com sombra para melhor visibilidade */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  /* Texto com sombra para melhor visibilidade */
 }
