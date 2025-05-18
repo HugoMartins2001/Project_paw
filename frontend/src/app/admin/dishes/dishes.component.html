@@ -71,10 +71,46 @@
           <div class="d-flex justify-content-between align-items-center mt-3">
             <a *ngIf="userRole" [routerLink]="['/dish-details', dish._id]" class="btn btn-sm btn-outline-primary">View</a>
             <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver detalhes</button>
-            <!-- Botão do carrinho para todos os utilizadores -->
-            <button *ngIf="userRole === 'Client'" class="btn btn-sm btn-success ms-2" (click)="addToCart(dish)">
-              Adicionar ao carrinho
-            </button>
+
+            <!-- Só clientes veem os preços e podem escolher o tamanho -->
+            <ng-container *ngIf="userRole === 'Client'">
+              <div class="d-flex flex-column align-items-start w-100">
+                <label class="mb-1 fw-semibold" style="font-size: 0.95rem;">Escolher tamanho:</label>
+                <div class="d-flex gap-2 mb-2 w-100">
+                  <button type="button"
+                    class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
+                    [class.active]="selectedSize[dish._id] === 'pequena'"
+                    style="font-size: 0.95rem; min-width: 70px;"
+                    (click)="selectSize(dish._id, 'pequena')">
+                    Pequena
+                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.pequena || '-' }} €</span>
+                  </button>
+                  <button type="button"
+                    class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
+                    [class.active]="selectedSize[dish._id] === 'media'"
+                    style="font-size: 0.95rem; min-width: 70px;"
+                    (click)="selectSize(dish._id, 'media')">
+                    Média
+                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.media || '-' }} €</span>
+                  </button>
+                  <button type="button"
+                    class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
+                    [class.active]="selectedSize[dish._id] === 'grande'"
+                    style="font-size: 0.95rem; min-width: 70px;"
+                    (click)="selectSize(dish._id, 'grande')">
+                    Grande
+                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.grande || '-' }} €</span>
+                  </button>
+                </div>
+                <button class="btn btn-success btn-sm align-self-end mt-1 px-3 rounded-pill d-flex align-items-center"
+                  [disabled]="!selectedSize[dish._id]"
+                  style="font-size: 0.98rem;"
+                  (click)="addToCart(dish, selectedSize[dish._id]!)">
+                  <i class="bi bi-cart-plus me-1"></i> Adicionar ao carrinho
+                </button>
+              </div>
+            </ng-container>
+
             <ng-container *ngIf="(userRole === 'Manager' && isDishManager(dish, userId)) || userRole === 'Admin'">
               <a [routerLink]="['/dishes/editDish', dish._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
               <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteDish(dish._id)">Delete</button>

@@ -25,6 +25,7 @@ export class DishesComponent implements OnInit {
   filterAllergens: string = '';
   categories: string[] = [];
   allergensList: string[] = [];
+  selectedSize: { [dishId: string]: 'pequena' | 'media' | 'grande' | null } = {};
 
   constructor(private dishService: DishService, private cartService: CartService) { }
 
@@ -123,7 +124,19 @@ export class DishesComponent implements OnInit {
     });
   }
 
-  addToCart(dish: Dish) {
-    this.cartService.addToCart(dish);
+  selectSize(dishId: string, size: 'pequena' | 'media' | 'grande') {
+    // Se já está selecionado, desmarca
+    if (this.selectedSize[dishId] === size) {
+      this.selectedSize[dishId] = null;
+    } else {
+      this.selectedSize[dishId] = size;
+    }
+  }
+
+  addToCart(dish: Dish, size: 'pequena' | 'media' | 'grande') {
+    if (!size) return;
+    const price = dish.prices?.[size] || 0;
+    this.cartService.addToCart({ ...dish, selectedSize: size, selectedPrice: price });
+    // this.headerComponent.startTimer(); // <-- chama isto se tiveres acesso ao HeaderComponent
   }
 }

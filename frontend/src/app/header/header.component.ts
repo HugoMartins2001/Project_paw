@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ProfileService, ProfileResponse } from '../admin/services/profile.service';
 import { CartService } from '../admin/services/cart.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userRole: string | null = null;
   timeLeft: number = 600; // 10 minutos em segundos
   interval: any;
+  cartSub!: Subscription;
 
   constructor(
     private router: Router,
@@ -33,10 +35,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadUserData();
     this.startTimer();
+
+    // Subscreve ao carrinho para reiniciar o timer sempre que muda
+    this.cartSub = this.cartService.cart$.subscribe(cart => {
+      this.startTimer();
+    });
   }
 
   ngOnDestroy() {
     if (this.interval) clearInterval(this.interval);
+    if (this.cartSub) this.cartSub.unsubscribe();
   }
 
   loadUserData() {
@@ -56,23 +64,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   startTimer() {
+    if (this.interval) clearInterval(this.interval);
+
     const start = this.cartService.getCartStartTime();
-    if (start) {
+    if (start && this.cartService.getCart().length > 0) {
       const elapsed = Math.floor((Date.now() - start) / 1000);
       this.timeLeft = Math.max(600 - elapsed, 0);
+      this.interval = setInterval(() => {
+        if (this.cartService.getCart().length === 0) {
+          this.timeLeft = 600;
+          clearInterval(this.interval);
+          return;
+        }
+        this.timeLeft--;
+        if (this.timeLeft <= 0) {
+          this.cartService.clearCart();
+          clearInterval(this.interval);
+        }
+      }, 1000);
     } else {
       this.timeLeft = 600;
     }
-    if (this.interval) clearInterval(this.interval);
-    this.interval = setInterval(() => {
-      this.timeLeft--;
-      if (this.timeLeft <= 0) {
-        this.cartService.clearCart();
-        clearInterval(this.interval);
-        // Opcional: alerta
-        // alert('Tempo esgotado! O carrinho foi limpo.');
-      }
-    }, 1000);
   }
 
   get minutes() {
