@@ -34,6 +34,9 @@
         <button type="submit" class="btn btn-primary btn-lg" [disabled]="isLoading">
           {{ isLoading ? "A entrar..." : "Entrar" }}
         </button>
+        <button type="button" class="btn btn-danger w-100 mt-2" (click)="loginWithGoogle()">
+          <i class="fab fa-google"></i> Login with Google
+        </button>
       </div>
 
       <!-- Link para Registo -->
@@ -54,5 +57,7 @@
       </button>
       <button class="btn btn-link" (click)="hideForgotForm()" [disabled]="forgotLoading">Cancelar</button>
     </div>
+
+    
   </div>
 </div>

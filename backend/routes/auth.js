@@ -57,11 +57,11 @@ router.get('/google/callback',
 
         // Verificar se o usuário está bloqueado
         if (req.user.isBlocked) {
-            return res.redirect('/?login=blocked'); // Redireciona com o parâmetro de erro
+            return res.redirect('http://localhost:4200/login?login=blocked');
         }
 
-        res.cookie('auth-token', authToken, { maxAge: 2 * 60 * 60 * 1000 }); // 2 horas
-        res.redirect('/?login=success'); // Redireciona com o parâmetro de sucesso
+        // Redireciona para o frontend com o token na query string
+        res.redirect(`http://localhost:4200/clientHome?token=${authToken}`);
     }
 );
 

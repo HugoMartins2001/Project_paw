@@ -11,7 +11,6 @@ export class AdminManagerGuard implements CanActivate {
             this.router.navigate(['/clientHome']);
             return false;
         }
-        // Permite acesso a Admin, Manager e não autenticados
         return true;
     }
 }

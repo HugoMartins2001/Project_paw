@@ -124,6 +124,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateToMenusUser(): void { this.router.navigate(['menus/user']); }
   navigateToDishesUser(): void { this.router.navigate(['dishes/user']); }
   navigateToRestaurantUser(): void { this.router.navigate(['restaurant/user']); }
+  navigateToUserHome(): void { this.router.navigate(['/home/user']); }
 
 
   logout(): void {

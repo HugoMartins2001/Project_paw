@@ -426,7 +426,7 @@ authController.googleLogin = passport.authenticate('google', { scope: ['profile'
 
 // Callback do Google
 authController.googleCallback = passport.authenticate('google', { failureRedirect: '/auth/login' }, (req, res) => {
-    res.json('/'); // Redireciona para a página inicial após login
+    res.redirect('http://localhost:4200/clientHome'); 
 });
 
 

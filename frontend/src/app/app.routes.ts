@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './admin/home/home.component';
 
 //Login
 import { LoginComponent } from './login/login.component';
@@ -9,6 +9,9 @@ import { ResetPasswordComponent } from './login/reset-password/reset-password.co
 
 //Register
 import { RegisterComponent } from './login/register/register.component';
+
+//home
+import { HomeUserComponent } from './user/home-user/home-user.component';
 
 //Admin & manager
 //Dashboard
@@ -248,6 +251,11 @@ export const routes: Routes = [
     path: 'dishes/user',
     component: DishesUserComponent,
     data: { title: 'Dishes User' }
+  },
+  {
+    path: 'home/user',
+    component: HomeUserComponent,
+    data: { title: 'Home User' }
   },
   {
     path: '',
