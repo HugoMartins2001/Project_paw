@@ -96,5 +96,14 @@ app.use(function (err, req, res, next) {
   }
 });
 
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, { cors: { origin: '*' } });
+
+// Guarda o io para usar nos controladores
+app.set('io', io);
+
+// Altera a porta para 3001
+http.listen(3001, () => console.log('Server running on http://localhost:3001'));
+
 
 module.exports = app;

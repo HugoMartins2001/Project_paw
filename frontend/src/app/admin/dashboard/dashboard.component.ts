@@ -3,6 +3,8 @@ import Chart from 'chart.js/auto';
 import { DashboardService } from '../services/dashboard.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SocketService } from '../services/socket.service'; // importa o serviço do socket
+import Swal from 'sweetalert2'; // importa o SweetAlert2
 
 @Component({
   selector: 'app-dashboard',
@@ -23,11 +25,28 @@ export class DashboardComponent implements OnInit {
   private generalChartInstance: Chart | null = null;
   private clientsChartInstance: Chart | null = null;
 
-  constructor(private dashboardService: DashboardService, private router: Router) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private router: Router,
+    private socketService: SocketService // injeta o serviço do socket
+  ) {}
 
   ngOnInit() {
     this.role = localStorage.getItem('role') || '';
     this.loadDashboardData();
+
+    // Ouve o evento de nova encomenda
+    this.socketService.onOrderCreated((data) => {
+      Swal.fire({
+        icon: 'info',
+        title: 'Nova encomenda!',
+        text: data.message,
+        toast: true,
+        position: 'top-end',
+        timer: 2500,
+        showConfirmButton: false
+      });
+    });
   }
   
   navigateToHome(): void { this.router.navigate(['/home']); }

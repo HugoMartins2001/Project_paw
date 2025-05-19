@@ -7,7 +7,7 @@ export class AdminManagerGuard implements CanActivate {
 
     canActivate(): boolean {
         const role = localStorage.getItem('role');
-        if (role === 'Client' || role === 'Manager' ) {
+        if (role === 'Client') {
             this.router.navigate(['/clientHome']);
             return false;
         }

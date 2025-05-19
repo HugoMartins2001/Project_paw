@@ -19,8 +19,8 @@ checkoutController.createCheckoutSession = async (req, res) => {
         quantity: item.quantity || 1,
       })),
       mode: 'payment',
-      success_url: 'http://localhost:4200/success',
-      cancel_url: 'http://localhost:4200/cancel',
+      success_url: 'http://localhost:4200/client/home?paid=1',
+      cancel_url: 'http://localhost:4200/payment-cancel',
     });
     res.json({ url: session.url });
   } catch (err) {

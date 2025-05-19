@@ -1,12 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { SocketService } from '../services/socket.service';
+import Swal from 'sweetalert2';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
   private apiUrl = 'http://localhost:3000/api/admin'; // Ajusta conforme o teu backend
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private socketService: SocketService) {
+    this.socketService.onOrderCreated((data) => {
+      Swal.fire({
+        icon: 'info',
+        title: 'Nova encomenda!',
+        text: data.message,
+        toast: true,
+        position: 'top-end',
+        timer: 2500,
+        showConfirmButton: false
+      });
+    });
+  }
 
   private getHeaders() {
     return {

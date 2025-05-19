@@ -81,9 +81,36 @@ ordersController.deleteOrder = async function (req, res, next) {
 
     res.redirect("/orders/history"); // Redireciona para a página de histórico de encomendas
   } catch (error) {
-    console.error("Erro ao deletar a encomenda:", error);
+    console.error("Erro ao eliminar a encomenda:", error);
     next(error); // Passa o erro para o middleware de tratamento de erros
   }
+};
+
+// Função para completar uma encomenda
+ordersController.completeOrder = async function (req, res, next) {
+  try {
+    const orderId = req.params.orderId;
+    const order = await mongoOrder.findByIdAndUpdate(orderId, { status: 'completed' }, { new: true });
+
+    if (!order) {
+      return res.status(404).send("Order not found.");
+    }
+
+    const io = req.app.get('io');
+    io.emit('orderCompleted', { orderId: order._id, user: order.user, status: order.status });
+
+    res.json({ message: 'Order completed!', order });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Função para criar uma nova encomenda
+ordersController.createOrder = async function (req, res) {
+  // ...criar encomenda na base de dados...
+  const io = req.app.get('io');
+  io.emit('orderCreated', { message: 'Nova encomenda recebida!' });
+  res.status(201).json({ success: true });
 };
 
 module.exports = ordersController;

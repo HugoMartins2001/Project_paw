@@ -56,6 +56,7 @@ import { MenusClientComponent } from './client/menus/menus-client/menus-client.c
 import { RestaurantClientComponent } from './client/restaurants/restaurant-client/restaurant-client.component';
 import { ProfileClientComponent } from './client/profile/profile-client/profile-client.component';
 import { ProfileEditClientComponent } from './client/profile/profile-edit-client/profile-edit-client.component';
+import { PaymentSuccessComponent } from './client/payment-success/payment-success.component';
 
 //Security
 import { AuthGuardService } from './auth-guard.service';
@@ -256,6 +257,11 @@ export const routes: Routes = [
     path: 'home/user',
     component: HomeUserComponent,
     data: { title: 'Home User' }
+  },
+  {
+    path: 'payment-success',
+    component: PaymentSuccessComponent,
+    data: { title: 'Payment Success' }
   },
   {
     path: '',

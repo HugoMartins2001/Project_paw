@@ -4,6 +4,7 @@ import { Dish } from '../../admin/services/dish.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart',
@@ -19,8 +20,24 @@ export class CartComponent {
   }
 
   checkout() {
-    alert('Encomenda concluída! Total: ' + this.cartService.getCartTotal().toFixed(2) + ' €');
-    this.cartService.clearCart();
+    const order = this.cartService.getCart();
+    this.http.post('http://localhost:3001/api/orders', { order }).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Encomenda concluída!',
+          text: 'O seu pedido foi realizado com sucesso.',
+          toast: true,
+          position: 'top-end',
+          timer: 2500,
+          showConfirmButton: false
+        });
+        this.cartService.clearCart();
+      },
+      error: () => {
+        Swal.fire('Erro', 'Não foi possível concluir a encomenda.', 'error');
+      }
+    });
   }
 
   pay() {
@@ -36,3 +53,12 @@ export class CartComponent {
       });
   }
 }
+
+
+// referencias de cartão fake
+// email teste: teste@teste.com
+// numero do cartão: 4242 4242 4242 4242
+// data: 12/34
+// cvv: 123
+// postal code: 12345
+// Nome do cartão: Teste Teste
