@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateToUsers(): void { this.router.navigate(['/users']); }
 
   //client
-  navigateToClientHome(): void { this.router.navigate(['/clientHome']); }
+  navigateToClientHome(): void { this.router.navigate(['/client/home']); }
   navigateToClientDishes(): void { this.router.navigate(['/client/dishes']); }
   navigateToClientMenus(): void { this.router.navigate(['/client/menus']); }
   navigateToClientRestaurant(): void { this.router.navigate(['/client/restaurant']); }

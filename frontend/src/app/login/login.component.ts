@@ -82,7 +82,7 @@ export class LoginComponent {
 
           setTimeout(() => {
             if (res.role === 'Client') {
-              this.router.navigate(['/client']);
+              this.router.navigate(['/client/home']);
             } else if (res.role === 'Manager' || res.role === 'Admin') {
               this.router.navigate(['/dashboard']);
             } else {

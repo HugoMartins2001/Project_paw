@@ -186,7 +186,7 @@ export const routes: Routes = [
     data: { title: 'Register' }
   },
   {
-    path: 'clientHome',
+    path: 'client/home',
     component: ClientHomeComponent,
     canActivate: [AuthGuardService],
     data: { title: 'Client Home' }
