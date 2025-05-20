@@ -72,8 +72,8 @@
     </div>
     </div>
       <div class="auth-buttons d-flex gap-2" *ngIf="!userName">
-        <button class="login-button btn btn-outline-primary" (click)="navigateToLogin()">Login</button>
-        <button class="register-button btn btn-primary" (click)="navigateToRegister()">Register</button>
+        <button class="login-button btn" (click)="navigateToLogin()">Login</button>
+        <button class="register-button btn" (click)="navigateToRegister()">Register</button>
       </div>
       <div class="user-info d-flex align-items-center gap-2" *ngIf="userName">
         <span class="fw-semibold">Olá, {{ userName }}</span>
