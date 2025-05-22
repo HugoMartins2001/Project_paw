@@ -1,0 +1,100 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.container {
+  background-color: white;
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6c63ff;
+}
+
+p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.text-muted {
+  color: #777 !important;
+}
+
+/* Form labels */
+.form-label {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Inputs and textarea */
+.form-control {
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 0.15rem rgba(108, 99, 255, 0.2);
+}
+
+/* Submit bton */
+.btn-primary {
+  background-color: #6c63ff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #594ddf;
+}
+
+/* Divider line */
+hr {
+  border-top: 1px solid #ddd;
+}
+
+/* Section subtitle */
+h5 {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Icons */
+.bi {
+  color: #6c63ff;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+a.text-primary:hover {
+  color: #594ddf !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  .form-control,
+  p {
+    font-size: 0.9rem;
+  }
+}

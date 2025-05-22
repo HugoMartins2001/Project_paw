@@ -1,106 +1,95 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Available Restaurants</title>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const searchInput = document.querySelector('.search-bar input');
-      const selects = document.querySelectorAll('.filters select');
-      const tags = document.querySelectorAll('.tag');
+<div class="container mt-4">
+  <h1 class="page-title">Explore Restaurants</h1>
 
-      searchInput.addEventListener('input', filterRestaurants);
-      selects.forEach(select => select.addEventListener('change', filterRestaurants));
-      tags.forEach(tag => tag.addEventListener('click', () => {
-        searchInput.value = tag.textContent;
-        filterRestaurants();
-      }));
+  <!-- Quick Filter Buttons -->
+  <div class="filter-buttons mb-4">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Italian</button>
+    <button class="filter-btn">Japanese</button>
+    <button class="filter-btn">Mexican</button>
+    <button class="filter-btn">American</button>
+    <button class="filter-btn">Vegetarian</button>
+    <button class="filter-btn">Indian</button>
+    <button class="filter-btn">French</button>
+    <button class="filter-btn">Thai</button>
+    <button class="filter-btn">Seafood</button>
+    <button class="filter-btn">Steakhouse</button>
+  </div>
 
-      function filterRestaurants() {
-        const search = searchInput.value.toLowerCase();
-        const category = selects[0].value.toLowerCase();
-        const rating = selects[1].value;
-        const location = selects[2].value.toLowerCase();
+  <!-- Admin/Manager  Create -->
+  <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
+    <a [routerLink]="['/restaurants/create']" class="btn btn-success">Criar Restaurante</a>
+  </div>
 
-        document.querySelectorAll('.restaurant-card').forEach(card => {
-          const name = card.querySelector('.restaurant-name').textContent.toLowerCase();
-          const type = card.querySelector('.restaurant-type').textContent.toLowerCase();
-          const stars = card.querySelector('.rating').textContent.length;
-
-          const matchSearch = name.includes(search) || type.includes(search);
-          const matchCategory = category ? type.includes(category) : true;
-          const matchRating = rating ? stars >= parseInt(rating) : true;
-          const matchLocation = location ? name.includes(location) : true;
-
-          if (matchSearch && matchCategory && matchRating && matchLocation) {
-            card.style.display = '';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      }
-    });
-  </script>
-</head>
-<body>
-  <div class="header">
-    <div class="search-bar">
-      <input type="text" placeholder="Procurar restaurante...">
+  <!-- Search Inputs  -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-2">
+      <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="filterName" (input)="fetchRestaurants()" />
     </div>
-    <div class="filters">
-      <select>
-        <option value="">Categoria</option>
-        <option value="Pizza">Pizza</option>
-        <option value="Asiático">Asiático</option>
-        <option value="Vegetariano">Vegetariano</option>
-      </select>
-      <select>
-        <option value="">Classificação</option>
-        <option value="5">5 estrelas</option>
-        <option value="4">4 estrelas</option>
-      </select>
-      <select>
-        <option value="">Localização</option>
-        <option value="Lisboa">Lisboa</option>
-        <option value="Porto">Porto</option>
-      </select>
+    <div class="col-md-4 mb-2">
+      <input type="text" class="form-control" placeholder="Filter by location" [(ngModel)]="filterAddress" (input)="fetchRestaurants()" />
     </div>
   </div>
 
-  <div class="tags">
-    <div class="tag">Pizza</div>
-    <div class="tag">Asiático</div>
-    <div class="tag">Rápido</div>
-    <div class="tag">Vegetariano</div>
-    <div class="tag">Tradicional</div>
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="alert alert-info text-center">Loading...</div>
+  <div *ngIf="!isLoading && restaurants.length === 0" class="alert alert-warning text-center">
+    <h3>No restaurants found.</h3>
   </div>
 
-  <div class="restaurant-grid">
-    <div class="restaurant-card">
-      <img src="image.png" alt="Imagem restaurante">
-      <div class="restaurant-info">
-        <div class="restaurant-name">Sushi Zen Lisboa</div>
-        <div class="restaurant-type">Japonês</div>
-        <div class="rating">★★★★☆</div>
-      </div>
-    </div>
-    <div class="restaurant-card">
-      <img src="image.png" alt="Imagem restaurante">
-      <div class="restaurant-info">
-        <div class="restaurant-name">Pizza Mamma Porto</div>
-        <div class="restaurant-type">Pizza Italiana</div>
-        <div class="rating">★★★★★</div>
-      </div>
-    </div>
-    <div class="restaurant-card">
-      <img src="image.png" alt="Imagem restaurante">
-      <div class="restaurant-info">
-        <div class="restaurant-name">Green Garden Lisboa</div>
-        <div class="restaurant-type">Vegetariano</div>
-        <div class="rating">★★★★☆</div>
-      </div>
+  <!-- Restaurant Cards -->
+  <div class="row g-4" *ngIf="!isLoading && restaurants.length > 0">
+    <div class="col-md-6 col-lg-4" *ngFor="let restaurant of restaurants">
+      <ng-container *ngIf="restaurant.isApproved === true">
+        <div class="card restaurant-card h-100">
+          <!-- Image  -->
+          <div class="restaurant-img-container" *ngIf="restaurant.restaurantPic; else noImage">
+            <img [src]="getRestaurantImageUrl(restaurant.restaurantPic)" [alt]="restaurant.name" class="restaurant-img" />
+          </div>
+          <ng-template #noImage>
+            <div class="restaurant-img-container no-img">
+              <p>No image</p>
+            </div>
+          </ng-template>
+
+          <!-- Contents -->
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="restaurant-name d-flex justify-content-between align-items-center">
+                {{ restaurant.name }}
+                <span class="restaurant-rating"><i class="fas fa-star"></i> 4.5</span>
+              </h5>
+              <p class="restaurant-location">{{ restaurant.address }}</p>
+              <p class="restaurant-type">{{ restaurant.menus?.[0]?.type || 'Cuisine' }}</p>
+
+              <div class="text-muted small mb-2">
+                <span *ngIf="restaurant.menus?.length">
+                  {{ restaurant.menus[0].name }}
+                  <span *ngIf="restaurant.menus.length > 1">+{{ restaurant.menus.length - 1 }} more</span>
+                </span>
+                <span *ngIf="!restaurant.menus?.length">No menus</span>
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view</button>
+
+              <ng-container *ngIf="userRole === 'Client' || userRole === 'Manager' || userRole === 'Admin'">
+                <a [routerLink]="['/restaurant-details', restaurant.name]" class="btn btn-sm btn-outline-primary">View</a>
+              </ng-container>
+
+              <ng-container *ngIf="(userRole === 'Manager' && (restaurant.managerId?._id === userId || restaurant.managerId === userId)) || userRole === 'Admin'">
+                <a [routerLink]="['/restaurants/editRestaurant', restaurant._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
+                <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteRestaurant(restaurant._id)">Delete</button>
+                <button class="btn btn-sm ms-2" [ngClass]="restaurant.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'" (click)="toggleVisibility(restaurant)">
+                  {{ restaurant.isVisible ? 'Hide' : 'Show' }}
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
-</body>
-</html>
+</div>

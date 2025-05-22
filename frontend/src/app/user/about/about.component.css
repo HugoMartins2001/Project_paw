@@ -1,0 +1,76 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.container {
+  background-color: white;
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6c63ff;
+}
+
+p.lead {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+ul {
+  padding-left: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+ul li {
+  margin-bottom: 0.5rem;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* Card block */
+.bg-light {
+  background-color: #f4f4f4 !important;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/*  titles */
+h5 {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Contact info */
+.bi {
+  color: #6c63ff;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  p,
+  ul li {
+    font-size: 0.9rem;
+  }
+}
