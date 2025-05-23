@@ -31,7 +31,7 @@ export class DishesClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.userId = localStorage.getItem('userId'); // <-- Corrigido!
+    this.userId = localStorage.getItem('userId');
     this.loadDishes();
   }
 
@@ -46,9 +46,7 @@ export class DishesClientComponent implements OnInit {
     this.dishService.getDishes(params).subscribe({
       next: (data: any) => {
         this.dishes = data.dishes || [];
-        // Categorias únicas
         this.categories = Array.from(new Set(this.dishes.map((d: any) => d.category).filter(Boolean)));
-        // Alergénios únicos (achatando arrays)
         this.allergensList = Array.from(
           new Set(
             this.dishes.flatMap((d: any) => Array.isArray(d.allergens) ? d.allergens : []).filter(Boolean)
@@ -125,7 +123,6 @@ export class DishesClientComponent implements OnInit {
   }
 
   selectSize(dishId: string, size: 'pequena' | 'media' | 'grande') {
-    // Se já está selecionado, desmarca
     if (this.selectedSize[dishId] === size) {
       this.selectedSize[dishId] = null;
     } else {
@@ -137,6 +134,5 @@ export class DishesClientComponent implements OnInit {
     if (!size) return;
     const price = dish.prices?.[size] || 0;
     this.cartService.addToCart({ ...dish, selectedSize: size, selectedPrice: price });
-    // this.headerComponent.startTimer(); // <-- chama isto se tiveres acesso ao HeaderComponent
   }
 }

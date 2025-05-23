@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // <--- Adiciona isto
+import { CommonModule } from '@angular/common';
 import { AdminService } from '../services/admin.service';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-logs',
   standalone: true,
-  imports: [CommonModule, FormsModule], // <--- Adiciona CommonModule aqui
+  imports: [CommonModule, FormsModule],
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.css']
 })
@@ -36,7 +36,7 @@ export class LogsComponent implements OnInit {
       next: (res) => {
         this.logs = res.logs || [];
         this.totalPages = res.totalPages || 1;
-        this.stats = res.stats || {}; // <-- Adiciona esta linha!
+        this.stats = res.stats || {};
       },
       error: () => {
         this.logs = [];

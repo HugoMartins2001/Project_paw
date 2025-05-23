@@ -29,7 +29,7 @@ export class MenusComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.userId = localStorage.getItem('userId'); // <-- Corrigido aqui!
+    this.userId = localStorage.getItem('userId');
     this.loadRestaurants();
     this.loadMenus();
   }
@@ -98,7 +98,6 @@ export class MenusComponent implements OnInit {
     });
   }
 
-  // Exemplo no componente Angular
   getMenuImageUrl(menuPic: string): string {
     return `http://localhost:3000/uploads/${menuPic}`;
   }
@@ -108,7 +107,6 @@ export class MenusComponent implements OnInit {
     if (typeof menu.managerId === 'string') {
       return menu.managerId === userId;
     }
-    // Se for objeto
     return menu.managerId._id === userId;
   }
 

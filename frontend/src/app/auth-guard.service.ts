@@ -8,10 +8,10 @@ export class AuthGuardService implements CanActivate {
   canActivate(): boolean {
     const token = localStorage.getItem('token');
     if (token ) {
-      return true; // Usuário autenticado
+      return true; 
     } else {
       this.router.navigate(['/login']);
-      return false; // Bloqueia acesso
+      return false; 
     }
   }
 }

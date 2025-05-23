@@ -44,7 +44,7 @@ export class CartComponent {
     const cart = this.cartService.getCart().map(dish => ({
       name: dish.name,
       price: dish.prices?.media || 0,
-      quantity: 1 // ou outro campo se tiveres quantidade
+      quantity: 1
     }));
     this.http.post<{ url: string }>('http://localhost:3000/api/checkout/createCheckoutSession', { cart })
       .subscribe({

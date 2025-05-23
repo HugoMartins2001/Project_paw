@@ -16,7 +16,6 @@ export class PaymentSuccessComponent implements OnInit {
       timer: 2500,
       showConfirmButton: false
     });
-    // Limpa o carrinho se necessário
     localStorage.removeItem('cart');
   }
 }

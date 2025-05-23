@@ -4,19 +4,16 @@
     <p class="text-muted">Please fill in the details below to create a new restaurant.</p>
 
     <form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-      <!-- Nome -->
       <div class="form-group">
         <label for="f_name">Restaurant Name</label>
         <input type="text" id="f_name" formControlName="name" class="form-control" required />
       </div>
 
-      <!-- Morada -->
       <div class="form-group">
         <label for="f_address">Street</label>
         <input type="text" id="f_address" formControlName="address" class="form-control" required />
       </div>
 
-      <!-- Telefone -->
       <div class="form-group">
         <label for="f_phone">Phone</label>
         <input type="text" id="f_phone" formControlName="phone" class="form-control" required />
@@ -26,13 +23,11 @@
         </div>
       </div>
 
-      <!-- Email -->
       <div class="form-group">
         <label for="f_email">Restaurant Email</label>
         <input type="email" id="f_email" formControlName="restaurantEmail" class="form-control" required />
       </div>
 
-      <!-- Horário de funcionamento -->
       <div formGroupName="openingHours">
         <label>Opening Hours</label>
         <div formGroupName="default" class="row mb-3">
@@ -67,7 +62,6 @@
         </div>
       </div>
 
-      <!-- Métodos de pagamento -->
       <div class="form-group">
         <label>Payment Methods</label>
         <div class="form-check" *ngFor="let method of ['Cash', 'Credit Card', 'Debit Card', 'Mobile Payment']">
@@ -76,14 +70,12 @@
         </div>
       </div>
 
-      <!-- Imagem -->
       <div class="form-group">
         <label for="f_pic">Restaurant Photo</label>
         <input type="file" id="f_pic" name="restaurantPic" (change)="onFileChange($event)" accept="image/*"
           class="form-control" />
       </div>
 
-      <!-- Menus -->
       <div class="form-group">
         <label for="menus">Menus</label>
         <ng-container *ngIf="menuOptions.length > 0; else noMenus">
@@ -102,7 +94,6 @@
         </ng-template>
       </div>
 
-      <!-- Botão Submeter -->
       <div class="form-group form-full">
         <button type="submit" class="btn btn-primary w-100" [disabled]="restaurantForm.invalid">Create
           Restaurant</button>

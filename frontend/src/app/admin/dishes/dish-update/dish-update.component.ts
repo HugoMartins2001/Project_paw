@@ -134,38 +134,32 @@ export class DishUpdateComponent implements OnInit {
     formData.append('name', this.dishForm.value.name);
     formData.append('description', this.dishForm.value.description || '');
 
-    // Categoria
     let categoryToSend = this.dishForm.value.category;
     if (categoryToSend === 'Outra') {
       categoryToSend = this.dishForm.value.newCategory;
     }
     formData.append('category', categoryToSend || '');
 
-    // Preços
     formData.append('prices[pequena]', this.dishForm.value.precoPequena || '');
     formData.append('prices[media]', this.dishForm.value.precoMedia || '');
     formData.append('prices[grande]', this.dishForm.value.precoGrande || '');
 
-    // Ingredientes
     const ingredientsArr = this.dishForm.value.ingredients
       ? this.dishForm.value.ingredients.split(',').map((i: string) => i.trim())
       : [];
     ingredientsArr.forEach((ing: string) => formData.append('ingredients', ing));
 
-    // Nutrição
     formData.append('nutrition[calories]', this.dishForm.value.calories || '');
     formData.append('nutrition[fat]', this.dishForm.value.fat || '');
     formData.append('nutrition[protein]', this.dishForm.value.protein || '');
     formData.append('nutrition[carbs]', this.dishForm.value.carbs || '');
 
-    // NutriScore
     let nutriScoreToSend = this.dishForm.value.nutriScore;
     if (nutriScoreToSend === 'Outro') {
       nutriScoreToSend = this.dishForm.value.newNutriScore;
     }
     formData.append('nutriScore', nutriScoreToSend || '');
 
-    // Alergénios
     const allergensArr = this.dishForm.value.allergens
       ? this.dishForm.value.allergens.split(',').map((a: string) => a.trim())
       : [];
@@ -185,7 +179,6 @@ export class DishUpdateComponent implements OnInit {
     });
   }
 
-  // Para mostrar input extra se escolher "Outra"
   get isOtherCategory() {
     return this.dishForm.get('category')?.value === 'Outra';
   }

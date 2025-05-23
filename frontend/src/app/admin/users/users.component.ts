@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { UserService, User } from '../services/user.service'; // <-- importa o serviço
+import { UserService, User } from '../services/user.service';
 
 @Component({
   selector: 'app-users',
@@ -24,11 +24,11 @@ export class UsersComponent implements OnInit {
   fetchUsers() {
     this.userService.getUsers().subscribe({
       next: (data) => {
-        console.log('Utilizadores recebidos:', data); // <-- LOG AQUI
+        console.log('Utilizadores recebidos:', data); 
         this.users = data;
       },
       error: (err) => {
-        console.error('Erro ao buscar utilizadores:', err); // <-- LOG DE ERRO
+        console.error('Erro ao buscar utilizadores:', err);
         this.users = [];
       }
     });

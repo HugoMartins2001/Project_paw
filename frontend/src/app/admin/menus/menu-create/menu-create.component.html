@@ -3,19 +3,16 @@
     <form [formGroup]="menuForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" autocomplete="off"> 
       <h2 class="mb-4 text-center text-primary fw-bold">Criar Menu</h2>
 
-      <!-- Nome do Menu -->
       <div class="form-group mb-4">
         <label for="name" class="form-label fw-semibold">Nome do Menu</label>
         <input id="name" type="text" class="form-control" formControlName="name" placeholder="Nome do menu" required>
       </div>
 
-      <!-- Imagem do Menu -->
       <div class="form-group mb-4">
         <label for="menuPic" class="form-label fw-semibold">Foto do Menu</label>
         <input type="file" id="menuPic" (change)="onFileChange($event)" accept="image/*" name="menuPic" class="form-control" />
       </div>
 
-      <!-- Selecionar Pratos -->
       <div class="form-group mb-4">
         <label class="form-label fw-semibold">Pratos</label>
         <ng-container *ngIf="dishOptions.length > 0; else noDishes">
@@ -34,7 +31,6 @@
         </ng-template>
       </div>
 
-      <!-- Botão Submeter -->
       <div class="form-group mb-3">
         <button type="submit"
                 class="btn btn-primary w-100 fw-bold"

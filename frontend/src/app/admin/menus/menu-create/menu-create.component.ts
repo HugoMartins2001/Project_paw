@@ -33,7 +33,7 @@ export class MenuCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.dishService.getDishes().subscribe(res => {
-      this.dishOptions = res.dishes; // ou res, conforme a resposta do backend
+      this.dishOptions = res.dishes;
     });
   }
 
@@ -46,7 +46,6 @@ export class MenuCreateComponent implements OnInit {
   onDishesChange() {
     const dishesControl = this.menuForm.get('dishes');
     if (dishesControl && dishesControl.value.length > 10) {
-      // Remove o último selecionado
       dishesControl.setValue(dishesControl.value.slice(0, 10)); 
       Swal.fire('Atenção', 'Só pode adicionar no máximo 10 pratos por menu.', 'warning');
     }

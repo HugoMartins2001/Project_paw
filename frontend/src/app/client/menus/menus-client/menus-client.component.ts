@@ -25,11 +25,11 @@ export class MenusClientComponent implements OnInit {
   filterMinPrice: number | null = null;
   filterMaxPrice: number | null = null;
 
-  constructor(private menuService: MenuService, private restaurantService: RestaurantService) { } // <-- Injeta o serviço de restaurante
+  constructor(private menuService: MenuService, private restaurantService: RestaurantService) { }
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.userId = localStorage.getItem('userId'); // <-- Corrigido aqui!
+    this.userId = localStorage.getItem('userId');
     this.loadRestaurants();
     this.loadMenus();
   }
@@ -98,7 +98,6 @@ export class MenusClientComponent implements OnInit {
     });
   }
 
-  // Exemplo no componente Angular
   getMenuImageUrl(menuPic: string): string {
     return `http://localhost:3000/uploads/${menuPic}`;
   }
@@ -108,7 +107,6 @@ export class MenusClientComponent implements OnInit {
     if (typeof menu.managerId === 'string') {
       return menu.managerId === userId;
     }
-    // Se for objeto
     return menu.managerId._id === userId;
   }
 

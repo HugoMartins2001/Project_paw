@@ -86,7 +86,6 @@ export class RestaurantCreateComponent {
 
     const formValue = this.restaurantForm.value;
 
-    // Copiar horários default para sábado e domingo se não estiverem preenchidos
     const openingHours = { ...formValue.openingHours };
     ['Saturday', 'Sunday'].forEach(day => {
       if (

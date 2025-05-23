@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { CartService } from '../../../admin/services/cart.service'; // importa o serviço do carrinho
-
+import { CartService } from '../../../admin/services/cart.service';
 
 @Component({
   selector: 'app-client-home',
@@ -22,7 +21,6 @@ export class ClientHomeComponent implements OnInit {
       const token = params['token'];
       if (token) {
         localStorage.setItem('token', token);
-        // Remove o token da URL
         this.router.navigate([], {
           relativeTo: this.route,
           queryParams: {},
@@ -40,7 +38,7 @@ export class ClientHomeComponent implements OnInit {
           timer: 2500,
           showConfirmButton: false
         });
-        this.cartService.clearCart(); // limpa o carrinho
+        this.cartService.clearCart();
       }
     });
   }

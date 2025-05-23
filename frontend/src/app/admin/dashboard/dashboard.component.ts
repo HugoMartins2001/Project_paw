@@ -3,8 +3,8 @@ import Chart from 'chart.js/auto';
 import { DashboardService } from '../services/dashboard.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SocketService } from '../services/socket.service'; // importa o serviço do socket
-import Swal from 'sweetalert2'; // importa o SweetAlert2
+import { SocketService } from '../services/socket.service';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-dashboard',
@@ -28,14 +28,13 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
-    private socketService: SocketService // injeta o serviço do socket
+    private socketService: SocketService 
   ) {}
 
   ngOnInit() {
     this.role = localStorage.getItem('role') || '';
     this.loadDashboardData();
 
-    // Ouve o evento de nova encomenda
     this.socketService.onOrderCreated((data) => {
       Swal.fire({
         icon: 'info',
@@ -76,7 +75,6 @@ export class DashboardComponent implements OnInit {
         this.renderClientsGraph();
       },
       error: () => {
-        // fallback para dados mockados ou mostra erro
         this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
         this.restaurantData = [2, 3, 1, 4, 2, 5];
         this.userData = [5, 8, 12, 15, 18, 22];
@@ -91,7 +89,6 @@ export class DashboardComponent implements OnInit {
 
   renderGeneralGraph() {
     const ctx = document.getElementById('generalGraph') as HTMLCanvasElement;
-    // DESTROI O GRÁFICO ANTERIOR SE EXISTIR
     if (this.generalChartInstance) {
       this.generalChartInstance.destroy();
     }
@@ -139,7 +136,6 @@ export class DashboardComponent implements OnInit {
 
   renderClientsGraph() {
     const ctx = document.getElementById('clientsGraph') as HTMLCanvasElement;
-    // DESTROI O GRÁFICO ANTERIOR SE EXISTIR
     if (this.clientsChartInstance) {
       this.clientsChartInstance.destroy();
     }

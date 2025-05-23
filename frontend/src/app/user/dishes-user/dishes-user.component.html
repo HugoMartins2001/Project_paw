@@ -74,7 +74,6 @@
                         <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver
                             detalhes</button>
 
-                        <!-- Só clientes veem os preços e podem escolher o tamanho -->
                         <ng-container *ngIf="userRole === 'Client'">
                             <div class="d-flex flex-column align-items-start w-100">
                                 <label class="mb-1 fw-semibold" style="font-size: 0.95rem;">Escolher tamanho:</label>

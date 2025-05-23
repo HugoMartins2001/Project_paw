@@ -18,11 +18,11 @@
   </div>
 </div>
 
-<!-- Logs -->
+
 <div class="logs-section">
   <h2>Logs</h2>
 
-  <!-- Filtros -->
+  
   <form class="filters-form row g-2 mb-3" (ngSubmit)="applyFilters()">
     <div class="col">
       <input type="text" class="form-control" placeholder="Search by User" [(ngModel)]="filters.userName" name="userName">
@@ -82,7 +82,6 @@
     </table>
   </div>
 
-  <!-- Paginação -->
   <nav class="pagination mt-3" *ngIf="totalPages > 1">
     <ul class="pagination">
       <li class="page-item" [class.disabled]="currentPage === 1">

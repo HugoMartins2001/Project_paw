@@ -21,7 +21,6 @@ export class RestaurantUpdateComponent implements OnInit {
   menuOptions: { _id: string; name: string }[] = [];
   restaurantId: string = '';
 
-  // Adiciona as propriedades dos controlos:
   defaultStartControl!: FormControl;
   defaultEndControl!: FormControl;
   saturdayStartControl!: FormControl;
@@ -61,7 +60,6 @@ export class RestaurantUpdateComponent implements OnInit {
       menus: [[]]
     });
 
-    // Inicializa os controlos imediatamente após criar o formulário
     this.defaultStartControl = this.restaurantForm.get('openingHours.default.start') as FormControl;
     this.defaultEndControl = this.restaurantForm.get('openingHours.default.end') as FormControl;
     this.saturdayStartControl = this.restaurantForm.get('openingHours.Saturday.start') as FormControl;
@@ -76,7 +74,6 @@ export class RestaurantUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.restaurantId = this.route.snapshot.paramMap.get('id') || '';
 
-    // Liga os controlos às propriedades para usar no template
     this.defaultEndControl = this.restaurantForm.get('openingHours.default.end') as FormControl;
     this.saturdayStartControl = this.restaurantForm.get('openingHours.Saturday.start') as FormControl;
     this.saturdayEndControl = this.restaurantForm.get('openingHours.Saturday.end') as FormControl;
@@ -87,7 +84,6 @@ export class RestaurantUpdateComponent implements OnInit {
 
     this.restaurantService.getMenus().subscribe({
       next: (res: any) => {
-        // Se res já é array, usa diretamente
         this.menuOptions = Array.isArray(res) ? res : (res.menus || []);
         console.log('Menus carregados:', this.menuOptions);
       },
@@ -97,7 +93,6 @@ export class RestaurantUpdateComponent implements OnInit {
 
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe({
       next: (res) => {
-        // Garante que menus é sempre um array de IDs
         const menuIds = (res.menus || []).map((m: any) => typeof m === 'string' ? m : m._id);
         this.restaurantForm.patchValue({
           name: res.name,
@@ -156,7 +151,6 @@ export class RestaurantUpdateComponent implements OnInit {
 
     const formValue = this.restaurantForm.value;
 
-    // MONTE O OBJETO openingHours EXPLICITAMENTE
     const openingHours = {
       default: {
         start: this.defaultStartControl.value,

@@ -77,7 +77,7 @@ export class DishCreateComponent {
     formData.append('description', this.dishForm.value.description || '');
     formData.append('category', this.dishForm.value.category || '');
 
-    // Preços como JSON
+
     const prices = {
       pequena: this.dishForm.value.precoPequena,
       media: this.dishForm.value.precoMedia,
@@ -85,13 +85,11 @@ export class DishCreateComponent {
     };
     formData.append('prices', JSON.stringify(prices));
 
-    // Ingredientes
     const ingredientsArr = this.dishForm.value.ingredients
       ? this.dishForm.value.ingredients.split(',').map((i: string) => i.trim())
       : [];
     ingredientsArr.forEach((ing: string) => formData.append('ingredients', ing));
 
-    // Nutrição como JSON
     const nutrition = {
       calories: this.dishForm.value.calories,
       fat: this.dishForm.value.fat,
@@ -102,7 +100,6 @@ export class DishCreateComponent {
 
     formData.append('nutriScore', this.dishForm.value.nutriScore || '');
 
-    // Alergénios
     const allergensArr = this.dishForm.value.allergens
       ? this.dishForm.value.allergens.split(',').map((a: string) => a.trim())
       : [];

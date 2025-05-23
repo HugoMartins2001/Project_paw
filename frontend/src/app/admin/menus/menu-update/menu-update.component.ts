@@ -43,13 +43,11 @@ export class MenuUpdateComponent implements OnInit {
       return;
     }
 
-    // Carregar pratos disponíveis
     this.dishService.getDishes().subscribe({
       next: (dishes) => this.dishOptions = dishes.dishes,
       error: () => this.dishOptions = []
     });
 
-    // Carregar dados do menu
     this.menuService.getMenuById(this.menuId).subscribe({
       next: (menu: Menu) => {
         this.menuForm.patchValue({

@@ -3,19 +3,16 @@
     <form [formGroup]="dishForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" autocomplete="off">
       <h2 class="mb-4 text-center text-primary fw-bold">Editar Prato</h2>
 
-      <!-- Nome -->
       <div class="form-group mb-3">
         <label for="name" class="form-label fw-semibold">Nome</label>
         <input id="name" type="text" class="form-control" formControlName="name" required>
       </div>
 
-      <!-- Descrição -->
       <div class="form-group mb-3">
         <label for="description" class="form-label fw-semibold">Descrição</label>
         <textarea id="description" class="form-control" formControlName="description" rows="2"></textarea>
       </div>
 
-      <!-- Categoria -->
       <div class="form-group mb-3">
         <label for="category" class="form-label fw-semibold">Categoria</label>
         <div class="input-group">
@@ -33,7 +30,6 @@
         </div>
       </div>
 
-      <!-- Preços -->
       <div class="form-group mb-3">
         <label class="form-label fw-semibold">Preços (€)</label>
         <div class="row g-2">
@@ -49,13 +45,11 @@
         </div>
       </div>
 
-      <!-- Ingredientes -->
       <div class="form-group mb-3">
         <label for="ingredients" class="form-label fw-semibold">Ingredientes (separados por vírgula)</label>
         <input id="ingredients" type="text" class="form-control" formControlName="ingredients">
       </div>
 
-      <!-- Nutrição -->
       <div class="form-group mb-3">
         <label class="form-label fw-semibold">Nutrição</label>
         <div class="row g-2">
@@ -74,7 +68,6 @@
         </div>
       </div>
 
-      <!-- NutriScore -->
       <div class="form-group mb-3">
         <label for="nutriScore" class="form-label fw-semibold">NutriScore</label>
         <div class="input-group">
@@ -92,13 +85,11 @@
         </div>
       </div>
 
-      <!-- Alergénios -->
       <div class="form-group mb-3">
         <label for="allergens" class="form-label fw-semibold">Alergénios (separados por vírgula)</label>
         <input id="allergens" type="text" class="form-control" formControlName="allergens">
       </div>
 
-      <!-- Imagem -->
       <div class="form-group mb-3">
         <label for="dishPic" class="form-label fw-semibold">Foto do Prato</label>
         <input type="file" id="dishPic" (change)="onFileChange($event)" accept="image/*" class="form-control" />
@@ -108,8 +99,7 @@
           <div class="text-muted" style="font-size:0.9em;">Imagem atual</div>
         </div>
       </div>
-
-      <!-- Botão Submeter -->
+      
       <div class="form-group mb-3">
         <button type="submit" class="btn btn-primary w-100 fw-bold" [disabled]="dishForm.invalid">
           Guardar Alterações

@@ -14,7 +14,7 @@ import { MenuService, Menu } from '../../services/menu.service';
 export class MenuDetailsComponent implements OnInit {
   menu: Menu | null = null;
   isLoading = true;
-  restaurantList: any[] = []; // <-- Adiciona esta linha
+  restaurantList: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -33,7 +33,6 @@ export class MenuDetailsComponent implements OnInit {
             menu.dishes = [];
           }
           this.menu = menu;
-          // Preenche restaurantList se vier do backend:
           this.restaurantList = (menu as any).restaurants || [];
           this.isLoading = false;
         },
