@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../admin/services/auth.service'; // <-- importa o AuthService
 
 @Component({
   standalone: true,
@@ -26,7 +27,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService // <-- injeta o AuthService
   ) {
     // Inicializa o formulário reativo com validações
     this.loginForm = this.fb.group({
@@ -68,8 +70,8 @@ export class LoginComponent {
       .post<any>('http://localhost:3000/api/auth/loginSubmitted', this.loginForm.value)
       .subscribe({
         next: (res) => {
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('userId', res.userId);
+          // Usa o AuthService para guardar o token e o userID
+          this.authService.setSession(res.token, res.userId);
           localStorage.setItem('role', res.role);
           localStorage.setItem('name', res.name);
 

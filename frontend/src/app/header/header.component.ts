@@ -104,7 +104,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateToMenus(): void { this.router.navigate(['/menus']); }
   navigateToDishes(): void { this.router.navigate(['/dishes']); }
   navigateToRestaurant(): void { this.router.navigate(['/restaurants']); }
-  navigateToOrders(): void { this.router.navigate(['/orders']); }
+  navigateToOrdersManager(): void { this.router.navigate(['/orders/manager']); }
   navigateToRestaurantApproval(): void { this.router.navigate(['/restaurantApprove']); }
   navigateToLogs(): void { this.router.navigate(['/logs']); }
   navigateToUsers(): void { this.router.navigate(['/users']); }
@@ -119,6 +119,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateToContact(): void { this.router.navigate(['/contacts']); }
   navigateToCart(): void { this.router.navigate(['/cart']); }
   navigateToProfile(): void { this.router.navigate(['/profile']); }
+  navigateToOrdersClient(): void { this.router.navigate(['/client/orders']); }
 
   //user
   navigateToMenusUser(): void { this.router.navigate(['menus/user']); }

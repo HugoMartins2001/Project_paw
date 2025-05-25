@@ -7,7 +7,6 @@ let ordersController = {};
 ordersController.getOrdersHistory = async function (req, res, next) {
   try {
     const { restaurantName, startDate, endDate, page = 1 } = req.query;
-
     const user = req.user;
 
     // Configuração de paginação
@@ -16,14 +15,25 @@ ordersController.getOrdersHistory = async function (req, res, next) {
 
     // Construir o filtro de busca
     let filter = {};
+
+    // Se for manager, filtra pelas encomendas que têm pratos dele
+    if (req.user && req.user.role === 'manager') {
+      filter['items.managerId'] = req.user._id;
+    }
+
+    // Se for cliente, filtra pelas encomendas dele
+    if (req.user && req.user.role === 'client') {
+      filter.userID = req.user._id;
+    }
+
     if (restaurantName) {
       filter.restaurantName = { $regex: restaurantName, $options: "i" }; // Busca por nome do restaurante (case insensitive)
     }
     if (startDate) {
-      filter.date = { ...filter.date, $gte: new Date(startDate) }; // Filtra pedidos com data maior ou igual ao startDate
+      filter.createdAt = { ...filter.createdAt, $gte: new Date(startDate) }; // Filtra pedidos com data maior ou igual ao startDate
     }
     if (endDate) {
-      filter.date = { ...filter.date, $lte: new Date(endDate) }; // Filtra pedidos com data menor ou igual ao endDate
+      filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate) }; // Filtra pedidos com data menor ou igual ao endDate
     }
 
     // Buscar pedidos com base nos filtros e paginação
@@ -32,7 +42,7 @@ ordersController.getOrdersHistory = async function (req, res, next) {
     const totalPages = Math.ceil(totalOrders / ordersPerPage); // Calcula o total de páginas
 
     // jsonizar a página com os dados
-    res.json("orders/ordersHistory", {
+    res.json({
       orders,
       user,
       filters: { restaurantName, startDate, endDate },
@@ -54,11 +64,11 @@ ordersController.getOrderDetails = async function (req, res, next) {
     const order = await mongoOrder.findById(orderId);
 
     if (!order) {
-      return res.status(404).json("errors/404", { message: "Order not found." }); // Retorna erro 404 se o pedido não for encontrado
+      return res.status(404).json({ message: "Order not found." }); // Retorna erro 404 se o pedido não for encontrado
     }
 
     // jsonizar a página com os detalhes do pedido
-    res.json("orders/orderDetails", { order });
+    res.json({ order });
   } catch (error) {
     console.error("Erro ao obter os detalhes da encomenda:", error);
     next(error); // Passa o erro para o middleware de tratamento de erros
@@ -107,10 +117,58 @@ ordersController.completeOrder = async function (req, res, next) {
 
 // Função para criar uma nova encomenda
 ordersController.createOrder = async function (req, res) {
-  // ...criar encomenda na base de dados...
-  const io = req.app.get('io');
-  io.emit('orderCreated', { message: 'Nova encomenda recebida!' });
-  res.status(201).json({ success: true });
+  try {
+    const { order, managerID } = req.body;
+
+    // Obtém o userID do utilizador autenticado (middleware JWT)
+    const userID = req.user._id;
+
+    // Cria o documento da encomenda com userID
+    const newOrder = await mongoOrder.create({
+      managerID: managerID || null,
+      userID: userID, // <-- adiciona isto!
+      items: order,
+      status: 'pending',
+      createdAt: new Date()
+    });
+
+    const io = req.app.get('io');
+    io.emit('orderCreated', { message: 'Nova encomenda recebida!', order: newOrder });
+
+    res.status(201).json({ success: true, order: newOrder });
+  } catch (error) {
+    console.error("Erro ao criar encomenda:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// Função para atualizar o status de uma encomenda
+ordersController.updateOrderStatus = async function (req, res, next) {
+  try {
+    const orderId = req.params.orderId;
+    const { status } = req.body;
+
+    // Só permite alterar para estados válidos
+    const validStatuses = ['pending', 'expedida', 'entregue'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Estado inválido.' });
+    }
+
+    const order = await mongoOrder.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: 'Encomenda não encontrada.' });
+    }
+
+    res.json({ success: true, order });
+  } catch (error) {
+    console.error("Erro ao atualizar estado da encomenda:", error);
+    next(error);
+  }
 };
 
 module.exports = ordersController;

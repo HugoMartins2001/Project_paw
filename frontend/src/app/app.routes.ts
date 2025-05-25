@@ -20,6 +20,7 @@ import { ProfileComponent } from './admin/dashboard/profile/profile.component';
 import { ProfileEditComponent } from './admin/dashboard/profile-edit/profile-edit.component';
 import { LogsComponent } from './admin/logs/logs.component';
 import { UsersComponent } from './admin/users/users.component';
+import { OrdersManagerComponent } from './admin/orders-manager/orders-manager.component';
 
 //Restaurants
 import { RestaurantsComponent } from './admin/restaurants/restaurants.component';
@@ -57,6 +58,7 @@ import { RestaurantClientComponent } from './client/restaurants/restaurant-clien
 import { ProfileClientComponent } from './client/profile/profile-client/profile-client.component';
 import { ProfileEditClientComponent } from './client/profile/profile-edit-client/profile-edit-client.component';
 import { PaymentSuccessComponent } from './client/payment-success/payment-success.component';
+import { OrdersClientComponent } from './client/orders-client/orders-client.component';
 
 //Security
 import { AuthGuardService } from './auth-guard.service';
@@ -215,6 +217,12 @@ export const routes: Routes = [
     data: { title: 'Client Dishes' }
   },
   {
+    path: 'client/orders',
+    component: OrdersClientComponent,
+    canActivate: [AuthGuardService],
+    data: { title: 'Client Orders' }
+  },
+  {
     path: 'client/menus',
     component: MenusClientComponent,
     canActivate: [AuthGuardService],
@@ -262,6 +270,11 @@ export const routes: Routes = [
     path: 'payment-success',
     component: PaymentSuccessComponent,
     data: { title: 'Payment Success' }
+  },
+  {
+    path: 'orders/manager',
+    component: OrdersManagerComponent,
+    data: { title: 'Orders Manager' }
   },
   {
     path: '',
