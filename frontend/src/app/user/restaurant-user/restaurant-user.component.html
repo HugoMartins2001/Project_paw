@@ -1,30 +1,10 @@
 <div class="container mt-4">
-  <h1 class="page-title">Explore Restaurants</h1>
 
-  <!-- Quick Filter Buttons -->
-  <div class="filter-buttons mb-4">
-    <button class="filter-btn active">All</button>
-    <button class="filter-btn">Italian</button>
-    <button class="filter-btn">Japanese</button>
-    <button class="filter-btn">Mexican</button>
-    <button class="filter-btn">American</button>
-    <button class="filter-btn">Vegetarian</button>
-    <button class="filter-btn">Indian</button>
-    <button class="filter-btn">French</button>
-    <button class="filter-btn">Thai</button>
-    <button class="filter-btn">Seafood</button>
-    <button class="filter-btn">Steakhouse</button>
-  </div>
-
-  <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
-    <a [routerLink]="['/restaurants/create']" class="btn btn-success">Criar Restaurante</a>
-  </div>
-
-  <div class="row mb-4">
-    <div class="col-md-4 mb-2">
+  <div class="row g-2 mt-4">
+    <div class="col-md-6 col-lg-4">
       <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="filterName" (input)="fetchRestaurants()" />
     </div>
-    <div class="col-md-4 mb-2">
+    <div class="col-md-6 col-lg-4">
       <input type="text" class="form-control" placeholder="Filter by address" [(ngModel)]="filterAddress" (input)="fetchRestaurants()" />
     </div>
   </div>

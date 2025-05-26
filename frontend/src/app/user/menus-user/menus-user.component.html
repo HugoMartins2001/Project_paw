@@ -8,17 +8,15 @@
         </a>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <input [(ngModel)]="filterName" (input)="loadMenus()" placeholder="Nome do menu" class="form-control">
+    <div class="row mb-4">
+        <div class="col-md-4 mb-2">
+            <input type="text" class="form-control" [(ngModel)]="filterName" (input)="loadMenus()" placeholder="Nome do menu">
         </div>
-        <div class="col-md-3">
-            <input [(ngModel)]="filterMinPrice" (input)="loadMenus()" type="number" placeholder="Preço mínimo"
-                class="form-control">
+        <div class="col-md-4 mb-2">
+            <input type="number" class="form-control" [(ngModel)]="filterMinPrice" (input)="loadMenus()" placeholder="Preço mínimo">
         </div>
-        <div class="col-md-3">
-            <input [(ngModel)]="filterMaxPrice" (input)="loadMenus()" type="number" placeholder="Preço máximo"
-                class="form-control">
+        <div class="col-md-4 mb-2">
+            <input type="number" class="form-control" [(ngModel)]="filterMaxPrice" (input)="loadMenus()" placeholder="Preço máximo">
         </div>
     </div>
 
@@ -29,7 +27,7 @@
 
     <div class="row g-4" *ngIf="!isLoading && menus.length > 0">
         <div class="col-md-6 col-lg-4" *ngFor="let menu of menus">
-            <div class="card h-100">
+            <div class="card restaurant-card h-100">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
                         <div class="text-center mb-3 restaurant-img-container" *ngIf="menu.menuPic; else noImage">
@@ -38,11 +36,12 @@
                             <div class="overlay-text">{{ menu.name }}</div>
                         </div>
                         <ng-template #noImage>
-                            <div class="restaurant-img-container text-center mb-3"
-                                style="height:200px;display:flex;align-items:center;justify-content:center;background:#f4f7fc;">
+                            <div class="restaurant-img-container no-img">
                                 <span class="text-muted"><em>No image available for this menu.</em></span>
                             </div>
                         </ng-template>
+
+                        
                         <h5 class="card-title">{{ menu.name }}</h5>
                         <p class="mb-2"><strong>Dishes:</strong></p>
                         <ul class="list-group mb-2" *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">

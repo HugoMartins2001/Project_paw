@@ -10,9 +10,9 @@ import { Router } from '@angular/router';
 export class HomeUserComponent {
    constructor(private router: Router) { }
 
-  navigateToMenus() { this.router.navigate(['/menus']); }
-  navigateToRestaurants() { this.router.navigate(['/restaurants']); }
+  navigateToMenus() { this.router.navigate(['/menus/user']); }
+  navigateToRestaurants() { this.router.navigate(['/restaurant/user']); }
   navigateToRegister() { this.router.navigate(['/register']); }
-  navigateToDishes() { this.router.navigate(['/dishes']); }
+  navigateToDishes() { this.router.navigate(['/dishes/user']); }
 
 }

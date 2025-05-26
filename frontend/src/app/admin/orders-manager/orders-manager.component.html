@@ -1,24 +1,18 @@
 <div class="container my-5">
-  <h2 class="text-center mb-5 fw-bold text-dark">Encomendas dos meus pratos</h2>
-
-  <!-- Loading -->
-  <div *ngIf="loading" class="text-center my-5">
-    <div class="spinner-border text-primary" role="status"></div>
-    <div>Carregando encomendas...</div>
-  </div>
+  <h2 class="text-center mb-5 fw-bold text-dark">As minhas encomendas</h2>
 
   <!-- Sem encomendas -->
-  <div *ngIf="!loading && orders.length === 0" class="alert alert-info text-center">
-    Ainda não existem encomendas dos seus pratos.
+  <div *ngIf="orders && orders.length === 0" class="alert alert-info text-center">
+    Não tem encomendas registadas.
   </div>
 
   <!-- Lista de encomendas -->
-  <ul *ngIf="!loading && orders.length > 0" class="list-unstyled">
+  <ul *ngIf="orders && orders.length > 0" class="list-unstyled">
     <li *ngFor="let order of orders" class="card shadow-sm mb-4 border-0">
       <div class="card-body">
         <!-- Título e data -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
-          <h5 class="card-title mb-2 mb-md-0 text-success fw-semibold">
+          <h5 class="card-title mb-2 mb-md-0 text-primary fw-semibold">
             Encomenda #{{ order._id }}
           </h5>
           <small class="text-muted">
@@ -27,7 +21,6 @@
           </small>
         </div>
 
-        <!-- Estado e alteração -->
         <p class="mb-3">
           <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
             Estado: {{ order.status }}
@@ -42,10 +35,9 @@
           </ng-container>
         </p>
 
-        <!-- Lista de pratos do manager -->
+        <!-- Itens -->
         <ul class="list-group list-group-flush">
-          <li *ngFor="let item of filterManagerItems(order.items)"
-              class="list-group-item d-flex justify-content-between align-items-center">
+          <li *ngFor="let item of order.items" class="list-group-item d-flex justify-content-between align-items-center">
             <div>
               {{ item.name }}
               <span class="text-muted">(x{{ item.quantity }})</span>
@@ -55,13 +47,6 @@
             </span>
           </li>
         </ul>
-
-        <!-- Total dos pratos do manager -->
-        <div class="text-end mt-3">
-          <span class="fw-bold text-primary">
-            Total: {{ getOrderTotal(order) | currency:'EUR' }}
-          </span>
-        </div>
       </div>
     </li>
   </ul>

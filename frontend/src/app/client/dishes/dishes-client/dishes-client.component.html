@@ -1,39 +1,69 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-bold text-primary">Available dishes</h2>
+        <h1 class="fw-bold text-primary">Available dishes</h1>
+    </div>
 
+    <!-- Área de filtros agrupada -->
+    <div class="bg-light rounded-3 p-3 mb-4 shadow-sm">
+        <div class="row g-3 align-items-center">
+            <!-- Filtros de categorias -->
+            <div class="col-12 col-md-6">
+                <div class="mb-2 fw-semibold text-secondary">Categorias:</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button
+                        class="filter-btn"
+                        [class.active]="!filterCategory"
+                        (click)="filterCategory=''; loadDishes()">
+                        All
+                    </button>
+                    <button
+                        *ngFor="let cat of categories"
+                        class="filter-btn"
+                        [class.active]="filterCategory === cat"
+                        (click)="filterCategory=cat; loadDishes()">
+                        {{ cat }}
+                    </button>
+                </div>
+            </div>
+            <!-- Filtros de alergénios -->
+            <div class="col-12 col-md-6">
+                <div class="mb-2 fw-semibold text-secondary">Alergénios:</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button
+                        class="filter-btn"
+                        [class.active]="!filterAllergens"
+                        (click)="filterAllergens=''; loadDishes()">
+                        Todos os alergénios
+                    </button>
+                    <button
+                        *ngFor="let allergen of allergensList"
+                        class="filter-btn"
+                        [class.active]="filterAllergens === allergen"
+                        (click)="filterAllergens=allergen; loadDishes()">
+                        {{ allergen }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Inputs de pesquisa e preço -->
+        <div class="row g-3 mt-2">
+            <div class="col-md-4">
+                <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Nome do prato" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Preço mínimo"
+                    class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Preço máximo"
+                    class="form-control" />
+            </div>
+        </div>
     </div>
-    <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
-        <a routerLink="/dishes/create" class="btn btn-success">Add Dish</a>
-    </div>
-    <div class="row g-2 mt-4">
-        <div class="col-md-6 col-lg-4">
-            <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Nome do prato" class="form-control" />
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <select [(ngModel)]="filterCategory" (change)="loadDishes()" class="form-control">
-                <option [ngValue]="''">Todas as categorias</option>
-                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-            </select>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <select [(ngModel)]="filterAllergens" (change)="loadDishes()" class="form-control">
-                <option [ngValue]="''">Todos os alergénios</option>
-                <option *ngFor="let allergen of allergensList" [value]="allergen">{{ allergen }}</option>
-            </select>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Preço mínimo"
-                class="form-control" />
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Preço máximo"
-                class="form-control" />
-        </div>
-    </div>
+
     <div class="row g-4" *ngIf="!isLoading && dishes.length > 0; else noDishes">
         <div class="col-md-6 col-lg-4" *ngFor="let dish of dishes">
-            <div class="card h-100">
+            <div class="card restaurant-card h-100">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
                         <div class="text-center mb-3 restaurant-img-container" *ngIf="dish.dishPic; else noImage">
