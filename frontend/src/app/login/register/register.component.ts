@@ -43,34 +43,90 @@ export class RegisterComponent {
 
   onSubmit() {
     if (!this.name || !this.email || !this.password || !this.confirmPassword || !this.role) {
-      Swal.fire('Attention', 'Fill in all required fields!', 'warning');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Attention',
+        text: 'Fill in all required fields!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
       return;
     }
     if (this.password !== this.confirmPassword) {
-      Swal.fire('Attention', 'Passwords do not match!', 'warning');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Attention',
+        text: 'Passwords do not match!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
       return;
     }
     if (this.role === 'Client') {
       if (!this.clienteTelemovel || !this.clienteNif || !this.address) {
-        Swal.fire('Attention', 'Fill in all client fields!', 'warning');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Attention',
+          text: 'Fill in all client fields!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2000
+        });
         return;
       }
       if (!/^\d{9}$/.test(this.clienteTelemovel)) {
-        Swal.fire('Attention', 'Mobile number must be 9 digits long!', 'warning');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Attention',
+          text: 'Mobile number must be 9 digits long!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2000
+        });
         return;
       }
       if (!/^\d{9}$/.test(this.clienteNif)) {
-        Swal.fire('Attention', 'NIF must be 9 digits long!', 'warning');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Attention',
+          text: 'NIF must be 9 digits long!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2000
+        });
         return;
       }
     }
     if (this.role === 'Manager') {
       if (!this.managerTelemovel) {
-        Swal.fire('Attention', 'Fill in the manager mobile number!', 'warning');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Attention',
+          text: 'Fill in the manager mobile number!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2000
+        });
         return;
       }
       if (!/^\d{9}$/.test(this.managerTelemovel)) {
-        Swal.fire('Attention', 'Manager mobile number must be 9 digits long!', 'warning');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Attention',
+          text: 'Manager mobile number must be 9 digits long!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2000
+        });
         return;
       }
     }
@@ -92,14 +148,27 @@ export class RegisterComponent {
 
     this.authService.register(userData).subscribe({
       next: (res) => {
-        Swal.fire('Success', 'Registration successful!', 'success');
-        setTimeout(() => this.router.navigate(['/login']), 1500);
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration successful!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        setTimeout(() => this.router.navigate(['/login']), 1600);
       },
       error: (err) => {
         let msg = err.error?.error || 'Error registering!';
-        if (msg === 'Email already registered!') {
-        }
-        Swal.fire('Error', msg, 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: msg,
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
+        });
       }
     });
   }

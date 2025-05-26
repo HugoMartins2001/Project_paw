@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common'; // <-- adicione isto
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-orders-manager',
@@ -31,7 +32,7 @@ export class OrdersManagerComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-        alert('Erro ao buscar encomendas!');
+        alert('Error fetching orders!');
       }
     });
   }
@@ -57,8 +58,29 @@ export class OrdersManagerComponent implements OnInit {
       { status: newStatus },
       { headers: { Authorization: `Bearer ${token}` } }
     ).subscribe({
-      next: res => order.status = newStatus,
-      error: () => alert('Erro ao atualizar estado da encomenda!')
+      next: res => {
+        order.status = newStatus;
+        if (['expedida', 'entregue'].includes(newStatus.trim().toLowerCase())) {
+          Swal.fire({
+            icon: 'success',
+            title: `Order marked as ${newStatus}!`,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error updating order status!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2000
+        });
+      }
     });
   }
 }

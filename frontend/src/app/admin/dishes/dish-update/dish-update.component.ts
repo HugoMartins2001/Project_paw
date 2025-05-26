@@ -171,11 +171,29 @@ export class DishUpdateComponent implements OnInit {
 
     this.dishService.updateDish(this.dishId, formData).subscribe({
       next: () => {
-        Swal.fire('Success', 'Dish updated successfully!', 'success').then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Dish updated successfully!',
+          text: 'You will be redirected to the dishes list.',
+          toast: true,
+          position: 'top-end',
+          timer: 1200,
+          showConfirmButton: false
+        }).then(() => {
           this.router.navigate(['/dishes']);
         });
       },
-      error: () => Swal.fire('Error', 'Error updating dish!', 'error')
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error updating dish!',
+          toast: true,
+          position: 'top-end',
+          timer: 2500,
+          showConfirmButton: false
+        });
+      }
     });
   }
 

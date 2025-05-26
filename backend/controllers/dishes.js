@@ -13,17 +13,16 @@ dishesController.showAll = async function (req, res, next) {
     const { page = 1, limit = 6, name, minPrice, maxPrice, category, allergens } = req.query;
     const skip = (page - 1) * limit;
 
-    // Apenas pratos visíveis por padrão
-    let query = { isVisible: true };
+    let query = {};
 
-    // Admin pode ver todos os pratos, incluindo os ocultos
     if (user && user.role === "Admin") {
-      delete query.isVisible;
-    }
-
-    // Manager só vê os seus pratos
-    if (user && user.role === "Manager") {
+      // Admin vê tudo
+    } else if (user && user.role === "Manager") {
+      // Manager vê todos os seus pratos, mesmo escondidos
       query.managerId = user._id;
+    } else {
+      // Outros só veem pratos visíveis
+      query.isVisible = true;
     }
 
     // Filtrar por nome do prato
@@ -460,18 +459,15 @@ dishesController.toggleVisibility = async function (req, res, next) {
     const dishId = req.params.dishId;
     const user = req.user;
 
-    // Verificar se o usuário está autenticado
     if (!user) {
       return res.status(401).json({ message: "You must be logged in to perform this action." });
     }
 
-    // Buscar o prato pelo ID
     const dish = await mongoDish.findById(dishId);
     if (!dish) {
       return res.status(404).json({ message: "Dish not found." });
     }
 
-    // Verificar permissões
     if (
       user.role !== "Admin" &&
       (!dish.managerId || dish.managerId.toString() !== user._id.toString())
@@ -479,13 +475,13 @@ dishesController.toggleVisibility = async function (req, res, next) {
       return res.status(403).json({ message: "You do not have permission to modify this dish." });
     }
 
-    // Alternar visibilidade usando updateOne para evitar validação completa
-    await mongoDish.updateOne({ _id: dishId }, { $set: { isVisible: !dish.isVisible } });
+    // Alternar visibilidade
+    const newVisibility = !dish.isVisible;
+    await mongoDish.updateOne({ _id: dishId }, { $set: { isVisible: newVisibility } });
 
-    // Registrar log
-    logAction(dish.isVisible ? "Dish Shown" : "Dish Hidden", user, { dishId: dish._id, name: dish.name });
+    // Registrar log com o novo estado
+    logAction(newVisibility ? "Dish Shown" : "Dish Hidden", user, { dishId: dish._id, name: dish.name });
 
-    // Redirecionar para a página de pratos
     res.json({ message: "Dish visibility toggled successfully" });
   } catch (error) {
     console.error(error);

@@ -31,11 +31,25 @@ export class RestaurantApprovalComponent implements OnInit {
   approveRestaurant(id: string) {
     this.restaurantService.approveRestaurant(id).subscribe({
       next: () => {
-        Swal.fire('Success', 'Restaurant approved successfully!', 'success');
-        this.loadRestaurants(); // Reload after approval
+        Swal.fire({
+          icon: 'success',
+          title: 'Restaurant approved successfully!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1200
+        });
+        this.loadRestaurants();
       },
       error: () => {
-        Swal.fire('Error', 'Could not approve the restaurant.', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Could not approve the restaurant.',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
+        });
       }
     });
   }

@@ -78,6 +78,8 @@ export class LoginComponent {
           Swal.fire({
             icon: 'success',
             title: 'Login successful!',
+            toast: true,
+            position: 'top-end',
             timer: 1500,
             showConfirmButton: false,
           });
@@ -103,18 +105,30 @@ export class LoginComponent {
               icon: 'error',
               title: 'Email not found',
               text: this.errors.email,
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2500
             });
           } else if (this.errors.password) {
             Swal.fire({
               icon: 'error',
               title: 'Incorrect password',
               text: this.errors.password,
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2500
             });
           } else {
             Swal.fire({
               icon: 'error',
               title: 'Login error',
               text: this.errors.geral || 'Check the entered data.',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2500
             });
           }
         },
@@ -132,7 +146,15 @@ export class LoginComponent {
 
   onForgotSubmit() {
     if (!this.forgotEmail) {
-      Swal.fire('Error', 'Please enter your email.', 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please enter your email.',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
       return;
     }
     this.forgotLoading = true;
@@ -140,12 +162,27 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.forgotLoading = false;
-          Swal.fire('Success', 'If the email exists, you will receive instructions to recover your password.', 'success');
+          Swal.fire({
+            icon: 'success',
+            title: 'If the email exists, you will receive instructions to recover your password.',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500
+          });
           this.hideForgotForm();
         },
         error: () => {
           this.forgotLoading = false;
-          Swal.fire('Error', 'An error occurred while trying to recover the password.', 'error');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while trying to recover the password.',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500
+          });
         }
       });
   }

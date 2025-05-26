@@ -74,6 +74,8 @@ export class LogsComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             title: 'Log deleted!',
+            toast: true,
+            position: 'top-end',
             showConfirmButton: false,
             timer: 1200
           });
@@ -81,7 +83,11 @@ export class LogsComponent implements OnInit {
           Swal.fire({
             icon: 'error',
             title: 'Error deleting log!',
-            text: 'An unexpected error occurred.'
+            text: 'An unexpected error occurred.',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500
           });
         });
       }

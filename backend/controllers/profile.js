@@ -6,7 +6,7 @@ const profile = {};
 // jsonizar a página de perfil
 profile.showProfile = async function (req, res, next) {
   try {
-    if (!req.user) return res.json("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
+    if (!req.user) return res.json("/auth/login"); 
 
     let totalRestaurants = 0;
     let approvedRestaurants = 0;
@@ -45,9 +45,8 @@ profile.editProfile = function (req, res, next) {
 // Atualizar o perfil do usuário
 profile.updateProfile = function (req, res, next) {
   try {
-    const userId = req.user._id; // Obtém o ID do usuário autenticado
+    const userId = req.user._id;
 
-    // Dados enviados pelo formulário
     const {
       name,
       email,
@@ -57,7 +56,6 @@ profile.updateProfile = function (req, res, next) {
       managerTelemovel,
     } = req.body;
 
-    // Dados atualizados
     const updatedUserData = {
       name,
       email,
@@ -67,27 +65,24 @@ profile.updateProfile = function (req, res, next) {
       managerTelemovel,
     };
 
-    // Verificar se há uma nova imagem de perfil
     if (req.file) {
-      updatedUserData.profilePic = req.file.filename; // Adiciona o caminho da nova imagem de perfil
+      updatedUserData.profilePic = req.file.filename; 
     }
 
-    // Atualizar o usuário no banco de dados
-    mongoUser
-      .findByIdAndUpdate(userId, updatedUserData, { new: true, runValidators: true }) // Atualiza o usuário e retorna o documento atualizado
+    mongoUser.findByIdAndUpdate(userId, updatedUserData, { new: true, runValidators: true }) 
       .then((updatedUser) => {
         if (!updatedUser) {
-          return res.status(404).json("User not found."); // Retorna erro 404 se o usuário não for encontrado
+          return res.status(404).json("User not found."); 
         }
-        res.json({ message: "Profile updated successfully." }); // Retorna sucesso
+        res.json({ message: "Profile updated successfully." }); 
       })
       .catch((err) => {
-        console.error("Error updating profile:", err); // Loga o erro no console
-        next(err); // Passa o erro para o middleware de tratamento de erros
+        console.error("Error updating profile:", err); 
+        next(err);
       });
   } catch (err) {
-    console.error("Unexpected error:", err); // Loga erros inesperados
-    next(err); // Passa o erro para o middleware de tratamento de erros
+    console.error("Unexpected error:", err);
+    next(err);
   }
 };
 

@@ -29,7 +29,7 @@ export class MenusComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('userID');
     this.loadRestaurants();
     this.loadMenus();
   }
@@ -87,11 +87,25 @@ export class MenusComponent implements OnInit {
       if (result.isConfirmed) {
         this.menuService.deleteMenu(id).subscribe({
           next: () => {
-            Swal.fire('Deleted!', 'The menu has been deleted.', 'success');
+            Swal.fire({
+              icon: 'success',
+              title: 'Menu deleted!',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1200
+            });
             this.loadMenus();
           },
           error: () => {
-            Swal.fire('Error', 'Error deleting menu.', 'error');
+            Swal.fire({
+              icon: 'error',
+              title: 'Error deleting menu!',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2500
+            });
           }
         });
       }
@@ -118,6 +132,8 @@ export class MenusComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: `Menu ${novoEstado ? 'visible' : 'hidden'} successfully!`,
+          toast: true,
+          position: 'top-end',
           showConfirmButton: false,
           timer: 1200
         });
@@ -126,7 +142,11 @@ export class MenusComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error updating visibility!',
-          text: err.error?.message || 'An unexpected error occurred.'
+          text: err.error?.message || 'An unexpected error occurred.',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
         });
       }
     });

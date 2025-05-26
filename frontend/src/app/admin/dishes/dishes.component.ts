@@ -32,7 +32,7 @@ export class DishesComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
-    this.userId = localStorage.getItem('userId');
+    this.userId = localStorage.getItem('userID');
     this.loadDishes();
   }
 
@@ -46,14 +46,14 @@ export class DishesComponent implements OnInit {
 
     this.dishService.getDishes({}).subscribe({
       next: (data: any) => {
-        this.allDishes = data.dishes || [];
-        this.categories = Array.from(new Set(this.allDishes.map((d: any) => d.category).filter(Boolean)));
+        this.dishes = data.dishes || [];
+        this.categories = Array.from(new Set(this.dishes.map((d: any) => d.category).filter(Boolean)));
         this.allergensList = Array.from(
           new Set(
-            this.allDishes.flatMap((d: any) => Array.isArray(d.allergens) ? d.allergens : []).filter(Boolean)
+            this.dishes.flatMap((d: any) => Array.isArray(d.allergens) ? d.allergens : []).filter(Boolean)
           )
         );
-        this.dishes = this.allDishes.filter(dish => {
+        this.dishes = this.dishes.filter(dish => {
           let match = true;
           if (this.filterCategory) match = match && dish.category === this.filterCategory;
           if (this.filterAllergens) match = match && (dish.allergens || []).includes(this.filterAllergens);
@@ -74,6 +74,34 @@ export class DishesComponent implements OnInit {
     });
   }
 
+  toggleVisibility(dish: Dish): void {
+    const novoEstado = !dish.isVisible;
+    this.dishService.toggleVisibility(dish._id, novoEstado).subscribe({
+      next: () => {
+        dish.isVisible = novoEstado;
+        Swal.fire({
+          icon: 'success',
+          title: `Dish ${novoEstado ? 'visible' : 'hidden'} successfully!`,
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1200
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error updating visibility!',
+          text: err.error?.message || 'An unexpected error occurred.',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
+        });
+      }
+    });
+  }
+
   deleteDish(id: string) {
     Swal.fire({
       title: 'Are you sure?',
@@ -86,10 +114,24 @@ export class DishesComponent implements OnInit {
       if (result.isConfirmed) {
         this.dishService.deleteDish(id).subscribe({
           next: () => {
-            Swal.fire('Deleted!', 'The dish has been deleted.', 'success');
+            Swal.fire({
+              icon: 'success',
+              title: 'The dish has been deleted.',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1200
+            });
             this.loadDishes();
           },
-          error: () => Swal.fire('Error', 'Error deleting dish.', 'error')
+          error: () => Swal.fire({
+            icon: 'error',
+            title: 'Error deleting dish.',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500
+          })
         });
       }
     });
@@ -109,28 +151,6 @@ export class DishesComponent implements OnInit {
       return dish.managerId === userId;
     }
     return dish.managerId._id === userId;
-  }
-
-  toggleVisibility(dish: Dish): void {
-    const novoEstado = !dish.isVisible;
-    this.dishService.toggleVisibility(dish._id, novoEstado).subscribe({
-      next: () => {
-        dish.isVisible = novoEstado;
-        Swal.fire({
-          icon: 'success',
-          title: `Dish ${novoEstado ? 'visible' : 'hidden'} successfully!`,
-          showConfirmButton: false,
-          timer: 1200
-        });
-      },
-      error: (err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error updating visibility!',
-          text: err.error?.message || 'An unexpected error occurred.'
-        });
-      }
-    });
   }
 
   selectSize(dishId: string, size: 'pequena' | 'media' | 'grande') {

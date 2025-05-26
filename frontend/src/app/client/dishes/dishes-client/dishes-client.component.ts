@@ -145,5 +145,14 @@ export class DishesClientComponent implements OnInit {
     if (!size) return;
     const price = dish.prices?.[size] || 0;
     this.cartService.addToCart({ ...dish, selectedSize: size, selectedPrice: price });
+    Swal.fire({
+      icon: 'success',
+      title: 'Added to cart!',
+      text: `${dish.name} (${size}) added to your cart.`,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1200
+    });
   }
 }

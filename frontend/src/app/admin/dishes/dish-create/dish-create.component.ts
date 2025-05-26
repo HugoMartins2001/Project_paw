@@ -77,7 +77,6 @@ export class DishCreateComponent {
     formData.append('description', this.dishForm.value.description || '');
     formData.append('category', this.dishForm.value.category || '');
 
-
     const prices = {
       pequena: this.dishForm.value.precoPequena,
       media: this.dishForm.value.precoMedia,
@@ -117,7 +116,8 @@ export class DishCreateComponent {
           icon: 'success',
           title: 'Dish created successfully!',
           text: 'You will be redirected to the list of dishes.',
-          confirmButtonColor: '#4CAF50',
+          toast: true,
+          position: 'top-end',
           timer: 1200,
           showConfirmButton: false
         }).then(() => {
@@ -126,7 +126,15 @@ export class DishCreateComponent {
       },
       error: () => {
         this.isLoading = false;
-        Swal.fire('Error', 'Error creating dish!', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error creating dish!',
+          toast: true,
+          position: 'top-end',
+          timer: 2500,
+          showConfirmButton: false
+        });
       }
     });
   }

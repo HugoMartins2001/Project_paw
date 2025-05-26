@@ -28,7 +28,7 @@ export class UsersComponent implements OnInit {
         this.users = data;
       },
       error: (err) => {
-        console.error('Erro ao buscar utilizadores:', err);
+        console.error('Erro ao encontrar utilizadores:', err);
         this.users = [];
       }
     });
@@ -52,26 +52,36 @@ export class UsersComponent implements OnInit {
           next: (data) => {
             if (data.success) {
               Swal.fire({
+                icon: 'success',
                 title: 'Success!',
                 text: data.message,
-                icon: 'success',
-                confirmButtonColor: '#4CAF50',
-              }).then(() => this.fetchUsers());
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1200
+              });
+              this.fetchUsers();
             } else {
               Swal.fire({
+                icon: 'error',
                 title: 'Error!',
                 text: data.message,
-                icon: 'error',
-                confirmButtonColor: '#d33',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2500
               });
             }
           },
           error: () => {
             Swal.fire({
+              icon: 'error',
               title: 'Error!',
               text: 'An error occurred. Please try again later.',
-              icon: 'error',
-              confirmButtonColor: '#d33',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2500
             });
           }
         });

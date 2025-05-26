@@ -45,6 +45,10 @@ export class ResetPasswordComponent {
               icon: 'success',
               title: 'Password Reset',
               text: 'Your password has been reset successfully!',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2000
             }).then(() => {
               this.router.navigate(['/login']);
             });
@@ -53,6 +57,10 @@ export class ResetPasswordComponent {
               icon: 'error',
               title: 'Error',
               text: data.message || 'An error occurred. Please try again.',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2500
             });
           }
         },
@@ -62,6 +70,10 @@ export class ResetPasswordComponent {
             icon: 'error',
             title: 'Error',
             text: 'An error occurred. Please try again later.',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500
           });
         }
       });

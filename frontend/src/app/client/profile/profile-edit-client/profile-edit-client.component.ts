@@ -55,11 +55,27 @@ export class ProfileEditClientComponent implements OnInit {
       if (
         this.profileForm.get('clienteTelemovel')?.invalid ||
         this.profileForm.get('managerTelemovel')?.invalid
-      ) {//ingles
-        Swal.fire('warning', 'O número de telemóvel deve ter exatamente 9 dígitos.', 'warning');
+      ) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Invalid Phone Number',
+          text: 'The phone number must be exactly 9 digits.',
+          toast: true,
+          position: 'top-end',
+          timer: 2500,
+          showConfirmButton: false
+        });
       }
       if (this.profileForm.get('clienteNif')?.invalid) {
-        Swal.fire('warning', 'O NIF deve ter exatamente 9 dígitos.', 'warning');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Invalid NIF',
+          text: 'The NIF must be exactly 9 digits.',
+          toast: true,
+          position: 'top-end',
+          timer: 2500,
+          showConfirmButton: false
+        });
       }
       this.profileForm.markAllAsTouched();
       return;
@@ -70,13 +86,14 @@ export class ProfileEditClientComponent implements OnInit {
         this.loading = false;
         Swal.fire({
           icon: 'success',
-          title: 'Profile updated!',
+          title: 'Profile Updated!',
           text: 'You will be redirected to your profile.',
-          confirmButtonColor: '#4CAF50',
+          toast: true,
+          position: 'top-end',
           timer: 1200,
           showConfirmButton: false
         }).then(() => {
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/client/profile']);
         });
       },
       error: () => {
@@ -85,7 +102,10 @@ export class ProfileEditClientComponent implements OnInit {
           icon: 'error',
           title: 'Error',
           text: 'Failed to update profile.',
-          confirmButtonColor: '#e74c3c'
+          toast: true,
+          position: 'top-end',
+          timer: 2500,
+          showConfirmButton: false
         });
       }
     });

@@ -88,7 +88,7 @@ export class RestaurantUpdateComponent implements OnInit {
         console.log('Menus carregados:', this.menuOptions);
       },
       error: () =>
-        Swal.fire('Erro', 'Erro ao carregar menus disponíveis!', 'error')
+        Swal.fire('Error', 'Error loading available menus!', 'error')
     });
 
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe({
@@ -105,7 +105,7 @@ export class RestaurantUpdateComponent implements OnInit {
         this.paymentMethods = res.paymentMethods || [];
       },
       error: () =>
-        Swal.fire('Erro', 'Erro ao carregar dados do restaurante!', 'error')
+        Swal.fire('Error', 'Error loading restaurant data!', 'error')
     });
   }
 
@@ -145,7 +145,15 @@ export class RestaurantUpdateComponent implements OnInit {
 
   onSubmit() {
     if (this.restaurantForm.invalid) {
-      Swal.fire('Atenção', 'Preencha todos os campos obrigatórios!', 'warning');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Attention',
+        text: 'Please fill in all required fields!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
       return;
     }
 
@@ -183,11 +191,26 @@ export class RestaurantUpdateComponent implements OnInit {
 
     this.restaurantService.updateRestaurantById(this.restaurantId, formData).subscribe({
       next: () => {
-        Swal.fire('Success', 'Restaurant updated successfully!', 'success');
+        Swal.fire({
+          icon: 'success',
+          title: 'Restaurant updated successfully!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1200
+        });
         setTimeout(() => this.router.navigate(['/restaurants']), 1500);
       },
       error: (err) => {
-        Swal.fire('Error', err.error?.error || 'Error updating restaurant!', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error?.error || 'Error updating restaurant!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
+        });
       }
     });
   }

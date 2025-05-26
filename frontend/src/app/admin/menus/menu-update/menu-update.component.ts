@@ -85,11 +85,25 @@ export class MenuUpdateComponent implements OnInit {
 
     this.menuService.updateMenuById(this.menuId, formData).subscribe({
       next: () => {
-        Swal.fire('Success', 'Menu updated successfully!', 'success').then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Menu updated successfully!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1200
+        }).then(() => {
           this.router.navigate(['/menus']);
         });
       },
-      error: () => Swal.fire('Error', 'Error updating menu!', 'error')
+      error: () => Swal.fire({
+        icon: 'error',
+        title: 'Error updating menu!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2500
+      })
     });
   }
 }

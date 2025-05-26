@@ -80,7 +80,15 @@ export class RestaurantCreateComponent {
 
   onSubmit() {
     if (this.restaurantForm.invalid) {
-      Swal.fire('Atenção', 'Fill in all required fields!', 'warning');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Attention',
+        text: 'Fill in all required fields!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
       return;
     }
 
@@ -112,11 +120,26 @@ export class RestaurantCreateComponent {
 
     this.restaurantService.createRestaurant(formData).subscribe({
       next: () => {
-        Swal.fire('Success', 'Restaurant created successfully!', 'success');
+        Swal.fire({
+          icon: 'success',
+          title: 'Restaurant created successfully!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1200
+        });
         setTimeout(() => this.router.navigate(['/restaurants']), 1500);
       },
       error: (err) => {
-        Swal.fire('Error', err.error?.error || 'Error creating restaurant!', 'error');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error?.error || 'Error creating restaurant!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
+        });
       }
     });
   }

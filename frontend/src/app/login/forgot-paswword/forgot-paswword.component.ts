@@ -34,6 +34,10 @@ export class ForgotPaswwordComponent {
           icon: 'success',
           title: 'Email Sent',
           text: 'Password reset link sent successfully!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
         }).then(() => {
           this.router.navigate(['/login']);
         });
@@ -44,6 +48,10 @@ export class ForgotPaswwordComponent {
           icon: 'error',
           title: 'Error',
           text: err.error?.message || 'An error occurred. Please try again.',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
         });
       }
     });

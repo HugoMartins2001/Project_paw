@@ -21,7 +21,7 @@ export class RestaurantsComponent implements OnInit {
   constructor(private restaurantService: RestaurantService) { }
 
   userRole = localStorage.getItem('role');
-  userId = localStorage.getItem('userId');
+  userId = localStorage.getItem('userID');
 
   ngOnInit(): void {
     this.fetchRestaurants();
@@ -61,14 +61,14 @@ export class RestaurantsComponent implements OnInit {
 
   deleteRestaurant(id: string): void {
     Swal.fire({
-      title: 'Tens a certeza?',
-      text: 'Esta ação não pode ser revertida!',
+      title: 'Are you sure?',
+      text: 'This action cannot be undone!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Sim, apagar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Yes, delete',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         this.restaurantService.deleteRestaurant(id).subscribe({
@@ -76,7 +76,9 @@ export class RestaurantsComponent implements OnInit {
             this.restaurants = this.restaurants.filter(r => r._id !== id);
             Swal.fire({
               icon: 'success',
-              title: 'Restaurante apagado!',
+              title: 'Restaurant deleted!',
+              toast: true,
+              position: 'top-end',
               showConfirmButton: false,
               timer: 1200
             });
@@ -84,8 +86,12 @@ export class RestaurantsComponent implements OnInit {
           error: (err) => {
             Swal.fire({
               icon: 'error',
-              title: 'Erro ao eliminar restaurante!',
-              text: err.error?.message || 'Ocorreu um erro inesperado.'
+              title: 'Error deleting restaurant!',
+              text: err.error?.message || 'An unexpected error occurred .',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2500
             });
           }
         });
@@ -105,6 +111,8 @@ export class RestaurantsComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: `Restaurant ${novoEstado ? 'visible' : 'hidden'} successfully!`,
+          toast: true,
+          position: 'top-end',
           showConfirmButton: false,
           timer: 1200
         });
@@ -113,7 +121,11 @@ export class RestaurantsComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error updating visibility!',
-          text: err.error?.message || 'An unexpected error occurred.'
+          text: err.error?.message || 'An unexpected error occurred.',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 2500
         });
       }
     });

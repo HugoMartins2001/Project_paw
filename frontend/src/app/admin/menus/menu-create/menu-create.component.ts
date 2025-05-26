@@ -47,7 +47,7 @@ export class MenuCreateComponent implements OnInit {
     const dishesControl = this.menuForm.get('dishes');
     if (dishesControl && dishesControl.value.length > 10) {
       dishesControl.setValue(dishesControl.value.slice(0, 10)); 
-      Swal.fire('Atenção', 'Só pode adicionar no máximo 10 pratos por menu.', 'warning');
+      Swal.fire('Atenção', 'You can only add up to 10 dishes per menu.', 'warning');
     }
   }
 
@@ -65,11 +65,25 @@ export class MenuCreateComponent implements OnInit {
 
     this.menuService.createMenu(formData).subscribe({
       next: () => {
-        Swal.fire('Success', 'Menu created successfully!', 'success').then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Menu created successfully!',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1200
+        }).then(() => {
           this.router.navigate(['/menus']);
         });
       },
-      error: () => Swal.fire('Error', 'Error creating menu!', 'error')
+      error: () => Swal.fire({
+        icon: 'error',
+        title: 'Error creating menu!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2500
+      })
     });
   }
 }

@@ -144,6 +144,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         Swal.fire({
           icon: 'success',
           title: 'Session ended!',
+          toast: true,
+          position: 'top-end',
           timer: 1200,
           showConfirmButton: false
         });
@@ -154,5 +156,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   clearCart(event: Event) {
     event.stopPropagation();
     this.cartService.clearCart();
+    Swal.fire({
+      icon: 'success',
+      title: 'Cart cleared!',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1200
+    });
   }
 }
