@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class DishesComponent implements OnInit {
   dishes: Dish[] = [];
+  allDishes: Dish[] = [];
   isLoading = true;
   userRole: string | null = null;
   userId: string | null = null;
@@ -43,17 +44,25 @@ export class DishesComponent implements OnInit {
     if (this.filterMinPrice !== null) params.minPrice = this.filterMinPrice;
     if (this.filterMaxPrice !== null) params.maxPrice = this.filterMaxPrice;
 
-    this.dishService.getDishes(params).subscribe({
+    this.dishService.getDishes({}).subscribe({
       next: (data: any) => {
-        this.dishes = data.dishes || [];
-
-        this.categories = Array.from(new Set(this.dishes.map((d: any) => d.category).filter(Boolean)));
-
+        this.allDishes = data.dishes || [];
+        this.categories = Array.from(new Set(this.allDishes.map((d: any) => d.category).filter(Boolean)));
         this.allergensList = Array.from(
           new Set(
-            this.dishes.flatMap((d: any) => Array.isArray(d.allergens) ? d.allergens : []).filter(Boolean)
+            this.allDishes.flatMap((d: any) => Array.isArray(d.allergens) ? d.allergens : []).filter(Boolean)
           )
         );
+        this.dishes = this.allDishes.filter(dish => {
+          let match = true;
+          if (this.filterCategory) match = match && dish.category === this.filterCategory;
+          if (this.filterAllergens) match = match && (dish.allergens || []).includes(this.filterAllergens);
+          if (this.filterName) match = match && dish.name.toLowerCase().includes(this.filterName.toLowerCase());
+          const price = dish.prices?.media ?? 0;
+          if (this.filterMinPrice !== null) match = match && price >= this.filterMinPrice;
+          if (this.filterMaxPrice !== null) match = match && price <= this.filterMaxPrice;
+          return match;
+        });
         this.isLoading = false;
       },
       error: () => {
