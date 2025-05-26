@@ -1,5 +1,7 @@
 <div class="container mt-4">
-    <h1>Available Menus</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-4">Available Menus</h1>
+    </div>
 
     <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
         <a [routerLink]="['/menus/create']" class="btn btn-success">
@@ -10,13 +12,16 @@
 
     <div class="row mb-4">
         <div class="col-md-4 mb-2">
-            <input type="text" class="form-control" [(ngModel)]="filterName" (input)="loadMenus()" placeholder="Nome do menu">
+            <input type="text" class="form-control" [(ngModel)]="filterName" (input)="loadMenus()"
+                placeholder="Nome do menu">
         </div>
         <div class="col-md-4 mb-2">
-            <input type="number" class="form-control" [(ngModel)]="filterMinPrice" (input)="loadMenus()" placeholder="Preço mínimo">
+            <input type="number" class="form-control" [(ngModel)]="filterMinPrice" (input)="loadMenus()"
+                placeholder="Preço mínimo">
         </div>
         <div class="col-md-4 mb-2">
-            <input type="number" class="form-control" [(ngModel)]="filterMaxPrice" (input)="loadMenus()" placeholder="Preço máximo">
+            <input type="number" class="form-control" [(ngModel)]="filterMaxPrice" (input)="loadMenus()"
+                placeholder="Preço máximo">
         </div>
     </div>
 
@@ -41,7 +46,7 @@
                             </div>
                         </ng-template>
 
-                        
+
                         <h5 class="card-title">{{ menu.name }}</h5>
                         <p class="mb-2"><strong>Dishes:</strong></p>
                         <ul class="list-group mb-2" *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">

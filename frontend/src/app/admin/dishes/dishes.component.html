@@ -1,67 +1,57 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="fw-bold text-primary">Available dishes</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="mb-4">Available dishes</h1>
+    </div>
 
   </div>
   <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
     <a routerLink="/dishes/create" class="btn btn-success">Add Dish</a>
   </div>
   <div class="bg-light rounded-3 p-3 mb-4 shadow-sm">
-        <div class="row g-3 align-items-center">
-            <!-- Filtros de categorias -->
-            <div class="col-12 col-md-6">
-                <div class="mb-2 fw-semibold text-secondary">Categorias:</div>
-                <div class="d-flex flex-wrap gap-2">
-                    <button
-                        class="filter-btn"
-                        [class.active]="!filterCategory"
-                        (click)="filterCategory=''; loadDishes()">
-                        All
-                    </button>
-                    <button
-                        *ngFor="let cat of categories"
-                        class="filter-btn"
-                        [class.active]="filterCategory === cat"
-                        (click)="filterCategory=cat; loadDishes()">
-                        {{ cat }}
-                    </button>
-                </div>
-            </div>
-            <!-- Filtros de alergénios -->
-            <div class="col-12 col-md-6">
-                <div class="mb-2 fw-semibold text-secondary">Alergénios:</div>
-                <div class="d-flex flex-wrap gap-2">
-                    <button
-                        class="filter-btn"
-                        [class.active]="!filterAllergens"
-                        (click)="filterAllergens=''; loadDishes()">
-                        Todos os alergénios
-                    </button>
-                    <button
-                        *ngFor="let allergen of allergensList"
-                        class="filter-btn"
-                        [class.active]="filterAllergens === allergen"
-                        (click)="filterAllergens=allergen; loadDishes()">
-                        {{ allergen }}
-                    </button>
-                </div>
-            </div>
+    <div class="row g-3 align-items-center">
+      <!-- Filtros de categorias -->
+      <div class="col-12 col-md-6">
+        <div class="mb-2 fw-semibold text-secondary">Categorias:</div>
+        <div class="d-flex flex-wrap gap-2">
+          <button class="filter-btn" [class.active]="!filterCategory" (click)="filterCategory=''; loadDishes()">
+            All
+          </button>
+          <button *ngFor="let cat of categories" class="filter-btn" [class.active]="filterCategory === cat"
+            (click)="filterCategory=cat; loadDishes()">
+            {{ cat }}
+          </button>
         </div>
-        <!-- Inputs de pesquisa e preço -->
-        <div class="row g-3 mt-2">
-            <div class="col-md-4">
-                <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Nome do prato" class="form-control" />
-            </div>
-            <div class="col-md-4">
-                <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Preço mínimo"
-                    class="form-control" />
-            </div>
-            <div class="col-md-4">
-                <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Preço máximo"
-                    class="form-control" />
-            </div>
+      </div>
+      <!-- Filtros de alergénios -->
+      <div class="col-12 col-md-6">
+        <div class="mb-2 fw-semibold text-secondary">Alergénios:</div>
+        <div class="d-flex flex-wrap gap-2">
+          <button class="filter-btn" [class.active]="!filterAllergens" (click)="filterAllergens=''; loadDishes()">
+            Todos os alergénios
+          </button>
+          <button *ngFor="let allergen of allergensList" class="filter-btn"
+            [class.active]="filterAllergens === allergen" (click)="filterAllergens=allergen; loadDishes()">
+            {{ allergen }}
+          </button>
         </div>
+      </div>
     </div>
+    <!-- Inputs de pesquisa e preço -->
+    <div class="row g-3 mt-2">
+      <div class="col-md-4">
+        <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Nome do prato" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Preço mínimo"
+          class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Preço máximo"
+          class="form-control" />
+      </div>
+    </div>
+  </div>
   <div class="row g-4" *ngIf="!isLoading && dishes.length > 0; else noDishes">
     <div class="col-md-6 col-lg-4" *ngFor="let dish of dishes">
       <div class="card h-100">
@@ -100,7 +90,8 @@
             </p>
           </div>
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <a *ngIf="userRole" [routerLink]="['/dish-details', dish._id]" class="btn btn-sm btn-outline-primary">View</a>
+            <a *ngIf="userRole" [routerLink]="['/dish-details', dish._id]"
+              class="btn btn-sm btn-outline-primary">View</a>
             <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver detalhes</button>
 
             <ng-container *ngIf="userRole === 'Client'">
@@ -109,32 +100,31 @@
                 <div class="d-flex gap-2 mb-2 w-100">
                   <button type="button"
                     class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
-                    [class.active]="selectedSize[dish._id] === 'pequena'"
-                    style="font-size: 0.95rem; min-width: 70px;"
+                    [class.active]="selectedSize[dish._id] === 'pequena'" style="font-size: 0.95rem; min-width: 70px;"
                     (click)="selectSize(dish._id, 'pequena')">
                     Pequena
-                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.pequena || '-' }} €</span>
+                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.pequena || '-' }}
+                      €</span>
                   </button>
                   <button type="button"
                     class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
-                    [class.active]="selectedSize[dish._id] === 'media'"
-                    style="font-size: 0.95rem; min-width: 70px;"
+                    [class.active]="selectedSize[dish._id] === 'media'" style="font-size: 0.95rem; min-width: 70px;"
                     (click)="selectSize(dish._id, 'media')">
                     Média
-                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.media || '-' }} €</span>
+                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.media || '-' }}
+                      €</span>
                   </button>
                   <button type="button"
                     class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
-                    [class.active]="selectedSize[dish._id] === 'grande'"
-                    style="font-size: 0.95rem; min-width: 70px;"
+                    [class.active]="selectedSize[dish._id] === 'grande'" style="font-size: 0.95rem; min-width: 70px;"
                     (click)="selectSize(dish._id, 'grande')">
                     Grande
-                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.grande || '-' }} €</span>
+                    <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{ dish.prices?.grande || '-' }}
+                      €</span>
                   </button>
                 </div>
                 <button class="btn btn-success btn-sm align-self-end mt-1 px-3 rounded-pill d-flex align-items-center"
-                  [disabled]="!selectedSize[dish._id]"
-                  style="font-size: 0.98rem;"
+                  [disabled]="!selectedSize[dish._id]" style="font-size: 0.98rem;"
                   (click)="addToCart(dish, selectedSize[dish._id]!)">
                   <i class="bi bi-cart-plus me-1"></i> Adicionar ao carrinho
                 </button>

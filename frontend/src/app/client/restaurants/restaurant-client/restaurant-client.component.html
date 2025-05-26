@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="mb-4">Available Restaurants</h1>
-    </div>
+    <h1 class="mb-4">Available Restaurants</h1>
+  </div>
 
   <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
     <a [routerLink]="['/restaurants/create']" class="btn btn-success">Criar Restaurante</a>
@@ -9,10 +9,12 @@
 
   <div class="row mb-4">
     <div class="col-md-4 mb-2">
-      <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="filterName" (input)="fetchRestaurants()" />
+      <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="filterName"
+        (input)="fetchRestaurants()" />
     </div>
     <div class="col-md-4 mb-2">
-      <input type="text" class="form-control" placeholder="Filter by address" [(ngModel)]="filterAddress" (input)="fetchRestaurants()" />
+      <input type="text" class="form-control" placeholder="Filter by address" [(ngModel)]="filterAddress"
+        (input)="fetchRestaurants()" />
     </div>
   </div>
 
@@ -26,7 +28,8 @@
       <ng-container *ngIf="restaurant.isApproved === true">
         <div class="card restaurant-card h-100">
           <div class="restaurant-img-container" *ngIf="restaurant.restaurantPic; else noImage">
-            <img [src]="getRestaurantImageUrl(restaurant.restaurantPic)" [alt]="restaurant.name" class="restaurant-img" />
+            <img [src]="getRestaurantImageUrl(restaurant.restaurantPic)" [alt]="restaurant.name"
+              class="restaurant-img" />
           </div>
           <ng-template #noImage>
             <div class="restaurant-img-container no-img">
@@ -55,13 +58,19 @@
               <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view</button>
 
               <ng-container *ngIf="userRole === 'Client' || userRole === 'Manager' || userRole === 'Admin'">
-                <a [routerLink]="['/restaurant-details', restaurant.name]" class="btn btn-sm btn-outline-primary">View</a>
+                <a [routerLink]="['/restaurant-details', restaurant.name]"
+                  class="btn btn-sm btn-outline-primary">View</a>
               </ng-container>
 
-              <ng-container *ngIf="(userRole === 'Manager' && (restaurant.managerId?._id === userId || restaurant.managerId === userId)) || userRole === 'Admin'">
-                <a [routerLink]="['/restaurants/editRestaurant', restaurant._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
-                <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteRestaurant(restaurant._id)">Delete</button>
-                <button class="btn btn-sm ms-2" [ngClass]="restaurant.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'" (click)="toggleVisibility(restaurant)">
+              <ng-container
+                *ngIf="(userRole === 'Manager' && (restaurant.managerId?._id === userId || restaurant.managerId === userId)) || userRole === 'Admin'">
+                <a [routerLink]="['/restaurants/editRestaurant', restaurant._id]"
+                  class="btn btn-sm btn-outline-warning ms-2">Edit</a>
+                <button class="btn btn-sm btn-outline-danger ms-2"
+                  (click)="deleteRestaurant(restaurant._id)">Delete</button>
+                <button class="btn btn-sm ms-2"
+                  [ngClass]="restaurant.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
+                  (click)="toggleVisibility(restaurant)">
                   {{ restaurant.isVisible ? 'Hide' : 'Show' }}
                 </button>
               </ng-container>
