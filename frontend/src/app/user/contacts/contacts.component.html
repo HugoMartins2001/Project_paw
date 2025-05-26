@@ -5,18 +5,18 @@
       <p class="mb-4 text-muted">
         Tem dúvidas, sugestões ou precisa de ajuda? Preencha o formulário ou use os contactos abaixo.
       </p>
-      <form>
+      <form (ngSubmit)="sendContact()">
         <div class="mb-3">
           <label for="name" class="form-label">Nome</label>
-          <input type="text" class="form-control" id="name" placeholder="O seu nome" required>
+          <input [(ngModel)]="name" name="name" type="text" class="form-control" id="name" placeholder="O seu nome" required>
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" placeholder="O seu email" required>
+          <input [(ngModel)]="email" name="email" type="email" class="form-control" id="email" placeholder="O seu email" required>
         </div>
         <div class="mb-3">
           <label for="message" class="form-label">Mensagem</label>
-          <textarea class="form-control" id="message" rows="4" placeholder="A sua mensagem" required></textarea>
+          <textarea [(ngModel)]="message" name="message" class="form-control" id="message" rows="4" placeholder="A sua mensagem" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Enviar</button>
       </form>

@@ -22,6 +22,7 @@ const adminRoutes = require('./routes/admin');
 const ordersRouter = require("./routes/orders");
 const checkoutRoutes = require('./routes/checkout');
 const cors = require('cors');
+const contactRouter = require('./routes/contact');
 
 var mongoDB = "mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -78,6 +79,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", ordersRouter);
 app.use('/api/checkout', checkoutRoutes);
+app.use('/api/contact', contactRouter);
 
 
 app.use(function (req, res, next) {
