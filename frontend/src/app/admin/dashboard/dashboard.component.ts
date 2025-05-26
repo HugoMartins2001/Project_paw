@@ -4,7 +4,7 @@ import { DashboardService } from '../services/dashboard.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SocketService } from '../services/socket.service';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,24 +21,32 @@ export class DashboardComponent implements OnInit {
   dishData: number[] = [];
   orderData: number[] = [];
   role: string = '';
+  userId: string = '';
 
   private generalChartInstance: Chart | null = null;
   private clientsChartInstance: Chart | null = null;
+  private managerChartInstance: Chart | null = null;
+
+  managerRestaurantData: number[] = [];
+  managerMenuData: number[] = [];
+  managerDishData: number[] = [];
+  managerOrderData: number[] = [];
 
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
-    private socketService: SocketService 
-  ) {}
+    private socketService: SocketService
+  ) { }
 
   ngOnInit() {
     this.role = localStorage.getItem('role') || '';
+    this.userId = localStorage.getItem('userId') || '';
     this.loadDashboardData();
 
     this.socketService.onOrderCreated((data) => {
       Swal.fire({
         icon: 'info',
-        title: 'Nova encomenda!',
+        title: 'New Order!',
         text: data.message,
         toast: true,
         position: 'top-end',
@@ -47,7 +55,7 @@ export class DashboardComponent implements OnInit {
       });
     });
   }
-  
+
   navigateToHome(): void { this.router.navigate(['/home']); }
   navigateToRestaurants(): void { this.router.navigate(['/restaurants']); }
   navigateToRestaurantApproval(): void { this.router.navigate(['/restaurantApprove']); }
@@ -64,15 +72,19 @@ export class DashboardComponent implements OnInit {
   loadDashboardData() {
     this.dashboardService.getDashboardData().subscribe({
       next: (data) => {
-        console.log(data);
-        this.months = data.months || [];
         this.restaurantData = data.restaurantData || [];
-        this.userData = data.userData || [];
         this.menuData = data.menuData || [];
         this.dishData = data.dishData || [];
         this.orderData = data.orderData || [];
+        this.userData = data.userData || [];
+        this.months = data.months || [];
+        this.managerRestaurantData = data.managerRestaurantData || [];
+        this.managerMenuData = data.managerMenuData || [];
+        this.managerDishData = data.managerDishData || [];
+        this.managerOrderData = data.managerOrderData || [];
         this.renderGeneralGraph();
         this.renderClientsGraph();
+        this.renderManagerGraph();
       },
       error: () => {
         this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
@@ -83,6 +95,7 @@ export class DashboardComponent implements OnInit {
         this.orderData = [10, 12, 15, 20, 18, 25];
         this.renderGeneralGraph();
         this.renderClientsGraph();
+        this.renderManagerGraph();
       }
     });
   }
@@ -186,5 +199,44 @@ export class DashboardComponent implements OnInit {
         }
       });
     }
+  }
+
+  renderManagerGraph() {
+    const ctx = document.getElementById('managerGraph') as HTMLCanvasElement;
+    if (!ctx) return;
+    if (this.managerChartInstance) {
+      this.managerChartInstance.destroy();
+    }
+    this.managerChartInstance = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Restaurants', 'Menus', 'Dishes', 'Orders'],
+        datasets: [{
+          data: [
+            this.managerRestaurantData.reduce((a, b) => a + b, 0),
+            this.managerMenuData.reduce((a, b) => a + b, 0),
+            this.managerDishData.reduce((a, b) => a + b, 0),
+            this.managerOrderData.reduce((a, b) => a + b, 0),
+          ],
+          backgroundColor: [
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+          ],
+          borderColor: 'rgba(255,255,255,1)',
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom'
+          }
+        }
+      }
+    });
   }
 }
