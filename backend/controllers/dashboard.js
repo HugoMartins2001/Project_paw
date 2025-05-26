@@ -10,18 +10,15 @@ const dashboardController = {};
 // Controlador para renderizar o dashboard
 dashboardController.renderDashboard = async function (req, res, next) {
   try {
-    const user = req.user; // Obtém o usuário autenticado da requisição
+    const user = req.user;
 
-    // Valida se o usuário está autenticado
     if (!user) {
-      return res.status(401).json({ error: "Utilizador não autenticado." }); // Retorna erro 401 se o usuário não estiver autenticado  
+      return res.status(401).json({ error: "Utilizador não autenticado." });
     }
 
-    // jsoniza a página do dashboard
     res.json({ user });
   } catch (err) {
-    console.error("Error rendering dashboard:", err); // Loga o erro no console para depuração
-    next(err); // Passa o erro para o middleware de tratamento de erros
+    console.error("Error rendering dashboard:", err); 
   }
 };
 
@@ -32,71 +29,71 @@ dashboardController.getDashboardData = async function (req, res, next) {
     // Agrupar restaurantes criados por mês
     const restaurantsByMonth = await mongoRestaurant.aggregate([
       {
-        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+        $match: { createdAt: { $exists: true, $ne: null } } 
       },
       {
         $group: {
-          _id: { $month: "$createdAt" }, // Agrupa por mês
-          count: { $sum: 1 }, // Conta o número de restaurantes
+          _id: { $month: "$createdAt" }, 
+          count: { $sum: 1 },
         },
       },
-      { $sort: { _id: 1 } }, // Ordena por mês
+      { $sort: { _id: 1 } },
     ]);
 
     // Agrupar usuários registrados por mês
     const usersByMonth = await mongoUser.aggregate([
       {
-        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+        $match: { createdAt: { $exists: true, $ne: null } }
       },
       {
         $group: {
-          _id: { $month: "$createdAt" }, // Agrupa por mês
-          count: { $sum: 1 }, // Conta o número de usuários
+          _id: { $month: "$createdAt" },
+          count: { $sum: 1 },
         },
       },
-      { $sort: { _id: 1 } }, // Ordena por mês
+      { $sort: { _id: 1 } }, 
     ]);
 
     // Agrupar menus criados por mês
     const menusByMonth = await mongoMenu.aggregate([
       {
-        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+        $match: { createdAt: { $exists: true, $ne: null } } 
       },
       {
         $group: {
-          _id: { $month: "$createdAt" }, // Agrupa por mês
-          count: { $sum: 1 }, // Conta o número de menus
+          _id: { $month: "$createdAt" }, 
+          count: { $sum: 1 }, 
         },
       },
-      { $sort: { _id: 1 } }, // Ordena por mês
+      { $sort: { _id: 1 } },
     ]);
 
     // Agrupar pratos criados por mês
     const dishesByMonth = await mongoDish.aggregate([
       {
-        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+        $match: { createdAt: { $exists: true, $ne: null } } 
       },
       {
         $group: {
-          _id: { $month: "$createdAt" }, // Agrupa por mês
-          count: { $sum: 1 }, // Conta o número de pratos
+          _id: { $month: "$createdAt" },
+          count: { $sum: 1 }, 
         },
       },
-      { $sort: { _id: 1 } }, // Ordena por mês
+      { $sort: { _id: 1 } }, 
     ]);
 
     // Agrupar orders criadas por mês
     const ordersByMonth = await mongoOrder.aggregate([
       {
-        $match: { createdAt: { $exists: true, $ne: null } } // Garante que o campo createdAt existe
+        $match: { createdAt: { $exists: true, $ne: null } } 
       },
       {
         $group: {
-          _id: { $month: "$createdAt" }, // Agrupa por mês
-          count: { $sum: 1 }, // Conta o número de orders
+          _id: { $month: "$createdAt" },
+          count: { $sum: 1 }, 
         },
       },
-      { $sort: { _id: 1 } }, // Ordena por mês
+      { $sort: { _id: 1 } }, 
     ]);
 
     // Converter os dados para um formato utilizável no gráfico
@@ -108,26 +105,25 @@ dashboardController.getDashboardData = async function (req, res, next) {
     const orderData = Array(12).fill(0);
 
     restaurantsByMonth.forEach((item) => {
-      restaurantData[item._id - 1] = item.count; // Preenche os dados no índice correto
+      restaurantData[item._id - 1] = item.count;
     });
 
     usersByMonth.forEach((item) => {
-      userData[item._id - 1] = item.count; // Preenche os dados no índice correto
+      userData[item._id - 1] = item.count; 
     });
 
     menusByMonth.forEach((item) => {
-      menuData[item._id - 1] = item.count; // Preenche os dados no índice correto
+      menuData[item._id - 1] = item.count; 
     });
 
     dishesByMonth.forEach((item) => {
-      dishData[item._id - 1] = item.count; // Preenche os dados no índice correto
+      dishData[item._id - 1] = item.count; 
     });
 
     ordersByMonth.forEach((item) => {
-      orderData[item._id - 1] = item.count; // Preenche os dados no índice correto
+      orderData[item._id - 1] = item.count;
     });
 
-    // Retorna os dados como JSON
     res.json({ months, restaurantData, userData, menuData, dishData, orderData });
   } catch (err) {
     console.error("Error fetching dashboard data:", err);
