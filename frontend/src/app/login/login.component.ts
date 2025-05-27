@@ -157,6 +157,7 @@ export class LoginComponent {
       });
       return;
     }
+
     this.forgotLoading = true;
     this.http.post<any>('http://localhost:3000/api/auth/forgot-password', { email: this.forgotEmail })
       .subscribe({
@@ -185,9 +186,5 @@ export class LoginComponent {
           });
         }
       });
-  }
-
-  loginWithGoogle() {
-    window.location.href = 'http://localhost:3000/api/auth/google';
   }
 }

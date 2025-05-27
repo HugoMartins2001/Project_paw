@@ -8,7 +8,7 @@
         <div class="row g-3 align-items-center">
             <!-- Filtros de categorias -->
             <div class="col-12 col-md-6">
-                <div class="mb-2 fw-semibold text-secondary">Categorias:</div>
+                <div class="mb-2 fw-semibold text-secondary">Categories:</div>
                 <div class="d-flex flex-wrap gap-2">
                     <button
                         class="filter-btn"
@@ -27,13 +27,13 @@
             </div>
             <!-- Filtros de alergénios -->
             <div class="col-12 col-md-6">
-                <div class="mb-2 fw-semibold text-secondary">Alergénios:</div>
+                <div class="mb-2 fw-semibold text-secondary">Allergens:</div>
                 <div class="d-flex flex-wrap gap-2">
                     <button
                         class="filter-btn"
                         [class.active]="!filterAllergens"
                         (click)="filterAllergens=''; loadDishes()">
-                        Todos os alergénios
+                        All allergens
                     </button>
                     <button
                         *ngFor="let allergen of allergensList"
@@ -48,14 +48,14 @@
         <!-- Inputs de pesquisa e preço -->
         <div class="row g-3 mt-2">
             <div class="col-md-4">
-                <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Nome do prato" class="form-control" />
+                <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Dish name" class="form-control" />
             </div>
             <div class="col-md-4">
-                <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Preço mínimo"
+                <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Minimum price"
                     class="form-control" />
             </div>
             <div class="col-md-4">
-                <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Preço máximo"
+                <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Maximum price"
                     class="form-control" />
             </div>
         </div>
@@ -89,7 +89,7 @@
                         </p>
 
                         <p class="mb-1" *ngIf="dish.restaurant">
-                            <strong>Restaurante:</strong>
+                            <strong>Restaurant:</strong>
                             <ng-container *ngIf="isObject(dish.restaurant); else restaurantString">
                                 {{ dish.restaurant.name }}
                             </ng-container>
@@ -101,46 +101,39 @@
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <a *ngIf="userRole" [routerLink]="['/dish-details', dish._id]"
                             class="btn btn-sm btn-outline-primary">View</a>
-                        <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver
-                            detalhes</button>
+                        <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view the details</button>
 
                         <ng-container *ngIf="userRole === 'Client'">
                             <div class="d-flex flex-column align-items-start w-100">
-                                <label class="mb-1 fw-semibold" style="font-size: 0.95rem;">Escolher tamanho:</label>
+                                <label class="mb-1 fw-semibold" style="font-size: 0.95rem;">choose size:</label>
                                 <div class="d-flex gap-2 mb-2 w-100">
                                     <button type="button"
-                                        class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
+                                        class="btn btn-light border px-2 py-1 rounded-pill"
                                         [class.active]="selectedSize[dish._id] === 'pequena'"
-                                        style="font-size: 0.95rem; min-width: 70px;"
+                                        style="font-size: 0.93rem; min-width: 60px;"
                                         (click)="selectSize(dish._id, 'pequena')">
-                                        Pequena
-                                        <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{
-                                            dish.prices?.pequena || '-' }} €</span>
+                                        small <small class="text-muted ms-1">{{ dish.prices?.pequena || '-' }} €</small>
                                     </button>
                                     <button type="button"
-                                        class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
+                                        class="btn btn-light border px-2 py-1 rounded-pill"
                                         [class.active]="selectedSize[dish._id] === 'media'"
-                                        style="font-size: 0.95rem; min-width: 70px;"
+                                        style="font-size: 0.93rem; min-width: 60px;"
                                         (click)="selectSize(dish._id, 'media')">
-                                        Média
-                                        <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{
-                                            dish.prices?.media || '-' }} €</span>
+                                        Medium <small class="text-muted ms-1">{{ dish.prices?.media || '-' }} €</small>
                                     </button>
                                     <button type="button"
-                                        class="btn btn-outline-primary btn-xs px-2 py-1 rounded-pill d-flex flex-column align-items-center"
+                                        class="btn btn-light border px-2 py-1 rounded-pill"
                                         [class.active]="selectedSize[dish._id] === 'grande'"
-                                        style="font-size: 0.95rem; min-width: 70px;"
+                                        style="font-size: 0.93rem; min-width: 60px;"
                                         (click)="selectSize(dish._id, 'grande')">
-                                        Grande
-                                        <span class="fw-normal text-secondary" style="font-size: 0.85rem;">{{
-                                            dish.prices?.grande || '-' }} €</span>
+                                        Large <small class="text-muted ms-1">{{ dish.prices?.grande || '-' }} €</small>
                                     </button>
                                 </div>
                                 <button
                                     class="btn btn-success btn-sm align-self-end mt-1 px-3 rounded-pill d-flex align-items-center"
                                     [disabled]="!selectedSize[dish._id]" style="font-size: 0.98rem;"
                                     (click)="addToCart(dish, selectedSize[dish._id]!)">
-                                    <i class="bi bi-cart-plus me-1"></i> Adicionar ao carrinho
+                                    <i class="bi bi-cart-plus me-1"></i> Add to cart
                                 </button>
                             </div>
                         </ng-container>
@@ -165,7 +158,7 @@
     <ng-template #noDishes>
       <div class="d-flex flex-column align-items-center justify-content-center py-5">
         <i class="bi bi-egg-fried text-secondary mb-3" style="font-size: 3rem;"></i>
-        <h4 class="mb-2 text-secondary fw-semibold">There are no dishes available yet.</h4>
+        <h4 class="mb-2 text-secondary fw-semibold">No dishes available.</h4>
         <p class="text-muted">As soon as a dish is created, it will appear here for you!</p>
       </div>
     </ng-template>

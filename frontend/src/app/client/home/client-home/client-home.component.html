@@ -1,14 +1,14 @@
 <div class="home-container py-5">
   <div class="text-center mb-5">
-    <h1 class="display-4 fw-bold mb-3">Bem-vindo ao OrdEat!</h1>
+    <h1 class="display-4 fw-bold mb-3">Welcome to OrdEat!</h1>
     <p class="lead text-muted mb-4">
-      Descobre menus, pratos e restaurantes incríveis.<br />
-      Uma experiência gastronómica inovadora, simples e rápida.
+      Discover amazing menus, dishes, and restaurants.<br />
+      An innovative, simple, and fast dining experience.
     </p>
-    <a (click)="navigateToMenus()" class="btn btn-lg btn-primary shadow-sm me-2" style="cursor: pointer;">Ver Menus</a>
+    <a (click)="navigateToMenus()" class="btn btn-lg btn-primary shadow-sm me-2" style="cursor: pointer;">View Menus</a>
     <a (click)="navigateToRestaurants()" class="btn btn-lg btn-outline-primary shadow-sm me-2"
-      style="cursor: pointer;">Restaurantes</a>
-    <a (click)="navigateToDishes()" class="btn btn-lg btn-outline-primary shadow-sm" style="cursor: pointer;">Pratos</a>
+      style="cursor: pointer;">Restaurants</a>
+    <a (click)="navigateToDishes()" class="btn btn-lg btn-outline-primary shadow-sm" style="cursor: pointer;">Dishes</a>
   </div>
 
   <div class="row justify-content-center mb-5">
@@ -16,9 +16,9 @@
       <div class="card border-0 shadow h-100">
         <div class="card-body text-center">
           <h5 class="card-title fw-bold mb-2">
-            <i class="bi bi-egg-fried"></i> Pratos Únicos
+            <i class="bi bi-egg-fried"></i> Unique Dishes
           </h5>
-          <p class="card-text text-muted">Descobre uma seleção de pratos deliciosos preparados pelos melhores chefs.</p>
+          <p class="card-text text-muted">Discover a selection of delicious dishes prepared by the best chefs.</p>
         </div>
       </div>
     </div>
@@ -26,10 +26,9 @@
       <div class="card border-0 shadow h-100">
         <div class="card-body text-center">
           <h5 class="card-title fw-bold mb-2">
-            <i class="bi bi-geo-alt"></i> Restaurantes Perto de Ti
+            <i class="bi bi-geo-alt"></i> Restaurants Near You
           </h5>
-          <p class="card-text text-muted">Encontra restaurantes de qualidade na tua zona e faz o teu pedido em poucos
-            cliques.</p>
+          <p class="card-text text-muted">Find quality restaurants in your area and place your order in just a few clicks .</p>
         </div>
       </div>
     </div>
@@ -37,9 +36,9 @@
       <div class="card border-0 shadow h-100">
         <div class="card-body text-center">
           <h5 class="card-title fw-bold mb-2">
-            <i class="bi bi-star"></i> Experiência Premium
+            <i class="bi bi-star"></i> Premium Experience
           </h5>
-          <p class="card-text text-muted">Aproveita uma plataforma intuitiva, rápida e com suporte dedicado ao cliente.
+          <p class="card-text text-muted">Enjoy an intuitive, fast platform with dedicated customer support.
           </p>
         </div>
       </div>
@@ -48,9 +47,9 @@
 
   <ng-container *ngIf="!user">
   <div class="text-center mt-4">
-    <h4 class="fw-bold mb-2">Junta-te à comunidade OrdEat!</h4>
-    <p class="text-muted mb-3">Regista-te e começa já a explorar os melhores sabores.</p>
-    <a (click)="navigateToRegister()" class="btn btn-success btn-lg" style="cursor: pointer;">Criar Conta</a>
+    <h4 class="fw-bold mb-2">Join the OrdEat Community!</h4>
+    <p class="text-muted mb-3">Sign up and start exploring the best flavors.</p>
+    <a (click)="navigateToRegister()" class="btn btn-success btn-lg" style="cursor: pointer;">Create Account </a>
   </div>
   </ng-container>
 </div>

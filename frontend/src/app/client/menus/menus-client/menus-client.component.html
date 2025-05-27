@@ -6,19 +6,19 @@
     <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
         <a [routerLink]="['/menus/create']" class="btn btn-success">
             <span class="material-icons" style="vertical-align: middle;"></span>
-            Criar Menu
+            Create Menu
         </a>
     </div>
 
     <div class="row mb-4">
         <div class="col-md-4 mb-2">
-            <input type="text" class="form-control" [(ngModel)]="filterName" (input)="loadMenus()" placeholder="Nome do menu">
+            <input type="text" class="form-control" [(ngModel)]="filterName" (input)="loadMenus()" placeholder="Menu Name">
         </div>
         <div class="col-md-4 mb-2">
-            <input type="number" class="form-control" [(ngModel)]="filterMinPrice" (input)="loadMenus()" placeholder="Preço mínimo">
+            <input type="number" class="form-control" [(ngModel)]="filterMinPrice" (input)="loadMenus()" placeholder="Minimum Price">
         </div>
         <div class="col-md-4 mb-2">
-            <input type="number" class="form-control" [(ngModel)]="filterMaxPrice" (input)="loadMenus()" placeholder="Preço máximo">
+            <input type="number" class="form-control" [(ngModel)]="filterMaxPrice" (input)="loadMenus()" placeholder="Maximum Price">
         </div>
     </div>
 
@@ -60,8 +60,8 @@
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <a *ngIf="userRole" [routerLink]="['/menu-details', menu._id]"
                             class="btn btn-sm btn-outline-primary">View</a>
-                        <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver
-                            detalhes</button>
+                        <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view
+                            details</button>
                         <ng-container
                             *ngIf="(userRole === 'Manager' && isMenuManager(menu, userId)) || userRole === 'Admin'">
                             <a [routerLink]="['/menus/editMenu', menu._id]"

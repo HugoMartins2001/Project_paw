@@ -20,7 +20,7 @@
                         <input type="text" id="clienteTelemovel" formControlName="clienteTelemovel" />
                         <div *ngIf="profileForm.get('clienteTelemovel')?.invalid && profileForm.get('clienteTelemovel')?.touched"
                             class="text-danger">
-                            O número de telemóvel deve ter 9 dígitos.
+                            The mobile number must have 9 digits.
                         </div>
                     </div>
                     <div class="info-item">
@@ -28,29 +28,29 @@
                         <input type="text" id="clienteNif" formControlName="clienteNif" />
                         <div *ngIf="profileForm.get('clienteNif')?.invalid && profileForm.get('clienteNif')?.touched"
                             class="text-danger">
-                            O NIF deve ter 9 dígitos.
+                            The NIF must have 9 digits.
                         </div>
                     </div>
                     <div class="info-item">
-                        <label for="address">Endereço:</label>
+                        <label for="address">Address:</label>
                         <input type="text" id="address" formControlName="address" />
                     </div>
                 </ng-container>
 
                 <ng-container *ngIf="user?.role === 'Manager'">
                     <div class="info-item">
-                        <label for="managerTelemovel">Telemóvel:</label>
+                        <label for="managerTelemovel">Mobile:</label>
                         <input type="text" id="managerTelemovel" formControlName="managerTelemovel" />
                     </div>
                 </ng-container>
 
                 <ng-container *ngIf="user?.role === 'Admin'">
                     <div class="info-item">
-                        <label for="managerTelemovel">Telemóvel:</label>
+                        <label for="managerTelemovel">Mobile:</label>
                         <input type="text" id="managerTelemovel" formControlName="managerTelemovel" />
                     </div>
                     <div class="info-item">
-                        <label for="address">Endereço:</label>
+                        <label for="address">Address:</label>
                         <input type="text" id="address" formControlName="address" />
                     </div>
                 </ng-container>

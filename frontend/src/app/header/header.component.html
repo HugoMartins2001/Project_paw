@@ -11,8 +11,8 @@
           <li><a (click)="navigateToRestaurantUser()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
           <li><a (click)="navigateToMenusUser()" class="nav-link" style="cursor:pointer;">Menus</a></li>
           <li><a (click)="navigateToDishesUser()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
-          <li><a (click)="navigateToAbout()" class="nav-link" style="cursor:pointer;">Sobre Nós</a></li>
-          <li><a (click)="navigateToContact()" class="nav-link" style="cursor:pointer;">Contacte-nos</a></li>
+          <li><a (click)="navigateToAbout()" class="nav-link" style="cursor:pointer;">About Us</a></li>
+          <li><a (click)="navigateToContact()" class="nav-link" style="cursor:pointer;">Contact Us</a></li>
         </ng-container>
         <ng-container *ngIf="userRole === 'Client'">
           <li><a (click)="navigateToClientHome()" class="nav-link" style="cursor:pointer;">Home</a></li>
@@ -20,9 +20,8 @@
           <li><a (click)="navigateToClientMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
           <li><a (click)="navigateToClientDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
           <li><a (click)="navigateToOrdersClient()" class="nav-link" style="cursor:pointer;">My Orders</a></li>
-          <li><a (click)="navigateToAbout()" class="nav-link" style="cursor:pointer;">Sobre Nós</a></li>
-          <li><a (click)="navigateToContact()" class="nav-link" style="cursor:pointer;">Contacte-nos</a></li>
-          <!--<li><a (click)="navigateToFavorites()" class="nav-link">Favorites</a></li>-->
+          <li><a (click)="navigateToAbout()" class="nav-link" style="cursor:pointer;">About Us</a></li>
+          <li><a (click)="navigateToContact()" class="nav-link" style="cursor:pointer;">Contact Us</a></li>
           <li><a (click)="navigateToClientProfile()" class="nav-link" style="cursor:pointer;">Profile</a></li>
         </ng-container>
         <ng-container *ngIf="userRole === 'Admin'">
@@ -31,7 +30,7 @@
           <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
           <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
           <li><a (click)="navigateToRestaurantApproval()" class="nav-link" style="cursor:pointer;">Approve
-              Restaurantes</a></li>
+              Restaurants</a></li>
           <li><a (click)="navigateToLogs()" class="nav-link" style="cursor:pointer;">Logs &amp; Statistics</a></li>
           <li><a (click)="navigateToUsers()" class="nav-link" style="cursor:pointer;">Users</a></li>
           <li><a (click)="navigateToProfile()" class="nav-link" style="cursor:pointer;">Profile</a></li>
@@ -41,7 +40,7 @@
           <li><a (click)="navigateToRestaurant()" class="nav-link" style="cursor:pointer;">Restaurant</a></li>
           <li><a (click)="navigateToMenus()" class="nav-link" style="cursor:pointer;">Menus</a></li>
           <li><a (click)="navigateToDishes()" class="nav-link" style="cursor:pointer;">Dishes</a></li>
-          <li><a (click)="navigateToOrdersManager()" class="nav-link" style="cursor:pointer;">Orders</a></li>
+          <li><a (click)="navigateToOrdersManager()" class="nav-link" style="cursor:pointer;">Account Orders</a></li>
           <li><a (click)="navigateToProfile()" class="nav-link" style="cursor:pointer;">Profile</a></li>
         </ng-container>
 
@@ -76,7 +75,7 @@
         <button class="register-button btn" (click)="navigateToRegister()">Register</button>
       </div>
       <div class="user-info d-flex align-items-center gap-2" *ngIf="userName">
-        <span class="fw-semibold">Olá, {{ userName }}</span>
+        <span class="fw-semibold">Hello, {{ userName }}</span>
         <button class="logout-button btn btn-outline-danger btn-sm d-flex align-items-center" (click)="logout()">
           <span class="material-icons" style="vertical-align: middle;">logout</span>
         </button>
