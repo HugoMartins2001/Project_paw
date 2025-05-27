@@ -1,12 +1,10 @@
-<div *ngIf="isLoading" class="alert alert-info text-center my-5">A carregar menu...</div>
 <div *ngIf="!isLoading && menu">
-  <div class="container py-4">
-    <h1 class="text-center text-primary my-3 text-dark">{{ menu.name }}</h1>
+  <div class="menu-wrapper">
+    <h1 class="text-center">{{ menu.name }}</h1>
 
     <div class="text-center mb-3">
       <ng-container *ngIf="menu.menuPic; else noImage">
-        <img [src]="getMenuImageUrl(menu.menuPic)" alt="{{ menu.name }}" class="img-fluid rounded"
-          style="max-height: 200px;" />
+        <img [src]="getMenuImageUrl(menu.menuPic)" alt="{{ menu.name }}" class="img-fluid rounded" />
       </ng-container>
       <ng-template #noImage>
         <p class="text-center"><em>No image available for this menu.</em></p>
@@ -18,9 +16,8 @@
         <h5 class="card-title">Dishes:</h5>
         <ng-container *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">
           <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let dish of menu.dishes">
-              <span>
+            <li class="list-group-item" *ngFor="let dish of menu.dishes">
+              <div>
                 <strong>{{ dish.name }}</strong><br />
                 <ng-container *ngIf="dish.prices">
                   Small: €{{ dish.prices.pequena?.toFixed(2) || 'N/A' }},
@@ -30,7 +27,7 @@
                 <ng-container *ngIf="!dish.prices">
                   <span>Price not available</span>
                 </ng-container>
-              </span>
+              </div>
               <a [routerLink]="['/dish-details', dish._id]" class="btn btn-outline-primary btn-sm">View Dish</a>
             </li>
           </ul>

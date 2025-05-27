@@ -1,98 +1,81 @@
-body {
-  background-color: #f4f7fc;
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
+/* Wrapper for the entire card */
+.container .card {
+  max-width: 620px;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  padding: 2rem;
 }
 
-.header {
-  background-color: #ffffff;
-  padding: 16px 40px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.header h3 {
-  margin: 0;
+
+/* Heading */
+.card h2 {
+  font-size: 1.6rem;
   font-weight: 600;
-  color: #333;
-  font-size: 22px;
+  color: #6f42c1;
+  margin-bottom: 1.5rem;
 }
 
-.logout-btn {
-  background: none;
-  border: none;
-  color: #333;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.logout-btn:hover {
-  color: #6c63ff;
-}
-
-.container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-.card {
-  background: white;
-  padding: 40px;
+/* Dish image */
+.dish-img {
+  max-height: 220px;
+  width: auto;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px rgba(111, 66, 193, 0.1);
 }
 
-h2 {
-  text-align: center;
+/* Text labels */
+.card strong {
   color: #333;
   font-weight: 600;
-  margin-bottom: 30px;
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
 }
 
-.details p {
-  margin-bottom: 10px;
-}
-
-.list-group-item {
+/* List styling */
+.card .list-group {
   border: none;
   padding-left: 0;
-  padding-right: 0;
+  margin-bottom: 1rem;
 }
 
-.btn {
+.card .list-group-item {
+  border: 1px solid #eee;
   border-radius: 8px;
-  padding: 8px 14px;
-  font-weight: 500;
+  margin-bottom: 4px;
+  background-color: #fafafa;
+  padding: 6px 12px;
+  font-size: 0.95rem;
 }
 
+/* NutriScore */
+.card .nutriscore {
+  font-weight: 600;
+  font-size: 1rem;
+  background-color: #efe9fc;
+  color: #6f42c1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+/* Button styling */
 .btn-secondary {
-  background-color: #848484;
+  background-color: #f1ecfc;
+  color: #6f42c1;
   border: none;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  transition: all 0.2s ease-in-out;
 }
 
-.btn-outline-primary {
-  color: #6c63ff;
-  border-color: #6c63ff;
-}
-
-.btn-outline-primary:hover {
-  background-color: #6c63ff;
-  color: white;
-}
-
-.dish-img {
-  max-width: 220px;
-  max-height: 220px;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(44,62,80,0.08);
-  margin-bottom: 12px;
+.btn-secondary:hover {
+  background-color: #e3d5fa;
+  color: #5a32a3;
 }
