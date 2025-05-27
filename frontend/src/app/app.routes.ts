@@ -59,6 +59,7 @@ import { ProfileClientComponent } from './client/profile/profile-client/profile-
 import { ProfileEditClientComponent } from './client/profile/profile-edit-client/profile-edit-client.component';
 import { PaymentSuccessComponent } from './client/payment-success/payment-success.component';
 import { OrdersClientComponent } from './client/orders-client/orders-client.component';
+import { PaymentCancelComponent } from './client/payment-cancel/payment-cancel.component';
 
 //Security
 import { AuthGuardService } from './auth-guard.service';
@@ -275,6 +276,11 @@ export const routes: Routes = [
     path: 'orders/manager',
     component: OrdersManagerComponent,
     data: { title: 'Orders Manager' }
+  },
+  {
+    path: 'payment-cancel',
+    component: PaymentCancelComponent,
+    data: { title: 'Payment Cancel' }
   },
   {
     path: '',

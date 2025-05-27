@@ -119,4 +119,5 @@ export class RestaurantClientComponent implements OnInit {
       }
     });
   }
+
 }

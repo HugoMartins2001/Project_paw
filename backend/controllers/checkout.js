@@ -6,16 +6,26 @@ const mongoOrder = require('../models/order');
 
 let checkoutController = {}
 
-checkoutController.createCheckoutSession = async (req, res) => {
-  const { cart, managerId, userID } = req.body;
-  try {
+const addMonths = (date, months) => {
+  const d = new Date(date);
+  d.setMonth(d.getMonth() + months);
+  return d;
+};
 
+checkoutController.createCheckoutSession = async (req, res) => {
+  const { cart, managerId, userID, discountApplied, discountPercent } = req.body;
+  try {
     const newOrder = await mongoOrder.create({
       managerId: managerId || null,
       userID: userID || null,
-      items: cart,
+      items: cart.map(item => ({
+        ...item,
+        originalPrice: item.originalPrice ?? item.price
+      })),
       status: 'pending',
-      createdAt: new Date()
+      createdAt: new Date(),
+      discountApplied: discountApplied || false,
+      discountPercent: discountPercent || 0
     });
 
     const session = await stripe.checkout.sessions.create({
@@ -30,7 +40,7 @@ checkoutController.createCheckoutSession = async (req, res) => {
       })),
       mode: 'payment',
       success_url: 'http://localhost:4200/client/home?paid=1',
-      cancel_url: 'http://localhost:4200/payment-cancel',
+      cancel_url: `http://localhost:4200/payment-cancel?orderId=${newOrder._id.toString()}`,
       metadata: {
         orderId: newOrder._id.toString()
       }
@@ -47,6 +57,38 @@ checkoutController.success = (req, res) => {
 
 checkoutController.cancel = (req, res) => {
   res.json('Pagamento cancelado.');
+};
+
+checkoutController.cancelOrder = async (req, res) => {
+  const { orderId, userID } = req.body;
+  try {
+    const order = await mongoOrder.findById(orderId);
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+
+    // Verifica se já passaram mais de 5 minutos
+    const now = new Date();
+    const createdAt = new Date(order.createdAt);
+    const diffMinutes = (now - createdAt) / (1000 * 60);
+    if (diffMinutes > 5) {
+      return res.status(400).json({ error: 'Already pass more than 5 minutes. Cannot cancel.' });
+    }
+
+    if (order.status !== 'pending') {
+      return res.status(400).json({ error: 'Preparation has already started. Cannot cancel.' });
+    }
+
+    order.status = 'cancelled';
+    await order.save();
+
+    await mongoOrder.updateOne(
+      { _id: orderId },
+      { $set: { cancelledAt: now } }
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 module.exports = checkoutController;

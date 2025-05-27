@@ -27,6 +27,9 @@ export interface Dish {
   restaurant?: { name?: string } | string;
   managerId?: string | { _id: string };
   isVisible: boolean;
+  selectedSize?: string; 
+  selectedPrice?: number; 
+  quantity?: number;
 }
 
 @Injectable({

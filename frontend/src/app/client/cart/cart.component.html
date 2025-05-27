@@ -1,17 +1,127 @@
 <div class="container py-4">
-  <h2 class="mb-4">Carrinho</h2>
-  <ul class="list-group mb-3" *ngIf="cartService.getCart().length > 0; else emptyCart">
-    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let dish of cartService.getCart()">
-      <span>{{ dish.name }}</span>
-      <span>{{ dish.prices?.media || 0 }} €</span>
-      <button class="btn btn-sm btn-danger" (click)="removeFromCart(dish)">Remover</button>
-    </li>
-  </ul>
-  <ng-template #emptyCart>
-    <div class="alert alert-info text-center">O carrinho está vazio.</div>
-  </ng-template>
-  <div *ngIf="cartService.getCart().length > 0" class="mt-3">
-    <h5>Total: {{ cartService.getCartTotal() | number:'1.2-2' }} €</h5>
-    <button class="btn btn-success mt-2" (click)="pay()">Pagar com cartão</button>
+  <div class="row justify-content-center">
+    <!-- Cart Items Section -->
+    <div class="col-lg-8 col-12 mb-4">
+      <div class="bg-white p-4 rounded shadow-sm position-relative">
+        <!-- Timer no canto superior direito, bem acima -->
+        <div class="cart-timer position-absolute top-0 end-0 mt-3 me-3 px-4 py-2 rounded-pill shadow-sm bg-light border border-success-subtle d-flex align-items-center gap-2"
+             style="font-size:1.15rem; font-weight:500; color:#6c63ff; z-index:2;">
+          <i class="bi bi-clock-history me-2" style="font-size:1.3rem;"></i>
+          <span style="font-variant-numeric: tabular-nums; font-weight:700;">
+            {{ minutes }}:{{ seconds < 10 ? '0' + seconds : seconds }}
+          </span>
+        </div>
+        <!-- Título do carrinho -->
+        <h3 class="mb-4 fw-bold d-flex align-items-center">
+          <i class="fas fa-shopping-bag me-2"></i> My Cart
+        </h3>
+        <div *ngIf="cartService.getCart().length > 0; else emptyCart">
+          <div class="row fw-semibold border-bottom pb-2 mb-2 text-muted small">
+            <div class="col-md-5">Product</div>
+            <div class="col-md-2 text-center">Total</div>
+            <div class="col-md-2 text-center">Each</div>
+            <div class="col-md-2 text-center">Quantity</div>
+            <div class="col-md-1 text-end">Action</div>
+          </div>
+          <div *ngFor="let dish of cartService.getCart(); let i = index" class="row align-items-center py-3 border-bottom">
+            <div class="col-md-5 d-flex align-items-center">
+              <img *ngIf="dish.dishPic" [src]="getDishImageUrl(dish.dishPic)" alt="{{ dish.name }}"
+                class="rounded me-3" style="width: 64px; height: 64px; object-fit: cover;">
+              <div>
+                <div class="fw-semibold">{{ dish.name }}</div>
+                <div class="text-muted small">
+                  <span *ngIf="dish.selectedSize">Size: {{ dish.selectedSize }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- Total em cima -->
+            <div class="col-md-2 text-center fw-bold">
+              {{ (dish.selectedPrice || dish.prices?.media || 0) * (dish.quantity || 1) | number:'1.2-2' }} €
+            </div>
+            <!-- Preço unitário -->
+            <div class="col-md-2 text-center">
+              <span class="fw-bold">{{ dish.selectedPrice || dish.prices?.media || 0 }} €</span>
+            </div>
+            <!-- Quantidade com botões -->
+            <div class="col-md-2 text-center">
+              <div class="d-flex justify-content-center align-items-center">
+                <button class="btn btn-outline-secondary btn-sm px-2"
+                        (click)="updateQuantity(dish, -1)"
+                        [disabled]="(dish.quantity ?? 1) <= 1">
+                  <i class="bi bi-arrow-down"></i>
+                </button>
+                <span class="mx-2 border rounded px-2 py-1 bg-light">{{ dish.quantity || 1 }}</span>
+                <button class="btn btn-outline-secondary btn-sm px-2"
+                        (click)="updateQuantity(dish, 1)">
+                  <i class="bi bi-arrow-up"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Action -->
+            <div class="col-md-1 text-end">
+              <button class="btn btn-outline-danger btn-sm rounded-circle" (click)="removeFromCart(dish)" title="Remove">
+                <i class="fas fa-times">remove</i>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="fw-semibold">{{ cartService.getCart().length }} Items</span>
+            <button class="btn btn-link text-danger text-decoration-none" (click)="clearCart($event)">
+              <i class="fas fa-trash-alt"></i> Clear Cart
+            </button>
+          </div>
+        </div>
+        <ng-template #emptyCart>
+          <div class="d-flex flex-column align-items-center justify-content-center m-0 py-5 rounded-0" style="min-height: 220px;">
+            <div class="fw-bold fs-4 mt-3 mb-1" style="color: #343a40;">
+              Oops! Your cart is empty.
+            </div>
+            <div class="text-muted mb-3" style="font-size: 1.1rem;">
+              Add some delicious dishes to start your order!
+            </div>
+            <a (click)="navigateToDishes()" 
+               class="btn rounded-pill px-4 py-2"
+               style="background: #a259ff; color: #fff; font-weight: 500;">
+              <i class="fas fa-utensils me-2"></i>Browse Dishes
+            </a>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <!-- Summary Section -->
+    <div class="col-lg-4 col-12">
+      <div class="bg-white p-4 rounded shadow-sm">
+        <ng-container *ngIf="cartService.getCart().length > 0">
+          <form class="mb-3" (ngSubmit)="applyDiscount()">
+            <label class="form-label fw-semibold">Enter Promo Code</label>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Promo Code"
+                     [(ngModel)]="discountCode" name="discountCode" [disabled]="discountApplied">
+              <button class="btn btn-dark" type="submit" [disabled]="discountApplied">Submit</button>
+            </div>
+            <div *ngIf="discountApplied" class="text-success mt-2">
+              <i class="fas fa-check-circle me-1"></i>5% discount applied!
+            </div>
+          </form>
+          <ul class="list-unstyled mb-3">
+            <li class="d-flex justify-content-between py-1">
+              <span>Discount</span>
+              <span class="text-dark">
+                <ng-container *ngIf="discountApplied">- {{ (cartService.getCartTotal() * 0.05) | number:'1.2-2' }} €</ng-container>
+                <ng-container *ngIf="!discountApplied">- 0 €</ng-container>
+              </span>
+            </li>
+          </ul>
+          <hr>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-bold fs-5">Estimated Total</span>
+            <span class="fw-bold fs-4 text-dark">{{ discountedTotal | number:'1.2-2' }} €</span>
+          </div>
+          <button class="btn btn-warning w-100 py-2 fs-5 fw-bold" (click)="pay()" [disabled]="cartService.getCart().length === 0">
+            <i class="fas fa-credit-card me-2"></i>Checkout
+          </button>
+        </ng-container>
+      </div>
+    </div>
   </div>
 </div>

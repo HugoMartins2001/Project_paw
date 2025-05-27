@@ -1,14 +1,15 @@
-<div class="container">
-  <h1>{{ user?.role }} Profile</h1>
+<div class="profile-wrapper">
+ <h1 style="text-align: center;">{{ user?.role }} Profile</h1>
 
   <div class="profile-card">
-    <a [routerLink]="['/profile/edit']" class="edit-icon" title="Edit Profile">
+    <a [routerLink]="['/client/profile/edit']" class="edit-icon" title="Edit Profile">
       <i class="fas fa-pen"></i> Edit
     </a>
+
     <div class="profile-name">{{ user?.name }}</div>
     <div class="profile-email">{{ user?.email }}</div>
 
-    <div class="info-box">
+    <div class="info-card">
       <h3>Personal informations</h3>
       <div class="info-item">
         <i class="fas fa-user-tag"></i>

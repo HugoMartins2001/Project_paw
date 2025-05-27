@@ -53,7 +53,7 @@ export class OrdersClientComponent implements OnInit {
         i + 1,
         item.name,
         item.quantity || 1,
-        item.price.toFixed(2),
+        (item.originalPrice ?? item.price).toFixed(2),
         (item.price * (item.quantity || 1)).toFixed(2)
       ]),
       theme: 'grid',
@@ -61,11 +61,21 @@ export class OrdersClientComponent implements OnInit {
       styles: { fontSize: 11 }
     });
 
-    const total = this.getOrderTotal(order).toFixed(2);
     const finalY = (doc as any).lastAutoTable.finalY || 80;
+
+    if (order.discountApplied || order.discountPercent > 0) {
+      doc.setFontSize(12);
+      doc.setTextColor(162, 89, 255);
+      doc.text(
+        `Foi utilizado um código de desconto de ${order.discountPercent}%`,
+        14,
+        finalY + 10
+      );
+    }
+
     doc.setFontSize(13);
     doc.setTextColor(0, 0, 0);
-    doc.text(`Total: ${total} €`, 150, finalY + 10);
+    doc.text(`Total: ${this.getOrderTotal(order).toFixed(2)} €`, 150, finalY + 20);
 
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
@@ -77,4 +87,14 @@ export class OrdersClientComponent implements OnInit {
   getOrderTotal(order: any): number {
     return order.items.reduce((sum: number, item: any) => sum + (item.price * (item.quantity || 1)), 0);
   }
+
+  getOrderInitialTotal(order: any): number {
+    return order.items.reduce((sum: number, item: any) =>
+      sum + ((item.originalPrice ?? item.price) * (item.quantity || 1)), 0);
+  }
+
+  navigateToDishes() {
+    window.location.href = '/client/dishes';
+  }
+
 }

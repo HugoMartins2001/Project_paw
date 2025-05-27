@@ -1,0 +1,95 @@
+/* Torna a caixa do carrinho mais larga em ecrãs grandes */
+@media (min-width: 992px) {
+  .cart-card-custom {
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Espaçamento extra entre itens */
+.list-group-item {
+  margin-bottom: 10px;
+  border-radius: 12px !important;
+  background: #f8f9fa;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/* Imagem do prato */
+.cart-img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Nome do prato */
+.cart-dish-name {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+/* Badge do tamanho */
+.cart-size-badge {
+  font-size: 0.95rem;
+  background: #e9ecef;
+  color: #333;
+  border-radius: 6px;
+  padding: 3px 10px;
+}
+
+/* Preço */
+.cart-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #198754;
+}
+
+/* Botão remover */
+.btn-remove {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer */
+.cart-footer-total {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.cart-footer-time {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bg-white {
+  background: #fff;
+}
+.shadow-sm {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+}
+input[disabled], button[disabled] {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+@media (max-width: 991px) {
+  .col-lg-8, .col-lg-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.cart-timer {
+  box-shadow: 0 2px 8px #c63ff8;
+  border-width: 2px !important;
+  border-color: #6c63ff !important;
+}

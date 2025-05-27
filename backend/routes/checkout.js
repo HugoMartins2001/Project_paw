@@ -7,6 +7,6 @@ router.post("/createCheckoutSession", checkoutController.createCheckoutSession);
 
 router.get("/success", checkoutController.success);
 
-router.get("/cancel", checkoutController.cancel);
+router.post('/cancel-order', checkoutController.cancelOrder);
 
 module.exports = router;
