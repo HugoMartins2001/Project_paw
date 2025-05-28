@@ -76,7 +76,7 @@ export class CartComponent {
       }
     ).subscribe({
       next: res => window.location.href = res.url,
-      error: err => alert('Erro ao criar sessão de pagamento!')
+      error: err => alert('Error trying to create payment session!')
     });
   }
 

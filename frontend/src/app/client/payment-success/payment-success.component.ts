@@ -9,8 +9,8 @@ export class PaymentSuccessComponent implements OnInit {
   ngOnInit() {
     Swal.fire({
       icon: 'success',
-      title: 'Encomenda concluída!',
-      text: 'O seu pedido foi realizado com sucesso.',
+      title: 'Order concluded successfully!',
+      text: 'Your order has been placed successfully.',
       toast: true,
       position: 'top-end',
       timer: 2500,

@@ -14,18 +14,18 @@ import { CommonModule } from '@angular/common';
         <div class="mb-4">
           <i class="bi bi-x-circle-fill text-danger" style="font-size: 3rem;"></i>
         </div>
-        <h2 class="fw-bold text-danger mb-3">Pagamento cancelado</h2>
+        <h2 class="fw-bold text-danger mb-3">Payment cancelled</h2>
         <p *ngIf="cancelSuccess" class="alert alert-success mb-3">
-          A sua encomenda foi <strong>anulada</strong>.
+          Your order has been <strong>cancelled</strong>.
         </p>
         <p *ngIf="!cancelSuccess && errorMessage" class="alert alert-danger mb-3">
           {{ errorMessage }}
         </p>
         <p *ngIf="!cancelSuccess && !errorMessage" class="text-muted mb-3">
-          A cancelar encomenda...
+          Cancelling order...
         </p>
         <button class="btn btn-primary px-4" (click)="goHome()">
-          <i class="bi bi-house-door me-2"></i>Voltar ao início
+          <i class="bi bi-house-door me-2"></i>Go to Home
         </button>
       </div>
     </div>
@@ -53,7 +53,7 @@ export class PaymentCancelComponent implements OnInit {
         },
         error: (err) => {
           this.cancelSuccess = false;
-          this.errorMessage = err.error?.error || 'Não foi possível cancelar a encomenda.';
+          this.errorMessage = err.error?.error || 'Unable to cancel the order.';
         }
       });
     }
