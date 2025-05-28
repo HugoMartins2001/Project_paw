@@ -1,11 +1,17 @@
 <div class="dashboard-main-wrapper">
   <div class="dashboard-flex">
     <div class="dashboard-graphs">
+      <ng-container *ngIf="role === 'Manager'">
+      <div class="chart-container big-chart">
+        <h2 class="chart-title">Orders Overview</h2>
+        <canvas id="ordersGraph" width="350" height="350" style="max-width: 100%; max-height: 250px;"></canvas>
+      </div>
+      </ng-container>
+      <ng-container *ngIf="role === 'Admin'">
       <div class="chart-container big-chart">
         <h2 class="chart-title" >General Overview</h2>
         <canvas id="generalGraph"></canvas>
       </div>
-      <ng-container *ngIf="role === 'Admin'">
         <div class="chart-container big-chart">
         <h2 class="chart-title">Registered Users</h2>
         <canvas id="clientsGraph"></canvas>

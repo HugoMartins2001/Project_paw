@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
   private generalChartInstance: Chart | null = null;
   private clientsChartInstance: Chart | null = null;
   private managerChartInstance: Chart | null = null;
+  private ordersChartInstance: Chart | null = null;
 
   managerRestaurantData: number[] = [];
   managerMenuData: number[] = [];
@@ -84,7 +85,7 @@ export class DashboardComponent implements OnInit {
         this.managerOrderData = data.managerOrderData || [];
         this.renderGeneralGraph();
         this.renderClientsGraph();
-        this.renderManagerGraph();
+        this.renderOrderGraph();
       },
       error: () => {
         this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
@@ -95,7 +96,7 @@ export class DashboardComponent implements OnInit {
         this.orderData = [10, 12, 15, 20, 18, 25];
         this.renderGeneralGraph();
         this.renderClientsGraph();
-        this.renderManagerGraph();
+        this.renderOrderGraph();
       }
     });
   }
@@ -201,42 +202,44 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  renderManagerGraph() {
-    const ctx = document.getElementById('managerGraph') as HTMLCanvasElement;
-    if (!ctx) return;
-    if (this.managerChartInstance) {
-      this.managerChartInstance.destroy();
+  renderOrderGraph() {
+    const ctx = document.getElementById('ordersGraph') as HTMLCanvasElement;
+    if (this.ordersChartInstance) {
+      this.ordersChartInstance.destroy();
     }
-    this.managerChartInstance = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: ['Restaurants', 'Menus', 'Dishes', 'Orders'],
-        datasets: [{
-          data: [
-            this.managerRestaurantData.reduce((a, b) => a + b, 0),
-            this.managerMenuData.reduce((a, b) => a + b, 0),
-            this.managerDishData.reduce((a, b) => a + b, 0),
-            this.managerOrderData.reduce((a, b) => a + b, 0),
-          ],
-          backgroundColor: [
-            'rgba(54, 162, 235, 0.8)',
-            'rgba(255, 206, 86, 0.8)',
-            'rgba(75, 192, 192, 0.8)',
-            'rgba(153, 102, 255, 0.8)',
-          ],
-          borderColor: 'rgba(255,255,255,1)',
-          borderWidth: 2,
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            position: 'bottom'
+    if (ctx) {
+      this.ordersChartInstance = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Orders created'],
+          datasets: [{
+            label: 'Dados Gerais',
+            data: [
+              this.orderData.reduce((a, b) => a + b, 0),
+            ],
+            backgroundColor: [
+              'rgba(153, 102, 255, 0.8)',
+            ],
+            borderColor: 'rgba(255, 255, 255, 1)',
+            borderWidth: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                color: '#333',
+                font: { size: 16, family: 'Arial, sans-serif' },
+                padding: 20,
+                usePointStyle: true,
+              }
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
 }
