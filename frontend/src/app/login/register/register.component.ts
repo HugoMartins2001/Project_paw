@@ -160,15 +160,27 @@ export class RegisterComponent {
       },
       error: (err) => {
         let msg = err.error?.error || 'Error registering!';
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: msg,
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 2500
-        });
+        if (msg.toLowerCase().includes('email') && msg.toLowerCase().includes('exist')) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Attention',
+            text: 'This email is already registered!',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: msg,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500
+          });
+        }
       }
     });
   }

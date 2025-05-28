@@ -111,6 +111,8 @@ export class LogsComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             title: 'All logs deleted!',
+            toast: true,
+            position: 'top-end',
             showConfirmButton: false,
             timer: 1200
           });

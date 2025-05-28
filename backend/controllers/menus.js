@@ -17,7 +17,7 @@ menusController.renderCreateMenu = async function (req, res, next) {
       dishes = await mongoDish.find();
     }
 
-    res.json("menus/submitMenu", {
+    res.json({
       dishes,
       user: req.user, // Passa o usuário autenticado para o EJS
     });
