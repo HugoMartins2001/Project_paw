@@ -93,6 +93,7 @@ export class RestaurantUpdateComponent implements OnInit {
 
     this.restaurantService.getRestaurantById(this.restaurantId).subscribe({
       next: (res) => {
+        const restaurante = res;
         const menuIds = (res.menus || []).map((m: any) => typeof m === 'string' ? m : m._id);
         this.restaurantForm.patchValue({
           name: res.name,
@@ -103,6 +104,7 @@ export class RestaurantUpdateComponent implements OnInit {
           menus: menuIds
         });
         this.paymentMethods = res.paymentMethods || [];
+        this.currentPic = restaurante.restaurantPic || null;
       },
       error: () =>
         Swal.fire('Error', 'Error loading restaurant data!', 'error')
@@ -214,4 +216,9 @@ export class RestaurantUpdateComponent implements OnInit {
       }
     });
   }
+
+  getRestaurantImageUrl(pic: string): string {
+    return `http://localhost:3000/uploads/${pic}`;
+  }
+
 }

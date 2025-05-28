@@ -1,42 +1,54 @@
-<div class="container py-4">
-  <div class="card p-4 shadow-sm">
+<div class="container py-5">
+  <div class="p-4 shadow-sm bg-light rounded-4" style="max-width: 700px; margin: 0 auto;">
     <form [formGroup]="menuForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" autocomplete="off">
-      <h2 class="mb-4 text-center text-primary fw-bold">Edit Menu</h2>
+      <h2 class="mb-4 text-center text-dark fw-semibold fs-3">Edit Menu</h2>
 
-      <div class="form-group mb-4">
-        <label for="name" class="form-label fw-semibold">Menu Name</label>
-        <input id="name" type="text" class="form-control" formControlName="name" placeholder="Menu name" required>
+      <!-- Menu Name -->
+      <div class="mb-4">
+        <label for="name" class="form-label text-gray-700 fw-medium">Menu Name</label>
+        <input id="name" type="text" class="form-control border-0 bg-white rounded-3 shadow-sm"
+          formControlName="name" placeholder="e.g. Lunch Specials" required />
       </div>
 
-      <div class="form-group mb-4">
-        <label class="form-label fw-semibold">Dishes</label>
+      <!-- Dishes -->
+      <div class="mb-4">
+        <label class="form-label text-gray-700 fw-medium">Included Dishes</label>
         <ng-container *ngIf="dishOptions.length > 0; else noDishes">
-          <select class="form-control" formControlName="dishes" multiple>
+          <select multiple class="form-control border-0 bg-white rounded-3 shadow-sm" formControlName="dishes">
             <option *ngFor="let dish of dishOptions" [value]="dish._id">{{ dish.name }}</option>
           </select>
         </ng-container>
         <ng-template #noDishes>
-          <div class="alert alert-warning">No dishes available. <a routerLink="/dishes/create">Create dish</a></div>
+          <div class="alert alert-warning mt-2 rounded-3 shadow-sm small">
+            No dishes available.
+            <a routerLink="/dishes/create" class="fw-medium text-decoration-underline">Create a new dish</a>
+          </div>
         </ng-template>
       </div>
 
-      <div class="form-group mb-4">
-        <label for="menuPic" class="form-label fw-semibold">Menu Photo</label>
-        <input type="file" id="menuPic" (change)="onFileChange($event)" accept="image/*" class="form-control" />
-        <div *ngIf="currentPic" class="mt-2">
-          <img [src]="'/uploads/' + currentPic" alt="Current menu" style="max-width: 120px; max-height: 120px;" class="rounded shadow-sm border">
-          <div class="text-muted" style="font-size:0.9em;">Current image</div>
+      <!-- Menu Photo -->
+      <div class="mb-5">
+        <label for="menuPic" class="form-label text-gray-700 fw-medium">Menu Photo</label>
+        <input type="file" id="menuPic" (change)="onFileChange($event)" accept="image/*"
+          class="form-control border-0 bg-white rounded-3 shadow-sm" />
+        <div *ngIf="currentPic" class="mt-3 d-flex align-items-center gap-3">
+          <img [src]="getMenuImageUrl(currentPic)" alt="{{ menuForm.value.name }}"
+            class="rounded-3 border shadow-sm" style="max-width: 120px; max-height: 120px;" />
+          <span class="text-muted small">Current image</span>
         </div>
       </div>
 
-      <div class="form-group mb-3">
-        <button type="submit" class="btn btn-primary w-100 fw-bold" [disabled]="menuForm.invalid">
+      <!-- Submit -->
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-dark btn-lg fw-semibold rounded-3 shadow-sm" [disabled]="menuForm.invalid">
           Save Changes
         </button>
       </div>
+
+      <!-- Back Link -->
+      <div class="d-grid">
+        <a routerLink="/menus" class="btn btn-outline-secondary rounded-3 fw-medium shadow-sm">Back to Menus</a>
+      </div>
     </form>
-    <div class="form-group mt-2">
-      <a routerLink="/menus" class="btn btn-secondary w-100">Back to Menus</a>
-    </div>
   </div>
 </div>

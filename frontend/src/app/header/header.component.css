@@ -92,10 +92,10 @@
   font-size: 0.9rem;
 }
 
-/* Logout button */
-.logout-button {
-  font-size: 0.85rem;
-  padding: 4px 10px;
+.logout-button:hover {
+  background: #c82333 !important;
+  box-shadow: 0 2px 8px rgba(200,35,51,0.15);
+  color: #fff !important;
 }
 
 .auth-buttons .login-button {

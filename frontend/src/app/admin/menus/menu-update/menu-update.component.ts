@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./menu-update.component.css']
 })
 export class MenuUpdateComponent implements OnInit {
+  menu: Menu | null = null;
   menuForm: FormGroup;
   dishOptions: Dish[] = [];
   currentPic: string | null = null;
@@ -50,6 +51,7 @@ export class MenuUpdateComponent implements OnInit {
 
     this.menuService.getMenuById(this.menuId).subscribe({
       next: (menu: Menu) => {
+        this.menu = menu; // <-- guarda o menu aqui!
         this.menuForm.patchValue({
           name: menu.name,
           dishes: menu.dishes ? menu.dishes.map((d: any) => d._id ? d._id : d) : [],
@@ -106,4 +108,9 @@ export class MenuUpdateComponent implements OnInit {
       })
     });
   }
+
+  getMenuImageUrl(menuPic: string): string {
+    return `http://localhost:3000/uploads/${menuPic}`;
+  }
+
 }

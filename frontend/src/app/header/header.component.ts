@@ -26,6 +26,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showNotifications = false;
   private socket!: Socket;
 
+  showMobileMenu = false;
+  isMobileScreen = false;
+
   constructor(
     private router: Router,
     private profileService: ProfileService,
@@ -53,6 +56,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.notificationCount++;
       this.notifications.unshift(data); // NÃO faças .unshift(data.message)!
     });
+
+    this.checkScreen();
+    window.addEventListener('resize', () => this.checkScreen());
   }
 
   ngOnDestroy() {
@@ -112,6 +118,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   openNotifications() {
     this.showNotifications = !this.showNotifications;
     this.notificationCount = 0;
+  }
+
+  checkScreen() {
+    this.isMobileScreen = window.innerWidth < 992; // Bootstrap lg breakpoint
+    if (!this.isMobileScreen) this.showMobileMenu = false;
   }
 
   //Overall
