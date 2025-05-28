@@ -42,7 +42,6 @@
           <div>
             <div class="text-center mb-3 restaurant-img-container" *ngIf="menu.menuPic; else noImage">
               <img *ngIf="menu.menuPic" [src]="getMenuImageUrl(menu.menuPic)" alt="Foto do Menu" class="restaurant-img">
-              <div class="overlay-text">{{ menu.name }}</div>
             </div>
             <ng-template #noImage>
               <div class="restaurant-img-container text-center mb-3"
@@ -50,11 +49,11 @@
                 <span class="text-muted"><em>No image available for this menu.</em></span>
               </div>
             </ng-template>
-            <h5 class="card-title">{{ menu.name }}</h5>
+            <h5 class="card-title">Name: {{ menu.name }}</h5>
             <p class="mb-2"><strong>Dishes:</strong></p>
             <ul class="list-group mb-2" *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">
               <li class="list-group-item py-1 px-2" *ngFor="let dish of menu.dishes">
-                - {{ dish.name }}
+                - Name: {{ dish.name }}
               </li>
             </ul>
             <ng-template #noDishes>
@@ -66,13 +65,25 @@
           </div>
           <div class="d-flex justify-content-between align-items-center mt-3">
             <a *ngIf="userRole" [routerLink]="['/menu-details', menu._id]"
-              class="btn btn-sm btn-outline-primary">View</a>
-            <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view details</button>
+               class="btn btn-sm btn-primary rounded-pill d-flex align-items-center gap-1 shadow-sm">
+              <i class="bi bi-eye"></i> View
+            </a>
+            <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>
+              Login to view details
+            </button>
             <ng-container *ngIf="(userRole === 'Manager' && isMenuManager(menu, userId)) || userRole === 'Admin'">
-              <a [routerLink]="['/menus/editMenu', menu._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
-              <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteMenu(menu._id)">Delete</button>
-              <button class="btn btn-sm" [ngClass]="menu.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
-                (click)="toggleVisibility(menu)">
+              <a [routerLink]="['/menus/editMenu', menu._id]"
+                 class="btn btn-sm btn-warning rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm">
+                <i class="bi bi-pencil-square"></i> Edit
+              </a>
+              <button class="btn btn-sm btn-danger rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm"
+                      (click)="deleteMenu(menu._id)">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+              <button class="btn btn-sm rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm"
+                      [ngClass]="menu.isVisible ? 'btn-secondary' : 'btn-success'"
+                      (click)="toggleVisibility(menu)">
+                <i class="bi" [ngClass]="menu.isVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
                 {{ menu.isVisible ? 'Hide' : 'Show' }}
               </button>
             </ng-container>

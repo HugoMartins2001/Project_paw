@@ -59,7 +59,6 @@
           <div>
             <div class="text-center mb-3 restaurant-img-container" *ngIf="dish.dishPic; else noImage">
               <img [src]="getDishImageUrl(dish.dishPic)" alt="Dish Image" class="restaurant-img" />
-              <div class="overlay-text">{{ dish.name }}</div>
             </div>
             <ng-template #noImage>
               <div class="restaurant-img-container text-center mb-3"
@@ -67,8 +66,8 @@
                 <span class="text-muted"><em>No image available for this dish.</em></span>
               </div>
             </ng-template>
-            <h5 class="card-title">{{ dish.name }}</h5>
-            <p class="mb-2 text-muted" *ngIf="dish.description">{{ dish.description }}</p>
+            <h5 class="card-title">Name: {{ dish.name }}</h5>
+            <p class="mb-2 text-muted" *ngIf="dish.description">Description: {{ dish.description }}</p>
             <p class="mb-1" *ngIf="dish.menu">
               <strong>Menu:</strong>
               <ng-container *ngIf="isObject(dish.menu); else menuString">
@@ -91,14 +90,26 @@
           </div>
           <div class="d-flex justify-content-between align-items-center mt-3">
             <a *ngIf="userRole" [routerLink]="['/dish-details', dish._id]"
-              class="btn btn-sm btn-outline-primary">View</a>
+              class="btn btn-sm btn-primary rounded-pill px-3 d-flex align-items-center gap-1 shadow-sm"
+              style="font-weight: 500; letter-spacing: 0.5px;">
+              <i class="bi bi-eye"></i> View
+            </a>
             <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view details</button>
 
             <ng-container *ngIf="(userRole === 'Manager' && isDishManager(dish, userId)) || userRole === 'Admin'">
-              <a [routerLink]="['/dishes/editDish', dish._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
-              <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteDish(dish._id)">Delete</button>
-              <button class="btn btn-sm" [ngClass]="dish.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
-                (click)="toggleVisibility(dish)">
+              <a [routerLink]="['/dishes/editDish', dish._id]"
+                class="btn btn-sm btn-warning rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm"
+                style="font-weight: 500; letter-spacing: 0.5px;">
+                <i class="bi bi-pencil-square"></i> Edit
+              </a>
+              <button class="btn btn-sm btn-danger rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm"
+                (click)="deleteDish(dish._id)" style="font-weight: 500; letter-spacing: 0.5px;">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+              <button class="btn btn-sm rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm"
+                [ngClass]="dish.isVisible ? 'btn-secondary' : 'btn-success'" (click)="toggleVisibility(dish)"
+                style="font-weight: 500; letter-spacing: 0.5px;">
+                <i class="bi" [ngClass]="dish.isVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
                 {{ dish.isVisible ? 'Hide' : 'Show' }}
               </button>
             </ng-container>
@@ -112,7 +123,8 @@
       <i class="bi bi-egg-fried text-secondary mb-3" style="font-size: 3rem;"></i>
       <h4 class="mb-2 text-secondary fw-semibold">There are no dishes registered yet.</h4>
       <p class="text-muted">As soon as a dish is created, it will appear here for management.</p>
-      <a routerLink="/dishes/create" class="btn btn-success mt-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
+      <a routerLink="/dishes/create" class="btn btn-success mt-3"
+        *ngIf="userRole === 'Manager' || userRole === 'Admin'">
         <i class="bi bi-plus-circle me-2"></i>Add dish
       </a>
     </div>

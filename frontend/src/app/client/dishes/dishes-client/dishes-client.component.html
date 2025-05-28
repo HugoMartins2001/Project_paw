@@ -68,7 +68,6 @@
                     <div>
                         <div class="text-center mb-3 restaurant-img-container" *ngIf="dish.dishPic; else noImage">
                             <img [src]="getDishImageUrl(dish.dishPic)" alt="Dish Image" class="restaurant-img" />
-                            <div class="overlay-text">{{ dish.name }}</div>
                         </div>
                         <ng-template #noImage>
                             <div class="restaurant-img-container text-center mb-3"
@@ -76,8 +75,8 @@
                                 <span class="text-muted"><em>No image available for this dish.</em></span>
                             </div>
                         </ng-template>
-                        <h5 class="card-title">{{ dish.name }}</h5>
-                        <p class="mb-2 text-muted" *ngIf="dish.description">{{ dish.description }}</p>
+                        <h5 class="card-title">Name: {{ dish.name }}</h5>
+                        <p class="mb-2 text-muted" *ngIf="dish.description">Description: {{ dish.description }}</p>
                         <p class="mb-1" *ngIf="dish.menu">
                             <strong>Menu:</strong>
                             <ng-container *ngIf="isObject(dish.menu); else menuString">
@@ -91,7 +90,7 @@
                         <p class="mb-1" *ngIf="dish.restaurant">
                             <strong>Restaurant:</strong>
                             <ng-container *ngIf="isObject(dish.restaurant); else restaurantString">
-                                {{ dish.restaurant.name }}
+                                Restaurant name: {{ dish.restaurant.name }}
                             </ng-container>
                             <ng-template #restaurantString>
                                 {{ dish.restaurant }}
@@ -100,7 +99,10 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <a *ngIf="userRole" [routerLink]="['/dish-details', dish._id]"
-                            class="btn btn-sm btn-outline-primary">View</a>
+                           class="btn btn-sm btn-primary rounded-pill px-3 d-flex align-items-center gap-1 shadow-sm"
+                           style="font-weight: 500; letter-spacing: 0.5px;">
+                          <i class="bi bi-eye"></i> View
+                        </a>
                         <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view the details</button>
 
                         <ng-container *ngIf="userRole === 'Client'">

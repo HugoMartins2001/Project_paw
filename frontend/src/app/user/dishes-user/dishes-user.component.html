@@ -59,7 +59,6 @@
                     <div>
                         <div class="text-center mb-3 restaurant-img-container" *ngIf="dish.dishPic; else noImage">
                             <img [src]="getDishImageUrl(dish.dishPic)" alt="Dish Image" class="restaurant-img" />
-                            <div class="overlay-text">{{ dish.name }}</div>
                         </div>
                         <ng-template #noImage>
                             <div class="restaurant-img-container text-center mb-3"
@@ -67,8 +66,8 @@
                                 <span class="text-muted"><em>No image available for this dish.</em></span>
                             </div>
                         </ng-template>
-                        <h5 class="card-title">{{ dish.name }}</h5>
-                        <p class="mb-2 text-muted" *ngIf="dish.description">{{ dish.description }}</p>
+                        <h5 class="card-title">Name: {{ dish.name }}</h5>
+                        <p class="mb-2 text-muted" *ngIf="dish.description">Description: {{ dish.description }}</p>
                         <p class="mb-1" *ngIf="dish.menu">
                             <strong>Menu:</strong>
                             <ng-container *ngIf="isObject(dish.menu); else menuString">

@@ -69,17 +69,24 @@
                 details</button>
               <ng-container *ngIf="userRole === 'Client' || userRole === 'Manager' || userRole === 'Admin'">
                 <a [routerLink]="['/restaurant-details', restaurant.name]"
-                  class="btn btn-sm btn-outline-primary">View</a>
+                   class="btn btn-sm btn-primary rounded-pill d-flex align-items-center gap-1 shadow-sm">
+                  <i class="bi bi-eye"></i> View
+                </a>
               </ng-container>
               <ng-container
                 *ngIf="(userRole === 'Manager' && (restaurant.managerId?._id === userId || restaurant.managerId === userId)) || userRole === 'Admin'">
                 <a [routerLink]="['/restaurants/editRestaurant', restaurant._id]"
-                  class="btn btn-sm btn-outline-warning ms-2">Edit</a>
-                <button class="btn btn-sm btn-outline-danger ms-2"
-                  (click)="deleteRestaurant(restaurant._id)">Delete</button>
-                <button class="btn btn-sm"
-                  [ngClass]="restaurant.isVisible ? 'btn-outline-secondary' : 'btn-outline-success'"
-                  (click)="toggleVisibility(restaurant)">
+                   class="btn btn-sm btn-warning rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm">
+                  <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                <button class="btn btn-sm btn-danger rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm"
+                        (click)="deleteRestaurant(restaurant._id)">
+                  <i class="bi bi-trash"></i> Delete
+                </button>
+                <button class="btn btn-sm rounded-pill ms-2 d-flex align-items-center gap-1 shadow-sm"
+                        [ngClass]="restaurant.isVisible ? 'btn-secondary' : 'btn-success'"
+                        (click)="toggleVisibility(restaurant)">
+                  <i class="bi" [ngClass]="restaurant.isVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
                   {{ restaurant.isVisible ? 'Hide' : 'Show' }}
                 </button>
               </ng-container>

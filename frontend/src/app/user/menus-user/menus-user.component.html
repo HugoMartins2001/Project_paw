@@ -40,7 +40,6 @@
                         <div class="text-center mb-3 restaurant-img-container" *ngIf="menu.menuPic; else noImage">
                             <img *ngIf="menu.menuPic" [src]="getMenuImageUrl(menu.menuPic)" alt="Foto do Menu"
                                 class="restaurant-img">
-                            <div class="overlay-text">{{ menu.name }}</div>
                         </div>
                         <ng-template #noImage>
                             <div class="restaurant-img-container no-img">
@@ -49,11 +48,11 @@
                         </ng-template>
 
 
-                        <h5 class="card-title">{{ menu.name }}</h5>
+                        <h5 class="card-title">Name: {{ menu.name }}</h5>
                         <p class="mb-2"><strong>Dishes:</strong></p>
                         <ul class="list-group mb-2" *ngIf="menu.dishes && menu.dishes.length > 0; else noDishes">
                             <li class="list-group-item py-1 px-2" *ngFor="let dish of menu.dishes">
-                                - {{ dish.name }}
+                                - Name: {{ dish.name }}
                             </li>
                         </ul>
                         <ng-template #noDishes>
