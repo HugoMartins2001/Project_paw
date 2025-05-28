@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Stripe = require('stripe');
-const stripe = Stripe('sk_test_51RPu2TJukWqsizzmdimBlqYLxjCm0mHnNDQDFhlH2K4vG02xY3SMzJJbE9NeOt9WJp295M88M3fRZLvJ2d60kLik00dlXY215T'); 
+const stripe = Stripe('sk_test_51RPu2TJukWqsizzmdimBlqYLxjCm0mHnNDQDFhlH2K4vG02xY3SMzJJbE9NeOt9WJp295M88M3fRZLvJ2d60kLik00dlXY215T');
 const mongoOrder = require('../models/order');
 
 let checkoutController = {}
@@ -13,7 +13,7 @@ const addMonths = (date, months) => {
 };
 
 checkoutController.createCheckoutSession = async (req, res) => {
-  const { cart, managerId, userID, discountApplied, discountPercent } = req.body;
+  const { cart, managerId, userID, discountApplied, discountPercent, userName } = req.body; // <-- adiciona userName aqui!
   try {
     const newOrder = await mongoOrder.create({
       managerId: managerId || null,
@@ -45,6 +45,32 @@ checkoutController.createCheckoutSession = async (req, res) => {
         orderId: newOrder._id.toString()
       }
     });
+
+    const io = req.app.get('io');
+    const notification = {
+      message: `
+        <div style="font-size:1.08em;">
+          <b>New order</b> from <span style="color:#0d6efd;"><b>${userName || 'Cliente'}</b></span>
+        </div>
+        <div style="margin-top:4px;">
+          <span style="color:#444;"><b>Total:</b> ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)} €</span>
+        </div>
+        <div style="color:#444;"><b>Items:</b> ${cart.map(item => `${item.quantity}x ${item.name}`).join(', ')}</div>
+        <div style="margin-top:8px;">
+          <a href="/orders/manager" 
+             style="display:inline-block;padding:4px 12px;background:#0d6efd;color:#fff;border-radius:4px;text-decoration:none;font-size:0.97em;">
+            View order
+          </a>
+        </div>
+      `,
+      orderId: newOrder._id,
+      total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2),
+      items: cart.map(item => `${item.quantity}x ${item.name}`).join(', '),
+      createdAt: newOrder.createdAt
+    };
+
+    io.emit('newOrder', notification);
+
     res.json({ url: session.url });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { CartService } from '../../admin/services/cart.service'; // importa o serviço
+import { CartService } from '../../admin/services/cart.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-payment-cancel',
+  standalone: true,
+  imports: [CommonModule],
   template: `
     <div class="container d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 60vh;">
       <div class="bg-white shadow rounded-4 p-5 text-center" style="max-width: 400px;">

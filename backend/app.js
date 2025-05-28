@@ -88,14 +88,7 @@ app.use(function (req, res, next) {
 
 // Exemplo de tratamento de erro para API
 app.use(function (err, req, res, next) {
-  if (req.originalUrl.startsWith('/api/')) {
-    res.status(err.status || 500).json({ error: err.message });
-  } else {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "development" ? err : {};
-    res.status(err.status || 500);
-    res.render("error");
-  }
+  res.status(err.status || 500).json({ error: err.message });
 });
 
 const http = require('http').createServer(app);

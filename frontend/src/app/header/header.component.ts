@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { ProfileService, ProfileResponse } from '../admin/services/profile.service';
 import { CartService } from '../admin/services/cart.service';
 import { Subscription } from 'rxjs';
+import { io, Socket } from 'socket.io-client';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +20,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   timeLeft: number = 600; // 10 minutos em segundos
   interval: any;
   cartSub!: Subscription;
+
+  notificationCount = 0;
+  notifications: any[] = [];
+  showNotifications = false;
+  private socket!: Socket;
 
   constructor(
     private router: Router,
@@ -40,11 +46,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.cartSub = this.cartService.cart$.subscribe(cart => {
       this.startTimer();
     });
+
+    this.socket = io('http://localhost:3001'); // Usa o URL do teu backend
+
+    this.socket.on('newOrder', (data) => {
+      this.notificationCount++;
+      this.notifications.unshift(data); // NÃO faças .unshift(data.message)!
+    });
   }
 
   ngOnDestroy() {
     if (this.interval) clearInterval(this.interval);
     if (this.cartSub) this.cartSub.unsubscribe();
+    if (this.socket) {
+      this.socket.disconnect();
+    }
   }
 
   loadUserData() {
@@ -52,7 +68,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       next: (profile: ProfileResponse) => {
         this.userName = profile.user?.name || null;
         this.userRole = profile.user?.role || null;
-        // Se quiseres, podes atualizar o localStorage aqui também:
         localStorage.setItem('name', this.userName ?? '');
         localStorage.setItem('role', this.userRole ?? '');
       },
@@ -92,6 +107,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   get seconds() {
     return this.timeLeft % 60;
+  }
+
+  openNotifications() {
+    this.showNotifications = !this.showNotifications;
+    this.notificationCount = 0;
   }
 
   //Overall

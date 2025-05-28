@@ -1,4 +1,4 @@
-<div *ngIf="isLoading" class="alert alert-info text-center my-5">A carregar prato...</div>
+<div *ngIf="isLoading" class="alert alert-info text-center my-5">Loading dish...</div>
 <div *ngIf="!isLoading && dish">
   <div class="container py-4">
     <div class="card p-4 shadow-sm" style="max-width: 600px; margin: 0 auto;">
@@ -8,24 +8,24 @@
       </div>
       <ng-template #noImage>
         <div class="d-flex align-items-center justify-content-center bg-light rounded mb-3" style="height:220px;">
-          <span class="text-muted"><em>Sem imagem disponível</em></span>
+          <span class="text-muted"><em>No image available</em></span>
         </div>
       </ng-template>
 
-      <p class="mb-2" *ngIf="dish.description"><strong>Descrição:</strong> {{ dish.description }}</p>
-      <p class="mb-2" *ngIf="dish.category"><strong>Categoria:</strong> {{ dish.category }}</p>
+      <p class="mb-2" *ngIf="dish.description"><strong>Description:</strong> {{ dish.description }}</p>
+      <p class="mb-2" *ngIf="dish.category"><strong>Category:</strong> {{ dish.category }}</p>
 
       <div *ngIf="dish.prices">
-        <strong>Preços:</strong>
+        <strong>Prices:</strong>
         <ul class="list-group mb-2">
-          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.pequena">Pequena: {{ dish.prices.pequena }}€</li>
-          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.media">Média: {{ dish.prices.media }}€</li>
-          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.grande">Grande: {{ dish.prices.grande }}€</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.pequena">Small: {{ dish.prices.pequena }}€</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.media">Medium: {{ dish.prices.media }}€</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.prices.grande">Large: {{ dish.prices.grande }}€</li>
         </ul>
       </div>
 
       <div *ngIf="dish.ingredients && dish.ingredients.length > 0">
-        <strong>Ingredientes:</strong>
+        <strong>Ingredients:</strong>
         <ul class="list-group mb-2">
           <li class="list-group-item py-1 px-2" *ngFor="let ing of dish.ingredients">
             {{ ing }}
@@ -34,14 +34,14 @@
       </div>
 
       <div *ngIf="dish.nutrition">
-        <strong>Nutrição:</strong>
+        <strong>Nutrition:</strong>
         <ul class="list-group mb-2">
-          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.calories">Calorias: {{ dish.nutrition.calories }}
+          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.calories">Calories: {{ dish.nutrition.calories }}
             g</li>
-          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.fat">Gordura: {{ dish.nutrition.fat }} g</li>
-          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.protein">Proteína: {{ dish.nutrition.protein }} g
+          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.fat">Fat: {{ dish.nutrition.fat }} g</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.protein">Protein: {{ dish.nutrition.protein }} g
           </li>
-          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.carbs">Hidratos: {{ dish.nutrition.carbs }} g</li>
+          <li class="list-group-item py-1 px-2" *ngIf="dish.nutrition.carbs">Carbohydrates: {{ dish.nutrition.carbs }} g</li>
         </ul>
       </div>
 
@@ -50,7 +50,7 @@
       </div>
 
       <div *ngIf="dish.allergens && dish.allergens.length > 0">
-        <strong>Alergénios:</strong>
+        <strong>Allergens:</strong>
         <ul class="list-group mb-2">
           <li class="list-group-item py-1 px-2" *ngFor="let al of dish.allergens">
             {{ al }}
@@ -58,10 +58,15 @@
         </ul>
       </div>
 
-      <a (click)="goBackToDishes()" class="btn btn-secondary w-100 mt-3">Voltar aos Pratos</a>
+      <a (click)="goBackToDishes()" class="btn btn-secondary w-100 mt-3">Back to Dishes</a>
     </div>
   </div>
 </div>
-<div *ngIf="!isLoading && !dish" class="alert alert-danger text-center my-5">
-  Prato não encontrado.
+<div *ngIf="!isLoading && !dish" class="d-flex flex-column align-items-center justify-content-center py-5">
+  <i class="bi bi-emoji-frown text-danger mb-3" style="font-size: 3rem;"></i>
+  <h4 class="mb-2 text-danger fw-semibold">Dish not found.</h4>
+  <p class="text-muted">The dish you are looking for does not exist or was removed.</p>
+  <a (click)="goBackToDishes()" class="btn btn-primary mt-3">
+    <i class="bi bi-arrow-left me-2"></i>Back to Dishes
+  </a>
 </div>

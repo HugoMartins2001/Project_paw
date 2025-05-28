@@ -1,69 +1,69 @@
 <div class="container py-4">
   <div class="card p-4 shadow-sm" style="max-width: 600px; margin: 0 auto;">
     <form [formGroup]="dishForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" autocomplete="off">
-      <h2 class="mb-4 text-center text-primary fw-bold">Editar Prato</h2>
+      <h2 class="mb-4 text-center text-primary fw-bold">Edit Dish</h2>
 
       <div class="form-group mb-3">
-        <label for="name" class="form-label fw-semibold">Nome</label>
+        <label for="name" class="form-label fw-semibold">Name</label>
         <input id="name" type="text" class="form-control" formControlName="name" required>
       </div>
 
       <div class="form-group mb-3">
-        <label for="description" class="form-label fw-semibold">Descrição</label>
+        <label for="description" class="form-label fw-semibold">Description</label>
         <textarea id="description" class="form-control" formControlName="description" rows="2"></textarea>
       </div>
 
       <div class="form-group mb-3">
-        <label for="category" class="form-label fw-semibold">Categoria</label>
+        <label for="category" class="form-label fw-semibold">Category</label>
         <div class="input-group">
           <select id="category" class="form-control" formControlName="category" required>
             <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-            <option value="Outra">Outra...</option>
+            <option value="Outra">Other...</option>
           </select>
           <button type="button" class="btn btn-outline-primary btn-sm" (click)="showNewCategory = !showNewCategory">
-            <i class="bi bi-plus-circle"></i> Nova Categoria
+            <i class="bi bi-plus-circle"></i> New Category
           </button>
         </div>
         <div *ngIf="isOtherCategory || showNewCategory" class="input-group mt-2">
-          <input type="text" class="form-control" placeholder="Nova categoria" formControlName="newCategory">
-          <button type="button" class="btn btn-success" (click)="addCategory()">Adicionar</button>
+          <input type="text" class="form-control" placeholder="New category" formControlName="newCategory">
+          <button type="button" class="btn btn-success" (click)="addCategory()">Add</button>
         </div>
       </div>
 
       <div class="form-group mb-3">
-        <label class="form-label fw-semibold">Preços (€)</label>
+        <label class="form-label fw-semibold">Prices (€)</label>
         <div class="row g-2">
           <div class="col">
-            <input type="number" class="form-control" placeholder="Pequena" formControlName="precoPequena">
+            <input type="number" class="form-control" placeholder="Small" formControlName="precoPequena">
           </div>
           <div class="col">
-            <input type="number" class="form-control" placeholder="Média" formControlName="precoMedia">
+            <input type="number" class="form-control" placeholder="Medium" formControlName="precoMedia">
           </div>
           <div class="col">
-            <input type="number" class="form-control" placeholder="Grande" formControlName="precoGrande">
+            <input type="number" class="form-control" placeholder="Large" formControlName="precoGrande">
           </div>
         </div>
       </div>
 
       <div class="form-group mb-3">
-        <label for="ingredients" class="form-label fw-semibold">Ingredientes (separados por vírgula)</label>
+        <label for="ingredients" class="form-label fw-semibold">Ingredients (separated by commas)</label>
         <input id="ingredients" type="text" class="form-control" formControlName="ingredients">
       </div>
 
       <div class="form-group mb-3">
-        <label class="form-label fw-semibold">Nutrição</label>
+        <label class="form-label fw-semibold">Nutrition</label>
         <div class="row g-2">
           <div class="col">
-            <input type="number" class="form-control" placeholder="Calorias" formControlName="calories">
+            <input type="number" class="form-control" placeholder="Calories" formControlName="calories">
           </div>
           <div class="col">
-            <input type="number" class="form-control" placeholder="Gordura" formControlName="fat">
+            <input type="number" class="form-control" placeholder="Fat" formControlName="fat">
           </div>
           <div class="col">
-            <input type="number" class="form-control" placeholder="Proteína" formControlName="protein">
+            <input type="number" class="form-control" placeholder="Protein" formControlName="protein">
           </div>
           <div class="col">
-            <input type="number" class="form-control" placeholder="Hidratos" formControlName="carbs">
+            <input type="number" class="form-control" placeholder="Carbohydrates" formControlName="carbs">
           </div>
         </div>
       </div>
@@ -73,41 +73,41 @@
         <div class="input-group">
           <select id="nutriScore" class="form-control" formControlName="nutriScore" required>
             <option *ngFor="let score of nutriScores" [value]="score">{{ score }}</option>
-            <option value="Outro">Outro...</option>
+            <option value="Outro">Other...</option>
           </select>
           <button type="button" class="btn btn-outline-primary btn-sm" (click)="showNewNutriScore = !showNewNutriScore">
-            <i class="bi bi-plus-circle"></i> Novo NutriScore
+            <i class="bi bi-plus-circle"></i> New NutriScore
           </button>
         </div>
         <div *ngIf="isOtherNutriScore || showNewNutriScore" class="input-group mt-2">
-          <input type="text" class="form-control" placeholder="Novo NutriScore" formControlName="newNutriScore">
-          <button type="button" class="btn btn-success" (click)="addNutriScore()">Adicionar</button>
+          <input type="text" class="form-control" placeholder="New NutriScore" formControlName="newNutriScore">
+          <button type="button" class="btn btn-success" (click)="addNutriScore()">Add</button>
         </div>
       </div>
 
       <div class="form-group mb-3">
-        <label for="allergens" class="form-label fw-semibold">Alergénios (separados por vírgula)</label>
+        <label for="allergens" class="form-label fw-semibold">Allergens (separated by commas)</label>
         <input id="allergens" type="text" class="form-control" formControlName="allergens">
       </div>
 
       <div class="form-group mb-3">
-        <label for="dishPic" class="form-label fw-semibold">Foto do Prato</label>
+        <label for="dishPic" class="form-label fw-semibold">Dish Photo</label>
         <input type="file" id="dishPic" (change)="onFileChange($event)" accept="image/*" class="form-control" />
         <div *ngIf="currentPic" class="mt-2">
-          <img [src]="getDishImageUrl(currentPic)" alt="Prato atual" style="max-width: 120px; max-height: 120px;"
+          <img [src]="getDishImageUrl(currentPic)" alt="Current Dish" style="max-width: 120px; max-height: 120px;"
             class="rounded shadow-sm border">
-          <div class="text-muted" style="font-size:0.9em;">Imagem atual</div>
+          <div class="text-muted" style="font-size:0.9em;">Current Image</div>
         </div>
       </div>
       
       <div class="form-group mb-3">
         <button type="submit" class="btn btn-primary w-100 fw-bold" [disabled]="dishForm.invalid">
-          Guardar Alterações
+          Save Changes
         </button>
       </div>
     </form>
     <div class="form-group mt-2">
-      <a routerLink="/dishes" class="btn btn-secondary w-100">Voltar aos Pratos</a>
+      <a routerLink="/dishes" class="btn btn-secondary w-100">Back to Dishes</a>
     </div>
   </div>
 </div>

@@ -8,7 +8,7 @@
         <div class="row g-3 align-items-center">
             <!-- Filtros de categorias -->
             <div class="col-12 col-md-6">
-                <div class="mb-2 fw-semibold text-secondary">Categorias:</div>
+                <div class="mb-2 fw-semibold text-secondary">categories:</div>
                 <div class="d-flex flex-wrap gap-2">
                     <button class="filter-btn" [class.active]="!filterCategory"
                         (click)="filterCategory=''; loadDishes()">
@@ -22,11 +22,11 @@
             </div>
             <!-- Filtros de alergénios -->
             <div class="col-12 col-md-6">
-                <div class="mb-2 fw-semibold text-secondary">Alergénios:</div>
+                <div class="mb-2 fw-semibold text-secondary">Allergens:</div>
                 <div class="d-flex flex-wrap gap-2">
                     <button class="filter-btn" [class.active]="!filterAllergens"
                         (click)="filterAllergens=''; loadDishes()">
-                        Todos os alergénios
+                        All allergens
                     </button>
                     <button *ngFor="let allergen of allergensList" class="filter-btn"
                         [class.active]="filterAllergens === allergen" (click)="filterAllergens=allergen; loadDishes()">
@@ -38,15 +38,15 @@
         <!-- Inputs de pesquisa e preço -->
         <div class="row g-3 mt-2">
             <div class="col-md-4">
-                <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Nome do prato"
+                <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Dish name"
                     class="form-control" />
             </div>
             <div class="col-md-4">
-                <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Preço mínimo"
+                <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Minimum price"
                     class="form-control" />
             </div>
             <div class="col-md-4">
-                <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Preço máximo"
+                <input [(ngModel)]="filterMaxPrice" type="number" (input)="loadDishes()" placeholder="Maximum price"
                     class="form-control" />
             </div>
         </div>
@@ -80,7 +80,7 @@
                         </p>
 
                         <p class="mb-1" *ngIf="dish.restaurant">
-                            <strong>Restaurante:</strong>
+                            <strong>Restaurant:</strong>
                             <ng-container *ngIf="isObject(dish.restaurant); else restaurantString">
                                 {{ dish.restaurant.name }}
                             </ng-container>
@@ -92,8 +92,8 @@
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <a *ngIf="userRole" [routerLink]="['/dish-details', dish._id]"
                             class="btn btn-sm btn-outline-primary">View</a>
-                        <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver
-                            detalhes</button>
+                        <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view
+                            details</button>
 
                     </div>
                 </div>

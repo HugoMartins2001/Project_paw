@@ -6,26 +6,27 @@
   <div class="mb-3" *ngIf="userRole === 'Manager' || userRole === 'Admin'">
     <a [routerLink]="['/menus/create']" class="btn btn-success">
       <span class="material-icons" style="vertical-align: middle;"></span>
-      Criar Menu
+      Create Menu
     </a>
   </div>
 
   <div class="row mb-3">
     <div class="col-md-3">
-      <input [(ngModel)]="filterName" (input)="loadMenus()" placeholder="Nome do menu" class="form-control">
+      <input [(ngModel)]="filterName" (input)="loadMenus()" placeholder="Menu name" class="form-control">
     </div>
     <div class="col-md-3">
-      <input [(ngModel)]="filterMinPrice" (input)="loadMenus()" type="number" placeholder="Preço mínimo"
+      <input [(ngModel)]="filterMinPrice" (input)="loadMenus()" type="number" placeholder="Minimum price"
         class="form-control">
     </div>
     <div class="col-md-3">
-      <input [(ngModel)]="filterMaxPrice" (input)="loadMenus()" type="number" placeholder="Preço máximo"
+      <input [(ngModel)]="filterMaxPrice" (input)="loadMenus()" type="number" placeholder="Maximum price"
         class="form-control">
     </div>
   </div>
 
   <div *ngIf="isLoading" class="alert alert-info text-center">Loading...</div>
-  <div *ngIf="!isLoading && menus.length === 0" class="d-flex flex-column align-items-center justify-content-center py-5">
+  <div *ngIf="!isLoading && menus.length === 0"
+    class="d-flex flex-column align-items-center justify-content-center py-5">
     <i class="bi bi-card-list text-secondary mb-3" style="font-size: 3rem;"></i>
     <h4 class="mb-2 text-secondary fw-semibold">There are no menus registered yet.</h4>
     <p class="text-muted">As soon as a menu is created, it will appear here for management.</p>
@@ -57,13 +58,16 @@
               </li>
             </ul>
             <ng-template #noDishes>
-              <p class="text-muted">No dishes associated with this menu.</p>
+              <div class="d-flex flex-column align-items-center justify-content-center py-3">
+                <i class="bi bi-egg-fried text-secondary mb-2" style="font-size: 2rem;"></i>
+                <span class="text-muted">No dishes associated with this menu.</span>
+              </div>
             </ng-template>
           </div>
           <div class="d-flex justify-content-between align-items-center mt-3">
             <a *ngIf="userRole" [routerLink]="['/menu-details', menu._id]"
               class="btn btn-sm btn-outline-primary">View</a>
-            <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login para ver detalhes</button>
+            <button *ngIf="!userRole" class="btn btn-sm btn-outline-secondary" disabled>Login to view details</button>
             <ng-container *ngIf="(userRole === 'Manager' && isMenuManager(menu, userId)) || userRole === 'Admin'">
               <a [routerLink]="['/menus/editMenu', menu._id]" class="btn btn-sm btn-outline-warning ms-2">Edit</a>
               <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteMenu(menu._id)">Delete</button>

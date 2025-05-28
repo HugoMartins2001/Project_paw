@@ -2,17 +2,17 @@
   <h2 class="stats-title">Admin Statistics</h2>
   <div class="stats-container row mb-4">
     <div class="stat-item col" *ngFor="let stat of [
-      {icon: 'fa-store', label: 'Restaurants', value: stats.restaurantsCount},
-      {icon: 'fa-users', label: 'Users', value: stats.usersCount},
-      {icon: 'fa-book-open', label: 'Menus', value: stats.menusCount},
-      {icon: 'fa-list-ol', label: 'Dishes', value: stats.dishesCount}
+      {icon: 'bi-shop', label: 'Restaurants', value: stats.restaurantsCount},
+      {icon: 'bi-people', label: 'Users', value: stats.usersCount},
+      {icon: 'bi-journal-bookmark', label: 'Menus', value: stats.menusCount},
+      {icon: 'bi-egg-fried', label: 'Dishes', value: stats.dishesCount}
     ]">
-      <div class="stat-icon">
-        <i class="fas" [ngClass]="stat.icon"></i>
+      <div class="stat-icon mb-2">
+        <i class="bi" [ngClass]="stat.icon" style="font-size: 2rem;"></i>
       </div>
       <div class="stat-info">
-        <h3>{{ stat.label }}</h3>
-        <p>{{ stat.value }}</p>
+        <h3 class="fs-6 fw-semibold mb-1">{{ stat.label }}</h3>
+        <p class="fs-4 fw-bold mb-0">{{ stat.value }}</p>
       </div>
     </div>
   </div>
@@ -44,8 +44,10 @@
     </div>
   </form>
 
-  <div *ngIf="logs.length === 0" class="no-logs-message">
-    No logs available at the moment.
+  <div *ngIf="logs.length === 0" class="d-flex flex-column align-items-center justify-content-center py-5">
+    <i class="bi bi-journal-text text-secondary mb-3" style="font-size: 3rem;"></i>
+    <h4 class="mb-2 text-secondary fw-semibold">No logs available at the moment.</h4>
+    <p class="text-muted">Logs will appear here as soon as there is activity to display.</p>
   </div>
   <div *ngIf="logs.length > 0">
     <button class="btn btn-danger mb-2" (click)="confirmDeleteAllLogs()">Delete All Logs</button>

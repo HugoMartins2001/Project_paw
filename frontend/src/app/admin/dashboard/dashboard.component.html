@@ -15,25 +15,25 @@
     <div class="manager-menu big-menu">
       <h2>{{ role }} menu</h2>
       <div class="menu-buttons">
-        <a *ngIf="role === 'Manager' || role === 'Admin' || role === 'Client'" (click)="navigateToRestaurants()" class="menu-btn">
+        <a *ngIf="role === 'Manager' || role === 'Admin' || role === 'Client'" (click)="navigateToRestaurants()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-store"></i> Show restaurants
         </a>
-        <a *ngIf="role === 'Admin'" (click)="navigateToRestaurantApproval()" class="menu-btn">
+        <a *ngIf="role === 'Admin'" (click)="navigateToRestaurantApproval()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-check-circle"></i> Approve restaurants
         </a>
-        <a *ngIf="role === 'Manager' || role === 'Admin'" (click)="navigateToMenu()" class="menu-btn">
+        <a *ngIf="role === 'Manager' || role === 'Admin'" (click)="navigateToMenu()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-book-open"></i> Show menus
         </a>
-        <a *ngIf="role === 'Manager' || role === 'Admin'" (click)="navigateToDishes()" class="menu-btn">
+        <a *ngIf="role === 'Manager' || role === 'Admin'" (click)="navigateToDishes()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-list-ol"></i> Show Dishes
         </a>
-        <a *ngIf="role === 'Admin'" (click)="navigateToUsers()" class="menu-btn">
+        <a *ngIf="role === 'Admin'" (click)="navigateToUsers()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-users"></i> Show users
         </a>
-        <a *ngIf="role === 'Admin'" (click)="navigateToLogs()" class="menu-btn">
+        <a *ngIf="role === 'Admin'" (click)="navigateToLogs()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-chart-line"></i> View Logs & Statistics
         </a>
-        <a *ngIf="role === 'Admin'" (click)="navigateToOrders()" class="menu-btn">
+        <a *ngIf="role === 'Admin'" (click)="navigateToOrders()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-shopping-cart"></i> Orders history
         </a>
       </div>

@@ -1,9 +1,11 @@
 <div class="container mt-5">
-  <h3 class="mb-4 text-center text-primary">Restaurantes Pendentes de Aprovação</h3>
+  <h3 class="mb-4 text-center text-primary">Restaurants pending Approval</h3>
 
-  <div *ngIf="restaurants.length === 0" class="alert alert-info text-center">
-    <i class="bi bi-info-circle"></i> Nenhum restaurante pendente de aprovação.
-  </div>
+  <div *ngIf="restaurants.length === 0" class="d-flex flex-column align-items-center justify-content-center py-5">
+  <i class="bi bi-info-circle text-info mb-3" style="font-size: 3rem;"></i>
+  <h4 class="mb-2 text-info fw-semibold">There are no restaurants pending approval.</h4>
+  <p class="text-muted">When a restaurant is submitted, it will appear here for approval.</p>
+</div>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="restaurants.length > 0">
     <div class="col" *ngFor="let restaurant of restaurants">
@@ -11,13 +13,13 @@
         <div class="card-body d-flex flex-column">
           <h5 class="card-title text-primary mb-2">{{ restaurant.name }}</h5>
           <ul class="list-group list-group-flush mb-3">
-            <li class="list-group-item"><strong>Morada:</strong> {{ restaurant.address }}</li>
+            <li class="list-group-item"><strong>Address:</strong> {{ restaurant.address }}</li>
             <li class="list-group-item"><strong>Email:</strong> {{ restaurant.restaurantEmail }}</li>
-            <li class="list-group-item"><strong>Telefone:</strong> {{ restaurant.phone }}</li>
+            <li class="list-group-item"><strong>Phone:</strong> {{ restaurant.phone }}</li>
           </ul>
           <button (click)="approveRestaurant(restaurant._id)"
                   class="btn btn-success mt-auto w-100 fw-bold shadow-sm">
-            <i class="bi bi-check-circle"></i> Aprovar Restaurante
+            <i class="bi bi-check-circle"></i> Approve Restaurant
           </button>
         </div>
       </div>
@@ -30,7 +32,7 @@
       (click)="changePage(currentPage - 1)"
       class="btn btn-outline-primary"
     >
-      <i class="bi bi-chevron-left"></i> Anterior
+      <i class="bi bi-chevron-left"></i> Previous
     </button>
 
     <ng-container *ngFor="let i of [].constructor(totalPages); let idx = index">
@@ -49,7 +51,7 @@
       (click)="changePage(currentPage + 1)"
       class="btn btn-outline-primary"
     >
-      Seguinte <i class="bi bi-chevron-right"></i>
+      Next <i class="bi bi-chevron-right"></i>
     </button>
   </div>
 </div>

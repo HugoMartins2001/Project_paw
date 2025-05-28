@@ -1,20 +1,20 @@
 <div class="container py-4"> 
   <div class="card p-4 shadow-sm">
     <form [formGroup]="menuForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" autocomplete="off"> 
-      <h2 class="mb-4 text-center text-primary fw-bold">Criar Menu</h2>
+      <h2 class="mb-4 text-center text-primary fw-bold">Create Menu</h2>
 
       <div class="form-group mb-4">
-        <label for="name" class="form-label fw-semibold">Nome do Menu</label>
-        <input id="name" type="text" class="form-control" formControlName="name" placeholder="Nome do menu" required>
+        <label for="name" class="form-label fw-semibold">Menu Name</label>
+        <input id="name" type="text" class="form-control" formControlName="name" placeholder="Menu name" required>
       </div>
 
       <div class="form-group mb-4">
-        <label for="menuPic" class="form-label fw-semibold">Foto do Menu</label>
+        <label for="menuPic" class="form-label fw-semibold">Menu Photo</label>
         <input type="file" id="menuPic" (change)="onFileChange($event)" accept="image/*" name="menuPic" class="form-control" />
       </div>
 
       <div class="form-group mb-4">
-        <label class="form-label fw-semibold">Pratos</label>
+        <label class="form-label fw-semibold">Dishes</label>
         <ng-container *ngIf="dishOptions.length > 0; else noDishes">
           <select class="form-control"
                   formControlName="dishes"
@@ -23,11 +23,11 @@
             <option *ngFor="let dish of dishOptions" [value]="dish._id">{{ dish.name }}</option>
           </select>
           <div *ngIf="menuForm.get('dishes')?.value?.length > 10" class="text-danger mt-1">
-            Só pode adicionar no máximo 10 pratos por menu.
+            You can only add a maximum of 10 dishes per menu.
           </div>
         </ng-container>
         <ng-template #noDishes>
-          <div class="alert alert-warning">Nenhum prato disponível. <a routerLink="/dishes/create">Criar prato</a></div>
+          <div class="alert alert-warning">No dishes available. <a routerLink="/dishes/create">Create dish</a></div>
         </ng-template>
       </div>
 
@@ -35,13 +35,13 @@
         <button type="submit"
                 class="btn btn-primary w-100 fw-bold"
                 [disabled]="menuForm.invalid || menuForm.get('dishes')?.value?.length > 10">
-          Criar Menu
+          Create Menu
         </button>
       </div>
     </form>
 
     <div class="form-group mt-2">
-      <a routerLink="/menus" class="btn btn-secondary w-100">Voltar aos Menus</a>
+      <a routerLink="/menus" class="btn btn-secondary w-100">Back to Menus</a>
     </div>
   </div>
 </div>

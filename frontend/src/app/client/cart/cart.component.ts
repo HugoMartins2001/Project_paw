@@ -69,7 +69,9 @@ export class CartComponent {
         userID,
         managerId,
         discountApplied: this.discountApplied,
-        discountPercent: this.discountPercent
+        discountPercent: this.discountPercent,
+        total: this.cartService.getCartTotal(),
+        userName: localStorage.getItem('name')
       }
     ).subscribe({
       next: res => window.location.href = res.url,

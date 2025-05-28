@@ -16,7 +16,7 @@
 
                 <ng-container *ngIf="user?.role === 'Client'">
                     <div class="info-item">
-                        <label for="clienteTelemovel">Telemóvel:</label>
+                        <label for="clienteTelemovel">Phone:</label>
                         <input type="text" id="clienteTelemovel" formControlName="clienteTelemovel" />
                         <div *ngIf="profileForm.get('clienteTelemovel')?.invalid && profileForm.get('clienteTelemovel')?.touched"
                             class="text-danger">
