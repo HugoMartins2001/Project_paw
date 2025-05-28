@@ -27,6 +27,7 @@ export class DishesClientComponent implements OnInit {
   categories: string[] = [];
   allergensList: string[] = [];
   selectedSize: { [dishId: string]: 'pequena' | 'media' | 'grande' | null } = {};
+  restaurantId: string | null | undefined;
 
   constructor(private dishService: DishService, private cartService: CartService) { }
 
@@ -144,7 +145,13 @@ export class DishesClientComponent implements OnInit {
   addToCart(dish: Dish, size: 'pequena' | 'media' | 'grande') {
     if (!size) return;
     const price = dish.prices?.[size] || 0;
-    this.cartService.addToCart({ ...dish, selectedSize: size, selectedPrice: price });
+    const restaurantId = this.restaurantId || localStorage.getItem('restaurantId') || undefined;
+    this.cartService.addToCart({
+      ...dish,
+      selectedSize: size,
+      selectedPrice: price,
+      restaurantId: restaurantId ?? undefined // <-- força a ser string ou undefined
+    });
     Swal.fire({
       icon: 'success',
       title: 'Added to cart!',

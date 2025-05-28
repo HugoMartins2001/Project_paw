@@ -23,6 +23,7 @@ const ordersRouter = require("./routes/orders");
 const checkoutRoutes = require('./routes/checkout');
 const cors = require('cors');
 const contactRouter = require('./routes/contact');
+const commentRoutes = require('./routes/comment');
 
 var mongoDB = "mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -37,7 +38,7 @@ db.once("open", function () {
 
 var app = express();
 app.use(cors({
-  origin: 'http://localhost:4200', // Porta padrão do Angular
+  origin: 'http://localhost:4200',
   credentials: true
 }));
 
@@ -80,6 +81,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/orders", ordersRouter);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/contact', contactRouter);
+app.use('/api/comment', commentRoutes);
 
 
 app.use(function (req, res, next) {

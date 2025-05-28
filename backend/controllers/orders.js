@@ -110,14 +110,18 @@ ordersController.completeOrder = async function (req, res, next) {
 
 ordersController.createOrder = async function (req, res) {
   try {
-    const { order, managerID } = req.body;
-
+    const { order, managerID, restaurantId } = req.body; 
     const userID = req.user._id;
+
+    const itemsWithRestaurant = order.map(item => ({
+      ...item,
+      restaurantId: restaurantId
+    }));
 
     const newOrder = await mongoOrder.create({
       managerID: managerID || null,
       userID: userID,
-      items: order,
+      items: itemsWithRestaurant,
       status: 'pending',
       createdAt: new Date()
     });
@@ -139,7 +143,7 @@ ordersController.updateOrderStatus = async function (req, res, next) {
 
     const validStatuses = ['pending', 'expedida', 'entregue'];
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({ message: 'Estado inválido.' });
+      return res.status(400).json({ message: 'Invalid status.' });
     }
 
     const order = await mongoOrder.findByIdAndUpdate(
@@ -149,13 +153,27 @@ ordersController.updateOrderStatus = async function (req, res, next) {
     );
 
     if (!order) {
-      return res.status(404).json({ message: 'Encomenda não encontrada.' });
+      return res.status(404).json({ message: 'Order not found.' });
     }
 
     res.json({ success: true, order });
   } catch (error) {
-    console.error("Erro ao atualizar estado da encomenda:", error);
+    console.error("Error updating order status:", error);
     next(error);
+  }
+};
+
+ordersController.hasOrder = async function (req, res, next) {
+  try {
+    const userId = req.user._id;
+    const restaurantId = req.query.restaurantId;
+    if (!restaurantId) return res.status(400).json({ hasOrder: false });
+
+    const hasOrder = await mongoOrder.exists({ userID: userId, 'items.restaurantId': restaurantId });
+    res.json({ hasOrder: !!hasOrder });
+  } catch (error) {
+    console.error("Error checking customer order:", error);
+    res.status(500).json({ hasOrder: false, error: error.message });
   }
 };
 

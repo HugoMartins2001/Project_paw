@@ -55,7 +55,8 @@ export class CartComponent {
         name: dish.name,
         price,
         quantity: dish.quantity ?? 1,
-        managerId: dish.managerId
+        managerId: dish.managerId,
+        restaurantId: dish.restaurantId || undefined // <-- adiciona isto!
       };
     });
 

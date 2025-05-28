@@ -16,7 +16,6 @@ export class RegisterComponent {
   name = '';
   email = '';
   password = '';
-  confirmPassword = '';
   role = '';
   clienteTelemovel = '';
   clienteNif = '';
@@ -33,6 +32,8 @@ export class RegisterComponent {
   hasNumber = false;
   hasSpecial = false;
   showPasswordPopover = false;
+  showPassword = false;
+
 
   constructor(
     private authService: AuthService,
@@ -70,23 +71,11 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    if (!this.name || !this.email || !this.password || !this.confirmPassword || !this.role) {
+    if (!this.name || !this.email || !this.password || !this.role) {
       Swal.fire({
         icon: 'warning',
         title: 'Attention',
         text: 'Fill in all required fields!',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000
-      });
-      return;
-    }
-    if (this.password !== this.confirmPassword) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Attention',
-        text: 'Passwords do not match!',
         toast: true,
         position: 'top-end',
         showConfirmButton: false,

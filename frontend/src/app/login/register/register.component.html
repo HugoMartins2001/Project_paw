@@ -7,30 +7,34 @@
     <form (submit)="onSubmit()">
       <div class="form-grid mb-2">
         <div class="form-group mb-3">
-          <label for="name" class="fw-semibold">Name</label>
+          <label for="name" class="fw-semibold">Name:</label>
           <input type="text" id="name" placeholder="Your name " [(ngModel)]="name" name="name" class="form-control" required />
         </div>
         <div class="form-group mb-3">
-          <label for="email" class="fw-semibold">Email</label>
+          <label for="email" class="fw-semibold">Email:</label>
           <input type="email" id="email" placeholder="Your email" [(ngModel)]="email" name="email" class="form-control" required />
         </div>
         <div class="form-group mb-3 position-relative">
           <label for="password" class="fw-semibold">Password:</label>
-          <input type="password" id="password" placeholder="Password"
-                 [(ngModel)]="password" name="password"
-                 class="form-control"
-                 required
-                 (focus)="showPasswordPopover = true"
-                 (blur)="showPasswordPopover = false"
-                 (input)="checkPasswordStrength()" />
-
+          <div class="input-group">
+            <input [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Password"
+                   [(ngModel)]="password" name="password"
+                   class="form-control"
+                   required
+                   (focus)="showPasswordPopover = true"
+                   (blur)="showPasswordPopover = false"
+                   (input)="checkPasswordStrength()" />
+            <button type="button" class="btn btn-outline-secondary" tabindex="-1"
+                    (mousedown)="showPassword = true" (mouseup)="showPassword = false" (mouseleave)="showPassword = false">
+              <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </button>
+          </div>
           <!-- Barra de força -->
           <div class="progress mt-2" style="height: 6px;">
             <div class="progress-bar"
                  [ngClass]="passwordStrengthClass"
                  [style.width.%]="passwordStrength * 25"></div>
           </div>
-
           <!-- Popover de requisitos -->
           <div *ngIf="showPasswordPopover"
                class="popover fade show bs-popover-start"
@@ -66,34 +70,30 @@
           </div>
         </div>
         <div class="form-group mb-3">
-          <label for="confirmPassword" class="fw-semibold">Confirm Password</label>
-          <input type="password" id="confirmPassword" placeholder="Confirm password" [(ngModel)]="confirmPassword" name="confirmPassword" class="form-control" required />
-        </div>
-      </div>
-      <div class="form-group mb-3">
-        <label for="role" class="fw-semibold">Account Type</label>
+        <label for="role" class="fw-semibold">Account Type:</label>
         <select id="role" [(ngModel)]="role" name="role" (change)="onRoleChange()" class="form-select" required>
           <option value="" disabled selected>Choose an option</option>
           <option value="Client">Client</option>
           <option value="Manager">Manager</option>
         </select>
       </div>
+      </div>
       <div *ngIf="role === 'Client'" class="form-grid mb-2">
         <div class="form-group mb-3">
-          <label for="clienteTelemovel" class="fw-semibold">Mobile</label>
+          <label for="clienteTelemovel" class="fw-semibold">Mobile:</label>
           <input type="text" id="clienteTelemovel" placeholder="Your mobile" [(ngModel)]="clienteTelemovel" name="clienteTelemovel" class="form-control" required />
         </div>
         <div class="form-group mb-3">
-          <label for="clienteNif" class="fw-semibold">NIF</label>
+          <label for="clienteNif" class="fw-semibold">NIF:</label>
           <input type="text" id="clienteNif" placeholder="Your NIF" [(ngModel)]="clienteNif" name="clienteNif" class="form-control" required />
         </div>
         <div class="form-group mb-3">
-          <label for="address" class="fw-semibold">Address</label>
+          <label for="address" class="fw-semibold">Address:</label>
           <input type="text" id="address" placeholder="Your address" [(ngModel)]="address" name="address" class="form-control" required />
         </div>
       </div>
       <div *ngIf="role === 'Manager'" class="form-group mb-3">
-        <label for="managerTelemovel" class="fw-semibold">Mobile</label>
+        <label for="managerTelemovel" class="fw-semibold">Mobile:</label>
         <input type="text" id="managerTelemovel" placeholder="Your mobile" [(ngModel)]="managerTelemovel" name="managerTelemovel" class="form-control" required />
       </div>
       <button type="submit" class="register-button btn btn-primary btn-lg w-100 mt-2 rounded-pill">Register</button>

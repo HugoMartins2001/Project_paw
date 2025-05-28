@@ -25,6 +25,7 @@ export interface Dish {
   allergens?: string[];
   menu?: { name?: string } | string;
   restaurant?: { name?: string } | string;
+  restaurantId?: string;
   managerId?: string | { _id: string };
   isVisible: boolean;
   selectedSize?: string; 

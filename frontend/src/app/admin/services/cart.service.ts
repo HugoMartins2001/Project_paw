@@ -35,7 +35,7 @@ export class CartService {
     return this.cart;
   }
 
-  addToCart(dish: Dish & { selectedSize: 'pequena' | 'media' | 'grande', selectedPrice: number }) {
+  addToCart(dish: Dish & { selectedSize: 'pequena' | 'media' | 'grande', selectedPrice: number, restaurantId?: string }) {
     // Verifica se já existe o mesmo prato com o mesmo tamanho no carrinho
     const existing = this.cart.find(d =>
       d._id === dish._id && d.selectedSize === dish.selectedSize

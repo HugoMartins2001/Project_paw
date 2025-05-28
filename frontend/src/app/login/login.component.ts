@@ -23,6 +23,8 @@ export class LoginComponent {
   forgotFormVisible = false;
   forgotEmail = '';
   forgotLoading = false;
+  showPassword = false;
+
 
   constructor(
     private fb: FormBuilder,

@@ -9,7 +9,8 @@
         <label for="email" class="form-label fw-semibold">Email:</label>
         <div class="input-group">
           <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
-          <input type="email" id="email" formControlName="email" class="form-control" [class.is-invalid]="errors.email" autocomplete="username" />
+          <input type="email" id="email" formControlName="email" class="form-control" [class.is-invalid]="errors.email"
+            autocomplete="username" />
         </div>
         <div *ngIf="errors.email" class="invalid-feedback d-block">
           {{ errors.email }}
@@ -20,7 +21,12 @@
         <label for="password" class="form-label fw-semibold">Password:</label>
         <div class="input-group">
           <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
-          <input type="password" id="password" formControlName="password" class="form-control" [class.is-invalid]="errors.password" autocomplete="current-password" />
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" class="form-control"
+            [class.is-invalid]="errors.password" autocomplete="current-password" />
+          <button type="button" class="btn btn-outline-secondary" tabindex="-1" (mousedown)="showPassword = true"
+            (mouseup)="showPassword = false" (mouseleave)="showPassword = false">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
         </div>
         <div *ngIf="errors.password" class="invalid-feedback d-block">
           {{ errors.password }}
@@ -39,14 +45,17 @@
 
       <div class="text-center mt-2">
         <span class="text-muted">You don't have an account?</span>
-        <a (click)="navigateToRegister()" class="ms-1 text-decoration-underline fw-semibold" style="cursor:pointer;">Register</a>
+        <a (click)="navigateToRegister()" class="ms-1 text-decoration-underline fw-semibold"
+          style="cursor:pointer;">Register</a>
       </div>
     </form>
 
-    <a (click)="navigateToForgotPassword()" class="ms-1 text-decoration-underline d-block text-center mt-2" *ngIf="!forgotFormVisible" style="cursor:pointer;">Forgot your password?</a>
+    <a (click)="navigateToForgotPassword()" class="ms-1 text-decoration-underline d-block text-center mt-2"
+      *ngIf="!forgotFormVisible" style="cursor:pointer;">Forgot your password?</a>
 
     <div *ngIf="forgotFormVisible" class="mt-3">
-      <input type="email" [(ngModel)]="forgotEmail" placeholder="Your email" class="form-control mb-2" [disabled]="forgotLoading">
+      <input type="email" [(ngModel)]="forgotEmail" placeholder="Your email" class="form-control mb-2"
+        [disabled]="forgotLoading">
       <button class="btn btn-primary w-100 mb-2" (click)="onForgotSubmit()" [disabled]="forgotLoading">
         Recover Password
       </button>
