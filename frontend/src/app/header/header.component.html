@@ -73,9 +73,51 @@
     <!-- Resto do header (cart, notificações, auth, user-info) -->
     <!-- ...mantém igual ao teu código atual... -->
     <div *ngIf="userRole === 'Client'" class="d-flex align-items-center gap-3">
+       <div class="d-flex align-items-center gap-3">
+        <!-- Carrinho -->
+        <div *ngIf="cartService.getCart().length >= 0" (click)="navigateToCart()"
+          class="cart-summary d-flex align-items-center ms-2 px-3 py-1 shadow-sm"
+          style="border-radius: 24px; cursor:pointer; transition: box-shadow 0.2s; border: 1px solid #e3e6ea;">
+          <i class="bi bi-cart3 text-primary" style="font-size: 1.5rem;"></i>
+          <span class="badge bg-danger ms-n2 mb-3" style="font-size: 0.8rem; position:relative; top:-10px; left:-10px;">
+            {{ cartService.getCart().length }}
+          </span>
+          <span class="fw-semibold ms-2" style="font-size: 1.1rem;">
+            {{ cartService.getCartTotal() | number:'1.2-2' }} €
+          </span>
+          <span class="text-muted small ms-3 d-flex align-items-center" *ngIf="cartService.getCart().length > 0"
+            style="font-size: 1rem;">
+            <i class="bi bi-clock-history me-1"></i>
+            {{ minutes }}:{{ seconds < 10 ? '0' + seconds : seconds }} </span>
+              <button (click)="clearCart($event)" class="btn btn-link p-0 ms-3"
+                style="color: #dc3545; font-size: 1.3rem;" title="Limpar carrinho">
+                <i class="bi bi-trash"></i>
+              </button>
+        </div>
+      </div>
       <!-- ...cart code... -->
     </div>
     <div *ngIf="userRole === 'Manager'" class="d-flex align-items-center gap-3">
+      <div class="position-relative me-3" style="cursor:pointer; display: inline-block;" (click)="openNotifications()">
+        <i class="bi bi-bell" style="font-size: 1.7rem; color: #0d6efd;"></i>
+        <span *ngIf="notificationCount > 0"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          style="font-size: 0.75rem;">
+          {{ notificationCount }}
+        </span>
+        <div *ngIf="showNotifications" class="dropdown-menu show p-2"
+          style="min-width: 250px; right: 0; left: auto; position: absolute; top: 120%;">
+          <div *ngIf="notifications.length === 0" class="text-muted small">No new notifications.</div>
+          <div *ngFor="let notif of notifications" class="dropdown-item small">
+            <div [innerHTML]="notif.message"></div>
+            <div class="text-muted mt-1" style="font-size:0.95em; line-height:1.4;">
+              <div *ngIf="notif.total"><b>Total:</b> {{ notif.total }} €</div>
+              <div *ngIf="notif.items"><b>Itens:</b> {{ notif.items }}</div>
+              <div *ngIf="notif.createdAt" style="font-size:0.85em;">{{ notif.createdAt | date:'short' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- ...notifications code... -->
     </div>
     <div class="auth-buttons d-flex gap-2" *ngIf="!userName">
