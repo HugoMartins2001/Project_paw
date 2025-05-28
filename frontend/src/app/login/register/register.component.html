@@ -1,4 +1,4 @@
-<div class="register-bg d-flex align-items-center justify-content-center min-vh-100" style="background: linear-gradient(120deg, #f0f4ff 0%, #e0e7ff 100%);">
+<div class="register-bg d-flex align-items-center justify-content-center min-vh-100">
   <div class="register-card shadow-lg p-4 rounded-4 bg-white" style="min-width:340px; max-width:500px; width:100%;">
     <div class="text-center mb-4">
       <h2 class="mb-0 text-primary fw-bold" style="letter-spacing:0.5px;">Create Account</h2>
@@ -14,9 +14,56 @@
           <label for="email" class="fw-semibold">Email</label>
           <input type="email" id="email" placeholder="Your email" [(ngModel)]="email" name="email" class="form-control" required />
         </div>
-        <div class="form-group mb-3">
-          <label for="password" class="fw-semibold">Password</label>
-          <input type="password" id="password" placeholder="Password" [(ngModel)]="password" name="password" class="form-control" required />
+        <div class="form-group mb-3 position-relative">
+          <label for="password" class="fw-semibold">Password:</label>
+          <input type="password" id="password" placeholder="Password"
+                 [(ngModel)]="password" name="password"
+                 class="form-control"
+                 required
+                 (focus)="showPasswordPopover = true"
+                 (blur)="showPasswordPopover = false"
+                 (input)="checkPasswordStrength()" />
+
+          <!-- Barra de força -->
+          <div class="progress mt-2" style="height: 6px;">
+            <div class="progress-bar"
+                 [ngClass]="passwordStrengthClass"
+                 [style.width.%]="passwordStrength * 25"></div>
+          </div>
+
+          <!-- Popover de requisitos -->
+          <div *ngIf="showPasswordPopover"
+               class="popover fade show bs-popover-start"
+               style="position: absolute; top: 0; left: -270px; z-index: 10; min-width: 250px; margin-top: 0; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 24px #0001;">
+            <div class="popover-arrow" style="top: 20px; left: 100%;"></div>
+            <div class="popover-body py-3 px-3">
+              <div class="fw-semibold mb-2 text-primary" style="font-size: 1.05em;">
+                Password requirements
+              </div>
+              <ul class="list-unstyled small mb-0">
+                <li [class.text-success]="password.length >= 8">
+                  <i class="bi" [ngClass]="password.length >= 8 ? 'bi-check-circle-fill' : 'bi-circle'"></i>
+                  Minimum 8 characters
+                </li>
+                <li [class.text-success]="hasUppercase">
+                  <i class="bi" [ngClass]="hasUppercase ? 'bi-check-circle-fill' : 'bi-circle'"></i>
+                  At least one uppercase letter
+                </li>
+                <li [class.text-success]="hasLowercase">
+                  <i class="bi" [ngClass]="hasLowercase ? 'bi-check-circle-fill' : 'bi-circle'"></i>
+                  At least one lowercase letter
+                </li>
+                <li [class.text-success]="hasNumber">
+                  <i class="bi" [ngClass]="hasNumber ? 'bi-check-circle-fill' : 'bi-circle'"></i>
+                  At least one number
+                </li>
+                <li [class.text-success]="hasSpecial">
+                  <i class="bi" [ngClass]="hasSpecial ? 'bi-check-circle-fill' : 'bi-circle'"></i>
+                  At least one special symbol
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div class="form-group mb-3">
           <label for="confirmPassword" class="fw-semibold">Confirm Password</label>

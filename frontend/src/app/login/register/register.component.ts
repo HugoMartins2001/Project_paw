@@ -26,6 +26,14 @@ export class RegisterComponent {
   errorMsg = '';
   successMsg = '';
 
+  passwordStrength = 0;
+  passwordStrengthClass = '';
+  hasUppercase = false;
+  hasLowercase = false;
+  hasNumber = false;
+  hasSpecial = false;
+  showPasswordPopover = false;
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -39,6 +47,26 @@ export class RegisterComponent {
       this.clienteNif = '';
       this.address = '';
     }
+  }
+
+  checkPasswordStrength() {
+    const pwd = this.password || '';
+    this.hasUppercase = /[A-Z]/.test(pwd);
+    this.hasLowercase = /[a-z]/.test(pwd);
+    this.hasNumber = /\d/.test(pwd);
+    this.hasSpecial = /[^A-Za-z0-9]/.test(pwd);
+
+    let strength = 0;
+    if (pwd.length >= 8) strength++;
+    if (this.hasUppercase) strength++;
+    if (this.hasLowercase) strength++;
+    if (this.hasNumber) strength++;
+    if (this.hasSpecial) strength++;
+
+    this.passwordStrength = strength;
+    if (strength <= 2) this.passwordStrengthClass = 'bg-danger';
+    else if (strength === 3) this.passwordStrengthClass = 'bg-warning';
+    else if (strength >= 4) this.passwordStrengthClass = 'bg-success';
   }
 
   onSubmit() {
