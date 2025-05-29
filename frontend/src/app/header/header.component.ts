@@ -45,16 +45,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loadUserData();
     this.startTimer();
 
-    // Subscreve ao carrinho para reiniciar o timer sempre que muda
     this.cartSub = this.cartService.cart$.subscribe(cart => {
       this.startTimer();
     });
 
-    this.socket = io('http://localhost:3001'); // Usa o URL do teu backend
+    this.socket = io('http://localhost:3001');
 
     this.socket.on('newOrder', (data) => {
       this.notificationCount++;
-      this.notifications.unshift(data); // NÃO faças .unshift(data.message)!
+      this.notifications.unshift(data); 
     });
 
     this.checkScreen();
@@ -121,7 +120,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   checkScreen() {
-    this.isMobileScreen = window.innerWidth < 992; // Bootstrap lg breakpoint
+    this.isMobileScreen = window.innerWidth < 992;
     if (!this.isMobileScreen) this.showMobileMenu = false;
   }
 
