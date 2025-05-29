@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   managerId: { type: String },
-  userID: { type: String },
+  userID: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
   items: Array,
   status: String,
   createdAt: { type: Date, default: Date.now },

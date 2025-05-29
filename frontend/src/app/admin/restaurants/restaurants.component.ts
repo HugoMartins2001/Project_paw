@@ -18,6 +18,10 @@ export class RestaurantsComponent implements OnInit {
   filterName: string = '';
   filterAddress: string = '';
 
+  currentPage = 1;
+  totalPages = 1;
+  limit = 6;
+
   constructor(private restaurantService: RestaurantService) { }
 
   userRole = localStorage.getItem('role');
@@ -27,8 +31,9 @@ export class RestaurantsComponent implements OnInit {
     this.fetchRestaurants();
   }
 
-  fetchRestaurants(): void {
-    const params: any = {};
+  fetchRestaurants(page: number = 1): void {
+    this.isLoading = true;
+    const params: any = { page, limit: this.limit };
     if (this.filterName) params.name = this.filterName;
     if (this.filterAddress) params.address = this.filterAddress;
 
@@ -36,14 +41,23 @@ export class RestaurantsComponent implements OnInit {
       next: (data: any) => {
         if (data && Array.isArray(data.restaurants)) {
           this.restaurants = data.restaurants;
+          this.currentPage = data.currentPage || 1;
+          this.totalPages = data.totalPages || 1;
         } else if (Array.isArray(data)) {
           this.restaurants = data;
+          this.currentPage = 1;
+          this.totalPages = 1;
         } else {
           this.restaurants = [];
+          this.currentPage = 1;
+          this.totalPages = 1;
         }
         this.isLoading = false;
       },
       error: (err) => {
+        this.restaurants = [];
+        this.currentPage = 1;
+        this.totalPages = 1;
         this.isLoading = false;
       },
     });
@@ -130,5 +144,11 @@ export class RestaurantsComponent implements OnInit {
       }
     });
   }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.fetchRestaurants(page);
+  }
+
 }
 

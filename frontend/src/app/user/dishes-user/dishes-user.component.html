@@ -38,8 +38,7 @@
         <!-- Inputs de pesquisa e preço -->
         <div class="row g-3 mt-2">
             <div class="col-md-4">
-                <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Dish name"
-                    class="form-control" />
+                <input [(ngModel)]="filterName" (input)="loadDishes()" placeholder="Dish name" class="form-control" />
             </div>
             <div class="col-md-4">
                 <input [(ngModel)]="filterMinPrice" type="number" (input)="loadDishes()" placeholder="Minimum price"
@@ -99,11 +98,28 @@
             </div>
         </div>
     </div>
+    <!-- Exemplo de paginação -->
+    <nav *ngIf="totalPages > 1" class="mt-4 d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+                <button class="page-link" (click)="changePage(currentPage - 1)"
+                    [disabled]="currentPage === 1">Previous</button>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+                [class.active]="currentPage === (i+1)">
+                <button class="page-link" (click)="changePage(i+1)">{{ i+1 }}</button>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <button class="page-link" (click)="changePage(currentPage + 1)"
+                    [disabled]="currentPage === totalPages">Next</button>
+            </li>
+        </ul>
+    </nav>
     <ng-template #noDishes>
-      <div class="d-flex flex-column align-items-center justify-content-center py-5">
-        <i class="bi bi-egg-fried text-secondary mb-3" style="font-size: 3rem;"></i>
-        <h4 class="mb-2 text-secondary fw-semibold">There are no dishes available yet.</h4>
-        <p class="text-muted">As soon as a dish is created, it will appear here for you!</p>
-      </div>
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <i class="bi bi-egg-fried text-secondary mb-3" style="font-size: 3rem;"></i>
+            <h4 class="mb-2 text-secondary fw-semibold">There are no dishes available yet.</h4>
+            <p class="text-muted">As soon as a dish is created, it will appear here for you!</p>
+        </div>
     </ng-template>
 </div>

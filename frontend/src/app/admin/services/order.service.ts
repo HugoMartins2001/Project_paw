@@ -10,12 +10,13 @@ export class OrderService {
 
     constructor(private http: HttpClient) { }
 
-    getClientOrders(): Observable<any> {
+    getClientOrders(params?: any): Observable<any> {
         const token = localStorage.getItem('token');
         return this.http.get<any>(
             `${this.apiUrl}/ordersHistory`,
             {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}` },
+                params
             }
         );
     }

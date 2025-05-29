@@ -27,7 +27,10 @@ export class DishesComponent implements OnInit {
   categories: string[] = [];
   allergensList: string[] = [];
   selectedSize: { [dishId: string]: 'pequena' | 'media' | 'grande' | null } = {};
+  currentPage = 1;
+  totalPages = 1;
 
+  
   constructor(private dishService: DishService, private cartService: CartService) { }
 
   ngOnInit(): void {
@@ -36,17 +39,20 @@ export class DishesComponent implements OnInit {
     this.loadDishes();
   }
 
-  loadDishes(): void {
-    const params: any = {};
+  loadDishes(page: number = 1): void {
+    this.isLoading = true;
+    const params: any = { page }; // Adicione a página aos parâmetros
     if (this.filterName) params.name = this.filterName;
     if (this.filterCategory) params.category = this.filterCategory;
     if (this.filterAllergens) params.allergens = this.filterAllergens;
     if (this.filterMinPrice !== null) params.minPrice = this.filterMinPrice;
     if (this.filterMaxPrice !== null) params.maxPrice = this.filterMaxPrice;
 
-    this.dishService.getDishes({}).subscribe({
+    this.dishService.getDishes(params).subscribe({
       next: (data: any) => {
         this.dishes = data.dishes || [];
+        this.currentPage = data.currentPage || 1;
+        this.totalPages = data.totalPages || 1;
         this.categories = Array.from(new Set(this.dishes.map((d: any) => d.category).filter(Boolean)));
         this.allergensList = Array.from(
           new Set(
@@ -165,5 +171,10 @@ export class DishesComponent implements OnInit {
     if (!size) return;
     const price = dish.prices?.[size] || 0;
     this.cartService.addToCart({ ...dish, selectedSize: size, selectedPrice: price });
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.loadDishes(page);
   }
 }

@@ -25,6 +25,10 @@ export class MenusComponent implements OnInit {
   filterMinPrice: number | null = null;
   filterMaxPrice: number | null = null;
 
+  currentPage = 1;
+  totalPages = 1;
+  limit = 6; // Ou outro valor desejado
+
   constructor(private menuService: MenuService, private restaurantService: RestaurantService) { }
 
   ngOnInit(): void {
@@ -51,25 +55,34 @@ export class MenusComponent implements OnInit {
     });
   }
 
-  loadMenus(): void {
-    const params: any = {};
+  loadMenus(page: number = 1): void {
+    this.isLoading = true;
+    const params: any = { page, limit: this.limit };
     if (this.filterName) params.name = this.filterName;
     if (this.filterMinPrice) params.minPrice = this.filterMinPrice;
     if (this.filterMaxPrice) params.maxPrice = this.filterMaxPrice;
 
     this.menuService.getMenus(params).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         if (data && Array.isArray(data.menus)) {
           this.menus = data.menus;
+          this.currentPage = data.currentPage || 1;
+          this.totalPages = data.totalPages || 1;
         } else if (Array.isArray(data)) {
           this.menus = data;
+          this.currentPage = 1;
+          this.totalPages = 1;
         } else {
           this.menus = [];
+          this.currentPage = 1;
+          this.totalPages = 1;
         }
         this.isLoading = false;
       },
       error: () => {
         this.menus = [];
+        this.currentPage = 1;
+        this.totalPages = 1;
         this.isLoading = false;
       }
     });
@@ -150,5 +163,10 @@ export class MenusComponent implements OnInit {
         });
       }
     });
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.loadMenus(page);
   }
 }

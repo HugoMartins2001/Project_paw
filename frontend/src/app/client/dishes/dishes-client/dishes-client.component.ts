@@ -28,6 +28,9 @@ export class DishesClientComponent implements OnInit {
   allergensList: string[] = [];
   selectedSize: { [dishId: string]: 'pequena' | 'media' | 'grande' | null } = {};
   restaurantId: string | null | undefined;
+  currentPage = 1;
+  totalPages = 1;
+  limit = 6;
 
   constructor(private dishService: DishService, private cartService: CartService) { }
 
@@ -37,43 +40,36 @@ export class DishesClientComponent implements OnInit {
     this.loadDishes();
   }
 
-  loadDishes(): void {
-    const params: any = {};
-    if (this.filterName) params.name = this.filterName;
-    if (this.filterCategory) params.category = this.filterCategory;
-    if (this.filterAllergens) params.allergens = this.filterAllergens;
-    if (this.filterMinPrice !== null) params.minPrice = this.filterMinPrice;
-    if (this.filterMaxPrice !== null) params.maxPrice = this.filterMaxPrice;
+  loadDishes(page: number = 1): void {
+  this.isLoading = true;
+  const params: any = { page, limit: this.limit };
+  if (this.filterName) params.name = this.filterName;
+  if (this.filterCategory) params.category = this.filterCategory;
+  if (this.filterAllergens) params.allergens = this.filterAllergens;
+  if (this.filterMinPrice !== null) params.minPrice = this.filterMinPrice;
+  if (this.filterMaxPrice !== null) params.maxPrice = this.filterMaxPrice;
 
-    this.dishService.getDishes({}).subscribe({
-      next: (data: any) => {
-        this.allDishes = data.dishes || [];
-        this.categories = Array.from(new Set(this.allDishes.map((d: any) => d.category).filter(Boolean)));
-        this.allergensList = Array.from(
-          new Set(
-            this.allDishes.flatMap((d: any) => Array.isArray(d.allergens) ? d.allergens : []).filter(Boolean)
-          )
-        );
-        this.dishes = this.allDishes.filter(dish => {
-          let match = true;
-          if (this.filterCategory) match = match && dish.category === this.filterCategory;
-          if (this.filterAllergens) match = match && (dish.allergens || []).includes(this.filterAllergens);
-          if (this.filterName) match = match && dish.name.toLowerCase().includes(this.filterName.toLowerCase());
-          const price = dish.prices?.media ?? 0;
-          if (this.filterMinPrice !== null) match = match && price >= this.filterMinPrice;
-          if (this.filterMaxPrice !== null) match = match && price <= this.filterMaxPrice;
-          return match;
-        });
-        this.isLoading = false;
-      },
-      error: () => {
-        this.dishes = [];
-        this.categories = [];
-        this.allergensList = [];
-        this.isLoading = false;
-      }
-    });
-  }
+  this.dishService.getDishes(params).subscribe({
+    next: (data: any) => {
+      this.dishes = data.dishes || [];
+      this.currentPage = data.currentPage || 1;
+      this.totalPages = data.totalPages || 1;
+      this.categories = Array.from(new Set(this.dishes.map((d: any) => d.category).filter(Boolean)));
+      this.allergensList = Array.from(
+        new Set(
+          this.dishes.flatMap((d: any) => Array.isArray(d.allergens) ? d.allergens : []).filter(Boolean)
+        )
+      );
+      this.isLoading = false;
+    },
+    error: () => {
+      this.dishes = [];
+      this.categories = [];
+      this.allergensList = [];
+      this.isLoading = false;
+    }
+  });
+}
 
   deleteDish(id: string) {
     Swal.fire({
@@ -162,4 +158,10 @@ export class DishesClientComponent implements OnInit {
       timer: 1200
     });
   }
+
+  changePage(page: number) {
+  if (page < 1 || page > this.totalPages) return;
+  this.loadDishes(page);
+}
+
 }

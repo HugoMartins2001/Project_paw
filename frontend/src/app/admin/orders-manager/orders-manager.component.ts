@@ -14,6 +14,9 @@ export class OrdersManagerComponent implements OnInit {
   managerId = localStorage.getItem('userID');
   orders: any[] = [];
   loading = true;
+  expandedOrderIndex: number | null = null;
+  currentPage = 1;
+  totalPages = 1;
 
   constructor(private http: HttpClient) { }
 
@@ -21,15 +24,18 @@ export class OrdersManagerComponent implements OnInit {
     this.fetchOrders();
   }
 
-  fetchOrders() {
+  fetchOrders(page: number = 1) {
+    this.loading = true;
     const token = localStorage.getItem('token');
-    this.http.get<any>('http://localhost:3000/api/orders/ordersHistory', {
+    this.http.get<any>(`http://localhost:3000/api/orders/ordersHistory?page=${page}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: res => {
         this.orders = (res.orders || []).filter((order: any) =>
           order.items && order.items.some((item: any) => item.managerId === this.managerId)
         );
+        this.currentPage = res.currentPage || 1;
+        this.totalPages = res.totalPages || 1;
         this.loading = false;
       },
       error: () => {
@@ -37,6 +43,11 @@ export class OrdersManagerComponent implements OnInit {
         alert('Error fetching orders!');
       }
     });
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.fetchOrders(page);
   }
 
   filterManagerItems(items: any[]): any[] {

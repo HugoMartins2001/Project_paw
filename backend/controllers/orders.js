@@ -1,5 +1,6 @@
 const logAction = require("../utils/logger");
 const mongoOrder = require("../models/order");
+const User = require("../models/user");
 
 let ordersController = {};
 
@@ -34,6 +35,7 @@ ordersController.getOrdersHistory = async function (req, res, next) {
     }
 
     const orders = await mongoOrder.find(filter)
+      .populate('userID') 
       .skip(skip)
       .limit(ordersPerPage)
 
@@ -41,14 +43,17 @@ ordersController.getOrdersHistory = async function (req, res, next) {
     const totalPages = Math.ceil(totalOrders / ordersPerPage); 
 
     res.json({
-      orders,
+      orders: orders.map(order => ({
+        ...order.toObject(),
+        user: order.userID, // renomeia userID para user
+      })),
       user,
       filters: { restaurantName, startDate, endDate },
       currentPage: parseInt(page),
       totalPages,
     });
   } catch (error) {
-    console.error("Erro ao obter o histórico de encomendas:", error);
+    console.error("Error obtaining order history:", error);
     next(error); 
   }
 };

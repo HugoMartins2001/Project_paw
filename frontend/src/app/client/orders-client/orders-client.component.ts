@@ -14,14 +14,35 @@ import { logoBase64 } from './logo-base64';
 })
 export class OrdersClientComponent implements OnInit {
   orders: any[] = [];
+  currentPage = 1;
+  totalPages = 1;
+  ordersPerPage = 10;
+  expandedOrderIndex: number | null = null;
 
   constructor(private ordersService: OrderService) { }
 
   ngOnInit() {
-    this.ordersService.getClientOrders().subscribe({
-      next: (res) => this.orders = res.orders,
-      error: () => this.orders = []
+    this.loadOrders();
+  }
+
+  loadOrders(page: number = 1) {
+    this.ordersService.getClientOrders({ page, limit: this.ordersPerPage }).subscribe({
+      next: (res) => {
+        this.orders = res.orders;
+        this.currentPage = res.currentPage || 1;
+        this.totalPages = res.totalPages || 1;
+      },
+      error: () => {
+        this.orders = [];
+        this.currentPage = 1;
+        this.totalPages = 1;
+      }
     });
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.loadOrders(page);
   }
 
   exportOrderPDF(order: any) {
