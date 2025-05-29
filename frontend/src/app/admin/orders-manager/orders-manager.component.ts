@@ -27,7 +27,9 @@ export class OrdersManagerComponent implements OnInit {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: res => {
-        this.orders = res.orders || [];
+        this.orders = (res.orders || []).filter((order: any) =>
+          order.items && order.items.some((item: any) => item.managerId === this.managerId)
+        );
         this.loading = false;
       },
       error: () => {

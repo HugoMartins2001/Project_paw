@@ -57,7 +57,6 @@ ordersController.getOrderDetails = async function (req, res, next) {
   try {
     const orderId = req.params.orderId;
 
-    // Buscar o pedido pelo ID
     const order = await mongoOrder.findById(orderId);
 
     if (!order) {
@@ -127,11 +126,11 @@ ordersController.createOrder = async function (req, res) {
     });
 
     const io = req.app.get('io');
-    io.emit('orderCreated', { message: 'Nova encomenda recebida!', order: newOrder });
+    io.emit('orderCreated', { message: 'New order received!', order: newOrder });
 
     res.status(201).json({ success: true, order: newOrder });
   } catch (error) {
-    console.error("Erro ao criar encomenda:", error);
+    console.error("Error creating order:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
