@@ -8,6 +8,7 @@ var mongoose = require("mongoose");
 var flash = require("connect-flash");
 var session = require("express-session");
 var passport = require("./config/passport-config");
+const swaggerui = require('swagger-ui-express');
 
 
 const indexRouter = require("./routes/dashboard");
@@ -82,6 +83,7 @@ app.use("/api/orders", ordersRouter);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/contact', contactRouter);
 app.use('/api/comment', commentRoutes);
+app.use('/api/docs', swaggerui.serve, swaggerui.setup(require('./swagger/swagger.json')));
 
 
 app.use(function (req, res, next) {
