@@ -189,7 +189,7 @@
         }
       }
     },
-    "/restaurants/showRestaurants": {
+    "/api/restaurants/showRestaurants": {
       "get": {
         "description": "Retorna uma lista de restaurantes com base no papel do Utilizador.",
         "summary": "Retorna todos os restaurantes",
