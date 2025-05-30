@@ -18,8 +18,10 @@
   "produces": [
     "application/json"
   ],
+  "defaultExpandDepth": -1,
+  "docExpansion": "none",
   "paths": {
-    "/restaurants/showRestaurant/{name}": {
+    "/api/restaurants/showRestaurant/{name}": {
       "get": {
         "description": "",
         "summary": "Retorna os detalhes de um restaurante",
@@ -55,7 +57,7 @@
         }
       }
     },
-    "/restaurants/submittedRestaurant": {
+    "/api/restaurants/submittedRestaurant": {
       "post": {
         "description": "Permite que um manager crie um novo restaurante.",
         "summary": "Criar um novo restaurante",
@@ -103,7 +105,7 @@
         }
       }
     },
-    "/restaurants/editRestaurant/{id}": {
+    "/api/restaurants/editRestaurant/{id}": {
       "post": {
         "description": "Permite que um manager ou administrador atualize os detalhes de um restaurante.",
         "summary": "Atualiza um restaurante existente",
@@ -158,7 +160,7 @@
         }
       }
     },
-    "/restaurants/pendingApproval": {
+    "/api/restaurants/pendingApproval": {
       "get": {
         "description": "Permite que um administrador veja todos os restaurantes que aguardam aprovação.",
         "summary": "Lista restaurantes pendentes de aprovação",
@@ -220,7 +222,7 @@
         }
       }
     },
-    "/restaurants/deleteRestaurant/{id}": {
+    "/api/restaurants/deleteRestaurant/{id}": {
       "post": {
         "description": "",
         "summary": "Eliminar um restaurante",
@@ -257,7 +259,7 @@
         }
       }
     },
-    "/dishes/showDishes": {
+    "/api/dishes/showDishes": {
       "get": {
         "description": "Retorna uma lista de pratos disponíveis.",
         "summary": "Retorna todos os pratos",
@@ -284,7 +286,7 @@
         }
       }
     },
-    "/dishes/submittedDish": {
+    "/api/dishes/submittedDish": {
       "post": {
         "description": "Permite que um manager crie um novo prato.",
         "summary": "Cria um novo prato",
@@ -332,7 +334,7 @@
         }
       }
     },
-    "/dishes/showDish/{dishId}": {
+    "/api/dishes/showDish/{dishId}": {
       "get": {
         "description": "",
         "summary": "Retorna os detalhes de um prato",
@@ -368,7 +370,7 @@
         }
       }
     },
-    "/dishes/deleteDish/{dishId}": {
+    "/api/dishes/deleteDish/{dishId}": {
       "post": {
         "description": "",
         "summary": "Eleminar um prato",
@@ -405,7 +407,7 @@
         }
       }
     },
-    "/dishes/editDish/{dishId}": {
+    "/api/dishes/editDish/{dishId}": {
       "post": {
         "description": "",
         "summary": "Atualiza um prato existente",
@@ -460,7 +462,7 @@
         }
       }
     },
-    "/menus/showMenus": {
+    "/api/menus/showMenus": {
       "get": {
         "description": "Retorna uma lista de menus disponíveis.",
         "summary": "Retorna todos os menus",
@@ -487,7 +489,7 @@
         }
       }
     },
-    "/menus/submittedMenu": {
+    "/api/menus/submittedMenu": {
       "post": {
         "description": "Permite que um manager crie um novo menu.",
         "summary": "Cria um novo menu",
@@ -535,7 +537,7 @@
         }
       }
     },
-    "/menus/showMenu/{menuId}": {
+    "/api/menus/showMenu/{menuId}": {
       "get": {
         "description": "",
         "summary": "Retorna os detalhes de um menu",
@@ -571,7 +573,7 @@
         }
       }
     },
-    "/menus/deleteMenu/{menuId}": {
+    "/api/menus/deleteMenu/{menuId}": {
       "post": {
         "description": "",
         "summary": "Eleminar um menu",
@@ -608,7 +610,7 @@
         }
       }
     },
-    "/menus/editMenu/{menuId}": {
+    "/api/menus/editMenu/{menuId}": {
       "post": {
         "description": "",
         "summary": "Atualiza um menu existente",
@@ -663,7 +665,7 @@
         }
       }
     },
-    "/users/showUsers": {
+    "/api/users/showUsers": {
       "get": {
         "description": "Retorna uma lista de utilizadores registados no sistema, sem incluir as senhas.",
         "summary": "Retorna todos os utilizadores",
@@ -694,7 +696,7 @@
         }
       }
     },
-    "/auth/login": {
+    "/api/auth/login": {
       "get": {
         "description": "Renderiza a página de login para o utilizador.",
         "summary": "Exibe a página de login",
@@ -715,7 +717,7 @@
         }
       }
     },
-    "/auth/loginSubmitted": {
+    "/api/auth/loginSubmitted": {
       "post": {
         "description": "Verifica as credenciais do utilizador e retorna um token de autenticação.",
         "summary": "Realiza o login do utilizador",
@@ -793,7 +795,7 @@
         }
       }
     },
-    "/auth/logout": {
+    "/api/auth/logout": {
       "get": {
         "description": "Remove o token de autenticação e redireciona para a página inicial.",
         "summary": "Realiza o logout do utilizador",
@@ -814,7 +816,7 @@
         }
       }
     },
-    "/auth/register": {
+    "/api/auth/register": {
       "get": {
         "description": "Renderiza a página para criar um novo utilizador.",
         "summary": "Exibe a página de registo",
@@ -835,7 +837,7 @@
         }
       }
     },
-    "/auth/registerSubmitted": {
+    "/api/auth/registerSubmitted": {
       "post": {
         "description": "Registra um novo utilizador no sistema.",
         "summary": "Cria um novo utilizador",
@@ -883,7 +885,7 @@
         }
       }
     },
-    "/auth/google": {
+    "/api/auth/google": {
       "get": {
         "description": "Redireciona o utilizador para a página de autenticação do Google.",
         "summary": "Inicia o login com Google",
@@ -904,7 +906,7 @@
         }
       }
     },
-    "/auth/google/callback": {
+    "/api/auth/google/callback": {
       "get": {
         "description": "Recebe o retorno do Google após a autenticação.",
         "summary": "Callback do login com Google",
@@ -929,7 +931,7 @@
         }
       }
     },
-    "/auth/forgot-password": {
+    "/api/auth/forgot-password": {
       "post": {
         "description": "Envia um link de redefinição de senha para o e-mail fornecido.",
         "summary": "Solicitar redefinição de senha",
@@ -1008,7 +1010,7 @@
         }
       }
     },
-    "/auth/reset-password/{token}": {
+    "/api/auth/reset-password/{token}": {
       "post": {
         "description": "Permite redefinir a senha do utilizador usando um token válido.",
         "summary": "Redefinir senha",
@@ -1063,6 +1065,261 @@
           "500": {
             "description": "Erro interno do servidor",
             "headers": {}
+          }
+        }
+      }
+    },
+    "/api/admin/logs": {
+      "get": {
+        "description": "Lista todos os logs do sistema (apenas admin).",
+        "summary": "Listar logs",
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "ListarLogs",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de logs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado"
+          }
+        }
+      }
+    },
+    "/api/admin/logs/deleteAll": {
+      "delete": {
+        "description": "Remove todos os logs do sistema (apenas admin).",
+        "summary": "Apagar todos os logs",
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "ApagarTodosLogs",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Todos os logs apagados"
+          },
+          "403": {
+            "description": "Acesso negado"
+          }
+        }
+      }
+    },
+    "/api/admin/logs/{logId}/delete": {
+      "delete": {
+        "description": "Remove um log específico pelo ID (apenas admin).",
+        "summary": "Apagar log por ID",
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "ApagarLogPorId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "logId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do log"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Log apagado"
+          },
+          "404": {
+            "description": "Log não encontrado"
+          },
+          "403": {
+            "description": "Acesso negado"
+          }
+        }
+      }
+    },
+    "/api/orders/ordersHistory": {
+      "get": {
+        "description": "Lista o histórico de encomendas do utilizador autenticado.",
+        "summary": "Histórico de encomendas",
+        "tags": [
+          "Encomendas"
+        ],
+        "operationId": "HistoricoEncomendas",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de encomendas",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado"
+          }
+        }
+      }
+    },
+    "/api/orders/hasOrder": {
+      "get": {
+        "description": "Verifica se o utilizador já fez encomenda num restaurante.",
+        "summary": "Verificar encomenda em restaurante",
+        "tags": [
+          "Encomendas"
+        ],
+        "operationId": "VerificarEncomendaRestaurante",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "ID do restaurante"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado da verificação",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hasOrder": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado"
+          }
+        }
+      }
+    },
+    "/api/orders/{orderId}": {
+      "get": {
+        "description": "Obtém os detalhes de uma encomenda pelo ID.",
+        "summary": "Detalhes da encomenda",
+        "tags": [
+          "Encomendas"
+        ],
+        "operationId": "DetalhesEncomenda",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da encomenda"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da encomenda",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "404": {
+            "description": "Encomenda não encontrada"
+          }
+        }
+      }
+    },
+    "/api/orders/{orderId}/delete": {
+      "post": {
+        "description": "Remove uma encomenda pelo ID.",
+        "summary": "Apagar encomenda",
+        "tags": [
+          "Encomendas"
+        ],
+        "operationId": "ApagarEncomenda",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da encomenda"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Encomenda apagada"
+          },
+          "404": {
+            "description": "Encomenda não encontrada"
+          }
+        }
+      }
+    },
+    "/api/orders/{orderId}/status": {
+      "patch": {
+        "description": "Atualiza o status de uma encomenda.",
+        "summary": "Atualizar status da encomenda",
+        "tags": [
+          "Encomendas"
+        ],
+        "operationId": "AtualizarStatusEncomenda",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da encomenda"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status atualizado"
+          },
+          "404": {
+            "description": "Encomenda não encontrada"
           }
         }
       }
@@ -1589,6 +1846,14 @@
     {
       "name": "Autenticação",
       "description": "Endpoints relacionados à autenticação"
+    },
+    {
+      "name": "Admin",
+      "description": "Endpoints administrativos"
+    },
+    {
+      "name": "Encomendas",
+      "description": "Endpoints relacionados a encomendas"
     }
   ]
 }
