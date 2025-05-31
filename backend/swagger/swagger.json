@@ -8,7 +8,14 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "securityDefinitions": {},
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'"
+    }
+  },
   "schemes": [
     "http"
   ],
@@ -39,22 +46,38 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Nome do restaurante"
+            "description": "Nome do restaurante. Exemplo: 'Pizza Bella'"
           }
         ],
         "responses": {
           "200": {
-            "description": "Detalhes do restaurante",
+            "description": "Detalhes do restaurante retornados com sucesso.",
             "schema": {
               "$ref": "#/definitions/RestaurantsShowRestaurantResponse"
+            },
+            "examples": {
+              "application/json": {
+                "name": "Pizza Bella",
+                "address": "Rua das Flores, 123",
+                "phone": "912345678",
+                "email": "contato@pizzabella.com",
+                "openingHours": "10:00-22:00",
+                "paymentMethods": "Dinheiro, Cartão",
+                "menus": ["Menu Executivo", "Menu Infantil"]
+              }
             },
             "headers": {}
           },
           "404": {
-            "description": "Restaurante não encontrado",
+            "description": "Restaurante não encontrado. O nome fornecido não existe no sistema.",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/restaurants/submittedRestaurant": {
@@ -81,32 +104,60 @@
               "application/json"
             ],
             "type": "string",
-            "description": ""
+            "description": "Tipo de conteúdo da requisição. Deve ser 'application/json'."
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
-            "description": "",
+            "description": "Dados do restaurante a ser criado.",
             "schema": {
               "$ref": "#/definitions/RestaurantsSubmittedRestaurantRequest"
+            },
+            "examples": {
+              "application/json": {
+                "name": "Pizza Bella",
+                "address": "Rua das Flores, 123",
+                "phone": "912345678",
+                "email": "contato@pizzabella.com",
+                "openingHours": "10:00-22:00",
+                "paymentMethods": "Dinheiro, Cartão",
+                "menus": ["Menu Executivo"]
+              }
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Restaurante criado com sucesso",
+            "description": "Restaurante criado com sucesso.",
+            "examples": {
+              "application/json": {
+                "success": true,
+                "message": "Restaurante criado com sucesso!"
+              }
+            },
             "headers": {}
           },
           "400": {
-            "description": "Erro de validação",
+            "description": "Erro de validação. Algum campo obrigatório não foi preenchido ou está inválido.",
+            "examples": {
+              "application/json": {
+                "success": false,
+                "message": "Campo 'name' é obrigatório."
+              }
+            },
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/restaurants/editRestaurant/{id}": {
-      "post": {
+      "put": {
         "description": "Permite que um manager ou administrador atualize os detalhes de um restaurante.",
         "summary": "Atualiza um restaurante existente",
         "tags": [
@@ -157,7 +208,12 @@
             "description": "Restaurante não encontrado ou sem permissão",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/restaurants/pendingApproval": {
@@ -223,7 +279,7 @@
       }
     },
     "/api/restaurants/deleteRestaurant/{id}": {
-      "post": {
+      "delete": {
         "description": "",
         "summary": "Eliminar um restaurante",
         "tags": [
@@ -256,7 +312,12 @@
             "description": "Acesso negado",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/dishes/showDishes": {
@@ -274,12 +335,23 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Lista de pratos",
+            "description": "Lista de pratos disponíveis.",
             "schema": {
               "type": "array",
               "items": {
                 "$ref": "#/definitions/DishesShowDishesResponse"
               }
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "name": "Pizza Margherita",
+                  "description": "Pizza clássica com molho de tomate, mussarela e manjericão.",
+                  "category": "Pizza",
+                  "ingredients": ["Tomate", "Mussarela", "Manjericão"],
+                  "prices": { "pequena": 6.5, "media": 8.5, "grande": 10.5 }
+                }
+              ]
             },
             "headers": {}
           }
@@ -331,7 +403,12 @@
             "description": "Erro de validação",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/dishes/showDish/{dishId}": {
@@ -352,26 +429,35 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "ID do prato"
+            "description": "ID do prato. Exemplo: '665c1e2f8e4b2a0012a3b456'"
           }
         ],
         "responses": {
           "200": {
-            "description": "Detalhes do prato",
+            "description": "Detalhes do prato retornados com sucesso.",
             "schema": {
               "$ref": "#/definitions/DishesShowDishResponse"
+            },
+            "examples": {
+              "application/json": {
+                "name": "Pizza Margherita",
+                "description": "Pizza clássica com molho de tomate, mussarela e manjericão.",
+                "category": "Pizza",
+                "ingredients": ["Tomate", "Mussarela", "Manjericão"],
+                "prices": { "pequena": 6.5, "media": 8.5, "grande": 10.5 }
+              }
             },
             "headers": {}
           },
           "404": {
-            "description": "Prato não encontrado",
+            "description": "Prato não encontrado. O ID fornecido não existe.",
             "headers": {}
           }
         }
       }
     },
     "/api/dishes/deleteDish/{dishId}": {
-      "post": {
+      "delete": {
         "description": "",
         "summary": "Eleminar um prato",
         "tags": [
@@ -404,11 +490,16 @@
             "description": "Acesso negado",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/dishes/editDish/{dishId}": {
-      "post": {
+      "put": {
         "description": "",
         "summary": "Atualiza um prato existente",
         "tags": [
@@ -459,7 +550,12 @@
             "description": "Prato não encontrado",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/menus/showMenus": {
@@ -534,7 +630,12 @@
             "description": "Erro de validação",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/menus/showMenu/{menuId}": {
@@ -574,7 +675,7 @@
       }
     },
     "/api/menus/deleteMenu/{menuId}": {
-      "post": {
+      "delete": {
         "description": "",
         "summary": "Eleminar um menu",
         "tags": [
@@ -607,11 +708,16 @@
             "description": "Acesso negado",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/menus/editMenu/{menuId}": {
-      "post": {
+      "put": {
         "description": "",
         "summary": "Atualiza um menu existente",
         "tags": [
@@ -662,7 +768,12 @@
             "description": "Menu não encontrado",
             "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/users/showUsers": {
@@ -696,27 +807,6 @@
         }
       }
     },
-    "/api/auth/login": {
-      "get": {
-        "description": "Renderiza a página de login para o utilizador.",
-        "summary": "Exibe a página de login",
-        "tags": [
-          "Autenticação"
-        ],
-        "operationId": "Exibeapáginadelogin",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Página de login exibida com sucesso",
-            "headers": {}
-          }
-        }
-      }
-    },
     "/api/auth/loginSubmitted": {
       "post": {
         "description": "Verifica as credenciais do utilizador e retorna um token de autenticação.",
@@ -741,21 +831,27 @@
               "application/json"
             ],
             "type": "string",
-            "description": ""
+            "description": "Tipo de conteúdo da requisição. Deve ser 'application/json'."
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
-            "description": "",
+            "description": "Credenciais do utilizador para login.",
             "schema": {
               "$ref": "#/definitions/AuthLoginSubmittedRequest"
+            },
+            "examples": {
+              "application/json": {
+                "email": "contato@pizzabella.com",
+                "password": "senha123"
+              }
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Login realizado com sucesso",
+            "description": "Login realizado com sucesso. Retorna o token JWT.",
             "schema": {
               "$ref": "#/definitions/AuthLoginSubmittedResponse"
             },
@@ -767,7 +863,7 @@
             "headers": {}
           },
           "401": {
-            "description": "Credenciais inválidas",
+            "description": "Credenciais inválidas.",
             "schema": {
               "$ref": "#/definitions/AuthLoginSubmittedResponse1"
             },
@@ -780,7 +876,7 @@
             "headers": {}
           },
           "500": {
-            "description": "Erro interno do servidor",
+            "description": "Erro interno do servidor.",
             "schema": {
               "$ref": "#/definitions/AuthLoginSubmittedResponse1"
             },
@@ -811,27 +907,6 @@
         "responses": {
           "200": {
             "description": "Logout realizado com sucesso",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/api/auth/register": {
-      "get": {
-        "description": "Renderiza a página para criar um novo utilizador.",
-        "summary": "Exibe a página de registo",
-        "tags": [
-          "Autenticação"
-        ],
-        "operationId": "Exibeapáginaderegisto",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Página de registo exibida com sucesso",
             "headers": {}
           }
         }
@@ -1011,7 +1086,7 @@
       }
     },
     "/api/auth/reset-password/{token}": {
-      "post": {
+      "put": {
         "description": "Permite redefinir a senha do utilizador usando um token válido.",
         "summary": "Redefinir senha",
         "tags": [
@@ -1248,11 +1323,16 @@
           "404": {
             "description": "Encomenda não encontrada"
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/orders/{orderId}/delete": {
-      "post": {
+      "delete": {
         "description": "Remove uma encomenda pelo ID.",
         "summary": "Apagar encomenda",
         "tags": [
@@ -1278,7 +1358,12 @@
           "404": {
             "description": "Encomenda não encontrada"
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/orders/{orderId}/status": {
@@ -1321,7 +1406,12 @@
           "404": {
             "description": "Encomenda não encontrada"
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     }
   },

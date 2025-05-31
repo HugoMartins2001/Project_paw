@@ -78,11 +78,11 @@ checkoutController.createCheckoutSession = async (req, res) => {
 };
 
 checkoutController.success = (req, res) => {
-  res.json('Pagamento concluído com sucesso!');
+  res.json('Payment completed successfully!');
 };
 
 checkoutController.cancel = (req, res) => {
-  res.json('Pagamento cancelado.');
+  res.json('Payment canceled.');
 };
 
 checkoutController.cancelOrder = async (req, res) => {
@@ -91,7 +91,6 @@ checkoutController.cancelOrder = async (req, res) => {
     const order = await mongoOrder.findById(orderId);
     if (!order) return res.status(404).json({ error: 'Order not found' });
 
-    // Verifica se já passaram mais de 5 minutos
     const now = new Date();
     const createdAt = new Date(order.createdAt);
     const diffMinutes = (now - createdAt) / (1000 * 60);

@@ -3,12 +3,10 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-// Exemplo de interface Menu (ajusta conforme o teu projeto)
 export interface Menu {
     _id: string;
     name: string;
-    // ... outros campos ...
-    managerId?: string | { _id: string }; // <-- Adiciona esta linha!
+    managerId?: string | { _id: string }; 
     dishes?: any[];
     menuPic?: string;
     isVisible?: boolean;
@@ -51,7 +49,7 @@ export class MenuService {
     }
 
     updateMenuById(id: string, data: FormData): Observable<any> {
-        return this.http.post<any>(`http://localhost:3000/api/menus/editMenu/${id}`,
+        return this.http.put<any>(`http://localhost:3000/api/menus/editMenu/${id}`,
             data,
             { headers: this.getHeaders() }
         );
@@ -70,7 +68,7 @@ export class MenuService {
     }
 
     toggleVisibility(id: string, isVisible: boolean): Observable<any> {
-        return this.http.post<any>(`http://localhost:3000/api/menus/toggleVisibility/${id}`,
+        return this.http.patch<any>(`http://localhost:3000/api/menus/toggleVisibility/${id}`,
             { isVisible },
             { headers: this.getHeaders() }
         );

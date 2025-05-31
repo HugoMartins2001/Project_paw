@@ -1,22 +1,20 @@
 const mongoUser = require("../models/user");
-const nodemailer = require("nodemailer"); // Certifique-se de que o nodemailer está instalado
+const nodemailer = require("nodemailer");
 
 let usersController = {};
 
 // Controlador para exibir todos os usuários
 usersController.showUsers = async (req, res, next) => {
-  const user = req.user; // Obtém o usuário autenticado
+  const user = req.user; 
 
   try {
-    // Busca todos os usuários no banco de dados, excluindo o campo "password" por segurança
     const users = await mongoUser.find({}, { password: 0 });
 
-    console.log('USERS ENCONTRADOS:', users); // <-- LOG AQUI
+    console.log('Users found:', users);
 
-    // Renderiza a página de exibição de usuários, passando os dados dos usuários e o usuário autenticado
     res.json({ users, user });
   } catch (err) {
-    next(err); // Passa o erro para o middleware de tratamento de erros
+    next(err); 
   }
 };
 
@@ -25,20 +23,17 @@ usersController.toggleBlockUser = async function (req, res) {
     const userId = req.params.id;
 
     try {
-        // Busca o usuário pelo ID
         const user = await mongoUser.findById(userId);
 
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found!' });
         }
 
-        // Alterna o estado de bloqueio
         user.isBlocked = !user.isBlocked;
-        await user.save(); // Salva a alteração no banco de dados
+        await user.save(); 
 
         const action = user.isBlocked ? 'blocked' : 'unblocked';
 
-        // Envia um e-mail se o usuário foi desbloqueado
         if (!user.isBlocked) {
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -99,7 +94,6 @@ usersController.toggleBlockUser = async function (req, res) {
             console.log(`Unblock email sent to ${user.email}`);
         }
 
-        // Retorna uma resposta de sucesso
         res.status(200).json({ success: true, message: `User successfully ${action}!` });
     } catch (error) {
         console.error('Error toggling user block status:', error);

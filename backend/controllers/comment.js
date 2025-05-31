@@ -11,7 +11,6 @@ commentController.create = async function (req, res, next) {
         const userId = req.user._id;
         const { restaurantId, text } = req.body;
 
-        // Verifica se o user já fez encomenda neste restaurante
         const hasOrder = await Order.exists({ userID: userId, 'items.restaurantId': restaurantId });
         if (!hasOrder) {
             return res.status(403).json({ error: 'You can only comment on restaurants where you have ordered.' });
@@ -31,7 +30,7 @@ commentController.listByRestaurant = async function (req, res, next) {
         const comments = await Comment.find({ restaurantId: new mongoose.Types.ObjectId(restaurantId) }).populate('userId', 'name');
         res.json(comments);
     } catch (err) {
-        console.error('Erro ao listar comentários:', err);
+        console.error('Error fetching comments:', err);
         res.status(500).json({ error: 'Error fetching comments.' });
     }
 };

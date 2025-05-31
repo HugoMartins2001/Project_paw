@@ -37,7 +37,7 @@ export class ResetPasswordComponent {
     this.loading = true;
     const password = this.resetForm.value.password;
 
-    this.http.post<any>(`http://localhost:3000/api/auth/reset-password/${this.token}`, { password })
+    this.http.put<any>(`http://localhost:3000/api/auth/reset-password/${this.token}`, { password })
       .subscribe({
         next: (data) => {
           this.loading = false;

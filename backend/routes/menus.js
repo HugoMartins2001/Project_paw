@@ -35,11 +35,11 @@ router.get("/editMenu/:menuId", authController.verifyLoginUser, function (req, r
 });
 
 // Rota para processar o formulário de edição de menus, incluindo upload de imagem
-router.post("/editMenu/:menuId", authController.verifyLoginUser, upload.single("menuPic"), function (req, res, next) {
+router.put("/editMenu/:menuId", authController.verifyLoginUser, upload.single("menuPic"), function (req, res, next) {
     menusController.updateMenu(req, res, next);
 });
 
 // Rota para alternar a visibilidade de um menu (ex.: visível/invisível)
-router.post('/toggleVisibility/:id', menusController.toggleVisibility);
+router.patch('/toggleVisibility/:id', menusController.toggleVisibility);
 
 module.exports = router; // Exporta o roteador para ser usado em outros arquivos

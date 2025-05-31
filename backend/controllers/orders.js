@@ -87,7 +87,7 @@ ordersController.deleteOrder = async function (req, res, next) {
 
     logAction("Deleted Order", req.user, { orderId: order._id }); 
 
-    res.redirect("/orders/history");
+    res.json({ success: true, message: "Order deleted successfully." });
   } catch (error) {
     console.error("Erro ao eliminar a encomenda:", error);
     next(error); 

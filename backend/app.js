@@ -83,7 +83,7 @@ app.use("/api/orders", ordersRouter);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/contact', contactRouter);
 app.use('/api/comment', commentRoutes);
-app.use('/api/docs', swaggerui.serve, swaggerui.setup(require('./swagger/swagger.json')));
+app.use('/api-docs', swaggerui.serve, swaggerui.setup(require('./swagger/swagger.json')));
 
 
 app.use(function (req, res, next) {

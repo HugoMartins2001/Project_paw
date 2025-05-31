@@ -9,54 +9,43 @@ let dishesController = {};
 // Controlador para exibir todos os pratos
 dishesController.showAll = async function (req, res, next) {
   try {
-    const user = req.user; // pode ser undefined
+    const user = req.user; 
     const { page = 1, limit = 6, name, minPrice, maxPrice, category, allergens } = req.query;
     const skip = (page - 1) * limit;
 
     let query = {};
 
     if (user && user.role === "Admin") {
-      // Admin vê tudo
     } else if (user && user.role === "Manager") {
-      // Manager vê todos os seus pratos, mesmo escondidos
       query.managerId = user._id;
     } else {
-      // Outros só veem pratos visíveis
       query.isVisible = true;
     }
 
-    // Filtrar por nome do prato
     if (name) {
       query.name = { $regex: name, $options: "i" };
     }
 
-    // Filtrar por faixa de preço
     if (minPrice || maxPrice) {
       query["prices.media"] = {};
       if (minPrice) query["prices.media"].$gte = parseFloat(minPrice);
       if (maxPrice) query["prices.media"].$lte = parseFloat(maxPrice);
     }
 
-    // Filtrar por categoria
     if (category) {
       query.category = { $regex: category, $options: "i" };
     }
 
-    // Filtrar por alérgenos
     if (allergens) {
       query.allergens = { $regex: allergens, $options: "i" };
     }
 
-    // Buscar todos os pratos com paginação e aplicar os filtros
     const dishList = await mongoDish.find(query).skip(skip).limit(parseInt(limit));
 
-    // Buscar todos os menus
     const menuList = await mongoMenu.find().populate("dishes");
 
-    // Buscar todos os restaurantes
     const allRestaurants = await mongoRestaurant.find();
 
-    // Associar menus e restaurantes aos pratos
     const dishesWithAssociations = dishList.map((dish) => {
       const associatedMenus = menuList
         .filter((menu) => menu.dishes.some((menuDish) => menuDish.equals(dish._id)))
@@ -81,7 +70,6 @@ dishesController.showAll = async function (req, res, next) {
       };
     });
 
-    // Garantir que os menus associados sejam exibidos mesmo sem restaurantes
     dishesWithAssociations.forEach((dish) => {
       dish.associatedMenus.forEach((menu) => {
         if (!menu.restaurants || menu.restaurants.length === 0) {
@@ -90,10 +78,8 @@ dishesController.showAll = async function (req, res, next) {
       });
     });
 
-    // Filtrar pratos com base no papel do usuário
     const filteredDishes = dishesWithAssociations.filter((dish) => {
       if (!user) {
-        // Não autenticado: só vê pratos visíveis
         return dish.isVisible;
       }
       if (user.role === "Admin") return true;
@@ -102,7 +88,6 @@ dishesController.showAll = async function (req, res, next) {
       return false;
     });
 
-    // Filtrar menus e restaurantes associados para managers
     if (user && user.role === "Manager") {
       filteredDishes.forEach((dish) => {
         dish.associatedMenus = dish.associatedMenus.filter((menu) => {
@@ -114,7 +99,6 @@ dishesController.showAll = async function (req, res, next) {
       });
     }
 
-    // Total de pratos para paginação
     const totalDishes = await mongoDish.countDocuments(query);
     const totalPages = Math.ceil(totalDishes / limit);
 
@@ -155,19 +139,16 @@ dishesController.createDish = async function (req, res, next) {
 
     const user = req.user;
 
-    // Verificar se a categoria já existe
     const existingCategories = await mongoDish.distinct("category");
     let finalCategory = category;
 
     if (!existingCategories.includes(category)) {
-      // Adicionar a nova categoria se ela não existir
       finalCategory = category.trim();
     }
 
-    // Chamada à API externa para obter informações nutricionais
     let nutritionData = {};
     if (
-      !calories || !fat || !protein || !carbs // se todos vierem vazios
+      !calories || !fat || !protein || !carbs
     ) {
       try {
         const nutritionRes = await axios.get(
@@ -192,7 +173,6 @@ dishesController.createDish = async function (req, res, next) {
         };
       }
     } else {
-      // Usa os valores do formulário
       nutritionData = {
         calories: { value: parseFloat(calories) || 0 },
         fat: { value: parseFloat(fat) || 0 },
@@ -208,7 +188,6 @@ dishesController.createDish = async function (req, res, next) {
     const finalCarbs = nutritionData?.carbs?.value || 0;
     const finalNutriScore = nutritionData?.nutritionGrade || nutriScore || "N/A";
 
-    // Verificar se ingredients é uma string antes de usar .split()
     const ingredientsList = Array.isArray(ingredients)
       ? ingredients
       : ingredients
@@ -224,7 +203,7 @@ dishesController.createDish = async function (req, res, next) {
     const dishData = {
       name,
       description,
-      category: finalCategory, // Usar a categoria final (nova ou existente)
+      category: finalCategory, 
       ingredients: ingredientsList,
       prices,
       nutrition: {
@@ -378,7 +357,6 @@ dishesController.renderEditDish = function (req, res, next) {
 
       const user = req.user;
 
-      // Verificar permissões
       if (
         user.role !== "Admin" &&
         (!dish.managerId || dish.managerId.toString() !== user._id.toString())
@@ -386,15 +364,12 @@ dishesController.renderEditDish = function (req, res, next) {
         return res.status(403).json("errors/403", { message: "Access denied." });
       }
 
-      // Buscar categorias existentes
-      // Categorias predefinidas
+
       const predefinedCategories = ['Meat', 'Vegetarian', 'Vegan', 'Dessert'];
 
-      // Combinar categorias predefinidas com as existentes, removendo duplicatas
       const categories = Array.from(new Set([...predefinedCategories]));
 
 
-      // jsonizar a página de edição com as categorias
       res.json({ dish, user, categories });
     })
     .catch(next);
@@ -404,7 +379,6 @@ dishesController.renderEditDish = function (req, res, next) {
 dishesController.updateDish = function (req, res, next) {
   const dishId = req.params.dishId;
 
-  // Parse prices e nutrition
   if (req.body.prices && typeof req.body.prices === 'string') {
     try { req.body.prices = JSON.parse(req.body.prices); } catch { req.body.prices = { pequena: 0, media: 0, grande: 0 }; }
   }
@@ -475,11 +449,9 @@ dishesController.toggleVisibility = async function (req, res, next) {
       return res.status(403).json({ message: "You do not have permission to modify this dish." });
     }
 
-    // Alternar visibilidade
     const newVisibility = !dish.isVisible;
     await mongoDish.updateOne({ _id: dishId }, { $set: { isVisible: newVisibility } });
 
-    // Registrar log com o novo estado
     logAction(newVisibility ? "Dish Shown" : "Dish Hidden", user, { dishId: dish._id, name: dish.name });
 
     res.json({ message: "Dish visibility toggled successfully" });

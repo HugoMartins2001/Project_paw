@@ -19,7 +19,7 @@ router.get('/:orderId', authController.verifyLoginUser, function (req, res, next
 });
 
 // Rota para deletar uma encomenda
-router.post('/:orderId/delete', authController.verifyLoginUser, function (req, res, next) {
+router.delete('/:orderId/delete', authController.verifyLoginUser, function (req, res, next) {
       ordersController.deleteOrder(req, res, next);
 });
 

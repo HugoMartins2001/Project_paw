@@ -42,7 +42,7 @@ router.get("/editRestaurant/:id", authController.verifyLoginUser,  restaurantsCo
 });
 
 // Rota para processar o formulário de edição de restaurantes, incluindo upload de imagem
-router.post("/editRestaurant/:id", upload.single("restaurantPic"), authController.verifyLoginUser, restaurantsController.processUpdateRestaurant, function (req, res, next) {
+router.put("/editRestaurant/:id", upload.single("restaurantPic"), authController.verifyLoginUser, restaurantsController.processUpdateRestaurant, function (req, res, next) {
     restaurantsController.updateRestaurant(req, res, next);
   }
 );
@@ -54,6 +54,6 @@ router.get("/pendingApproval", authController.verifyLoginUser, restaurantsContro
 router.post("/approveRestaurant/:id", authController.verifyLoginUser, restaurantsController.approveRestaurant);
 
 // Rota para alternar a visibilidade de um restaurante (ex.: visível/invisível)
-router.post('/toggleVisibility/:id', restaurantsController.toggleVisibility);
+router.patch('/toggleVisibility/:id', restaurantsController.toggleVisibility);
 
 module.exports = router; // Exporta o roteador para ser usado em outros arquivos

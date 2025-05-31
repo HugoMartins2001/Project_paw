@@ -19,7 +19,6 @@ const crypto = require('crypto');
 
 let authController = {};
 
-// Armazena tentativas de login por IP para evitar ataques de força bruta
 const loginAttempts = {};
 
 authController.forgotPassword = async function (req, res) {
@@ -112,10 +111,8 @@ authController.resetPassword = async function (req, res) {
             resetPasswordExpires: { $gt: Date.now() },
         });
 
-        console.log('RESET PASSWORD - Utilizador encontrado:', user);
-
         if (!user) {
-            console.log('RESET PASSWORD - Token inválido ou expirado!');
+            console.log('RESET PASSWORD - invalid token!');
             return res.status(400).json({ success: false, message: 'Invalid or expired token!' });
         }
 
@@ -125,7 +122,7 @@ authController.resetPassword = async function (req, res) {
         user.resetPasswordExpires = undefined;
         await user.save();
 
-        console.log('RESET PASSWORD - Password alterada com sucesso para o utilizador:', user.email);
+        console.log('RESET PASSWORD - Password changed successfully for user:', user.email);
 
         res.status(200).json({ success: true, message: 'Password reset successfully!' });
     } catch (error) {
@@ -138,25 +135,20 @@ authController.resetPassword = async function (req, res) {
 authController.submittedLogin = function (req, res, next) {
     const emailInput = req.body.email;
     const passwordInput = req.body.password;
-    const clientIp = req.ip; // Obtém o IP do cliente
+    const clientIp = req.ip;
 
-    // Cria uma chave única para rastrear tentativas por email e IP
     const loginKey = `${emailInput}-${clientIp}`;
 
-    // Inicializa ou incrementa o contador de tentativas de login
     if (!loginAttempts[loginKey]) {
         loginAttempts[loginKey] = { count: 0, lastAttempt: Date.now() };
     }
 
     const attempts = loginAttempts[loginKey];
 
-    // Bloqueia o login após 5 tentativas falhadas
     if (attempts.count >= 5) {
-        // Bloqueia o usuário no banco de dados
         mongoUser.findOneAndUpdate({ email: emailInput }, { isBlocked: true }, { new: true }) // Retorna o documento atualizado
             .then((user) => {
                 if (user) {
-                    // Envia um e-mail para o usuário bloqueado
                     const userMailOptions = {
                         from: process.env.EMAIL_USER,
                         to: emailInput,
@@ -213,12 +205,10 @@ authController.submittedLogin = function (req, res, next) {
                         }
                     });
 
-                    // Busca todos os administradores no banco de dados
                     mongoUser.find({ role: 'Admin' }).then((admins) => {
                         const adminEmails = admins.map(admin => admin.email); // Extrai os e-mails dos administradores
 
                         if (adminEmails.length > 0) {
-                            // Envia um e-mail para todos os administradores
                             const adminMailOptions = {
                                 from: process.env.EMAIL_USER,
                                 to: adminEmails.join(','), // Junta os e-mails em uma string separada por vírgulas
@@ -294,13 +284,11 @@ authController.submittedLogin = function (req, res, next) {
     mongoUser.findOne({ email: emailInput })
         .then(function (user) {
             if (!user) {
-                // Caso o email não seja encontrado
                 attempts.count++;
                 attempts.lastAttempt = Date.now();
                 return res.status(401).json({ erros: { email: "Email não encontrado." } });
             }
 
-            // Verifica se o utilizador está bloqueado
             if (user.isBlocked) {
                 res.status(403).json({ error: 'Your account has been blocked. Please contact support.' });
             }

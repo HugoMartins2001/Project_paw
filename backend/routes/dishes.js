@@ -35,12 +35,12 @@ router.get("/editDish/:dishId", authController.verifyLoginUser, function (req, r
 });
 
 // Rota para processar o formulário de edição de pratos, incluindo upload de imagem
-router.post("/editDish/:dishId", upload.single("dishPic"), authController.verifyLoginUser, function (req, res, next) {
+router.put("/editDish/:dishId", upload.single("dishPic"), authController.verifyLoginUser, function (req, res, next) {
     dishesController.updateDish(req, res, next);
 });
 
 // Rota para alternar a visibilidade de um prato (ex.: visível/invisível)
-router.post("/toggleVisibility/:dishId", authController.verifyLoginUser, dishesController.toggleVisibility);
+router.patch("/toggleVisibility/:dishId", authController.verifyLoginUser, dishesController.toggleVisibility);
 
 // Rota para exibir o formulário de criação de categorias
 router.post('/addCategory', dishesController.addCategory);

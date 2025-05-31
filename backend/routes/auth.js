@@ -40,7 +40,7 @@ router.get('/reset-password/:token', (req, res) => {
 });
 
 // Rota para processar a redefinição de senha
-router.post('/reset-password/:token', authController.resetPassword);
+router.put('/reset-password/:token', authController.resetPassword);
 
 // Rota para exibir o formulário de registro (exemplo de renderização direta)
 router.get('/registerform', (req, res) => {
@@ -65,4 +65,4 @@ router.get('/google/callback',
     }
 );
 
-module.exports = router; // Exporta o roteador para ser usado em outros arquivos
+module.exports = router;

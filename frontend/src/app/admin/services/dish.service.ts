@@ -74,7 +74,7 @@ export class DishService {
 
   updateDish(id: string, dishData: FormData): Observable<Dish> {
     const url = `http://localhost:3000/api/dishes/editDish/${id}`;
-    return this.http.post<Dish>(url, dishData, { headers: this.getHeaders() }).pipe(
+    return this.http.put<Dish>(url, dishData, { headers: this.getHeaders() }).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => error))
     );
   }
@@ -88,7 +88,7 @@ export class DishService {
   }
 
   toggleVisibility(id: string, isVisible: boolean): Observable<any> {
-    return this.http.post<any>(`http://localhost:3000/api/dishes/toggleVisibility/${id}`,
+    return this.http.patch<any>(`http://localhost:3000/api/dishes/toggleVisibility/${id}`,
       { isVisible },
       { headers: this.getHeaders() }
     ).pipe(

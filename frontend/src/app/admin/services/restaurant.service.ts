@@ -22,8 +22,7 @@ export interface Restaurant {
   providedIn: 'root'
 })
 export class RestaurantService {
-  private apiUrl = 'http://localhost:3000/api/restaurants/showRestaurants';
-  private apiUrlByName = 'http://localhost:3000/api/restaurants/showRestaurant';
+    private apiUrlByName = 'http://localhost:3000/api/restaurants/showRestaurant';
 
   constructor(private http: HttpClient) { }
 
@@ -88,7 +87,7 @@ export class RestaurantService {
   }
 
   updateRestaurantById(id: string, data: FormData): Observable<any> {
-    return this.http.post<any>(`http://localhost:3000/api/restaurants/editRestaurant/${id}`,
+    return this.http.put<any>(`http://localhost:3000/api/restaurants/editRestaurant/${id}`,
       data,
       { headers: this.getHeaders() }
     );
@@ -105,7 +104,7 @@ export class RestaurantService {
   }
 
   toggleVisibility(id: string, isVisible: boolean): Observable<any> {
-    return this.http.post<any>(`http://localhost:3000/api/restaurants/toggleVisibility/${id}`, { isVisible },
+    return this.http.patch<any>(`http://localhost:3000/api/restaurants/toggleVisibility/${id}`, { isVisible },
       { headers: this.getHeaders() }
     ).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => error))

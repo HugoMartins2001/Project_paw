@@ -20,4 +20,14 @@ export class OrderService {
             }
         );
     }
+
+    deleteOrder(orderId: string): Observable<any> {
+        const token = localStorage.getItem('token');
+        return this.http.delete<any>(
+            `${this.apiUrl}/${orderId}/delete`,
+            {
+                headers: { Authorization: `Bearer ${token}` }
+            }
+        );
+    }
 }

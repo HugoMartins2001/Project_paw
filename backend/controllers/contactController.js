@@ -16,7 +16,6 @@ contactController.sendContactEmail = async function (req, res, next) {
     const { name, email, message } = req.body;
 
     try {
-        // Buscar todos os administradores na base de dados
         const admins = await mongoUser.find({ role: "Admin" });
         const adminEmails = admins.map(admin => admin.email);
 
@@ -79,7 +78,7 @@ contactController.sendContactEmail = async function (req, res, next) {
 
         res.json({ success: true });
     } catch (err) {
-        console.error("Erro ao enviar email de contacto:", err);
+        console.error("Error sending contact email:", err);
         res.status(500).json({ success: false, error: err.message });
     }
 };
