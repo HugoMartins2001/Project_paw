@@ -6,6 +6,7 @@ const mongoMenu = require("../models/menu");
 const logAction = require("../utils/logger");
 const nodemailer = require('nodemailer');
 const mongoUser = require("../models/user");
+const Comment = require("../models/comment");
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -94,14 +95,14 @@ restaurantsController.showAll = async function (req, res, next) {
     let query = {};
 
     if (name) {
-      query.name = { $regex: name, $options: "i" }; 
+      query.name = { $regex: name, $options: "i" };
     }
 
     if (address) {
-      query.address = { $regex: address, $options: "i" }; 
+      query.address = { $regex: address, $options: "i" };
     }
 
-    const user = req.user; 
+    const user = req.user;
 
     if (user && user.role === "Manager") {
       query.managerId = user._id;
@@ -113,7 +114,7 @@ restaurantsController.showAll = async function (req, res, next) {
       query.isApproved = true;
     }
 
-    const sortOrder = order === "desc" ? -1 : 1; 
+    const sortOrder = order === "desc" ? -1 : 1;
     const sortOptions = {};
     sortOptions[sortBy] = sortOrder;
 
@@ -129,9 +130,22 @@ restaurantsController.showAll = async function (req, res, next) {
       .skip(skip)
       .limit(parseInt(limit));
 
-    const filteredRestaurants = restaurantList.map((restaurant) => ({
-      ...restaurant.toObject(),
-      menus: restaurant.menus,
+    // Calcular média de ratings para cada restaurante
+    const filteredRestaurants = await Promise.all(restaurantList.map(async (restaurant) => {
+      const obj = restaurant.toObject();
+      obj.menus = restaurant.menus;
+      // Buscar comentários com rating para este restaurante
+      const comments = await Comment.find({ restaurantId: restaurant._id, rating: { $exists: true } });
+      if (comments.length > 0) {
+        const ratings = comments.map(c => c.rating).filter(r => typeof r === 'number');
+        const avg = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+        obj.averageRating = +avg.toFixed(1);
+        obj.averageRatingRounded = Math.round(avg);
+      } else {
+        obj.averageRating = 0;
+        obj.averageRatingRounded = 0;
+      }
+      return obj;
     }));
 
     const totalRestaurants = await mongoRestaurant.countDocuments(query);
@@ -144,7 +158,6 @@ restaurantsController.showAll = async function (req, res, next) {
       totalPages,
       filters: { name, address, sortBy, order },
     });
-
   } catch (err) {
     console.error("Error fetching restaurants:", err);
     next(err);

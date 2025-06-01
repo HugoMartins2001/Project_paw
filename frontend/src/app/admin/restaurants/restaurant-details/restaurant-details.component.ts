@@ -22,7 +22,8 @@ export class RestaurantDetailsComponent implements OnInit {
   commentText = '';
   canComment = false;
   userRole: string = '';
-    showComments = false;
+  showComments = false;
+  rating: number = 0;
 
 
   constructor(
@@ -82,7 +83,7 @@ export class RestaurantDetailsComponent implements OnInit {
     if (!this.commentText.trim()) return;
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.post(`http://localhost:3000/api/comment/comments`, { restaurantId: this.restaurant._id, text: this.commentText }, { headers }).subscribe(() => {
+    this.http.post(`http://localhost:3000/api/comment/comments`, { restaurantId: this.restaurant._id, text: this.commentText, rating: this.rating }, { headers }).subscribe(() => {
       this.commentText = '';
       this.loadComments();
       Swal.fire({
@@ -113,4 +114,17 @@ export class RestaurantDetailsComponent implements OnInit {
       this.router.navigate(['/restaurants']);
     }
   }
+
+  get averageRating(): number {
+    if (!this.comments || this.comments.length === 0) return 0;
+    const ratings = this.comments.map(c => c.rating).filter(r => typeof r === 'number');
+    if (ratings.length === 0) return 0;
+    const sum = ratings.reduce((a, b) => a + b, 0);
+    return +(sum / ratings.length).toFixed(1);
+  }
+
+  get averageRatingRounded(): number {
+    return Math.round(this.averageRating);
+  }
+
 }

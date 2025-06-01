@@ -140,3 +140,12 @@ body {
     background: #6c63ff;
     color: #fff;
 }
+
+.rating-summary i.star-animate {
+  transition: color 0.2s, transform 0.2s;
+}
+
+.rating-summary i.star-animate:hover {
+  color: #ffb300 !important;
+  transform: scale(1.15);
+}

@@ -9,21 +9,20 @@ const commentController = {};
 commentController.create = async function (req, res, next) {
     try {
         const userId = req.user._id;
-        const { restaurantId, text } = req.body;
+        const { restaurantId, text, rating } = req.body;
 
         const hasOrder = await Order.exists({ userID: userId, 'items.restaurantId': restaurantId });
         if (!hasOrder) {
             return res.status(403).json({ error: 'You can only comment on restaurants where you have ordered.' });
         }
 
-        const comment = await Comment.create({ userId, restaurantId, text });
+        const comment = await Comment.create({ userId, restaurantId, text, rating });
         res.json(comment);
     } catch (err) {
         res.status(500).json({ error: 'Error creating comment.' });
     }
 };
 
-// Listar comentários por restaurante
 commentController.listByRestaurant = async function (req, res, next) {
     try {
         console.log('Listar comentários para restaurante:', req.params.id);
