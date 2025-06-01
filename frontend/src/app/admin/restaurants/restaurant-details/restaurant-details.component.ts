@@ -22,6 +22,8 @@ export class RestaurantDetailsComponent implements OnInit {
   commentText = '';
   canComment = false;
   userRole: string = '';
+    showComments = false;
+
 
   constructor(
     private restaurantService: RestaurantService,
