@@ -146,7 +146,7 @@ export class DishesClientComponent implements OnInit {
       ...dish,
       selectedSize: size,
       selectedPrice: price,
-      restaurantId: restaurantId ?? undefined // <-- força a ser string ou undefined
+      restaurantId: restaurantId ?? undefined
     });
     Swal.fire({
       icon: 'success',

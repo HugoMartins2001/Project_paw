@@ -27,7 +27,7 @@ router.get('/loginform', (req, res) => {
 
 // Rota para exibir o formulário de recuperação de senha
 router.get('/forgot-password', (req, res) => {
-    res.json('login/forgotPassword'); // Renderiza a página forgotPassword.ejs
+    res.json('login/forgotPassword');
 });
 
 // Rota para processar o formulário de recuperação de senha
@@ -55,13 +55,11 @@ router.get('/google/callback',
     async (req, res) => {
         const authToken = jwt.sign({ email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '2h' });
 
-        // Verificar se o usuário está bloqueado
         if (req.user.isBlocked) {
             return res.redirect('http://localhost:4200/login?login=blocked');
         }
 
-        // Redireciona para o frontend com o token na query string
-        res.redirect(`http://localhost:4200/clientHome?token=${authToken}`);
+        res.redirect(`http://localhost:4200/client/home?token=${authToken}`);
     }
 );
 

@@ -6,9 +6,9 @@ async function logAction(action, user, details = {}) {
       action,
       userId: user._id,
       userName: user.name || "Unknown User",
-      role: user.role || "Unknown Role", // Adiciona o papel do usuário
+      role: user.role || "Unknown Role",
       details,
-      timestamp: new Date(), // Adiciona o timestamp
+      timestamp: new Date(), 
     });
   } catch (err) {
     console.error("Error logging action:", err);

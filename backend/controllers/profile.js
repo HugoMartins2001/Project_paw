@@ -26,7 +26,7 @@ profile.showProfile = async function (req, res, next) {
       notApprovedRestaurants,
     });
   } catch (err) {
-    console.error("Error fetching manager's restaurants:", err); // Loga erros no console
+    console.error("Error fetching manager's restaurants:", err); 
     next(err);
   }
 };

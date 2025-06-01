@@ -24,7 +24,7 @@ router.post("/submittedDish", upload.single("dishPic"), authController.verifyLog
     dishesController.createDish(req, res, next);
 });
 
-// Rota para deletar um prato específico pelo ID
+// Rota para apagar um prato específico pelo ID
 router.delete("/deleteDish/:dishId", authController.verifyLoginUser, function (req, res, next) {
     dishesController.deleteDish(req, res, next);
 });
@@ -45,4 +45,4 @@ router.patch("/toggleVisibility/:dishId", authController.verifyLoginUser, dishes
 // Rota para exibir o formulário de criação de categorias
 router.post('/addCategory', dishesController.addCategory);
 
-module.exports = router; // Exporta o roteador para ser usado em outros arquivos
+module.exports = router;

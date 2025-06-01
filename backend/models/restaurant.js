@@ -7,14 +7,14 @@ const RestaurantSchema = new mongoose.Schema({
     type: String,
     required: true,
     match: /^[0-9]{9}$/,
-    message: "O telefone deve conter exatamente 9 dígitos numéricos",
+    message: "Phone number must be 9 digits long",
   },
   restaurantEmail: {
     type: String,
     required: true,
     unique: true,
     match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    message: "O email deve ser válido",
+    message: "Invalid email format",
   },
   openingHours: {
     type: Object,
@@ -28,7 +28,7 @@ const RestaurantSchema = new mongoose.Schema({
   paymentMethods: {
     type: [String],
     required: true,
-    enum: ["Cash", "Credit Card", "Debit Card", "Mobile Payment"], // Valores permitidos
+    enum: ["Cash", "Credit Card", "Debit Card", "Mobile Payment"],
   },
   managerId: {
     type: mongoose.Schema.Types.ObjectId,

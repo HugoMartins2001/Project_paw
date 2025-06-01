@@ -6,7 +6,7 @@ const upload = require("../middlewares/upload");
 
 // Middleware para adicionar o usuário autenticado às variáveis locais (disponível nas views)
 router.use((req, res, next) => {
-  res.locals.user = req.user || null; // Define `user` como null se não estiver autenticado
+  res.locals.user = req.user || null;
   next();
 });
 
@@ -31,7 +31,7 @@ router.get("/showRestaurants", authController.attachUserIfExists, function (req,
   restaurantsController.showAll(req, res, next);
 });
 
-// Rota para deletar um restaurante específico pelo ID
+// Rota para apagar um restaurante específico pelo ID
 router.delete("/deleteRestaurant/:id", authController.verifyLoginUser, function (req, res, next) {
   restaurantsController.deleteRestaurant(req, res, next);
 });
@@ -56,4 +56,4 @@ router.post("/approveRestaurant/:id", authController.verifyLoginUser, restaurant
 // Rota para alternar a visibilidade de um restaurante (ex.: visível/invisível)
 router.patch('/toggleVisibility/:id', restaurantsController.toggleVisibility);
 
-module.exports = router; // Exporta o roteador para ser usado em outros arquivos
+module.exports = router;

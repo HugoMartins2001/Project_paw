@@ -23,6 +23,7 @@ commentController.create = async function (req, res, next) {
     }
 };
 
+// Listar comentários por restaurante
 commentController.listByRestaurant = async function (req, res, next) {
     try {
         console.log('Listar comentários para restaurante:', req.params.id);

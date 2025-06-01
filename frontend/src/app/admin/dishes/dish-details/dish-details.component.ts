@@ -26,7 +26,6 @@ export class DishDetailsComponent implements OnInit {
     if (dishId) {
       this.dishService.getDishById(dishId).subscribe({
         next: (res) => {
-          // res é o prato real
           this.dish = res;
           this.isLoading = false;
         },

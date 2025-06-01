@@ -45,7 +45,7 @@ ordersController.getOrdersHistory = async function (req, res, next) {
     res.json({
       orders: orders.map(order => ({
         ...order.toObject(),
-        user: order.userID, // renomeia userID para user
+        user: order.userID, 
       })),
       user,
       filters: { restaurantName, startDate, endDate },
@@ -70,8 +70,8 @@ ordersController.getOrderDetails = async function (req, res, next) {
 
     res.json({ order });
   } catch (error) {
-    console.error("Erro ao obter os detalhes da encomenda:", error);
-    next(error); 
+    console.error("Error obtaining order details:", error);
+    next(error);
   }
 };
 
@@ -89,8 +89,8 @@ ordersController.deleteOrder = async function (req, res, next) {
 
     res.json({ success: true, message: "Order deleted successfully." });
   } catch (error) {
-    console.error("Erro ao eliminar a encomenda:", error);
-    next(error); 
+    console.error("Error deleting order:", error);
+    next(error);
   }
 };
 
@@ -105,6 +105,8 @@ ordersController.completeOrder = async function (req, res, next) {
 
     const io = req.app.get('io');
     io.emit('orderCompleted', { orderId: order._id, user: order.user, status: order.status });
+
+    logAction("Completed Order", req.user, { orderId: order._id, status: order.status });
 
     res.json({ message: 'Order completed!', order });
   } catch (error) {
@@ -133,6 +135,8 @@ ordersController.createOrder = async function (req, res) {
     const io = req.app.get('io');
     io.emit('orderCreated', { message: 'New order received!', order: newOrder });
 
+    logAction("Created Order", req.user, { orderId: newOrder._id, items: itemsWithRestaurant });
+
     res.status(201).json({ success: true, order: newOrder });
   } catch (error) {
     console.error("Error creating order:", error);
@@ -145,7 +149,7 @@ ordersController.updateOrderStatus = async function (req, res, next) {
     const orderId = req.params.orderId;
     const { status } = req.body;
 
-    const validStatuses = ['pending', 'expedida', 'entregue'];
+    const validStatuses = ['pending', 'shipped', 'delivered'];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: 'Invalid status.' });
     }

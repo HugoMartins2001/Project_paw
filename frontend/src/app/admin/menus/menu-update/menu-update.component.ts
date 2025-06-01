@@ -51,7 +51,7 @@ export class MenuUpdateComponent implements OnInit {
 
     this.menuService.getMenuById(this.menuId).subscribe({
       next: (menu: Menu) => {
-        this.menu = menu; // <-- guarda o menu aqui!
+        this.menu = menu;
         this.menuForm.patchValue({
           name: menu.name,
           dishes: menu.dishes ? menu.dishes.map((d: any) => d._id ? d._id : d) : [],

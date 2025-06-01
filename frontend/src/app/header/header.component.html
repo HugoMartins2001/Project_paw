@@ -110,10 +110,7 @@
           <div *ngIf="notifications.length === 0" class="text-muted small">No new notifications.</div>
           <div *ngFor="let notif of notifications" class="dropdown-item small">
             <div [innerHTML]="notif.message"></div>
-            <div class="text-muted mt-1" style="font-size:0.95em; line-height:1.4;">
-              <div *ngIf="notif.total"><b>Total:</b> {{ notif.total }} €</div>
-              <div *ngIf="notif.items"><b>Itens:</b> {{ notif.items }}</div>
-              <div *ngIf="notif.createdAt" style="font-size:0.85em;">{{ notif.createdAt | date:'short' }}</div>
+              <div *ngIf="notif.createdAt" style="font-size:0.85em;">{{ notif.createdAt | date:'short' }}
             </div>
           </div>
         </div>

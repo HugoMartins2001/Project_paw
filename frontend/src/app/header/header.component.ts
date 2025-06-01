@@ -17,7 +17,7 @@ import { io, Socket } from 'socket.io-client';
 export class HeaderComponent implements OnInit, OnDestroy {
   userName: string | null = null;
   userRole: string | null = null;
-  timeLeft: number = 600; // 10 minutos em segundos
+  timeLeft: number = 600; 
   interval: any;
   cartSub!: Subscription;
 
@@ -69,6 +69,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   loadUserData() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.userName = null;
+      this.userRole = null;
+      return;
+    }
     this.profileService.getProfile().subscribe({
       next: (profile: ProfileResponse) => {
         this.userName = profile.user?.name || null;

@@ -10,10 +10,10 @@ router.use(authController.verifyLoginUser);
 // Rota para exibir o perfil do usuário
 router.get("/", profileController.showProfile, (req, res) => {
   res.json({
-    user: req.user, // Dados do usuário autenticado
-    totalRestaurants: 0, // Total de restaurantes (pode ser atualizado dinamicamente)
-    approvedRestaurants: 0, // Total de restaurantes aprovados
-    notApprovedRestaurants: 0, // Total de restaurantes não aprovados
+    user: req.user,
+    totalRestaurants: 0, 
+    approvedRestaurants: 0, 
+    notApprovedRestaurants: 0, 
   });
 });
 
@@ -23,4 +23,4 @@ router.get("/editProfile", profile.editProfile);
 // Rota para processar o formulário de edição do perfil, incluindo upload de imagem de perfil
 router.post("/editProfile", profile.updateProfile);
 
-module.exports = router; // Exporta o roteador para ser usado em outros arquivos
+module.exports = router;

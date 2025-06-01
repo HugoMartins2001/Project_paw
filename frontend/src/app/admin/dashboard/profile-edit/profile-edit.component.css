@@ -53,13 +53,17 @@ body {
 
 .container h1 {
   font-size: 2rem;
+  margin-left: 40%;
   font-weight: 600;
   margin-bottom: 2rem;
 }
 
 .profile-card {
   background-color: white;
-  padding: 2rem;
+  padding: 4rem;
+  align-items: center;
+  justify-content: center;
+  margin-left: 40%;
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   width: 100%;
@@ -148,16 +152,4 @@ body {
 
 .btn-secondary:hover {
   background-color: #4f4f4f;
-}
-
-.profile-pic-preview {
-  margin-bottom: 10px;
-}
-
-.profile-pic-preview img {
-  width: 100px; /* Largura da imagem */
-  height: 100px; /* Altura da imagem */
-  border-radius: 50%; /* Torna a imagem circular */
-  object-fit: cover; /* Ajusta a imagem ao contêiner */
-  border: 2px solid #ccc; /* Adiciona uma borda */
 }

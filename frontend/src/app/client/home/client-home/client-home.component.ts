@@ -45,7 +45,6 @@ export class ClientHomeComponent implements OnInit {
         this.cartService.clearCart();
       }
     });
-    // Exemplo simples: verifica se existe token no localStorage
     this.user = localStorage.getItem('token');
   }
 

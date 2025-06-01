@@ -78,15 +78,34 @@ export class DishesUserComponent implements OnInit {
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete',
-        cancelButtonText: 'Cancel'
+        cancelButtonText: 'Cancel',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: true
       }).then((result) => {
         if (result.isConfirmed) {
           this.dishService.deleteDish(id).subscribe({
             next: () => {
-              Swal.fire('Deleted!', 'The dish has been deleted.', 'success');
+              Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'The dish has been deleted.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1200
+              });
               this.loadDishes();
             },
-            error: () => Swal.fire('Error', 'Error deleting dish.', 'error')
+            error: () => Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error deleting dish.',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2000
+            })
           });
         }
       });
@@ -116,6 +135,8 @@ export class DishesUserComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             title: `Dish ${novoEstado ? 'visible' : 'hidden'} successfully!`,
+            toast: true,
+            position: 'top-end',
             showConfirmButton: false,
             timer: 1200
           });
@@ -124,7 +145,11 @@ export class DishesUserComponent implements OnInit {
           Swal.fire({
             icon: 'error',
             title: 'Error updating visibility!',
-            text: err.error?.message || 'An unexpected error occurred.'
+            text: err.error?.message || 'An unexpected error occurred.',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000
           });
         }
       });

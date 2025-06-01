@@ -206,12 +206,12 @@ authController.submittedLogin = function (req, res, next) {
                     });
 
                     mongoUser.find({ role: 'Admin' }).then((admins) => {
-                        const adminEmails = admins.map(admin => admin.email); // Extrai os e-mails dos administradores
+                        const adminEmails = admins.map(admin => admin.email);
 
                         if (adminEmails.length > 0) {
                             const adminMailOptions = {
                                 from: process.env.EMAIL_USER,
-                                to: adminEmails.join(','), // Junta os e-mails em uma string separada por vírgulas
+                                to: adminEmails.join(','),
                                 subject: '🚨 User Blocked Due to Failed Login Attempts',
                                 html: `
                                     <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); background-color: #ffffff; border: 1px solid #e0e0e0;">
@@ -296,11 +296,10 @@ authController.submittedLogin = function (req, res, next) {
             bcrypt.compare(passwordInput, user.password)
                 .then(function (result) {
                     if (result === true) {
-                        // Login bem-sucedido, reseta o contador de tentativas
                         loginAttempts[loginKey] = { count: 0, lastAttempt: Date.now() };
 
-                        const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: '2h' }); // Token expira em 2 horas
-                        res.cookie('auth-token', authToken, { maxAge: 2 * 60 * 60 * 1000 }); // Cookie expira em 2 horas (em milissegundos)
+                        const authToken = jwt.sign({ email: user.email }, config.secret, { expiresIn: '2h' }); 
+                        res.cookie('auth-token', authToken, { maxAge: 2 * 60 * 60 * 1000 });
                         res.json({
                             token: authToken,
                             userId: user._id,
@@ -309,10 +308,9 @@ authController.submittedLogin = function (req, res, next) {
                             successMessage: 'Login successfully!'
                         });
                     } else {
-                        // Senha incorreta
                         attempts.count++;
                         attempts.lastAttempt = Date.now();
-                        return res.status(401).json({ erros: { password: "Password incorreta." } });
+                        return res.status(401).json({ erros: { password: "Incorrect password." } });
                     }
                 });
         })
@@ -321,7 +319,6 @@ authController.submittedLogin = function (req, res, next) {
         });
 };
 
-// jsoniza a página de login
 authController.login = function (req, res, next) {
     res.json('login/index');
 };
@@ -350,12 +347,11 @@ authController.createLoginSubmitted = function (req, res, next) {
             if (err.code === 11000) {
                 return res.status(500).json({ error: 'Email already registered!' });
             }
-            // Se for erro de validação do mongoose
             if (err.name === 'ValidationError') {
                 return res.status(400).json({ error: err.message });
             }
             // Para outros erros, devolve sempre JSON
-            res.status(500).json({ error: 'Erro ao registar utilizador.' });
+            res.status(500).json({ error: 'Error registering user.' });
         });
 };
 
@@ -414,7 +410,7 @@ authController.googleLogin = passport.authenticate('google', { scope: ['profile'
 
 // Callback do Google
 authController.googleCallback = passport.authenticate('google', { failureRedirect: '/auth/login' }, (req, res) => {
-    res.redirect('http://localhost:4200/clientHome'); 
+    res.redirect('http://localhost:4200/client/home'); 
 });
 
 

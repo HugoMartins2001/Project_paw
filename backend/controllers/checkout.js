@@ -13,7 +13,7 @@ const addMonths = (date, months) => {
 };
 
 checkoutController.createCheckoutSession = async (req, res) => {
-  const { cart, managerId, userID, discountApplied, discountPercent, userName } = req.body; // <-- adiciona userName aqui!
+  const { cart, managerId, userID, discountApplied, discountPercent, userName } = req.body;
   try {
     const newOrder = await mongoOrder.create({
       managerId: managerId || null,

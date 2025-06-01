@@ -21,7 +21,7 @@
     <div class="manager-menu big-menu">
       <h2>{{ role }} menu</h2>
       <div class="menu-buttons">
-        <a *ngIf="role === 'Manager' || role === 'Admin' || role === 'Client'" (click)="navigateToRestaurants()" class="menu-btn" style="cursor: pointer;">
+        <a *ngIf="role === 'Manager' || role === 'Admin'" (click)="navigateToRestaurants()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-store"></i> Show restaurants
         </a>
         <a *ngIf="role === 'Admin'" (click)="navigateToRestaurantApproval()" class="menu-btn" style="cursor: pointer;">
@@ -38,9 +38,6 @@
         </a>
         <a *ngIf="role === 'Admin'" (click)="navigateToLogs()" class="menu-btn" style="cursor: pointer;">
           <i class="fas fa-chart-line"></i> View Logs & Statistics
-        </a>
-        <a *ngIf="role === 'Admin'" (click)="navigateToOrders()" class="menu-btn" style="cursor: pointer;">
-          <i class="fas fa-shopping-cart"></i> Orders history
         </a>
       </div>
     </div>

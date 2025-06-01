@@ -78,7 +78,6 @@ restaurantsController.processUpdateRestaurant = function (req, res, next) {
 
 // Controlador para exibir todos os restaurantes
 restaurantsController.showAll = async function (req, res, next) {
-  //if (!req.user) return res.json("/auth/login"); // Redireciona para login se o usuário não estiver autenticado
 
   try {
     const {
@@ -88,46 +87,36 @@ restaurantsController.showAll = async function (req, res, next) {
       address,
       sortBy = "name",
       order = "asc"
-    } = req.query; // Parâmetros de filtro e ordenação
+    } = req.query;
 
     const skip = (page - 1) * limit;
 
-    // Construir o filtro de busca
     let query = {};
 
-    // Filtrar por nome do restaurante
     if (name) {
-      query.name = { $regex: name, $options: "i" }; // Busca por nome (case insensitive)
+      query.name = { $regex: name, $options: "i" }; 
     }
 
-    // Filtrar por localização
     if (address) {
-      query.address = { $regex: address, $options: "i" }; // Busca por localização (case insensitive)
+      query.address = { $regex: address, $options: "i" }; 
     }
 
-    // Filtrar restaurantes com base no papel do usuário
-    const user = req.user; // pode ser undefined
+    const user = req.user; 
 
     if (user && user.role === "Manager") {
-      // Só restaurantes/menus/pratos do manager autenticado
       query.managerId = user._id;
     } else if (user && user.role === "Client") {
-      // Só públicos
       query.isVisible = true;
       query.isApproved = true;
     } else if (!user) {
-      // Não autenticado: só públicos
       query.isVisible = true;
       query.isApproved = true;
     }
-    // Admin não precisa de filtro extra
 
-    // Ordenação
-    const sortOrder = order === "desc" ? -1 : 1; // Ordem ascendente ou descendente
+    const sortOrder = order === "desc" ? -1 : 1; 
     const sortOptions = {};
     sortOptions[sortBy] = sortOrder;
 
-    // Buscar restaurantes com base no filtro e aplicar paginação e ordenação
     const restaurantList = await mongoRestaurant
       .find(query)
       .populate({
@@ -145,11 +134,9 @@ restaurantsController.showAll = async function (req, res, next) {
       menus: restaurant.menus,
     }));
 
-    // Total de restaurantes para paginação
     const totalRestaurants = await mongoRestaurant.countDocuments(query);
     const totalPages = Math.ceil(totalRestaurants / limit);
 
-    // Retornar os restaurantes como JSON
     res.json({
       restaurants: filteredRestaurants,
       user: req.user,
@@ -164,7 +151,6 @@ restaurantsController.showAll = async function (req, res, next) {
   }
 };
 
-// Controlador para exibir os detalhes de um restaurante
 restaurantsController.showDetails = function (req, res, next) {
   const query =
     req.user.role === "Manager"
@@ -196,7 +182,6 @@ restaurantsController.showDetails = function (req, res, next) {
         return res.status(403).json({ message: "Access denied." });
       }
 
-      // Filtrar menus conforme o papel
       let filteredMenus = restaurantDB.menus;
       if (req.user.role === "Manager") {
         filteredMenus = restaurantDB.menus.filter(
@@ -231,7 +216,7 @@ restaurantsController.renderCreateRestaurant = async function (req, res, next) {
 
     res.json("restaurants/submitRestaurant", {
       menus,
-      user: req.user, // Passa o usuário logado para o EJS
+      user: req.user, 
     });
   } catch (error) {
     console.error(error);
@@ -245,20 +230,17 @@ restaurantsController.createRestaurant = async function (req, res, next) {
   const restaurantPic = req.file ? req.file.filename : null;
 
   try {
-    // Verificar se já existe um restaurante com o mesmo email para outro gerente
     const existingRestaurant = await mongoRestaurant.findOne({
       restaurantEmail: req.body.restaurantEmail,
-      managerId: { $ne: managerId }, // Verifica se o email pertence a outro gerente
+      managerId: { $ne: managerId }, 
     });
 
     if (existingRestaurant) {
-      // Retorna um erro se o email já estiver em uso por outro gerente
-      return res.status(400).json({//ingles
+      return res.status(400).json({
         error: "This email is already in use by another manager."
       });
     }
 
-    /// Criar o novo restaurante
     const newRestaurant = new mongoRestaurant({
       name: req.body.name,
       address: req.body.address,
@@ -281,14 +263,12 @@ restaurantsController.createRestaurant = async function (req, res, next) {
 
     await newRestaurant.save();
 
-    // Buscar todos os administradores no banco de dados
-    const admins = await mongoUser.find({ role: "Admin" }); // Substitua "mongoUser" pelo modelo de usuários
-    const adminEmails = admins.map((admin) => admin.email); // Obter os e-mails dos administradores
+    const admins = await mongoUser.find({ role: "Admin" });
+    const adminEmails = admins.map((admin) => admin.email);
 
-    // Enviar e-mail para todos os administradores
     const mailOptions = {
-      from: process.env.EMAIL_USER, // E-mail configurado no nodemailer
-      to: adminEmails, // Lista de e-mails dos administradores
+      from: process.env.EMAIL_USER,
+      to: adminEmails, 
       subject: '📋 Novo Restaurante Pendente de Aprovação',
       html: `
         <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 0 15px rgba(0, 0, 0, 0.08); background-color: #ffffff; border: 1px solid #e0e0e0;">
@@ -374,12 +354,12 @@ restaurantsController.createRestaurant = async function (req, res, next) {
   }
 };
 
-// Controlador para deletar um restaurante
+// Controlador para apagar um restaurante
 restaurantsController.deleteRestaurant = function (req, res, next) {
   const query = { _id: req.params.id };
 
   if (req.user && req.user.role === "Manager") {
-    query.managerId = req.user._id; // Managers só podem eliminar os seus próprios restaurantes
+    query.managerId = req.user._id; 
   }
 
   mongoRestaurant
@@ -399,7 +379,6 @@ restaurantsController.deleteRestaurant = function (req, res, next) {
         });
       }
 
-      // Resposta adequada para API
       res.json({ success: true, message: "Restaurant deleted successfully." });
     })
     .catch(function (err) {
@@ -409,32 +388,26 @@ restaurantsController.deleteRestaurant = function (req, res, next) {
 
 restaurantsController.renderEditRestaurant = async function (req, res, next) {
   try {
-    // Buscar o restaurante pelo ID
     const restaurant = await mongoRestaurant.findById(req.params.id);
 
     if (!restaurant) {
-      // Retorna 404 se o restaurante não for encontrado
       return res.status(404).json({ message: "Restaurant not found." });
     }
 
     const user = req.user;
 
-    // Verificar permissões
     if (
-      user.role !== "Admin" && // Apenas Admin pode acessar qualquer restaurante
-      (!restaurant.managerId || restaurant.managerId.toString() !== user._id.toString()) // Gerente só pode acessar seus próprios restaurantes
+      user.role !== "Admin" && 
+      (!restaurant.managerId || restaurant.managerId.toString() !== user._id.toString()) 
     ) {
-      // Retorna 403 se o usuário não tiver permissão
       return res.status(403).json({ message: "Access denied." });
     }
 
-    // Buscar menus disponíveis para o gerente ou administrador
     const menus =
       user.role === "Manager"
         ? await mongoMenu.find({ managerId: user._id })
         : await mongoMenu.find();
 
-    // jsonizar a página de edição do restaurante
     res.json({ restaurant, menus, user });
   } catch (err) {
     console.error("Error trying to edit restaurant:", err);
@@ -444,27 +417,23 @@ restaurantsController.renderEditRestaurant = async function (req, res, next) {
 
 restaurantsController.updateRestaurant = async function (req, res, next) {
   try {
-    // Definir a query com base no papel do usuário
     const query =
       req.user.role === "Admin"
         ? { _id: req.params.id }
-        : { _id: req.params.id, managerId: req.user._id }; // Apenas o gerente que criou o restaurante pode editá-lo
+        : { _id: req.params.id, managerId: req.user._id }; 
 
-    // Verificar se já existe um restaurante com o mesmo email para outro gerente
     const existingRestaurant = await mongoRestaurant.findOne({
       restaurantEmail: req.body.restaurantEmail,
-      _id: { $ne: req.params.id }, // Ignorar o restaurante que está sendo atualizado
-      managerId: { $ne: req.user._id }, // Verifica se o email pertence a outro gerente
+      _id: { $ne: req.params.id },
+      managerId: { $ne: req.user._id },
     });
 
     if (existingRestaurant) {
-      // Retorna um erro se o email já estiver em uso por outro gerente
       return res.status(400).json({
         error: "This email is already in use by another manager.",
       });
     }
 
-    // Dados atualizados
     const updatedData = {
       name: req.body.name,
       address: req.body.address,
@@ -485,10 +454,9 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
     };
 
     if (req.file) {
-      updatedData.restaurantPic = req.file.filename; // Atualizar o campo com o novo nome do arquivo
+      updatedData.restaurantPic = req.file.filename; 
     }
 
-    // Atualizar o restaurante no banco de dados
     const updatedRestaurant = await mongoRestaurant.findOneAndUpdate(
       query,
       updatedData,
@@ -533,22 +501,19 @@ restaurantsController.showPendingRestaurants = async function (req, res, next) {
   if (req.user.role !== "Admin") return res.status(403).json({ error: "Access denied." });
 
   try {
-    const { page = 1, limit = 10 } = req.query; // Página atual e limite de itens por página
+    const { page = 1, limit = 10 } = req.query; 
     const skip = (page - 1) * limit;
 
     const user = req.user;
 
-    // Buscar restaurantes pendentes de aprovação com paginação
     const restaurants = await mongoRestaurant
       .find({ isApproved: false })
       .skip(skip)
       .limit(parseInt(limit));
 
-    // Total de restaurantes pendentes
     const totalRestaurants = await mongoRestaurant.countDocuments({ isApproved: false });
     const totalPages = Math.ceil(totalRestaurants / limit);
 
-    // jsonizar a página com os restaurantes e informações de paginação
     res.json({
       restaurants,
       currentPage: parseInt(page),

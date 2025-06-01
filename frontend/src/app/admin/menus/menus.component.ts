@@ -27,7 +27,7 @@ export class MenusComponent implements OnInit {
 
   currentPage = 1;
   totalPages = 1;
-  limit = 6; // Ou outro valor desejado
+  limit = 6; 
 
   constructor(private menuService: MenuService, private restaurantService: RestaurantService) { }
 

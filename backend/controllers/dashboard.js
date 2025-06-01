@@ -40,7 +40,6 @@ dashboardController.getDashboardData = async function (req, res, next) {
       { $sort: { _id: 1 } },
     ]);
 
-    // Agrupar usuários registrados por mês
     const usersByMonth = await mongoUser.aggregate([
       {
         $match: { createdAt: { $exists: true, $ne: null } }
@@ -54,7 +53,6 @@ dashboardController.getDashboardData = async function (req, res, next) {
       { $sort: { _id: 1 } }, 
     ]);
 
-    // Agrupar menus criados por mês
     const menusByMonth = await mongoMenu.aggregate([
       {
         $match: { createdAt: { $exists: true, $ne: null } } 
@@ -68,7 +66,6 @@ dashboardController.getDashboardData = async function (req, res, next) {
       { $sort: { _id: 1 } },
     ]);
 
-    // Agrupar pratos criados por mês
     const dishesByMonth = await mongoDish.aggregate([
       {
         $match: { createdAt: { $exists: true, $ne: null } } 
@@ -82,7 +79,6 @@ dashboardController.getDashboardData = async function (req, res, next) {
       { $sort: { _id: 1 } }, 
     ]);
 
-    // Agrupar orders criadas por mês
     const ordersByMonth = await mongoOrder.aggregate([
       {
         $match: { createdAt: { $exists: true, $ne: null } } 
@@ -96,7 +92,6 @@ dashboardController.getDashboardData = async function (req, res, next) {
       { $sort: { _id: 1 } }, 
     ]);
 
-    // Converter os dados para um formato utilizável no gráfico
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const restaurantData = Array(12).fill(0);
     const userData = Array(12).fill(0);

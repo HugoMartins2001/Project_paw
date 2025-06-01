@@ -232,16 +232,13 @@ dishesController.createDish = async function (req, res, next) {
 
 dishesController.renderCreateDishes = async function (req, res, next) {
   try {
-    // Categorias predefinidas
     const predefinedCategories = ['Meat', 'Vegetarian', 'Vegan', 'Dessert'];
 
-    // Combinar categorias predefinidas com as existentes, removendo duplicatas
     const categories = Array.from(new Set([...predefinedCategories]));
 
-    // jsonizar a página com as categorias
     res.json({
-      user: req.user, // Passa o usuário logado para o EJS
-      categories, // Passa as categorias combinadas para o EJS
+      user: req.user, 
+      categories, 
     });
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -253,7 +250,6 @@ dishesController.showDish = async function (req, res, next) {
   try {
     const user = req.user;
 
-    // Buscar o prato pelo ID
     const dish = await mongoDish.findById(req.params.dishId);
     if (!dish) {
       return res.status(404).json({ message: "Dish not found." });
@@ -276,17 +272,13 @@ dishesController.showDish = async function (req, res, next) {
       return res.status(403).json({ message: "Access denied." });
     }
 
-    // Buscar todos os menus
     const menuList = await mongoMenu.find().populate("dishes");
 
-    // Buscar todos os restaurantes
     const allRestaurants = await mongoRestaurant.find();
 
-    // Encontrar menus associados ao prato
     const associatedMenus = menuList
       .filter((menu) => menu.dishes.some((menuDish) => menuDish.equals(dish._id)))
       .map((menu) => {
-        // Encontrar restaurantes associados ao menu
         const associatedRestaurants = allRestaurants
           .filter((restaurant) => restaurant.menus.some((menuId) => menuId.equals(menu._id)))
           .map((restaurant) => ({
@@ -301,7 +293,6 @@ dishesController.showDish = async function (req, res, next) {
         };
       });
 
-    // Filtrar menus e restaurantes associados para managers
     if (user.role === "Manager") {
       associatedMenus.forEach((menu) => {
         menu.restaurants = menu.restaurants.filter((restaurant) => {
@@ -310,7 +301,6 @@ dishesController.showDish = async function (req, res, next) {
       });
     }
 
-    // jsonizar a página com os detalhes do prato
     res.json({
       dish: {
         ...dish.toObject(),
@@ -470,13 +460,11 @@ dishesController.addCategory = async function (req, res, next) {
       return res.status(400).json({ message: "Category name cannot be empty." });
     }
 
-    // Verificar se a categoria já existe
     const existingCategories = await mongoDish.distinct("category");
     if (existingCategories.includes(category)) {
       return res.status(400).json({ message: "Category already exists." });
     }
 
-    // Adicionar a nova categoria (não diretamente no banco, mas como referência)
     res.status(200).json({ success: true, message: "Category added successfully." });
   } catch (error) {
     console.error("Error adding category:", error);

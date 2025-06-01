@@ -807,6 +807,48 @@
         }
       }
     },
+    "/api/users/block/{userId}": {
+      "patch": {
+        "description": "Bloqueia um utilizador pelo ID.",
+        "summary": "Bloquear um utilizador",
+        "tags": [
+          "Utilizadores"
+        ],
+        "operationId": "Bloquearumutilizador",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do utilizador a ser bloqueado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Utilizador bloqueado com sucesso",
+            "headers": {}
+          },
+          "404": {
+            "description": "Utilizador não encontrado",
+            "headers": {}
+          },
+          "403": {
+            "description": "Acesso negado",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/auth/loginSubmitted": {
       "post": {
         "description": "Verifica as credenciais do utilizador e retorna um token de autenticação.",

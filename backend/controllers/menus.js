@@ -30,7 +30,7 @@ menusController.renderCreateMenu = async function (req, res, next) {
 // Controlador para exibir todos os menus
 menusController.showAll = async function (req, res, next) {
   try {
-    const user = req.user; // pode ser undefined
+    const user = req.user; 
     const { page = 1, limit = 6, name, restaurant, minPrice, maxPrice, sortBy = "name", order = "asc" } = req.query;
     const skip = (page - 1) * limit;
 
@@ -40,7 +40,6 @@ menusController.showAll = async function (req, res, next) {
       query.name = { $regex: name, $options: "i" };
     }
 
-    // Se não autenticado, só mostra menus visíveis
     if (!user) {
       query.isVisible = true;
     } else if (user.role === "Manager") {
@@ -82,7 +81,6 @@ menusController.showAll = async function (req, res, next) {
               restaurant.managerId.toString() === user._id.toString()
             );
           }
-          // Para não autenticados e clientes, só mostra restaurantes visíveis
           return restaurant.menus.includes(menu._id);
         })
         .map((restaurant) => restaurant.name);
@@ -93,7 +91,6 @@ menusController.showAll = async function (req, res, next) {
       };
     });
 
-    // Filtrar menus com base no papel do usuário
     const filteredMenus = menusWithRestaurants.filter((menu) => {
       if (!menu.managerId) return false;
       if (!user) return menu.isVisible === true;
@@ -123,9 +120,9 @@ menusController.showAll = async function (req, res, next) {
 menusController.createMenu = async function (req, res, next) {
   try {
     const { name, dishes, restaurant } = req.body;
-    const menuPic = req.file ? req.file.filename : null; // Verifica se há uma imagem enviada
+    const menuPic = req.file ? req.file.filename : null; 
 
-    const dishesArray = Array.isArray(dishes) ? dishes : [dishes]; // Garante que `dishes` seja um array
+    const dishesArray = Array.isArray(dishes) ? dishes : [dishes];
 
     const newMenu = new mongoMenu({
       name,
@@ -151,7 +148,6 @@ menusController.showMenu = async function (req, res, next) {
   const menuId = req.params.menuId;
 
   try {
-    // Buscar o menu pelo ID e popular os pratos associados
     const menu = await mongoMenu.findById(menuId).populate("dishes");
 
     if (!menu) {
@@ -175,21 +171,18 @@ menusController.showMenu = async function (req, res, next) {
       return res.status(403).json({ message: "Access denied." });
     }
 
-    // Buscar todos os restaurantes que contêm este menu
     const query =
       req.user.role === "Manager"
-        ? { menus: menuId, managerId: req.user._id } // Gerentes só veem seus próprios restaurantes
-        : { menus: menuId }; // Administradores veem todos os restaurantes
+        ? { menus: menuId, managerId: req.user._id } 
+        : { menus: menuId };
 
     const allRestaurants = await mongoRestaurant.find(query).select("name");
 
-    // Criar uma lista de restaurantes com nome e ID
     const restaurantList = allRestaurants.map((restaurant) => ({
       id: restaurant._id,
       name: restaurant.name,
     }));
 
-    // jsonizar a página com os dados do menu e dos restaurantes
     res.json({
       menu: menu.toObject(),
       restaurants: restaurantList,
@@ -201,7 +194,7 @@ menusController.showMenu = async function (req, res, next) {
   }
 };
 
-// Controlador para deletar um menu
+// Controlador para apagar um menu
 menusController.deleteMenu = function (req, res, next) {
   const user = req.user;
 
@@ -246,10 +239,9 @@ menusController.renderEditMenu = async function (req, res, next) {
 
     const user = req.user;
 
-    // Verificar permissões
     if (
-      req.user.role !== "Admin" && // Admin pode acessar qualquer menu
-      menu.managerId.toString() !== req.user._id.toString() // Apenas o gerente que criou o menu pode acessá-lo
+      req.user.role !== "Admin" && 
+      menu.managerId.toString() !== req.user._id.toString()
     ) {
       return res.status(403).json("errors/403", { message: "You do not have permission to edit this menu." });
     }
@@ -273,22 +265,19 @@ menusController.updateMenu = async function (req, res, next) {
   try {
     const menuId = req.params.menuId;
 
-    // Buscar o menu pelo ID
     const menu = await mongoMenu.findById(menuId);
 
     if (!menu) {
       return res.status(404).json({ message: "Menu not found." });
     }
 
-    // Verificar permissões
     if (
-      req.user.role !== "Admin" && // Admin pode editar qualquer menu
-      menu.managerId.toString() !== req.user._id.toString() // Apenas o gerente que criou o menu pode editá-lo
+      req.user.role !== "Admin" &&
+      menu.managerId.toString() !== req.user._id.toString()
     ) {
       return res.status(403).json({ message: "Access denied." });
     }
 
-    // Atualizar os dados do menu
     const dishesArray = Array.isArray(req.body.dishes)
       ? req.body.dishes
       : [req.body.dishes];

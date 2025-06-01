@@ -13,7 +13,6 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/registerSubmitted`, userData);
   }
 
-  // Guarda o token e o userID após login/registo
   setSession(token: string, userID: string) {
     console.log('[AuthService] setSession - token:', token);
     console.log('[AuthService] setSession - userID:', userID);
@@ -22,21 +21,18 @@ export class AuthService {
     this.isLoggedInSubject.next(true);
   }
 
-  // Obter o token
   getToken(): string | null {
     const token = localStorage.getItem('token');
     console.log('[AuthService] getToken:', token);
     return token;
   }
 
-  // Obter o userID
   getUserID(): string | null {
     const userID = localStorage.getItem('userID');
     console.log('[AuthService] getUserID:', userID);
     return userID;
   }
 
-  // Logout
   logout(): void {
     console.log('[AuthService] logout');
     localStorage.removeItem('token');
@@ -44,12 +40,10 @@ export class AuthService {
     this.isLoggedInSubject.next(false);
   }
 
-  // Observable para status de login
   get isLoggedIn$() {
     return this.isLoggedInSubject.asObservable();
   }
 
-  // Checa se há token salvo
   private hasToken(): boolean {
     const has = !!localStorage.getItem('token');
     console.log('[AuthService] hasToken:', has);

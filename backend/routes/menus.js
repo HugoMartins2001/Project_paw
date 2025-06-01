@@ -24,7 +24,7 @@ router.post("/submittedMenu", authController.verifyLoginUser, upload.single('men
     menusController.createMenu(req, res, next);
 });
 
-// Rota para deletar um menu específico pelo ID
+// Rota para apagar um menu específico pelo ID
 router.delete("/deleteMenu/:menuId", authController.verifyLoginUser, function (req, res, next) {
     menusController.deleteMenu(req, res, next);
 });
@@ -42,4 +42,4 @@ router.put("/editMenu/:menuId", authController.verifyLoginUser, upload.single("m
 // Rota para alternar a visibilidade de um menu (ex.: visível/invisível)
 router.patch('/toggleVisibility/:id', menusController.toggleVisibility);
 
-module.exports = router; // Exporta o roteador para ser usado em outros arquivos
+module.exports = router;

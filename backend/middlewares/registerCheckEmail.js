@@ -6,9 +6,9 @@ const registerCheckEmail = async (req, res, next) => {
         if (existingUser) {
             return res.status(409).json({ error: 'This email is already registered!' });
         }
-        next(); // Prossegue para o próximo middleware ou controlador
+        next(); 
     } catch (err) {
-        next(err); // Passa o erro para o middleware de tratamento de erros
+        next(err);
     }
 };
 

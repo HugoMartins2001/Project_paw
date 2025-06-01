@@ -10,8 +10,6 @@ usersController.showUsers = async (req, res, next) => {
   try {
     const users = await mongoUser.find({}, { password: 0 });
 
-    console.log('Users found:', users);
-
     res.json({ users, user });
   } catch (err) {
     next(err); 

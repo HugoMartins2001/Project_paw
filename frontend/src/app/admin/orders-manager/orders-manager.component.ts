@@ -74,7 +74,7 @@ export class OrdersManagerComponent implements OnInit {
     ).subscribe({
       next: res => {
         order.status = newStatus;
-        if (['expedida', 'entregue'].includes(newStatus.trim().toLowerCase())) {
+        if (['shipped', 'delivered'].includes(newStatus.trim().toLowerCase())) {
           Swal.fire({
             icon: 'success',
             title: `Order marked as ${newStatus}!`,

@@ -43,7 +43,7 @@ export class UserService {
 
   blockUser(id: string): Observable<any> {
     const url = `http://localhost:3000/api/users/block/${id}`;
-    return this.http.post<any>(url, {}, { headers: this.getHeaders() }).pipe(
+    return this.http.patch<any>(url, {}, { headers: this.getHeaders() }).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => error))
     );
   }

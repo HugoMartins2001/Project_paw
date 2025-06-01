@@ -41,7 +41,7 @@ export class DishesComponent implements OnInit {
 
   loadDishes(page: number = 1): void {
     this.isLoading = true;
-    const params: any = { page }; // Adicione a página aos parâmetros
+    const params: any = { page };
     if (this.filterName) params.name = this.filterName;
     if (this.filterCategory) params.category = this.filterCategory;
     if (this.filterAllergens) params.allergens = this.filterAllergens;

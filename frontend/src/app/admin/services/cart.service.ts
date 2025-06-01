@@ -36,13 +36,12 @@ export class CartService {
   }
 
   addToCart(dish: Dish & { selectedSize: 'pequena' | 'media' | 'grande', selectedPrice: number, restaurantId?: string }) {
-    // Verifica se já existe o mesmo prato com o mesmo tamanho no carrinho
     const existing = this.cart.find(d =>
       d._id === dish._id && d.selectedSize === dish.selectedSize
     );
     if (existing) {
       existing.quantity = (existing.quantity ?? 1) + 1;
-      existing.selectedPrice = dish.selectedPrice; // Garante que o preço é atualizado
+      existing.selectedPrice = dish.selectedPrice;
     } else {
       this.cart.push({ ...dish, quantity: 1 });
     }

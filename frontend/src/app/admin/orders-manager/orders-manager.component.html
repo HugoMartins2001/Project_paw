@@ -39,12 +39,12 @@
             <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
               Status: {{ order.status }}
             </span>
-            <ng-container *ngIf="order.status === 'pending' || order.status === 'expedida' || order.status === 'entregue'">
+            <ng-container *ngIf="order.status === 'pending' || order.status === 'shipped' || order.status === 'delivered'">
               <select class="form-select d-inline w-auto ms-2"
                       (change)="updateStatus(order, $event)">
                 <option value="" disabled selected>Change status</option>
-                <option value="expedida">Shipped</option>
-                <option value="entregue">Delivered</option>
+                <option value="shipped">Shipped</option>
+                <option value="delivered">Delivered</option>
               </select>
             </ng-container>
           </p>

@@ -6,13 +6,13 @@ import Swal from 'sweetalert2';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
-  private apiUrl = 'http://localhost:3000/api/admin'; // Ajusta conforme o teu backend
+  private apiUrl = 'http://localhost:3000/api/admin';
 
   constructor(private http: HttpClient, private socketService: SocketService) {
     this.socketService.onOrderCreated((data) => {
       Swal.fire({
         icon: 'info',
-        title: 'Nova encomenda!',
+        title: 'New order!',
         text: data.message,
         toast: true,
         position: 'top-end',

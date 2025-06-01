@@ -37,7 +37,7 @@ const User = new mongoose.Schema({
   profilePic: { type: String },
   isBlocked: { type: Boolean, default: false },
   resetPasswordToken: { type: String },
-  resetPasswordExpires: { type: Date }, // Campo para expirar o token de redefinição de senha
+  resetPasswordExpires: { type: Date },
 });
 
 module.exports = mongoose.model('users', User);

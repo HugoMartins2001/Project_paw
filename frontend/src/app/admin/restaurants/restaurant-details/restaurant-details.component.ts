@@ -44,7 +44,7 @@ export class RestaurantDetailsComponent implements OnInit {
       next: (data) => {
         if (data && data.restaurant) {
           this.restaurant = data.restaurant;
-          localStorage.setItem('restaurantId', this.restaurant._id); // <-- aqui!
+          localStorage.setItem('restaurantId', this.restaurant._id);
           this.loadComments();
           this.checkIfCanComment();
         } else {

@@ -1,66 +1,68 @@
-<div class="container d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 80vh;">
-  <div class="card shadow-sm rounded-4 p-4 w-100" style="max-width: 480px;">
-    <div class="text-center mb-4">
-      <i class="bi bi-person-circle text-primary mb-2" style="font-size: 2.5rem;"></i>
-      <h2 class="fw-bold text-primary mb-1">Edit Profile</h2>
+<div class="container">
+    <h1>Edit Profile</h1>
+
+    <div class="profile-card" *ngIf="profileForm">
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" autocomplete="off">
+            <div class="profile-email">
+                <p>Email: {{ user?.email }}</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Personal informations</h3>
+                <div class="info-item">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" formControlName="name" required />
+                </div>
+
+                <ng-container *ngIf="user?.role === 'Client'">
+                    <div class="info-item">
+                        <label for="clienteTelemovel">Phone:</label>
+                        <input type="text" id="clienteTelemovel" formControlName="clienteTelemovel" />
+                        <div *ngIf="profileForm.get('clienteTelemovel')?.invalid && profileForm.get('clienteTelemovel')?.touched"
+                            class="text-danger">
+                            The mobile number must have 9 digits.
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <label for="clienteNif">NIF:</label>
+                        <input type="text" id="clienteNif" formControlName="clienteNif" />
+                        <div *ngIf="profileForm.get('clienteNif')?.invalid && profileForm.get('clienteNif')?.touched"
+                            class="text-danger">
+                            The NIF must have 9 digits.
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" formControlName="address" />
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="user?.role === 'Manager'">
+                    <div class="info-item">
+                        <label for="managerTelemovel">Mobile:</label>
+                        <input type="text" id="managerTelemovel" formControlName="managerTelemovel" />
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="user?.role === 'Admin'">
+                    <div class="info-item">
+                        <label for="managerTelemovel">Mobile:</label>
+                        <input type="text" id="managerTelemovel" formControlName="managerTelemovel" />
+                    </div>
+                    <div class="info-item">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" formControlName="address" />
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="btn-primary" [disabled]="profileForm.invalid || loading">
+                    {{ loading ? 'Saving...' : 'Save Changes' }}
+                </button>
+                <button type="button" class="btn-secondary" (click)="goBack()">Back</button>
+            </div>
+        </form>
+        <div *ngIf="errorMsg" class="text-danger mt-2">{{ errorMsg }}</div>
     </div>
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" autocomplete="off">
-      <div class="mb-3">
-        <label class="fw-semibold mb-1">Email:</label>
-        <div class="form-control-plaintext">{{ user?.email }}</div>
-      </div>
-      <div class="mb-3">
-        <label for="name" class="fw-semibold mb-1">Name:</label>
-        <input type="text" id="name" formControlName="name" class="form-control" required />
-      </div>
-
-      <ng-container *ngIf="user?.role === 'Client'">
-        <div class="mb-3">
-          <label for="clienteTelemovel" class="fw-semibold mb-1">Phone:</label>
-          <input type="text" id="clienteTelemovel" formControlName="clienteTelemovel" class="form-control" />
-          <div *ngIf="profileForm.get('clienteTelemovel')?.invalid && profileForm.get('clienteTelemovel')?.touched" class="text-danger small">
-            The mobile number must have 9 digits.
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="clienteNif" class="fw-semibold mb-1">NIF:</label>
-          <input type="text" id="clienteNif" formControlName="clienteNif" class="form-control" />
-          <div *ngIf="profileForm.get('clienteNif')?.invalid && profileForm.get('clienteNif')?.touched" class="text-danger small">
-            The NIF must have 9 digits.
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="address" class="fw-semibold mb-1">Address:</label>
-          <input type="text" id="address" formControlName="address" class="form-control" />
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="user?.role === 'Manager'">
-        <div class="mb-3">
-          <label for="managerTelemovel" class="fw-semibold mb-1">Mobile:</label>
-          <input type="text" id="managerTelemovel" formControlName="managerTelemovel" class="form-control" />
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="user?.role === 'Admin'">
-        <div class="mb-3">
-          <label for="managerTelemovel" class="fw-semibold mb-1">Mobile:</label>
-          <input type="text" id="managerTelemovel" formControlName="managerTelemovel" class="form-control" />
-        </div>
-        <div class="mb-3">
-          <label for="address" class="fw-semibold mb-1">Address:</label>
-          <input type="text" id="address" formControlName="address" class="form-control" />
-        </div>
-      </ng-container>
-
-      <div class="d-grid gap-2 mt-4">
-        <button type="submit" class="btn btn-primary fw-semibold" [disabled]="profileForm.invalid || loading">
-          <span *ngIf="loading"><span class="spinner-border spinner-border-sm me-2"></span>Saving...</span>
-          <span *ngIf="!loading">Save Changes</span>
-        </button>
-        <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Back</button>
-      </div>
-      <div *ngIf="errorMsg" class="text-danger mt-3 text-center">{{ errorMsg }}</div>
-    </form>
-  </div>
 </div>
