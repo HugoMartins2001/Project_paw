@@ -146,7 +146,7 @@ authController.submittedLogin = function (req, res, next) {
     const attempts = loginAttempts[loginKey];
 
     if (attempts.count >= 5) {
-        mongoUser.findOneAndUpdate({ email: emailInput }, { isBlocked: true }, { new: true }) // Retorna o documento atualizado
+        mongoUser.findOneAndUpdate({ email: emailInput }, { isBlocked: true }, { new: true }) 
             .then((user) => {
                 if (user) {
                     const userMailOptions = {
@@ -286,7 +286,7 @@ authController.submittedLogin = function (req, res, next) {
             if (!user) {
                 attempts.count++;
                 attempts.lastAttempt = Date.now();
-                return res.status(401).json({ erros: { email: "Email não encontrado." } });
+                return res.status(401).json({ errors: { email: "Email not found." } });
             }
 
             if (user.isBlocked) {
@@ -310,7 +310,7 @@ authController.submittedLogin = function (req, res, next) {
                     } else {
                         attempts.count++;
                         attempts.lastAttempt = Date.now();
-                        return res.status(401).json({ erros: { password: "Incorrect password." } });
+                        return res.status(401).json({ errors: { password: "Incorrect password." } });
                     }
                 });
         })

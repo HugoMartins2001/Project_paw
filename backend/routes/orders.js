@@ -10,8 +10,8 @@ router.get('/ordersHistory', verifyJWT, function (req, res, next){
         ordersController.getOrdersHistory(req, res, next);    
 });
 
+// Rota para verificar se o usuário tem uma encomenda
 router.get('/hasOrder', verifyJWT, ordersController.hasOrder);
-
 
 // Rota para exibir os detalhes de uma encomenda
 router.get('/:orderId', authController.verifyLoginUser, function (req, res, next) { 

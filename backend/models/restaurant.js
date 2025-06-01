@@ -35,6 +35,16 @@ const RestaurantSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  confessionTime: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
+  deliveryTime: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
   menus: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menu" }],
   isApproved: { type: Boolean, default: false },
   restaurantPic: { type: String },

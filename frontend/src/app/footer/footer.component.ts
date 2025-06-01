@@ -40,13 +40,13 @@ export class FooterComponent {
   navigateToRestaurant(): void {
     const role = localStorage.getItem('role');
     if (!role) {
-      this.router.navigate(['/restaurants/user']);
+      this.router.navigate(['/restaurant/user']);
     } else if (role === 'Client') {
       this.router.navigate(['/client/restaurant']);
     } else if (role === 'Admin' || role === 'Manager') {
       this.router.navigate(['/restaurants']);
     } else {
-      this.router.navigate(['/restaurants/user']);
+      this.router.navigate(['/restaurant/user']);
     }
   }
   navigateToAbout(): void { this.router.navigate(['/about']); }

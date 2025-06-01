@@ -29,6 +29,8 @@ export class RestaurantCreateComponent {
       name: ['', Validators.required],
       address: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+      deliveryTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      confessionTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       restaurantEmail: ['', [Validators.required, Validators.email]],
       openingHours: this.fb.group({
         default: this.fb.group({
@@ -111,6 +113,8 @@ export class RestaurantCreateComponent {
     formData.append('phone', formValue.phone);
     formData.append('restaurantEmail', formValue.restaurantEmail);
     formData.append('openingHours', JSON.stringify(openingHours));
+    formData.append('confessionTime', formValue.confessionTime);
+    formData.append('deliveryTime', formValue.deliveryTime);
     this.paymentMethods.forEach(pm => formData.append('paymentMethods', pm));
     formValue.menus.forEach((menuId: string) => formData.append('menus', menuId));
     if (this.restaurantPic) {

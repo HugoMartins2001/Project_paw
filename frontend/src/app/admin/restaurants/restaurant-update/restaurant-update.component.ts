@@ -40,6 +40,8 @@ export class RestaurantUpdateComponent implements OnInit {
       name: ['', Validators.required],
       address: ['', Validators.required],
       phone: ['', Validators.required],
+      deliveryTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      confessionTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       restaurantEmail: ['', [Validators.required, Validators.email]],
       openingHours: this.fb.group({
         default: this.fb.group({
@@ -99,6 +101,8 @@ export class RestaurantUpdateComponent implements OnInit {
           name: res.name,
           address: res.address,
           phone: res.phone,
+          deliveryTime: res.deliveryTime,
+          confessionTime: res.confessionTime,
           restaurantEmail: res.restaurantEmail,
           openingHours: res.openingHours,
           menus: menuIds
@@ -183,6 +187,8 @@ export class RestaurantUpdateComponent implements OnInit {
     formData.append('name', formValue.name);
     formData.append('address', formValue.address);
     formData.append('phone', formValue.phone);
+    formData.append('deliveryTime', formValue.deliveryTime);
+    formData.append('confessionTime', formValue.confessionTime);
     formData.append('restaurantEmail', formValue.restaurantEmail);
     formData.append('openingHours', JSON.stringify(openingHours));
     this.paymentMethods.forEach(pm => formData.append('paymentMethods', pm));

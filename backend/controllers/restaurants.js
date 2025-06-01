@@ -18,7 +18,6 @@ const transporter = nodemailer.createTransport({
 
 let restaurantsController = {};
 
-// Função auxiliar para processar os horários de funcionamento
 function processOpeningHours(openingHours) {
   const processedOpeningHours = {};
   const defaultHours = openingHours.default;
@@ -26,7 +25,6 @@ function processOpeningHours(openingHours) {
   for (const day in openingHours) {
     if (day === "default") continue;
 
-    // Aceita booleano ou string
     if (openingHours[day].closed === true || openingHours[day].closed === "true") {
       processedOpeningHours[day] = { closed: true };
     } else {
@@ -59,7 +57,6 @@ restaurantsController.processCreateRestaurant = function (req, res, next) {
 restaurantsController.processUpdateRestaurant = function (req, res, next) {
   try {
     if (req.body.openingHours) {
-      // Faz o parse se vier como string
       let openingHours = req.body.openingHours;
       if (typeof openingHours === 'string') {
         try {
@@ -130,11 +127,9 @@ restaurantsController.showAll = async function (req, res, next) {
       .skip(skip)
       .limit(parseInt(limit));
 
-    // Calcular média de ratings para cada restaurante
     const filteredRestaurants = await Promise.all(restaurantList.map(async (restaurant) => {
       const obj = restaurant.toObject();
       obj.menus = restaurant.menus;
-      // Buscar comentários com rating para este restaurante
       const comments = await Comment.find({ restaurantId: restaurant._id, rating: { $exists: true } });
       if (comments.length > 0) {
         const ratings = comments.map(c => c.rating).filter(r => typeof r === 'number');
@@ -258,6 +253,8 @@ restaurantsController.createRestaurant = async function (req, res, next) {
       name: req.body.name,
       address: req.body.address,
       phone: req.body.phone,
+      confessionTime: req.body.confessionTime,
+      deliveryTime: req.body.deliveryTime,
       restaurantEmail: req.body.restaurantEmail,
       openingHours: typeof req.body.openingHours === 'string'
         ? JSON.parse(req.body.openingHours)
@@ -453,6 +450,8 @@ restaurantsController.updateRestaurant = async function (req, res, next) {
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       phone: req.body.phone,
+      confessionTime: req.body.confessionTime, // fix: use confessionTime from body
+      deliveryTime: req.body.deliveryTime,     // fix: use deliveryTime from body
       restaurantEmail: req.body.restaurantEmail,
       openingHours: typeof req.body.openingHours === 'string'
         ? JSON.parse(req.body.openingHours)

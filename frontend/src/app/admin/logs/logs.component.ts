@@ -19,7 +19,8 @@ export class LogsComponent implements OnInit {
   actions: string[] = [
     'Created Dish', 'Updated Dish', 'Deleted Dish',
     'Created Menu', 'Updated Menu', 'Deleted Menu',
-    'Created Restaurant', 'Updated Restaurant', 'Deleted Restaurant'
+    'Created Restaurant', 'Updated Restaurant', 'Deleted Restaurant',
+    'Created order', 'Deleted order',
   ];
   currentPage = 1;
   totalPages = 1;
