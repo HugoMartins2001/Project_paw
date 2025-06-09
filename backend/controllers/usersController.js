@@ -99,4 +99,14 @@ usersController.toggleBlockUser = async function (req, res) {
     }
 };
 
+// Buscar apenas managers
+usersController.getManagers = async (req, res, next) => {
+  try {
+    const managers = await mongoUser.find({ role: 'Manager' }, { password: 0 });
+    res.json(managers);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = usersController;

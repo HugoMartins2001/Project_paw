@@ -1,0 +1,114 @@
+.chat-container {
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+}
+.chat-messages {
+  min-height: 120px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  background: #f6f8fa;
+  border-radius: 8px;
+  padding: 10px 8px;
+  border: 1px solid #e9ecef;
+}
+.chat-message {
+  margin-bottom: 7px;
+  padding: 4px 0;
+  font-size: 1.01rem;
+}
+.chat-sender {
+  font-weight: 600;
+  margin-right: 4px;
+}
+.chat-text {
+  margin-right: 6px;
+}
+.chat-date {
+  color: #888;
+  font-size: 0.85em;
+}
+/* Botão flutuante moderno */
+.chat-fab {
+  position: fixed;
+  right: 36px;
+  bottom: 100px; /* Fica imediatamente acima do footer, no canto inferior direito */
+  width: 56px;
+  height: 56px;
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  z-index: 1200;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+.chat-popup.glassmorphism {
+  position: fixed;
+  right: 32px;
+  bottom: 160px; /* Popup fica acima do botão, ambos acima do footer */
+  width: 370px;
+  max-width: 95vw;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  z-index: 1300;
+  display: flex;
+  flex-direction: column;
+  animation: popupIn 0.25s;
+}
+@keyframes popupIn {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.chat-popup-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid #e9ecef;
+  font-weight: 600;
+  background: #f8f9fa;
+  border-radius: 18px 18px 0 0;
+  font-size: 1.1rem;
+}
+.chat-popup-body {
+  padding: 0 20px 16px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.chat-select {
+  padding: 18px 10px 10px 10px;
+}
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: #888;
+  cursor: pointer;
+  margin-left: 8px;
+}
+.btn-close:hover {
+  color: #d00;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .chat-popup {
+    right: 8px;
+    width: 98vw;
+    min-width: 0;
+    bottom: 150px;
+  }
+  .chat-fab {
+    right: 8px;
+    bottom: 90px;
+  }
+}

@@ -1,0 +1,43 @@
+<!-- Floating button to open chat -->
+<button class="chat-fab shadow-lg" (click)="openPopup()" *ngIf="!showPopup" aria-label="Open help chat">
+  <i class="bi bi-chat-dots"></i>
+</button>
+
+<!-- Chat popup -->
+<div class="chat-popup glassmorphism animated fadeInUp" *ngIf="showPopup">
+  <div class="chat-popup-header d-flex justify-content-between align-items-center">
+    <span class="fw-bold text-primary d-flex align-items-center">
+      <i class="bi bi-life-preserver me-2"></i>24h Help
+    </span>
+    <button class="btn-close" (click)="closePopup()" aria-label="Close chat">&times;</button>
+  </div>
+  <div *ngIf="!recipientType" class="chat-select p-3">
+    <p class="mb-2 fs-6">Who do you want to talk to?</p>
+    <button class="btn btn-outline-primary w-100 mb-2 py-2 rounded-pill fw-semibold" (click)="selectRecipient('admin')">
+      <i class="bi bi-person-badge me-1"></i>Admin
+    </button>
+    <div class="mb-2">
+      <label class="form-label mb-1">Restaurant manager:</label>
+      <select class="form-select rounded-pill" [(ngModel)]="selectedManagerId">
+        <option value="" disabled selected>Select a manager</option>
+        <option *ngFor="let m of managers" [value]="m._id">{{m.name || m.email}}</option>
+      </select>
+      <button class="btn btn-outline-secondary w-100 mt-2 py-2 rounded-pill fw-semibold" [disabled]="!selectedManagerId" (click)="selectRecipient('manager', selectedManagerId)">
+        <i class="bi bi-person-workspace me-1"></i>Talk to Manager
+      </button>
+    </div>
+  </div>
+  <div *ngIf="recipientType" class="chat-popup-body p-3">
+    <div class="chat-messages mb-2">
+      <div *ngFor="let msg of messages" class="chat-message">
+        <span class="chat-sender text-primary fw-semibold">{{msg.sender}}:</span>
+        <span class="chat-text">{{msg.text}}</span>
+        <span class="chat-date">({{msg.createdAt | date:'shortTime'}})</span>
+      </div>
+    </div>
+    <div class="chat-input d-flex align-items-center gap-2 mt-2">
+      <input [(ngModel)]="messageText" (keyup.enter)="sendMessage()" class="form-control rounded-pill px-3" placeholder="Type your message...">
+      <button (click)="sendMessage()" class="btn btn-primary px-3 rounded-pill"><i class="bi bi-send"></i></button>
+    </div>
+  </div>
+</div>

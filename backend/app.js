@@ -25,6 +25,7 @@ const checkoutRoutes = require('./routes/checkout');
 const cors = require('cors');
 const contactRouter = require('./routes/contact');
 const commentRoutes = require('./routes/comment');
+const chatRouter = require('./routes/chat');
 
 var mongoDB = "mongodb+srv://Hugo:GrIT0luqnFt9eWKK@cluster0.gkqj7cg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -83,6 +84,7 @@ app.use("/api/orders", ordersRouter);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/contact', contactRouter);
 app.use('/api/comment', commentRoutes);
+app.use('/api/chat', chatRouter);
 app.use('/api-docs', swaggerui.serve, swaggerui.setup(require('./swagger/swagger.json')));
 
 

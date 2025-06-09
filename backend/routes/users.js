@@ -18,4 +18,7 @@ router.get("/showUsers", verifyJWT, onlyAdmins, usersController.showUsers);
 // Rota para bloquear os utilizadores (apenas para administradores)
 router.patch('/block/:id', verifyJWT, onlyAdmins, usersController.toggleBlockUser);
 
+// Rota para buscar todos os managers
+router.get('/managers', usersController.getManagers);
+
 module.exports = router;

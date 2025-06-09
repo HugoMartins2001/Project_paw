@@ -1,11 +1,50 @@
 var app = require('../app');
 var debug = require('debug')('paw:server');
 var http = require('http');
+const { Server } = require('socket.io');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 var server = http.createServer(app);
+
+// Socket.io setup
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:4200',
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+});
+
+// Socket.io events
+io.on('connection', (socket) => {
+
+  socket.on('joinConversation', (conversationId) => {
+    socket.join(conversationId);
+  });
+
+  // Join user room for notifications
+  socket.on('joinUserRoom', (userId) => {
+    socket.join(`user-${userId}`);
+  });
+
+  // Notificação de nova mensagem para badge
+  socket.on('sendMessage', (data) => {
+    io.to(data.conversationId).emit('receiveMessage', data.message);
+    // Notificar todos os participantes (exceto quem enviou)
+    if (data.notifyParticipants) {
+      data.notifyParticipants.forEach(pid => {
+        if (pid !== data.message.sender) {
+          io.to(`user-${pid}`).emit('newMessageNotification', data.conversationId);
+        }
+      });
+    }
+  });
+
+  socket.on('disconnect', () => {
+  });
+});
 
 server.listen(port);
 server.on('error', onError);
