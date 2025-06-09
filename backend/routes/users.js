@@ -21,4 +21,7 @@ router.patch('/block/:id', verifyJWT, onlyAdmins, usersController.toggleBlockUse
 // Rota para buscar todos os managers
 router.get('/managers', usersController.getManagers);
 
+// Buscar todos os admins (para chat)
+router.get('/admins', usersController.getAdmins);
+
 module.exports = router;

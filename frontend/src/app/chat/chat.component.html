@@ -6,10 +6,22 @@
 <!-- Chat popup -->
 <div class="chat-popup glassmorphism animated fadeInUp" *ngIf="showPopup">
   <div class="chat-popup-header d-flex justify-content-between align-items-center">
-    <span class="fw-bold text-primary d-flex align-items-center">
-      <i class="bi bi-life-preserver me-2"></i>24h Help
-    </span>
+    <div class="d-flex align-items-center gap-2">
+      <i class="bi bi-life-preserver me-2"></i>
+      <span class="fw-bold text-primary">24h Help</span>
+    </div>
     <button class="btn-close" (click)="closePopup()" aria-label="Close chat">&times;</button>
+  </div>
+  <!-- Admin conversation list sidebar -->
+  <div *ngIf="userRole === 'Admin'" class="admin-conversations-list" style="max-height: 200px; overflow-y: auto; border-bottom: 1px solid #eee; margin-bottom: 10px;">
+    <div class="admin-conv-title fw-bold mb-2">Conversations</div>
+    <div *ngFor="let conv of conversations" (click)="openConversation(conv)" [class.selected]="selectedConversation?._id === conv._id" class="admin-conv-item p-2" style="cursor:pointer; border-radius:6px; margin-bottom:2px; background:#f8f9fa;">
+      <span>
+        {{ getOtherParticipants(conv) }}
+      </span>
+      <span *ngIf="conv.lastMessage">: {{ conv.lastMessage.text }}</span>
+    </div>
+    <hr>
   </div>
   <div *ngIf="!recipientType" class="chat-select p-3">
     <p class="mb-2 fs-6">Who do you want to talk to?</p>
@@ -26,18 +38,60 @@
         <i class="bi bi-person-workspace me-1"></i>Talk to Manager
       </button>
     </div>
+    <!-- Filter managers by restaurant (example dropdown) -->
+    <div class="mb-2">
+      <label class="form-label mb-1">Filter by restaurant:</label>
+      <select class="form-select rounded-pill" [(ngModel)]="selectedRestaurantId" (change)="filterManagersByRestaurant()">
+        <option value="" selected>All restaurants</option>
+        <option *ngFor="let r of restaurants" [value]="r._id">{{r.name}}</option>
+      </select>
+    </div>
   </div>
-  <div *ngIf="recipientType" class="chat-popup-body p-3">
+  <div *ngIf="recipientType" class="chat-popup-body p-3" [ngClass]="{'dark-mode': isDarkMode}">
     <div class="chat-messages mb-2">
-      <div *ngFor="let msg of messages" class="chat-message">
-        <span class="chat-sender text-primary fw-semibold">{{msg.sender}}:</span>
+      <div *ngFor="let msg of messages" class="chat-message d-flex align-items-center gap-2">
+        <img *ngIf="msg.senderProfilePic" [src]="msg.senderProfilePic" class="chat-avatar-mini" alt="avatar" />
+        <span class="chat-sender text-primary fw-semibold">{{msg.senderName || msg.sender}}:</span>
         <span class="chat-text">{{msg.text}}</span>
         <span class="chat-date">({{msg.createdAt | date:'shortTime'}})</span>
       </div>
+      <div *ngIf="isTyping" class="chat-typing-indicator">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span> typing...
+      </div>
     </div>
     <div class="chat-input d-flex align-items-center gap-2 mt-2">
-      <input [(ngModel)]="messageText" (keyup.enter)="sendMessage()" class="form-control rounded-pill px-3" placeholder="Type your message...">
+      <input [(ngModel)]="messageText" (keyup.enter)="sendMessage()" (input)="onTyping()" class="form-control rounded-pill px-3" placeholder="Type your message...">
       <button (click)="sendMessage()" class="btn btn-primary px-3 rounded-pill"><i class="bi bi-send"></i></button>
     </div>
+    <!-- Avaliação do atendimento -->
+    <div *ngIf="showRating" class="chat-rating mt-3">
+      <label class="mb-2">Rate your support experience:</label>
+      <div class="d-flex gap-2 align-items-center">
+        <ng-container *ngFor="let star of [1,2,3,4,5]">
+          <i class="bi" [ngClass]="rating >= star ? 'bi-star-fill text-warning' : 'bi-star'" (click)="rating = star"></i>
+        </ng-container>
+        <button class="btn btn-success btn-sm ms-2" (click)="submitRating()">Submit</button>
+      </div>
+    </div>
+  </div>
+  <!-- Painel de preferências -->
+  <div class="chat-preferences" *ngIf="showPreferences" tabindex="0" aria-modal="true" role="dialog">
+    <button class="close-pref" (click)="closePreferences()" aria-label="Fechar preferências">&times;</button>
+    <h3>Preferências do Chat</h3>
+    <div class="pref-row">
+      <label for="darkModeSwitch">Modo escuro</label>
+      <input id="darkModeSwitch" type="checkbox" [checked]="isDarkMode" (change)="toggleDarkMode()" />
+    </div>
+    <!-- Futuras opções: notificações, tamanho, etc. -->
+  </div>
+</div>
+
+<!-- Conversation history list -->
+<div *ngIf="conversations.length > 0 && !showPopup" class="chat-history-list glassmorphism">
+  <div class="chat-history-title">Your Conversations</div>
+  <div *ngFor="let conv of conversations" class="chat-history-item" (click)="openConversation(conv)">
+    <img *ngIf="conv.participants[1]?.profilePic" [src]="conv.participants[1]?.profilePic" class="chat-avatar" alt="avatar">
+    <span class="chat-history-name">{{conv.participants[1]?.name || conv.participants[1]?.email}}</span>
+    <span class="chat-history-last">{{conv.lastMessage?.text}}</span>
   </div>
 </div>

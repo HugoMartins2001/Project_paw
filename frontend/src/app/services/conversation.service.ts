@@ -15,4 +15,8 @@ export class ConversationService {
   getMessages(conversationId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/messages/${conversationId}`);
   }
+
+  startConversation(participantIds: string[], type: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/conversation`, { participantIds, type });
+  }
 }

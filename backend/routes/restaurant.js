@@ -56,4 +56,15 @@ router.post("/approveRestaurant/:id", authController.verifyLoginUser, restaurant
 // Rota para alternar a visibilidade de um restaurante (ex.: visível/invisível)
 router.patch('/toggleVisibility/:id', restaurantsController.toggleVisibility);
 
+// GET /api/restaurants - retorna todos os restaurantes (para o chat)
+router.get('/', async (req, res) => {
+  try {
+    const mongoRestaurant = require('../models/restaurant');
+    const restaurants = await mongoRestaurant.find({}, '_id name');
+    res.json(restaurants);
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao buscar restaurantes' });
+  }
+});
+
 module.exports = router;

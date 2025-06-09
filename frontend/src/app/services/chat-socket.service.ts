@@ -5,8 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class ChatSocketService {
   private socket: Socket;
-  private readonly SERVER_URL = 'http://localhost:3000';
-
+  private readonly SERVER_URL = 'http://localhost:3001';
   constructor() {
     this.socket = io(this.SERVER_URL, {
       withCredentials: true
@@ -39,6 +38,22 @@ export class ChatSocketService {
         observer.next(conversationId);
       });
     });
+  }
+
+  sendTyping(conversationId: string) {
+    this.socket.emit('typing', { conversationId });
+  }
+
+  onTyping(): Observable<any> {
+    return new Observable(observer => {
+      this.socket.on('typing', (data: any) => {
+        observer.next(data);
+      });
+    });
+  }
+
+  joinAdminRoom() {
+    this.socket.emit('joinAdminRoom');
   }
 
   disconnect() {

@@ -109,4 +109,14 @@ usersController.getManagers = async (req, res, next) => {
   }
 };
 
+// Buscar apenas admins
+usersController.getAdmins = async (req, res, next) => {
+  try {
+    const admins = await mongoUser.find({ role: 'Admin' }, { password: 0 });
+    res.json(admins);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = usersController;

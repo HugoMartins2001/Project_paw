@@ -30,9 +30,11 @@ io.on('connection', (socket) => {
   });
 
   // Notificação de nova mensagem para badge
-  socket.on('sendMessage', (data) => {
+  socket.on('sendMessage', async (data) => {
     io.to(data.conversationId).emit('receiveMessage', data.message);
-    // Notificar todos os participantes (exceto quem enviou)
+    // Notificar admin para TODAS as mensagens/conversas
+    io.to('admin-room').emit('newMessageNotification', data.conversationId);
+    // Notificar outros participantes (exemplo para managers)
     if (data.notifyParticipants) {
       data.notifyParticipants.forEach(pid => {
         if (pid !== data.message.sender) {
@@ -40,6 +42,16 @@ io.on('connection', (socket) => {
         }
       });
     }
+  });
+
+  // Permitir que o admin entre numa sala especial para receber notificações
+  socket.on('joinAdminRoom', () => {
+    socket.join('admin-room');
+  });
+
+  // Evento para indicar que o usuário está digitando
+  socket.on('typing', (data) => {
+    socket.to(data.conversationId).emit('typing');
   });
 
   socket.on('disconnect', () => {
