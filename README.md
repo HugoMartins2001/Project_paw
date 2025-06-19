@@ -31,29 +31,30 @@ Este repositório contém o projeto desenvolvido no âmbito da unidade curricula
 
 /projeto-paw/
 │
-├── backend/ # Servidor Node.js + Express
-│ ├── controllers/ # Lógica dos endpoints (ex: restauranteController.js)
-│ ├── models/ # Esquemas Mongoose (ex: Restaurante.js, Menu.js)
-│ ├── routes/ # Definições das rotas da API (ex: restauranteRoutes.js)
-│ ├── middleware/ # Middlewares como autenticação JWT
-│ ├── config/ # Configuração da base de dados e variáveis de ambiente
-│ ├── server.js # Ponto de entrada da aplicação
-│ └── .env # Ficheiro de variáveis ambiente (não incluído no Git)
+├── backend/                    # Servidor Node.js + Express
+│   ├── controllers/           # Lógica dos endpoints (ex: restauranteController.js)
+│   ├── models/                # Esquemas Mongoose (ex: Restaurante.js, Menu.js)
+│   ├── routes/                # Definições das rotas da API (ex: restauranteRoutes.js)
+│   ├── middleware/            # Middlewares como autenticação JWT
+│   ├── config/                # Configuração da base de dados e variáveis de ambiente
+│   ├── server.js              # Ponto de entrada da aplicação
+│   └── .env                   # Ficheiro de variáveis ambiente (não incluído no Git)
 │
-├── frontend/ # Aplicação Angular
-│ ├── src/
-│ │ ├── app/
-│ │ │ ├── components/ # Componentes reutilizáveis (botões, tabelas, etc.)
-│ │ │ ├── pages/ # Páginas principais (login, dashboard, listagens)
-│ │ │ ├── services/ # Serviços Angular para comunicação com a API
-│ │ │ ├── models/ # Interfaces e tipos de dados
-│ │ │ ├── guards/ # Proteção de rotas (auth guard, admin guard)
-│ │ │ ├── app-routing.module.ts
-│ │ │ └── app.module.ts
-│ │ ├── assets/ # Ficheiros estáticos (imagens, CSS global)
-│ │ └── index.html
-│ └── angular.json # Configurações do projeto Angular
+├── frontend/                  # Aplicação Angular
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── components/    # Componentes reutilizáveis (botões, tabelas, etc.)
+│   │   │   ├── pages/         # Páginas principais (login, dashboard, listagens)
+│   │   │   ├── services/      # Serviços Angular para comunicação com a API
+│   │   │   ├── models/        # Interfaces e tipos de dados
+│   │   │   ├── guards/        # Proteção de rotas (auth guard, admin guard)
+│   │   │   ├── app-routing.module.ts
+│   │   │   └── app.module.ts
+│   │   ├── assets/            # Ficheiros estáticos (imagens, CSS global)
+│   │   └── index.html
+│   └── angular.json           # Configurações do projeto Angular
 │
 ├── README.md
-├── package.json # Dependências do Node.js (backend)
+├── package.json               # Dependências do Node.js (backend)
 └── .gitignore
+
